@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Tile 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	implements="com.san.styling.controls.IStylingControl"
+	verticalScrollPolicy="off" horizontalScrollPolicy="off"
+	width="200" height="100"
+	horizontalAlign="center"
+	paddingTop="0" paddingLeft="0"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.san.styling.utils.FillUtil;
+			import com.san.styling.interfaces.IFillable;
+			import com.degrafa.core.IGraphicsStroke;
+			import com.san.styling.utils.StrokeUtil;
+			import mx.core.UIComponent;
+			
+			public const _width:Number = 40;
+
+			public const _height:Number = 40;
+			
+			private var _target:Object;
+			private var _property:String;
+		
+			
+			private var _selectedFill:String;
+			[Bindable(event="selectedFillChanged")]
+			public function get selectedFill():String
+			{
+				return _selectedFill;
+			}		
+		
+			public function set target(value:Object):void
+			{
+				_target = value;			
+				updateControl();
+			}
+			
+			public function set property(value:String):void
+			{
+				_property = value;			
+				updateControl();
+			}
+			
+			private function updateControl():void
+			{
+				if( _target && _property )
+					setSelected( _target[ _property ], false );
+			}
+			
+			private function setSelected( fill:String, update:Boolean = true ):void
+			{
+				sf.stroke = lgf.stroke = rgf.stroke = bof.stroke = brf.stroke = gf.stroke = mf.stroke = wf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3 );
+				
+				_selectedFill = fill;
+				dispatchEvent( new Event("selectedFillChanged" ) );
+				
+				switch( fill )
+				{
+					case FillUtil.SOLID_FILL:
+						sf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.LINEAR_GRADIENT_FILL:
+						lgf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.RADIAL_GRADIENT_FILL:
+						rgf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.BOARDS_FILL:
+						bof.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.BRICKS_FILL:
+						brf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.GRASS_FILL:
+						gf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.METAL_FILL:
+						mf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+					case FillUtil.WOOD_FILL:
+						wf.stroke = StrokeUtil.getStroke( StrokeUtil.SOLID_STROKE, 3, 0x2B6BCE );
+						break;
+				}
+				
+				if( update )
+				{
+					if( _target && _property )
+						_target[ _property ] = fill;
+				}
+				
+				sfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				lgfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				rgfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				bofg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				brfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				gfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				mfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+				wfg.draw( this.graphics, new Rectangle( 0, 0, width, height ) );
+			}
+		]]>
+	</mx:Script>
+	
+	
+	
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.SOLID_FILL)}" toolTip="solid fill">
+		<degrafa:GeometryGroup id="sfg">			
+			<degrafa:RegularRectangle id="sf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.SOLID_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.LINEAR_GRADIENT_FILL)}" toolTip="linear gradient">
+		<degrafa:GeometryGroup id="lgfg">			
+			<degrafa:RegularRectangle id="lgf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.LINEAR_GRADIENT_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.RADIAL_GRADIENT_FILL)}" toolTip="radial gradient">
+		<degrafa:GeometryGroup id="rgfg">			
+			<degrafa:RegularRectangle id="rgf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.RADIAL_GRADIENT_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.BOARDS_FILL)}" toolTip="boards">
+		<degrafa:GeometryGroup id="bofg">			
+			<degrafa:RegularRectangle id="bof" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.BOARDS_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.BRICKS_FILL)}" toolTip="bricks">
+		<degrafa:GeometryGroup id="brfg">			
+			<degrafa:RegularRectangle id="brf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.BRICKS_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.GRASS_FILL)}" toolTip="grass">
+		<degrafa:GeometryGroup id="gfg">			
+			<degrafa:RegularRectangle id="gf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.GRASS_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.METAL_FILL)}" toolTip="metal">
+		<degrafa:GeometryGroup id="mfg">			
+			<degrafa:RegularRectangle id="mf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.METAL_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	<degrafa:Surface width="{_width}" height="{_height}" click="{setSelected(FillUtil.WOOD_FILL)}" toolTip="wood">
+		<degrafa:GeometryGroup id="wfg">			
+			<degrafa:RegularRectangle id="wf" width="{_width}" height="{_height}" fill="{FillUtil.getFill(FillUtil.WOOD_FILL)}" />
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+	
+</mx:Tile>

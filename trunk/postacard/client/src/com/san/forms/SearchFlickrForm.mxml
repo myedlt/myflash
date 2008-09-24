@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	xmlns:components="com.san.components.*"
+	width="460" height="180"
+	creationComplete="init()"
+	>
+	<mx:states>
+		<mx:State name="results">
+			<mx:SetProperty name="height" value="564"/>
+			<mx:SetProperty name="x" value="{(stage.width/2)-250}" />
+			<mx:SetProperty name="y" value="{(stage.height/2)-250}" />
+			<mx:SetProperty target="{b_select}" name="includeInLayout" value="true"/>
+			<mx:SetProperty target="{b_select}" name="visible" value="true"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="" toState="results">
+			<mx:Sequence targets="{[this,b_select]}">
+				<mx:Parallel target="{this}">
+					<mx:Resize duration="400"/>
+					<mx:Move duration="400"/>
+				</mx:Parallel>
+				<mx:SetPropertyAction target="{b_select}" />
+			</mx:Sequence>
+		</mx:Transition>
+	</mx:transitions>
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.san.managers.LibraryManager;
+			import com.adobe.webapis.flickr.PhotoSize;
+			import com.san.values.Photo;
+			import com.adobe.webapis.flickr.PagedPhotoList;
+			import mx.collections.ArrayCollection;
+			import com.adobe.webapis.flickr.FlickrError;
+			import mx.managers.CursorManager;
+			import com.adobe.webapis.flickr.FlickrService;
+			import com.adobe.webapis.flickr.events.FlickrResultEvent;
+			import com.mh.globals.GlobalsManager;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+
+			
+			private static const PHOTOS_PER_PAGE:Number = 40;
+			
+			
+			private var flickrService:FlickrService = new FlickrService( GlobalsManager.globals.getGlobal("flickrAPIKey") );
+		
+			
+			private var closed:Boolean = false;
+			
+		
+			private var currentSearchIsTags:Boolean = true;
+			private var currentQuery:String = "";
+			private var currentUserID:String;
+			
+			
+			[Bindable]
+			private var results:ArrayCollection = new ArrayCollection();
+			
+			
+		
+			private function init():void
+			{
+				flickrService.addEventListener( FlickrResultEvent.PEOPLE_FIND_BY_USERNAME, getUserIDCallback );
+				flickrService.addEventListener( FlickrResultEvent.PHOTOS_SEARCH, searchCallback );
+				flickrService.addEventListener( FlickrResultEvent.PHOTOS_GET_SIZES, getSizesCallback );
+				flickrService.addEventListener( IOErrorEvent.IO_ERROR, ioErrorHandler ); 
+			}
+		
+		
+		
+			private function beginSearch( tags:Boolean ):void
+			{
+				CursorManager.setBusyCursor();
+				
+				b_tags.enabled = false;
+				b_text.enabled = false;
+					
+				currentSearchIsTags = tags;
+				currentQuery = t_query.text;
+				
+				if( t_user.text.length > 0 )
+					flickrService.people.findByUsername( t_user.text );
+				else
+				{
+					search( currentQuery, currentSearchIsTags );
+				}
+			}
+			
+			
+			private function getUserIDCallback( event:FlickrResultEvent ):void
+			{
+				if( event.success )
+				{
+					currentUserID = event.data.user.nsid; // store user id
+					trace( "NSID retrieved:",currentUserID);
+					
+					search( currentQuery, currentSearchIsTags, 1, currentUserID );
+				}
+				else
+				{
+					var error:FlickrError = event.data as FlickrError; 
+					ErrorForm.error( "Error getting User ID from the Flickr server.\n\n"+error.errorCode+" - "+error.errorMessage );
+				}
+				
+				CursorManager.removeBusyCursor();
+			}
+			
+			
+			
+			
+			private function search( query:String, tags:Boolean, pageNum:Number = 1, nsid:String = "" ):void
+			{
+				if( tags )
+					flickrService.photos.search( nsid, query, "any", "", null, null, null, null, -1, "", PHOTOS_PER_PAGE, pageNum );
+				else
+					flickrService.photos.search( nsid, "", "any", query, null, null, null, null, -1, "", PHOTOS_PER_PAGE, pageNum );
+			}
+			
+			
+			private function searchCallback( event:FlickrResultEvent ):void
+			{
+				if( closed )
+				{
+					CursorManager.removeBusyCursor();
+					return;
+				}
+				
+				if( event.success )
+				{
+					results.removeAll();
+					
+					var photoList:PagedPhotoList = event.data.photos as PagedPhotoList;
+					
+					if( photoList.photos.length < 1 )
+					{
+						ErrorForm.info( "No results to display" );
+					}
+					else
+					{
+						for each( var photo:com.adobe.webapis.flickr.Photo in photoList.photos )
+						{
+							CursorManager.setBusyCursor();
+							flickrService.photos.getSizes( photo.id );
+						}
+					}
+					
+					b_tags.enabled = true;
+					b_text.enabled = true;
+					this.currentState = "results";
+					
+				}
+				else
+				{
+					var error:FlickrError = event.data as FlickrError; 
+					ErrorForm.error( "Error getting search results from the Flickr server.\n\n"+error.errorCode+" - "+error.errorMessage );
+				}
+				CursorManager.removeBusyCursor();
+			}
+			
+			
+			private function getSizesCallback( event:FlickrResultEvent ):void
+			{
+				if( closed )
+				{
+					CursorManager.removeBusyCursor();
+					return;
+				}
+					
+				if( event.success )
+				{
+					var sizes:Array = event.data.photoSizes as Array;					
+					var photo:Photo = new Photo();
+					
+					for each( var size:PhotoSize in sizes )
+					{
+						photo.link = size.url;
+						 
+						switch( size.label )
+						{
+							case "Square":
+								photo.square = size.source;
+								break;
+							case "Thumbnail":
+								photo.thumbnail = size.source;
+								break;
+							case "Small":
+								photo.small = size.source;
+								break;
+							case "Medium":
+								photo.medium = size.source;
+								break;
+							case "Large":
+								photo.large = size.source;
+								break;
+						}
+					}
+					
+					results.addItem( photo );
+				}
+				else
+				{
+					var error:FlickrError = event.data as FlickrError; 
+					ErrorForm.error( "Error getting photos urls from the Flickr server.\n\n"+error.errorCode+" - "+error.errorMessage );
+				}
+				CursorManager.removeBusyCursor();
+			}
+			
+			
+			private function addSelectedToLibrary():void
+			{
+				for each( var photo:Photo in resultDisplay.selectedItems )
+				{
+					LibraryManager.manager.addPhoto( photo );
+				}
+				close();
+			}
+			
+			
+			private function ioErrorHandler( event:IOErrorEvent ):void
+			{
+				ErrorForm.error( "Could not connect to Flickr servers. Please check your internet connection." );
+			}
+			
+			 
+			 
+			public static function show( parent:DisplayObject = null ):SearchFlickrForm
+			{
+				if( !parent )
+					parent = Application.application as DisplayObject;
+					
+				var form:SearchFlickrForm = PopUpManager.createPopUp( parent, SearchFlickrForm, true ) as SearchFlickrForm;
+				
+				PopUpManager.centerPopUp( form );
+				return form;
+			}
+			
+			public function close():void
+			{
+				closed = true;
+				PopUpManager.removePopUp( this );
+			}
+			 
+		]]>
+	</mx:Script>
+	
+	
+	
+	<!--
+	 * Background
+	 -->
+	<degrafa:Surface>
+		<degrafa:GeometryGroup>
+			<degrafa:fills>
+				<degrafa:LinearGradientFill id="bgFill" angle="90" >
+					<degrafa:GradientStop color="#E5E5E5" ratio="0" />
+					<degrafa:GradientStop color="#D0D0D0" ratio="0.3" />
+					<degrafa:GradientStop color="#D0D0D0" ratio="1" />
+				</degrafa:LinearGradientFill>
+			</degrafa:fills>
+			
+			<degrafa:RoundedRectangle width="{width}" height="{height}" cornerRadius="20" fill="{bgFill}" />
+			
+			<degrafa:filters>
+				<mx:BevelFilter distance="2" />
+			</degrafa:filters>
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+	
+	
+	<!--
+	 * Title
+	 -->
+	<mx:Label x="10" y="10" text="Search Flickr" fontWeight="bold" fontSize="12"/>
+	
+	
+	<mx:Canvas left="10" top="38" right="10" bottom="38" styleName="formContent" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		
+		<mx:VBox  horizontalCenter="0" top="10">
+			<mx:FormItem label="user name:" labelWidth="70" direction="horizontal" horizontalGap="0">
+				<mx:TextInput id="t_user" />
+				<mx:Label text="(optional)" />
+			</mx:FormItem>
+			<mx:FormItem label="query:" labelWidth="70" direction="horizontal">
+				<mx:TextInput id="t_query" />
+			</mx:FormItem>
+		</mx:VBox>
+		
+		<mx:HBox  horizontalCenter="0" top="70">
+			<mx:Button id="b_tags" label="Search Tags" width="130" enabled="{t_query.text.length>0}" click="{beginSearch(true)}" icon="@Embed(source='../../../icons/ni0104-16.png')" height="25"/>
+			<mx:Button id="b_text" label="Search Text" width="130" enabled="{t_query.text.length>0}" click="{beginSearch(false)}" icon="@Embed(source='../../../icons/ni0104-16.png')" height="25"/>
+		</mx:HBox>
+		
+		
+		<components:EasyTileList id="resultDisplay" left="10" right="10" top="120" dataProvider="{results}"
+				itemRenderer="com.san.forms.search_classes.ResultRenderer" rowHeight="100" columnWidth="100" allowMultipleSelection="true" height="358">
+			
+		</components:EasyTileList>
+		
+	</mx:Canvas>
+
+	
+	
+	<mx:HBox id="buttons" width="100%" bottom="10" horizontalAlign="center" >
+		<mx:Button id="b_select" label="Select" width="100" icon="@Embed(source='../../../icons/tick.png')" enabled="{resultDisplay.selectedItems.length>0}" click="addSelectedToLibrary()" toolTip="add selected to library"  visible="false" includeInLayout="false"/>
+		<mx:Button label="Close" width="100" click="close()"  icon="@Embed(source='../../../icons/cancel.png')"/>
+	</mx:HBox>	
+	
+</mx:Canvas>
