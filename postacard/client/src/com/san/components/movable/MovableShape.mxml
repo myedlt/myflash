@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MovableComponent 
+	xmlns="com.mh.movable.core.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	implements="com.san.styling.interfaces.IFillable,com.san.styling.interfaces.IStrokeable"
+	width="75" height="75"	
+	>
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.san.styling.utils.StrokeUtil;
+			import com.san.styling.utils.FillUtil;
+		
+			private var _fill:String = FillUtil.SOLID_FILL;			
+			public function set fill( value:String ):void
+			{
+				_fill = value;
+			}			
+			public function get fill():String
+			{
+				return _fill;
+			}
+			
+			private var _fColor1:uint = 0x2B6BCE;
+			public function get fColor1():uint 
+			{ 
+				return _fColor1; 
+			}
+			public function set fColor1(v:uint):void 
+			{ 
+				_fColor1=v; 
+			}
+			
+			private var _fColor2:uint = 0x000000;
+			public function get fColor2():uint 
+			{ 
+				return _fColor2; 
+			}
+			public function set fColor2(v:uint):void 
+			{ 
+				_fColor2=v; 
+			}
+
+			private var _fAlpha1:Number = 1;
+			public function get fAlpha1():Number 
+			{ 
+				return _fAlpha1; 
+			}
+			public function set fAlpha1(v:Number):void 
+			{ 
+				_fAlpha1=v; 
+			}
+			
+			private var _fAlpha2:Number = 1;
+			public function get fAlpha2():Number 
+			{ 
+				return _fAlpha2; 
+			}
+			public function set fAlpha2(v:Number):void 
+			{ 
+				_fAlpha2=v; 
+			}
+			
+			private var _fAngle:Number = 0;
+			public function get fAngle():Number 
+			{ 	
+			return _fAngle; 
+			}
+			public function set fAngle(v:Number):void 
+			{ 
+				_fAngle=v; 
+			}
+			
+			
+			
+			private var _stroke:String = StrokeUtil.SOLID_STROKE;
+			public function set stroke(v:String):void
+			{
+				_stroke = v;
+			}
+			public function get stroke():String
+			{
+				return _stroke;
+			}
+			
+			
+			private var _sColor1:uint = 0x000000;
+			public function get sColor1():uint 
+			{ 
+				return _sColor1; 
+			}
+			public function set sColor1(v:uint):void 
+			{ 
+				_sColor1=v; 
+			}
+			
+			private var _sColor2:uint = 0xFFFFFF;
+			public function get sColor2():uint 
+			{ 
+				return _sColor2; 
+			}
+			public function set sColor2(v:uint):void 
+			{ 
+				_sColor2=v; 
+			}
+
+			private var _sAlpha1:Number = 1;
+			public function get sAlpha1():Number 
+			{ 
+				return _sAlpha1; 
+			}
+			public function set sAlpha1(v:Number):void 
+			{ 
+				_sAlpha1=v; 
+			}
+			
+			private var _sAlpha2:Number = 1;
+			public function get sAlpha2():Number 
+			{ 
+				return _sAlpha2; 
+			}
+			public function set sAlpha2(v:Number):void 
+			{ 
+				_sAlpha2=v; 
+			}
+			
+			private var _sAngle:Number = 0;
+			public function get sAngle():Number 
+			{ 	
+			return _sAngle; 
+			}
+			public function set sAngle(v:Number):void 
+			{ 
+				_sAngle=v; 
+			}
+
+			private var _sWeight:Number = 4;
+			public function get sWeight():Number 
+			{ 	
+			return _sWeight; 
+			}
+			public function set sWeight(v:Number):void 
+			{ 
+				_sWeight=v; 
+			}
+		]]>
+	</mx:Script>
+	
+	
+</MovableComponent>

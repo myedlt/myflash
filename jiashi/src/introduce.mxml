@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="start">
+	<mx:states>
+		<mx:State name="start"/>
+		<mx:State name="skip">
+			<mx:AddChild position="lastChild">
+				<mx:Text x="8.95" y="556.9" text="测试版本，2008/8/26 发布。" width="441" height="34" fontSize="14" textAlign="center"/>
+			</mx:AddChild>
+			<mx:SetProperty name="width" value="800"/>
+			<mx:SetProperty name="height" value="600"/>
+			<mx:RemoveChild target="{button1}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="489" y="558" label="Button"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+			public function switchStates():void
+			{
+				currentState = "skip";
+			}
+		]]>
+	</mx:Script>
+	<mx:Button x="647.7" y="556.95" label="SKIP" height="34" width="98" id="button1"/>
+	<mx:SWFLoader x="0" y="0" width="800" height="529.8485" 
+		source="introduce/splash.swf" 
+		autoLoad="true"
+		complete="switchStates()" />
+	
+</mx:Application>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MovableShape
+	xmlns="com.san.components.movable.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	creationComplete="{updateFill();updateStroke()}"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.san.styling.utils.FillUtil;
+			import com.san.styling.utils.StrokeUtil;
+						
+			public static const MOVABLE_ELIPSE:String = "movableElipse";
+			
+			
+			private function updateFill():void
+			{
+				if( !elipse || !geo )
+					return;
+					
+				elipse.fill = FillUtil.getFill( fill, fColor1, fAlpha1, fColor2, fAlpha2, fAngle );
+				geo.draw( this.graphics, new Rectangle(0,0,width,height) );
+			}		
+
+			private function updateStroke():void
+			{
+				if( !elipse || !geo )
+					return;
+					
+				elipse.stroke = StrokeUtil.getStroke( stroke, sWeight, sColor1, sAlpha1, sColor2, sAlpha2, sAngle );
+				geo.draw( this.graphics, new Rectangle(0,0,width,height) );
+			}		
+			
+			
+			public override function clone():Object
+			{
+				var tmp:MovableElipse = new MovableElipse();
+				
+				tmp.x = x+10;
+				tmp.y = y+10;
+				tmp.width = width;
+				tmp.height = height;
+				
+				tmp.fill = fill;
+				tmp.fColor1 = fColor1;
+				tmp.fColor2 = fColor2;
+				tmp.fAlpha1 =fAlpha1;
+				tmp.fAlpha2 = fAlpha2;
+				tmp.fAngle = fAngle;
+				
+				tmp.stroke = stroke;
+				tmp.sWeight = sWeight;
+				tmp.sColor1 = sColor1;
+				tmp.sColor2 = sColor2;
+				tmp.sAlpha1 = sAlpha1;
+				tmp.sAlpha2 = sAlpha2;
+				tmp.sAngle = sAngle;
+				
+				return tmp;
+			}
+			
+			
+			public override function set fill( value:String ):void
+			{
+				super.fill = value;
+				updateFill();
+			}
+
+			public override function set fColor1(v:uint):void 
+			{ 
+				super.fColor1 = v;
+				updateFill();
+			}
+			
+			public override function set fColor2(v:uint):void 
+			{ 
+				super.fColor2 = v;
+				updateFill(); 
+			}
+
+			public override function set fAlpha1(v:Number):void 
+			{ 
+				super.fAlpha1 = v;
+				updateFill();
+			}
+			
+			public override function set fAlpha2(v:Number):void 
+			{ 
+				super.fAlpha2 = v;
+				updateFill(); 
+			}
+			
+			public override function set fAngle(v:Number):void 
+			{ 
+				super.fAngle = v;
+				updateFill();
+			}
+			
+
+		
+			public override function set stroke( v:String ):void
+			{
+				super.stroke = v;
+				updateStroke();
+			}
+
+			public override function set sColor1(v:uint):void 
+			{ 
+				super.sColor1 = v;
+				updateStroke();
+			}
+			
+			public override function set sColor2(v:uint):void 
+			{ 
+				super.sColor2 = v;
+				updateStroke(); 
+			}
+
+			public override function set sAlpha1(v:Number):void 
+			{ 
+				super.sAlpha1 = v;
+				updateStroke();
+			}
+			
+			public override function set sAlpha2(v:Number):void 
+			{ 
+				super.sAlpha2 = v;
+				updateStroke(); 
+			}
+			
+			public override function set sAngle(v:Number):void 
+			{ 
+				super.sAngle = v;
+				updateStroke();
+			}
+			
+			public override function set sWeight(v:Number):void 
+			{ 
+				super.sWeight = v;
+				updateStroke();
+			}
+		]]>
+	</mx:Script>
+	
+	<degrafa:Surface >
+		<degrafa:GeometryGroup id="geo">
+			
+			<degrafa:Ellipse id="elipse" width="{width}" height="{height}"
+				fill="{FillUtil.getFill(FillUtil.SOLID_FILL)}" stroke="{StrokeUtil.getStroke(StrokeUtil.SOLID_STROKE)}" /> 
+		</degrafa:GeometryGroup>		
+	</degrafa:Surface>
+	
+</MovableShape>

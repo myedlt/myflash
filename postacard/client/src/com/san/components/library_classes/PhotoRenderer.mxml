@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	xmlns:collections="com.degrafa.core.collections.*" 
+	xmlns:components="com.dc.components.*"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	width="75" height="75"
+	creationPolicy="all" creationComplete="init()"
+	rollOver="{if(highlightMO)currentState='mouseOver'}" rollOut="{if(highlightMO)currentState=''}"
+	>
+	<mx:states>
+		<mx:State name="mouseOver">
+			<mx:SetProperty target="{bgStroke}" name="color" value="#2B6BCE"/>
+			<mx:SetProperty target="{b_remove}" name="visible" value="true"/>
+			<mx:SetProperty target="{b_view}" name="visible" value="true"/>
+		</mx:State>
+	</mx:states>
+	
+	
+
+	<mx:Script>
+		<![CDATA[
+			import com.san.managers.LibraryManager;
+			import flash.net.navigateToURL;
+			import com.san.values.Photo;
+			import com.san.utils.UIColorUtil;
+			import mx.binding.utils.ChangeWatcher;
+			
+			[Bindable]
+			private var _data:Photo;
+
+
+			public var highlightMO:Boolean = false;
+
+
+			private function init():void
+			{
+				if( _image.width > 0 )
+					updateWidth();
+				if( _image.height > 0 )
+					updateHeight();
+				ChangeWatcher.watch( _image, "width", updateWidth );
+				ChangeWatcher.watch( _image, "height", updateHeight );
+			}			
+			
+			private function updateWidth( event:Event = null ):void
+			{
+				this.width = _image.width+3;
+			}
+			private function updateHeight( event:Event = null ):void
+			{
+				this.height = _image.height+3;
+			}
+			
+			public override function set data(value:Object):void
+			{
+				_data = value as Photo;
+			}
+			
+			public override function get data():Object
+			{
+				return _data;
+			}
+			
+			
+			
+			private function view():void
+			{
+				navigateToURL( new URLRequest( _data.link), "_blank" );
+			}
+			
+			private function remove():void
+			{
+				LibraryManager.manager.removePhoto( _data );
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Fade id="e_fade" duration="600"/>
+
+	<mx:Image id="_image" source="{_data.thumbnail}" horizontalCenter="0" verticalCenter="0" visible="true"/>
+	
+	<degrafa:Surface >
+		<degrafa:GeometryGroup >
+			
+			<degrafa:strokes>
+				<degrafa:SolidStroke id="bgStroke" color="#D0D0D0" weight="3" />
+			</degrafa:strokes>
+			
+			<degrafa:RegularRectangle id="bg" x="1.5" y="1.5" width="{this.width-3}" height="{this.height-3}" stroke="{bgStroke}" />
+
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+
+	
+	<mx:Button id="b_view" showEffect="e_fade" width="20" height="20" top="0" left="0" toolTip="view photo page in Flickr" icon="@Embed(source='../../../../icons/wi0135-16.png')"  visible="false" click="view()" fillAlphas="[1.0, 1.0, 1.0, 1.0]" />
+	
+	<mx:Button id="b_remove" showEffect="e_fade" width="20" height="20" top="0" right="0" toolTip="remove photo from library" icon="@Embed(source='../../../../icons/delete.png')"  visible="false" click="remove()" fillAlphas="[1.0, 1.0, 1.0, 1.0]"/>
+	
+</mx:Canvas>
