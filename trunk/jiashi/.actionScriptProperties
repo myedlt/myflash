@@ -13,9 +13,21 @@
 <application path="indexST.mxml"/>
 <application path="MyModule.mxml"/>
 <application path="navigator.mxml"/>
+<application path="sandbox.mxml"/>
 </applications>
 <modules>
 <module destPath="MyModule.swf" optimize="false" sourcePath="src/MyModule.mxml"/>
 </modules>
-<buildCSSFiles/>
+<buildCSSFiles>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/DarkRoom/SkinDarkRoom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-main.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Yahoo/SkinYahoo.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Main/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Windows/winskin.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/OSX/OSX.css"/>
+</buildCSSFiles>
 </actionScriptProperties>
