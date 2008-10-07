@@ -15,17 +15,26 @@
 		<![CDATA[
              import mx.controls.Button;  
              import mx.controls.Alert;   
-                   
+
              public function init() : void {  
                  //mainSwfLoader.addEventListener(Event.INIT, initHandle);
                  //contentSwfLoader.visible = false;
              }  
-                             
+
              public function loadSwf() : void {  
-              	mainSwfLoader.load("navigator.swf"); 
-              	contentSwfLoader.visible = true; 
+              	mainSwfLoader.load("unit/unit01/ps1.swf"); 
+              	contentSwfLoader.visible = true;
              }
-               		
+               	
+            public function pause():void
+            {
+            	MovieClip(mainSwfLoader.content).gotoAndStop(5);
+            }
+            public function play():void
+            {
+            	MovieClip(mainSwfLoader.content).gotoAndPlay(1);
+            }
+            	
 			public function toStateContent():void
 			{
 				currentState="content";
@@ -39,7 +48,7 @@
 	<mx:states>
 		<mx:State name="introduce">
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader x="0" y="0" width="770" height="448.8" 
+				<mx:SWFLoader x="462" y="488.8" width="770" height="448.8" 
 					source="introduce/splash.swf" 
 					autoLoad="true"/>
 			</mx:AddChild>
@@ -81,8 +90,8 @@
 					<mx:Button x="115" y="49" label="Button" width="36" height="36" icon="@Embed(source='image/button_book_icon.png')" borderColor="#FAFAFA"/>
 					<mx:Button x="159" y="49" label="Button" width="36" height="36" icon="@Embed(source='image/button_search_icon.png')" borderColor="#FAFAFA"/>
 					<mx:Button x="203" y="49" label="Button" width="36" height="36" icon="@Embed(source='image/button_text_icon.png')" borderColor="#FAFAFA"/>
-					<mx:Button x="285" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_stop_icon.png')" borderColor="#FAFAFA" click="loadSwf()"/>
-					<mx:Button x="329" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_pause_icon.png')" borderColor="#FAFAFA"/>
+					<mx:Button x="285" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_stop_icon.png')" borderColor="#FAFAFA" click="play()"/>
+					<mx:Button x="329" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_pause_icon.png')" borderColor="#FAFAFA" click="pause()"/>
 					<mx:Button x="373" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_next_icon.png')" borderColor="#FAFAFA"/>
 					<mx:Button x="417" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_prev_icon.png')" borderColor="#FAFAFA"/>
 					<mx:Button x="461" y="37" label="Button" width="36" height="36" icon="@Embed(source='image/button_sound_icon.png')" borderColor="#FAFAFA"/>

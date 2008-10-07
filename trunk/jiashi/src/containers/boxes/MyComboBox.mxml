@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="118" height="136">
+	<mx:Script>
+		<![CDATA[
+			public var isOk:String = "true";
+		]]>
+	</mx:Script>
 	<mx:ComboBox width="117">
 		<mx:dataProvider>
 			<mx:String>猫</mx:String>
