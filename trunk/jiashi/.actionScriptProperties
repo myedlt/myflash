@@ -9,24 +9,26 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
+<application path="styleManager.mxml"/>
 <application path="navigator.mxml"/>
-<application path="introduce.mxml"/>
 <application path="MyModule.mxml"/>
+<application path="introduce.mxml"/>
 <application path="indexST.mxml"/>
 <application path="sandbox.mxml"/>
+<application path="index.mxml"/>
 </applications>
 <modules>
 <module destPath="MyModule.swf" optimize="false" sourcePath="src/MyModule.mxml"/>
 </modules>
 <buildCSSFiles>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/DarkRoom/SkinDarkRoom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinMain.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-main.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Yahoo/SkinYahoo.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Main/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Windows/winskin.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/OSX/OSX.css"/>
 </buildCSSFiles>

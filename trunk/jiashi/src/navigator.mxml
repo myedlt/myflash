@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="127" height="284">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	initialize="http.send()" width="183" height="436" cornerRadius="2" borderStyle="none" alpha="0.7">
+
 	<mx:Script>
 		<![CDATA[
-			public function loadUnit():void
-			{
-				Application.application.mainSwfLoader.load("unit/unit01/ps1.swf");
-				Application.application.contentSwfLoader.visible = false;
-			}
+		
+			import mx.rpc.events.ResultEvent;
+			//import mx.controls.Alert;						
+			
+			[Bindable]
+			public var treeData:XMLList;
+			[Bindable]
+			public var introduce:XMLList;
+			[Bindable]
+			public var courseItem:XMLList;
+			
+			private function resultHandler(event:ResultEvent):void
+			{				
+				introduce=XMLList(XML(event.result).Introduce);
+				treeData=XMLList(XML(event.result).CourseList.Chapter);							
+			}			                 
+            
+            public function treeChanged(event:Event):void 
+            {             
+                courseItem=XMLList(Tree(event.target).selectedItem);
+				var path:String = courseItem.@path;
+				Application.application.mainSwfLoader.load(path);
+            }
+            
+            public function close():void 
+            {   
+            	this.visible = false;      
+            }
 		]]>
-	</mx:Script>
-	<mx:Accordion width="117" height="269.75" x="1" y="0">
-		<mx:VBox label="公司概要" width="100%" height="100%" horizontalAlign="center" verticalGap="1">
-			<mx:Button label="学习目的" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal" click="loadUnit()"/>
-			<mx:Button label="公司背景与发展状况" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="组织结构与工作流程" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="办公室平面图" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="小结" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-		</mx:VBox>
-		<mx:VBox label="制度指南" width="100%" height="100%">
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-		</mx:VBox>
-		<mx:VBox label="工具使用" width="100%" height="100%">
-			<mx:Button label="学习目标" width="106" borderColor="#B7B7BC" fontWeight="normal" height="25"/>
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-			<mx:Button label="入职办理制度" width="106" cornerRadius="6" alpha="1.0" themeColor="#126294" fontWeight="normal"/>
-		</mx:VBox>
-		<mx:VBox label="法律法规" width="100%" height="100%">
-		</mx:VBox>
-		<mx:VBox label="福利保障" width="100%" height="100%">
-		</mx:VBox>
-		<mx:VBox label="综合测试" width="100%" height="100%">
-		</mx:VBox>
-	</mx:Accordion>
-	
+	</mx:Script>		
+	<mx:HTTPService id="http" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
+	<mx:Tree id="contentTree" width="161" height="397" labelField="@name" dataProvider="{treeData}" change="treeChanged(event)" x="10" y="29"/>
+	<mx:Button x="126" y="5" label="关闭" width="47" click="close()"/>
+	<mx:Label x="10" y="7" text="课程目录" width="63"/>
 </mx:Application>
