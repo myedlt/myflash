@@ -7,7 +7,7 @@
 				StyleManager.unloadStyleDeclarations("css/Main/SkinMain.swf",true);
 				StyleManager.unloadStyleDeclarations("css/DarkRoom/SkinDarkRoom.swf",true);
 				StyleManager.unloadStyleDeclarations("css/OSX/OSX.swf",true);
-				//StyleManager.unloadStyleDeclarations("css/Windows/winskin.swf",true);
+				StyleManager.unloadStyleDeclarations("css/edlt/SkinEDLT.swf",true);
 				StyleManager.unloadStyleDeclarations("css/Yahoo/SkinYahoo.swf",true);
 			}
 
@@ -34,7 +34,7 @@
 			private function switchToWindows():void
 			{
 				this.unloadallStyle();
-				//StyleManager.loadStyleDeclarations("css/Windows/winskin.swf",true);
+				StyleManager.loadStyleDeclarations("css/edlt/SkinEDLT.swf",true);
 			}
 			private function close():void
 			{
