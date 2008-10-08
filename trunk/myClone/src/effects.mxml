@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Fade id="fd" duration="1000"/><!--逐渐显示-->
+	<mx:Dissolve id="dsv" alphaFrom="1.0" alphaTo="0.5" duration="1000"/><!--溶解-->
+	<mx:Blur id="bl" blurXFrom="0" blurXTo="20" blurYFrom="0" blurYTo="20"/><!--模糊-->
+	<mx:Glow id="gl" blurXTo="10" color="red" duration="2000"/><!--发光-->
+	<mx:Move id="mv" xBy="2" xTo="500"/><!--移动-->
+	<mx:Rotate id="rt"/><!--旋转-->
+	<mx:Resize id="rs" widthTo="100"/><!--改变大小-->
+	<mx:SoundEffect id="se" autoLoad="false" loops="1" source=""/><!--声音-->
+	<mx:Zoom id="zm"/><!--放大或缩小-->
+	<mx:WipeRight id="wr" duration="1000"/><!--从左向右显示-->
+	<mx:WipeLeft id="wl" duration="1000"/><!--从右向左显示-->
+	<mx:WipeUp id="wu" duration="1000"/><!--从下向上显示-->
+	<mx:WipeDown id="wd" duration="1000"/><!--从上向下显示-->
+	<mx:Button label="旋转" mouseDownEffect="{rt}" x="431" y="10"/>
+	<mx:Button label="发光" mouseDownEffect="{gl}" x="431" y="100"/>
+	<mx:Button label="改变大小" mouseDownEffect="{rs}" x="431" y="200"/>
+	<mx:Button label="放大或缩小" mouseDownEffect="{zm}" x="431" y="300"/>
+	<mx:Button label="移动" mouseDownEffect="{mv}" x="431" y="400"/>
+	<mx:Button label="声音" mouseDownEffect="{se}" x="431" y="500"/>
+</mx:Application>
