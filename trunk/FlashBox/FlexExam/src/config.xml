@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config>
+	<Introduce path="introduce/splash.swf"/>
+	<CourseList>
+		<Chapter name="公司概要" path="course/c01.swf">
+			<section name="学习目标" path="course/c01.swf"/>
+			<section name="公司背景及发展状况介绍" path="course/c02.swf"/>
+			<section name="组织结构及工作流程" path="course/c09.swf"/>		
+			<section name="小结" path="course/c10.swf"/>		
+		</Chapter>
+		<Chapter name="制度指南" path="course/c11.swf">
+			<section name="学习目标" path="course/c11.swf"/>
+			<section name="入职办理制度" path="course/c13.swf"/>
+			<section name="上下班打卡" path="course/c17.swf"/>
+			<section name="门禁制度" path="course/c18.swf"/>
+			<section name="着装制度" path="course/c19.swf"/>
+			<section name="禁烟制度" path="course/c22.swf"/>
+			<section name="办公用品领用制度" path="course/c23.swf"/>
+			<section name="领门卡" path="course/c24.swf"/>
+			<section name="拍标准照" path="course/c25.swf"/>
+			<section name="薪金周期" path="course/c26.swf"/>
+			<section name="请休假制度" path="course/c27.swf"/>
+			<section name="财务制度和流程" path="course/c28.swf"/>
+			<section name="培训管理办法及流程" path="course/c32.swf"/>
+			<section name="出差制度" path="course/c39.swf"/>
+			<section name="安保制度" path="course/c40.swf"/>
+			<section name="小结" path="course/c45.swf"/>	
+		</Chapter>
+		<Chapter name="综合测验" path="course/c86.swf"/>
+	</CourseList>
+</Config>
