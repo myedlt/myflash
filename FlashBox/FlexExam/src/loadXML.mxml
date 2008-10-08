@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="654" width="1083" initialize="http.send()">
+	
+	<mx:Script>
+		<![CDATA[			
+			import mx.rpc.events.ResultEvent;
+			[Bindable]
+			public var treeData:XMLList;
+			private function resultHandler(event:ResultEvent):void
+			{				
+				treeData=XML(event.result).Chapter;				
+			}
+			
+			[Bindable]
+			public var path:XML;                 
+            public function treeChanged(event:Event):void 
+            {                
+                path=Tree(event.target).selectedItem as XML;
+            }
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="http" url="menulist.xml" result="resultHandler(event)" resultFormat="xml"/>
+
+    <mx:Panel title="课程目录" x="50" y="40" height="550" width="900">    
+		<mx:HDividedBox width="100%" height="100%">
+        	 <mx:Tree id="menuList" width="28%" height="100%" labelField="@label" dataProvider="{treeData}" change="treeChanged(event)"/>
+        	 <mx:SWFLoader source="{path.@data}" height="100%" width="72%" />
+   		</mx:HDividedBox>
+    </mx:Panel>
+</mx:Application>
