@@ -107,8 +107,7 @@
 	<mx:ViewStack id="viewstack1" width="45" height="29" x="575" y="23">
 		<mx:VBox label="VBox测试" width="100%" height="100%">
 		</mx:VBox>
-		<ns1:VAccordion label="VAcoordion" width="100%" height="100%">
-		</ns1:VAccordion>
+
 		<mx:Canvas label="" width="100%" height="100%">
 		</mx:Canvas>
 		<mx:Canvas label="" width="100%" height="100%">
