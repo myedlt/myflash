@@ -25,7 +25,7 @@
 						<mx:Button label="停止" width="36" height="36" icon="@Embed(source='image/button_stop_icon.png')" borderColor="#FAFAFA" x="319" y="39" click="stopBtnClick()"/>
 						<mx:Button label="上一页" width="36" height="36" icon="@Embed(source='image/button_prev_icon.png')" borderColor="#FAFAFA" x="372" y="39" click="prePage()"/>
 						<mx:Button id="btnPause" label="暂停" width="36" height="36" icon="@Embed(source='image/button_pause_icon.png')" borderColor="#FAFAFA" x="432" y="39" click="pause()"/>
-						<mx:Button id="btnPlay" label="播放" width="36" height="36" icon="@Embed(source='image/button_play_icon.png')" borderColor="#FAFAFA" x="432" y="39" click="play()" visible="false"/>
+						<mx:Button id="btnPlay" label="播放" width="36" height="36" icon="@Embed(source='image/button_play_icon.png')" borderColor="#FAFAFA" x="432" y="39" click="play()"/>
 						<mx:Button label="下一页" width="36" height="36" icon="@Embed(source='image/button_next_icon.png')" borderColor="#FAFAFA" x="486" y="39" click="nextPage()"/>						
 						<mx:Button label="背景音乐" width="36" height="36" icon="@Embed(source='image/button_sound_icon.png')" borderColor="#FAFAFA" x="539" y="39"/>						
 						<mx:Button label="扩展2" width="36" height="36" icon="@Embed(source='image/button_search_icon.png')" borderColor="#FAFAFA" x="131.95" y="39"/>
@@ -60,6 +60,7 @@
 				currentState = "skip";
 				swfC.source=courseItem.@path;
 				swfC.load();
+				btnPlay.visible=false;
 			}
 			private function resultHandler(event:ResultEvent):void
 			{				
