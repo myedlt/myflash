@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="IndexST.mxml" version="3">
-<compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="D:/xampp/htdocs/flex" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="D:/xampp/htdocs/flex" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath/>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
@@ -8,6 +8,7 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
+<application path="indexXP.mxml"/>
 <application path="styleManager.mxml"/>
 <application path="navigator.mxml"/>
 <application path="MyModule.mxml"/>
@@ -21,14 +22,14 @@
 </modules>
 <buildCSSFiles>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/edlt/SkinEDLT.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/DarkRoom/SkinDarkRoom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinMain.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-main.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Yahoo/SkinYahoo.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Main/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Windows/winskin.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/OSX/OSX.css"/>
 </buildCSSFiles>

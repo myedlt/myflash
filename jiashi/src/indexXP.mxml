@@ -177,7 +177,7 @@
 			}
 		]]>
 	</mx:Script>		
-	<mx:HTTPService id="http" url="config.xml" result="resultHandler(event)" resultFormat="xml"/>
+	<mx:HTTPService id="http" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 		
 	<mx:SWFLoader x="120" y="10" source="{introduce.@path}" id="swfI"/>	
 	<mx:Button click="switchStates()" alpha="0.3" width="60" x="850" y="580" id="btn"/>	
