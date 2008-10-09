@@ -113,6 +113,8 @@
 			private function progressComplete():void
 			{
 				timer.stop();
+				btnPause.visible=false;
+				btnPlay.visible=true;
 			}
 			private function pause():void
 			{
@@ -123,6 +125,10 @@
 			private function play():void
 			{
 				mc.play();	
+				if(timer.running==false)
+				{
+					timer.start();
+				}
 				btnPlay.visible=false;
 				btnPause.visible=true;
 			}
