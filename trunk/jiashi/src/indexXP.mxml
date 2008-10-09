@@ -9,24 +9,24 @@
 					<mx:Image width="900" height="13%" source="image/header.png" horizontalCenter="0" horizontalAlign="center"/>
 					<mx:HDividedBox width="900" height="73%">
         	 			<mx:Panel title="课程目录" width="220" height="100%">
-        	 				<mx:Tree id="tree" width="100%" height="100%" labelField="@name" dataProvider="{treeData}" change="treeChanged(event)"/>
+        	 				<mx:Tree id="treeMenu" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)"/>
         	 			</mx:Panel>        	 			
-        				<mx:SWFLoader id="swfC" source="{courseItem.@path}" height="100%" width="670" autoLoad="true"/>
+        				<mx:SWFLoader id="swfC" complete="completeHandler()" height="100%" width="670" autoLoad="false"/>
    					</mx:HDividedBox>
 
 					<mx:Canvas width="900" height="14%">
 						<mx:Image source="image/panel-background.png" width="100%" height="100%" horizontalCenter="0" horizontalAlign="center"/>
 						<mx:Text width="227" height="40" text="        嘉实基金管理有限公司版权所有&#xa;技术支持:北京东方创远教育科技有限公司" fontFamily="Georgia" fontSize="12" color="#535F62" x="634" y="40"/>
 						<mx:Label text="0:15 / 00:15" width="96.1" height="25" fontSize="13" x="185.9" y="6"/>
-						<mx:ProgressBar source="{swfC}" minimum="0" maximum="{swfC.bytesTotal}" labelPlacement="left" label="播放" width="238.24176" height="24.505493" fontSize="15" x="319" y="6.5"/>
-						<mx:HSlider x="358" y="10" width="207.2"/>
+						<mx:ProgressBar id="progress" mode="manual" source="{swfC}" complete="progressComplete()" minimum="0" maximum="{slider.maximum}" labelPlacement="left" label="播放" width="238.24176" height="24.505493" fontSize="15" x="319" y="6.5"/>
+						<mx:HSlider valueCommit="valueCommit()" id="slider" change="slider_change(event)" dataTipFormatFunction="formatSliderToolTip" minimum="0" maximum="{mc.totalFrames}" thumbPress="onPress()" thumbRelease="onRelease()" buttonMode="true" useHandCursor="true" x="357.3" y="10" width="207.2"/>
 						<mx:Label text="第 1 页，共32页" height="22" width="124.065926" textAlign="left" fontSize="14" fontWeight="bold" x="608" y="5"/>
 												
-						<mx:Button label="停止" width="36" height="36" icon="@Embed(source='image/button_stop_icon.png')" borderColor="#FAFAFA" x="319" y="39" click=""/>
-						<mx:Button label="上一页" width="36" height="36" icon="@Embed(source='image/button_prev_icon.png')" borderColor="#FAFAFA" x="372" y="39"/>
-						<mx:Button label="暂停" width="36" height="36" icon="@Embed(source='image/button_pause_icon.png')" borderColor="#FAFAFA" x="432" y="39" click=""/>
-						<mx:Button label="播放" width="36" height="36" icon="@Embed(source='image/button_play_icon.png')" borderColor="#FAFAFA" x="432" y="39" click=""/>
-						<mx:Button label="下一页" width="36" height="36" icon="@Embed(source='image/button_next_icon.png')" borderColor="#FAFAFA" x="486" y="39"/>						
+						<mx:Button label="停止" width="36" height="36" icon="@Embed(source='image/button_stop_icon.png')" borderColor="#FAFAFA" x="319" y="39" click="stopBtnClick()"/>
+						<mx:Button label="上一页" width="36" height="36" icon="@Embed(source='image/button_prev_icon.png')" borderColor="#FAFAFA" x="372" y="39" click="prePage()"/>
+						<mx:Button id="btnPause" label="暂停" width="36" height="36" icon="@Embed(source='image/button_pause_icon.png')" borderColor="#FAFAFA" x="432" y="39" click="pause()"/>
+						<mx:Button id="btnPlay" label="播放" width="36" height="36" icon="@Embed(source='image/button_play_icon.png')" borderColor="#FAFAFA" x="432" y="39" click="play()" visible="false"/>
+						<mx:Button label="下一页" width="36" height="36" icon="@Embed(source='image/button_next_icon.png')" borderColor="#FAFAFA" x="486" y="39" click="nextPage()"/>						
 						<mx:Button label="背景音乐" width="36" height="36" icon="@Embed(source='image/button_sound_icon.png')" borderColor="#FAFAFA" x="539" y="39"/>						
 						<mx:Button label="扩展2" width="36" height="36" icon="@Embed(source='image/button_search_icon.png')" borderColor="#FAFAFA" x="131.95" y="39"/>
 						<mx:Button label="扩展1" width="36" height="36" icon="@Embed(source='image/button_book_icon.png')" borderColor="#FAFAFA" x="185.9" y="39"/>
@@ -43,11 +43,12 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
-			//import mx.controls.Alert;						
+			import mx.controls.Alert;						
 			
 			[Bindable]
-			public var treeData:XMLList;
+			public var treeMenuData:XMLList;
 			[Bindable]
 			public var introduce:XMLList;
 			[Bindable]
@@ -55,18 +56,125 @@
 			
 			public function switchStates():void
 			{				
-				courseItem=XMLList(treeData[0]);//Alert.show(courseItem.@path,"调试");//初始值,默认显示第一章的第一节课内容
+				courseItem=XMLList(treeMenuData[0]);//初始值,默认显示第一章的第一节课内容				
 				currentState = "skip";
+				swfC.source=courseItem.@path;
+				swfC.load();
 			}
 			private function resultHandler(event:ResultEvent):void
 			{				
 				introduce=XMLList(XML(event.result).Introduce);//Alert.show(introduce.@path,"调试");			
-				treeData=XMLList(XML(event.result).CourseList.Chapter);							
+				treeMenuData=XMLList(XML(event.result).CourseList.Chapter);							
 			}			                 
-            public function treeChanged(event:Event):void 
+            public function treeMenuChanged(event:Event):void 
             {             
                 courseItem=XMLList(Tree(event.target).selectedItem);
+                swfC.source=courseItem.@path;
+                swfC.load();
+                mc=MovieClip(swfC.content);
             }
+            
+            import mx.events.SliderEvent;			
+			import flash.utils.Timer;
+			import flash.events.TimerEvent;
+			
+			[Bindable]
+			private var mc:MovieClip;
+			private var timer:Timer;
+			
+			private function formatSliderToolTip(value:int):String
+    		{//格式化提示时间:按分钟计算
+      			 var result:String = (value % 60).toString();
+      		     if (result.length == 1)
+      		     {
+         		 	result = Math.floor(value / 60).toString() + ":0" + result;
+       		 	 }
+      			 else
+			  	 {
+       		    	result = Math.floor(value / 60).toString() + ":" + result;
+       		  	 }
+      		     return result;
+  			}    
+			private function timerHandler(event:TimerEvent):void
+			{				
+				slider.value=mc.currentFrame;				
+			}
+			private function valueCommit():void
+			{
+				progress.setProgress(slider.value,slider.maximum);
+			}
+			private function completeHandler():void
+			{
+				mc=MovieClip(swfC.content);
+				timer=new Timer(10);//定时器,每隔10毫秒执行一次timerHandler事件			
+				timer.addEventListener(TimerEvent.TIMER,timerHandler);
+				timer.start();			
+			}			
+			private function progressComplete():void
+			{
+				timer.stop();
+			}
+			private function pause():void
+			{
+				mc.stop();
+				btnPause.visible=false;
+				btnPlay.visible=true;
+			}
+			private function play():void
+			{
+				mc.play();	
+				btnPlay.visible=false;
+				btnPause.visible=true;
+			}
+			private function slider_change(evt:SliderEvent):void
+			{				
+				if(timer.running==false)
+				{
+					timer.start();
+				}
+				gotoFrame(evt.value);				
+			}
+			private function gotoFrame(frame:int):void
+			{
+				mc.gotoAndPlay(frame);
+			}
+			private function stopBtnClick():void
+			{
+				gotoFrame(0);
+				timer.start();
+			}
+			private function prePage():void
+			{
+				treeMenu.selectedIndex=treeMenu.selectedIndex-1;
+				courseItem=XMLList(treeMenu.selectedItem);
+				swfC.source=courseItem.@path;
+                swfC.load();
+                mc=MovieClip(swfC.content);			
+			}
+			private function nextPage():void
+			{
+				treeMenu.selectedIndex=treeMenu.selectedIndex+1;
+				courseItem=XMLList(treeMenu.selectedItem);
+				swfC.source=courseItem.@path;
+                swfC.load();
+                mc=MovieClip(swfC.content);
+			}
+			private function onPress():void
+			{
+				pause();
+				if(timer.running==true)
+				{
+					timer.stop();
+				}				
+			}
+			private function onRelease():void
+			{
+				play();	
+				if(timer.running==false)
+				{
+					timer.start();
+				}				
+			}
 		]]>
 	</mx:Script>		
 	<mx:HTTPService id="http" url="config.xml" result="resultHandler(event)" resultFormat="xml"/>
