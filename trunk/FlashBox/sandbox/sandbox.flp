@@ -1,0 +1,5 @@
+﻿<flash_project name="sandbox" version="1">
+    <project_file path="./exam.fla" filetype="fla" profile="" />
+    <project_file path="../Flash2Flex/flex3.fla" filetype="fla" profile="" />
+    <project_file path="../../theme/EDLT/flex3-skin-edlt.fla" filetype="fla" profile="" />
+</flash_project>
