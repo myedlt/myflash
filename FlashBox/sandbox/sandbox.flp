@@ -1,5 +1,101 @@
 ﻿<flash_project name="sandbox" version="1">
+    <project_folder name="AS3Foundation" expanded="true">
+        <project_folder name="Ch02" expanded="false">
+            <project_file path="./FoundationAS3Animation/ch02/App.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/FirstAnimation.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/EventDemo.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/KeyboardEvents.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/KeyCodes.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/MouseEvents.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/MousePos.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/MyBaseClass.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/MySubClass.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/ParentBox.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/Reparenting.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/Reparenting2.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/Test.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch02/Test.fla" filetype="fla" profile="" />
+            <project_file path="./FoundationAS3Animation/ch02/MyTest.as" filetype="as" />
+        </project_folder>
+        <project_folder name="ch03" expanded="false">
+            <project_file path="./FoundationAS3Animation/ch03/Arrow.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Ball.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Bobbing.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Circle.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Distance.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/MouseDistance.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Oval.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Pulse.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Random.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/RotateToMouse.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Wave1.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch03/Wave2.as" filetype="as" />
+        </project_folder>
+        <project_folder name="ch04" expanded="false">
+            <project_file path="./FoundationAS3Animation/ch04/AnimatedFilters.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/App.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/CurveThroughPoint.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/DrawingApp.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/DrawingCurves.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/EmbedAsset.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/Filters.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/GradientFill.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/LoadAsset.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/MultiCurves1.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/MultiCurves2.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/MultiCurves3.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/MultiCurves3Filled.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/MultiFilters.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/SimpleBitmap.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/SprayPaint.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/TransformColor.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch04/MyTest.fla" filetype="fla" profile="" />
+        </project_folder>
+        <project_folder name="ch15" expanded="false">
+            <project_file path="./FoundationAS3Animation/ch15/Ball3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Ball.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Bounce3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Collision3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Easing3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Fireworks.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/MultiBounce3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Perspective1.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Perspective2.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/RotateX.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/RotateXY.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/RotateY.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Spring3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Tree.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Trees2.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Trees.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Velocity3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch15/Zsort.as" filetype="as" />
+        </project_folder>
+        <project_folder name="ch16" expanded="true">
+            <project_file path="./FoundationAS3Animation/ch16/Ball3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Cube.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Cylinder.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/ExtrudedA.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/FilledE.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Lines3D1.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Lines3D2.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/MoveCube.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/MovingCube.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Point3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Pyramid.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/SpinningE.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Square3D.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Triangle.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/Triangles.as" filetype="as" />
+            <project_file path="./FoundationAS3Animation/ch16/MyTest.fla" filetype="fla" profile="" />
+        </project_folder>
+    </project_folder>
+    <project_folder name="mp3" expanded="false">
+        <project_file path="./mp3/LRCPlayer.as" filetype="as" />
+        <project_file path="./mp3/Test.fla" filetype="fla" profile="" />
+    </project_folder>
     <project_file path="./exam.fla" filetype="fla" profile="" />
     <project_file path="../Flash2Flex/flex3.fla" filetype="fla" profile="" />
     <project_file path="../../theme/EDLT/flex3-skin-edlt.fla" filetype="fla" profile="" />
+    <project_file path="./common.fla" filetype="fla" profile="" />
 </flash_project>
