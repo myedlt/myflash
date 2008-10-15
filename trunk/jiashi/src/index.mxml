@@ -87,7 +87,7 @@
 					<mx:Image x="10" y="10" width="780" height="75" source="image/panel-background.png"/>
 					<mx:Button x="71" y="49" label="Butt" width="36" height="24"  />
 					<mx:Button x="115" y="49" label="Butt" width="36" height="24" click="toggleContent()" toolTip="课程目录"/>
-					<mx:Button x="159" y="49" label="Butt" width="36" height="24" click="toStyleManager()" toolTip="皮肤管理"/>
+					<mx:Button x="159" y="49" width="36" height="24" click="toStyleManager()" toolTip="皮肤管理"/>
 					<mx:Button x="203" y="49" label="Butt" width="37" height="24" />
 					<mx:Button x="285" y="43" label="Butt" width="36" height="30" click="play()" toolTip="播放"/>
 					<mx:Button x="329" y="43" label="Butt" width="36" height="30" click="pause()" toolTip="暂停"/>

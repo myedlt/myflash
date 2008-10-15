@@ -21,16 +21,17 @@
 <module destPath="MyModule.swf" optimize="false" sourcePath="src/MyModule.mxml"/>
 </modules>
 <buildCSSFiles>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/edlt/SkinEDLT.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/DarkRoom/SkinDarkRoom.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinMain.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-main.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Yahoo/SkinYahoo.css"/>
-<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Main/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-main.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Main/SkinMain.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Windows/winskin.css"/>
 <buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/OSX/OSX.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/edlt/SkinEDLT.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/DarkRoom/SkinDarkRoom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Yahoo/SkinYahoo.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/flex/SkinFlex.css"/>
 </buildCSSFiles>
 </actionScriptProperties>

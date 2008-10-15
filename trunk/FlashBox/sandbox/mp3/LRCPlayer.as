@@ -20,7 +20,7 @@
 			loader.load(new URLRequest("lrc/qhc.lrc"));
 			loader.addEventListener(Event.COMPLETE,LoadFinish);
 			var sound:Sound=new Sound();
-			sound.load(new URLRequest("music/mayitbe.mp3"));
+			sound.load(new URLRequest("music/青花瓷.mp3"));
 			sc=sound.play();
 			stage.addEventListener(Event.ENTER_FRAME,SoundPlaying);
 		}

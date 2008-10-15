@@ -1,5 +1,5 @@
 ﻿<flash_project name="sandbox" version="1">
-    <project_folder name="AS3Foundation" expanded="true">
+    <project_folder name="AS3Foundation" expanded="false">
         <project_folder name="Ch02" expanded="false">
             <project_file path="./FoundationAS3Animation/ch02/App.as" filetype="as" />
             <project_file path="./FoundationAS3Animation/ch02/FirstAnimation.as" filetype="as" />
@@ -71,7 +71,7 @@
             <project_file path="./FoundationAS3Animation/ch15/Velocity3D.as" filetype="as" />
             <project_file path="./FoundationAS3Animation/ch15/Zsort.as" filetype="as" />
         </project_folder>
-        <project_folder name="ch16" expanded="true">
+        <project_folder name="ch16" expanded="false">
             <project_file path="./FoundationAS3Animation/ch16/Ball3D.as" filetype="as" />
             <project_file path="./FoundationAS3Animation/ch16/Cube.as" filetype="as" />
             <project_file path="./FoundationAS3Animation/ch16/Cylinder.as" filetype="as" />
@@ -98,4 +98,5 @@
     <project_file path="../Flash2Flex/flex3.fla" filetype="fla" profile="" />
     <project_file path="../../theme/EDLT/flex3-skin-edlt.fla" filetype="fla" profile="" />
     <project_file path="./common.fla" filetype="fla" profile="" />
+    <project_file path="../../theme/EDLT/edltStyle.fla" filetype="fla" profile="" />
 </flash_project>

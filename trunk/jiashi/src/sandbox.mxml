@@ -86,10 +86,10 @@
 		.myFont {font-size:15}
 	</mx:Style>
 	<mx:WipeLeft id="myWL" duration="3000" />
-	<mx:Button x="22" y="155" label="变量绑定" click="updateText()" width="160"  rollOverEffect="myWL"/>
-	<mx:Button x="22" y="125" label="文字动画" click="aniText()" width="160"/>
-	<mx:TextArea x="22" y="23" id="myText" editable="false" text="我走，我走走走！" height="25"/>  
-	<mx:TextArea x="22" y="56" id="myTextBind" editable="false" text="{myText.text}" height="25"/>
+	<mx:Button x="22" y="155" label="变量绑定" click="updateText()" width="118"  rollOverEffect="myWL"/>
+	<mx:Button x="22" y="125" label="文字动画" click="aniText()" width="118"/>
+	<mx:TextArea x="22" y="23" id="myText" editable="false" text="我走，我走走走！" height="25" width="118"/>  
+	<mx:TextArea x="22" y="56" id="myTextBind" editable="false" text="{myText.text}" height="25" width="118"/>
 	<mx:HBox x="203" y="23" width="352" height="165">
 		<mx:List width="91" height="145">
 			<mx:dataProvider>
@@ -113,7 +113,7 @@
 		<mx:Canvas label="" width="100%" height="100%">
 		</mx:Canvas>
 	</mx:ViewStack>
-	<mx:Panel x="203" y="213" width="352" height="137" layout="absolute">
+	<mx:Panel x="203" y="201" width="352" height="137" layout="absolute">
 		<mx:TextInput x="67" y="10" width="109" id="postcode"/>
 		<mx:Label x="10" y="10" text="邮编：" width="49" fontSize="12"/>
 		<mx:Label x="10" y="47" text="电话：" width="49" fontSize="12"/>
@@ -121,15 +121,15 @@
 	</mx:Panel>
 	<MyComps:MyComboBox x="22" y="196" width="118" height="142"/>
 	<mx:Fade id="myFade" duration="5000" />
-	<mx:Image x="641.2" y="381" width="97" height="145" source="assets/0529_389706.jpg" creationCompleteEffect="myFade"/>
-	<mx:ButtonBar x="22" y="381" width="238" height="44" >
+	<mx:Image x="371.2" y="352" width="97" height="145" source="assets/0529_389706.jpg" creationCompleteEffect="myFade"/>
+	<mx:ButtonBar x="22" y="352" width="238" height="33" >
 		<mx:dataProvider>
 			<mx:String>见龙在田</mx:String>
 			<mx:String>飞龙在天</mx:String>
 			<mx:String>亢龙有悔</mx:String>
 		</mx:dataProvider>
 	</mx:ButtonBar>
-	<mx:ViewStack x="319" y="381" id="viewstack2" width="101" height="84">
+	<mx:ViewStack x="489.85" y="413" id="viewstack2" width="77" height="84">
 		<mx:Canvas label="View 1" width="100%" height="100%">
 		</mx:Canvas>
 		<mx:Canvas label="" width="100%" height="100%">
@@ -137,9 +137,9 @@
 		<mx:Canvas label="" width="100%" height="100%">
 		</mx:Canvas>
 	</mx:ViewStack>
-	<mx:HRule x="22" y="443" height="30" width="118"/>
-	<mx:LinkButton x="178" y="451" label="LinkButton"/>
-	<mx:DateChooser x="441" y="381" height="158"/>
+	<mx:HRule x="22" y="402" height="30" width="118"/>
+	<mx:LinkButton x="178" y="410" label="LinkButton"/>
+	<mx:DateChooser x="574.85" y="339" height="158" width="191.35"/>
 	<mx:Accordion x="574.85" y="105" width="191.39394" height="201.87878">
 		<mx:Canvas label="上海" width="100%" height="100%">
 		</mx:Canvas>
