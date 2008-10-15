@@ -37,18 +37,6 @@ global
 //  Button
 //------------------------------
 */
-Button
-{
-	disabledSkin: Embed(source="EDLT.swf", symbol="Button_disabledSkin",
-                                  scaleGridTop="26",
-                                  scaleGridBottom="64",
-                                  scaleGridLeft="30",
-                                  scaleGridRight="106");
-	downSkin: Embed(source="EDLT.swf", symbol="Button_downSkin");
-	overSkin: Embed(source="EDLT.swf", symbol="Button_overSkin");
-	upSkin: Embed(source="EDLT.swf", symbol="Button_upSkin");
-	paddingTop: 2;
-}
 
 /*
 //------------------------------
