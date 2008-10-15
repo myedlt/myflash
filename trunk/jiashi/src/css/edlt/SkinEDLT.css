@@ -7,6 +7,9 @@
 //  global
 //------------------------------
 */
+LinkButton
+{
+}
 global
 {
    color: #4d4d4d;
@@ -264,7 +267,14 @@ ControlBar
 //  ProgressBar
 //------------------------------
 */
+ProgressBar
+{
 
+	barSkin: Embed(source="EDLT.swf", symbol="ProgressBar_barSkin");
+	indeterminateSkin: Embed(source="EDLT.swf", symbol="ProgressBar_indeterminateSkin");
+	trackSkin: Embed(source="EDLT.swf", symbol="ProgressBar_trackSkin");
+
+}
 
 /*
 //------------------------------
