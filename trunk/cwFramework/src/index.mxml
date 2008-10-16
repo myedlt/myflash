@@ -45,8 +45,8 @@
 						<mx:Button id="btnPause" label="暂停" width="36" height="36" x="432" y="39" click="pause()"/>
 						<mx:Button id="btnPlay" label="播放" width="36" height="36" x="432" y="39" click="play()"/>
 						<mx:Button label="下一页" width="36" height="36" x="486" y="39" click="nextPage()"/>						
-						<mx:Button label="背景音乐" width="36" height="36" x="539" y="39"/>						
-						<mx:Button label="扩展2" width="36" height="36" x="131.95" y="39" id="button1"/>
+						<mx:Button label="音量控制" width="36" height="36" x="539" y="39"/>						
+						<mx:Button label="换肤" width="36" height="36" x="131.95" y="39" id="button1"/>
 						<mx:Button label="全屏" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
 						<mx:Button label="字幕" width="36" height="36" x="240" y="39" id="button2"/>
 						<mx:Button label="帮助" width="36" height="36" x="78.9" y="39" id="button4"/>
