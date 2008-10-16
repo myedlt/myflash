@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	backgroundColor="#FFFFFF" borderColor="#DB6136">	
+	<mx:Model id="data" source="courseGoal.xml"/>	
+	
+	<mx:Zoom id="zm" duration="5000"/><!--放大或缩小-->
+    <!--mx:Blur id="myBlur" blurXFrom="0" blurXTo="20" blurYFrom="0" blurYTo="20" /-->
+    
+    <mx:Glow id="myGlow" alphaFrom="0.2" alphaTo="0.8" blurXFrom="10" blurXTo="0" blurYFrom="10" blurYTo="0" 
+    	color="red" inner="true" knockout="true" strength="5" duration="10000"/> 
+    
+	<mx:Panel width="269" height="244" layout="absolute" 
+		title="{data.title.name}"  borderColor="#EC5E11" horizontalCenter="37" verticalCenter="-10">
+	
+	    <mx:List id="source"
+            width="214"
+            dataProvider="{data.title.state}"
+            x="17.5" height="141" y="33" creationCompleteEffect="{zm}"/>
+
+	</mx:Panel>
+	
+</mx:Application>
