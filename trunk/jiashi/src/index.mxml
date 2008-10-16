@@ -4,6 +4,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Label;
              import mx.controls.Button;  
              import mx.controls.Alert;   
 
