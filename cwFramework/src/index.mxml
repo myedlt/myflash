@@ -202,9 +202,9 @@
 			//展开所有节点
 			internal function expandAllNode():void
 			{
-				for each(var item:XML in this.treeMenu.dataProvider)
+				for each(var item:XML in treeMenu.dataProvider)
 				{					
-					this.treeMenu.expandChildrenOf(item,true);
+					treeMenu.expandChildrenOf(item,true);
 				}
 			}
 			//当点击分支（目录）时，实现展开或折叠（晚于change事件）
@@ -215,6 +215,7 @@
 				{
 					treeMenu.expandItem(item,!treeMenu.isItemOpen(item),true);
 				}
+				//Tree(evt.currentTarget).selectedItem=null;
 			}
 			
 			internal function skin_change(evt:ListEvent):void
