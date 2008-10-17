@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
-	initialize="http.send()" width="183" height="436" cornerRadius="2" borderStyle="none" alpha="0.7">
+	initialize="http.send()" width="183" height="436" cornerRadius="2" borderStyle="none" alpha="0.7" name="navigatorContainer">
 
 	<mx:Script>
 		<![CDATA[
@@ -36,6 +36,6 @@
 	</mx:Script>		
 	<mx:HTTPService id="http" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 	<mx:Tree id="contentTree" width="161" height="397" labelField="@name" dataProvider="{treeData}" change="treeChanged(event)" x="10" y="29"/>
-	<mx:Button x="126" y="5" label="关闭" width="47" click="close()" id="buttonClose"/>
+	<mx:Button x="126" y="5" label="关闭" width="47" click="close()" id="buttonClose" name="buttonClose"/>
 	<mx:Label x="10" y="7" text="课程目录" width="63" id="contentTitle"/>
 </mx:Application>
