@@ -35,12 +35,38 @@
 			public function toggleContent():void
 			{
 				contentSwfLoader.visible = true;
+				
+				traceDisplayList(contentSwfLoader,"=>");
+				
+
+	
 			}
 			
 			public function toStyleManager():void
 			{
 				currentState = "styleManager";
 			}
+			function traceDisplayList(container:DisplayObjectContainer,indentString:String = ""):DisplayObject
+			{
+				var child:DisplayObject;
+				for (var i:uint=0; i < container.numChildren; i++)
+				{
+					child = container.getChildAt(i);
+					trace(indentString, child, child.name);
+					if (child.name == "buttonClose")
+					{
+						var button:Button;
+						button = Button (child);
+						button.label = "close";
+						return child;
+					} 
+					if (container.getChildAt(i) is DisplayObjectContainer)
+					{
+						traceDisplayList(DisplayObjectContainer(child), indentString + "")
+					}
+				}
+				return null;
+			}						
 		]]>
 	</mx:Script>	
 	<mx:states>
@@ -108,7 +134,7 @@
 				<mx:SWFLoader id="mainSwfLoader" x="10" y="105" width="780" height="388" source="unit/unit01/ps1.swf"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader id="contentSwfLoader" x="0" y="71.05" width="186" height="431"  source="navigator.swf" autoLoad="true" visible="true" enabled="true"/>
+				<mx:SWFLoader id="contentSwfLoader" x="0" y="71.05" width="186" height="431"  source="navigator.swf" autoLoad="true" visible="true" enabled="true" name="contentSWFLoader"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="styleManager">
