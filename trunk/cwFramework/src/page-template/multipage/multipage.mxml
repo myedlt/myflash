@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#FFFFFF" creationComplete="init()">
+	<mx:Model id="model" source="multipage.xml"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;			
+			import mx.controls.Alert;
+			
+			private function init():void
+			{
+				
+			}
+			private function onClick(evt:ItemClickEvent):void
+			{
+				swfLoader.source=evt.item.url;
+				swfLoader.load();
+			}			
+		]]>
+	</mx:Script>
+	<mx:VBox height="100%" width="100%">
+		<mx:TabBar id="tabBar" dataProvider="{model.section}" height="5%" itemClick="onClick(event)"/>		
+		<mx:SWFLoader id="swfLoader" autoLoad="false" scaleContent="true" width="100%" height="95%"/>		
+	</mx:VBox>
+</mx:Application>
