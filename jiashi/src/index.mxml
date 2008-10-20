@@ -5,12 +5,16 @@
 	<mx:Script>
 		<![CDATA[
 			import mx.controls.Label;
-             import mx.controls.Button;  
-             import mx.controls.Alert;   
+            import mx.controls.Button;  
+            import mx.controls.Alert;   
 
-             public function init() : void {  
+			private var contentLoader:Loader;
+
+            public function init() : void {  
                  //mainSwfLoader.addEventListener(Event.INIT, initHandle);
-                 //contentSwfLoader.visible = false;
+                 contentLoader = new Loader();
+                 addChild(contentLoader);
+                 contentLoader.load(new URLRequest("Navagator.swf"));
              }  
                	
             public function pause():void
@@ -36,9 +40,9 @@
 			{
 				contentSwfLoader.visible = true;
 				
-				traceDisplayList(contentSwfLoader,"=>");
-				
-
+				traceDisplayList(contentLoader,"=>");
+				Navigator(contentLoader.content).close();
+//				var nav:navigator = new navigatot;
 	
 			}
 			
@@ -134,7 +138,7 @@
 				<mx:SWFLoader id="mainSwfLoader" x="10" y="105" width="780" height="388" source="unit/unit01/ps1.swf"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader id="contentSwfLoader" x="0" y="71.05" width="186" height="431"  source="navigator.swf" autoLoad="true" visible="true" enabled="true" name="contentSWFLoader"/>
+				<mx:SWFLoader id="contentSwfLoader" x="0" y="71.05" width="186" height="431"  source="Navigator.swf" autoLoad="true" visible="true" enabled="true" name="contentSWFLoader"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="styleManager">

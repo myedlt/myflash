@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
 	layout="absolute" xmlns:ns1="flexlib.containers.*" xmlns:MyComps="containers.boxes.*"
-	height="572" width="802" xmlns:ns2="flexlib.controls.*" x="0" y="0">
+	height="572" width="802" xmlns:ns2="flexlib.controls.*" x="0" y="0" xmlns:ns3="*">
 	<mx:Model id="contact">
 		<info>
 			<postcode>{postcode.text}</postcode>
@@ -94,7 +94,7 @@
 	<mx:Button x="22" y="89" label="文字动画" click="aniText()" width="118"/>
 	<mx:TextArea x="22" y="23" id="myText" editable="false" text="我走，我走走走！" height="25" width="118"/>  
 	<mx:TextArea x="22" y="56" id="myTextBind" editable="false" text="{myText.text}" height="25" width="118"/>
-	<mx:HBox x="363" y="23" width="192" height="143">
+	<mx:HBox x="363" y="23" width="192" height="88">
 		<mx:TabBar dataProvider="viewstack1" width="248">
 		</mx:TabBar>
 	</mx:HBox>
@@ -107,7 +107,7 @@
 		<mx:Canvas label="" width="100%" height="100%">
 		</mx:Canvas>
 	</mx:ViewStack>
-	<mx:Panel x="363" y="174" width="192" height="137" layout="absolute">
+	<mx:Panel x="363" y="126" width="192" height="137" layout="absolute">
 		<mx:TextInput x="67" y="10" width="95" id="postcode"/>
 		<mx:Label x="10" y="10" text="邮编：" width="49" fontSize="12"/>
 		<mx:Label x="10" y="47" text="电话：" width="49" fontSize="12"/>
@@ -115,7 +115,7 @@
 	</mx:Panel>
 	<MyComps:MyComboBox x="22" y="149" width="118" height="73"/>
 	<mx:Fade id="myFade" duration="5000" />
-	<mx:Image x="371.2" y="352" width="97" height="145" source="assets/0529_389706.jpg" creationCompleteEffect="myFade"/>
+	<mx:Image x="230" y="271" width="97" height="145" source="assets/0529_389706.jpg" creationCompleteEffect="myFade"/>
 	<mx:ButtonBar x="22" y="230" width="238" height="33" >
 		<mx:dataProvider>
 			<mx:String>见龙在田</mx:String>
@@ -123,7 +123,7 @@
 			<mx:String>亢龙有悔</mx:String>
 		</mx:dataProvider>
 	</mx:ButtonBar>
-	<mx:ViewStack x="489.85" y="413" id="viewstack2" width="77" height="84">
+	<mx:ViewStack x="22" y="430" id="viewstack2" width="77" height="84">
 		<mx:Canvas label="View 1" width="100%" height="100%">
 		</mx:Canvas>
 		<mx:Canvas label="" width="100%" height="100%">
@@ -132,10 +132,11 @@
 		</mx:Canvas>
 	</mx:ViewStack>
 	<mx:HRule x="203" y="174" height="30" width="118"/>
-	<mx:LinkButton x="203" y="200" label="LinkButton"/>
+	<mx:LinkButton x="168" y="191" label="LinkButton"/>
 	<mx:DateChooser x="574.85" y="339" height="158" width="191.35"/>
 	<mx:Accordion x="574.85" y="105" width="191.39394" height="201.87878" resizeToContent="true">
 		<mx:Canvas label="上海" width="100%" height="100%">
+			<mx:Button x="10" y="10" label="Button"/>
 		</mx:Canvas>
 		<mx:VBox label="A" width="100%" height="100%">
 			<mx:LinkButton label="LinkButton"/>
@@ -157,7 +158,7 @@
 			<mx:Button x="10" y="70" label="Button"/>
 		</mx:Canvas>
 	</mx:Accordion>
-	<mx:List width="91" height="145" x="203" y="21">
+	<mx:List width="91" height="145" x="159" y="21">
 		<mx:dataProvider>
 			<mx:Array>
 				<mx:String>中国</mx:String>
@@ -167,7 +168,14 @@
 			</mx:Array>
 		</mx:dataProvider>
 	</mx:List>
-	<mx:Button x="155" y="448" label="GetChild" id="GetChild" click="getMyChild()"/>
-	<mx:Text x="22" y="448" text="Text" width="125" height="22" id="Name"/>
+	<mx:Button x="149" y="400" label="GetChild" id="GetChild" click="getMyChild()"/>
+	<mx:Text x="22" y="400" text="Text" width="125" height="22" id="Name"/>
+	<ns3:MyContainer x="363" y="283">
+		<mx:VBox>
+			<mx:Button label="Button"/>
+		</mx:VBox>		
+	</ns3:MyContainer>
+
+
 
 </mx:Application>
