@@ -9,20 +9,22 @@
 					<mx:Image width="900" height="13%" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1"/>
 					<mx:HDividedBox liveDragging="true" width="900" height="73%" id="hdividedbox1">
         	 			<mx:Panel title="课程目录" width="25%" height="100%" id="panel1" fontSize="12">
-        	 				<mx:Tree id="treeMenu" itemClick="treeItemClick(event)" defaultLeafIcon="@Embed(source='image/buletin.png')" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)"/>
+        	 				<mx:Tree id="treeMenu" itemClick="treeItemClick(event)" defaultLeafIcon="@Embed(source='image/course.gif')" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)"/>
         	 			</mx:Panel>
         	 			<mx:VBox id="mainVBox" height="100%" width="75%">
         	 				<mx:HBox height="30" fontSize="12" verticalAlign="middle" width="100%">
-        	 					<mx:HBox width="60%">
-        	 						<mx:Image source="image/buletin.png"/>
+        	 					<mx:HBox width="60%" verticalAlign="middle">
+        	 						<mx:Image source="image/bread.gif"/>
         	 						<mx:Label text="{currentChapterName}" />
-        	 						<mx:Label text=">"/>
+        	 						<mx:Image source="image/linkTransparent.gif"/>
         	 						<mx:Label text="{currentSectionName}"/>
         	 					</mx:HBox>		
         	 					<mx:Label text="选择皮肤:" id="label2"/>
         	 					<mx:ComboBox id="skinComb" dataProvider="{skinData}" labelField="@name" change="skin_change(event)"/>
         	 				</mx:HBox>
-        	 				<mx:SWFLoader id="swfC" unload="unloadHandler()" init="templateInit(event)" complete="completeHandler()" autoLoad="true" scaleContent="true" width="100%" height="100%"/>
+        	 				<mx:VBox horizontalAlign="center" width="100%" height="100%">
+        	 					<mx:SWFLoader id="swfC" unload="unloadHandler()" init="templateInit(event)" complete="completeHandler()" autoLoad="true" scaleContent="true" width="100%" height="100%"/>
+        	 				</mx:VBox>        	 				
         	 			</mx:VBox>        				
    					</mx:HDividedBox>
    					
@@ -40,17 +42,17 @@
 						<mx:HSlider id="slider" liveDragging="true" dataTipFormatFunction="formatSliderToolTip" change="slider_change(event)"  minimum="0" maximum="{mc.totalFrames}" thumbPress="onPress()" thumbRelease="onRelease()" buttonMode="true" useHandCursor="true" x="357.3" y="10" width="207.2"/>
 						<mx:Label id="current_page" height="22" width="42" textAlign="center" fontSize="14" fontWeight="bold" x="622.05" y="5" text="{currentPage}"/>
 												
-						<mx:Button label="停止" width="36" height="36"  x="319" y="39" click="stopBtnClick()" id="button6"/>
-						<mx:Button label="上一页" width="36" height="36"  x="372" y="39" click="prePage()"/>
-						<mx:Button id="btnPause" label="暂停" width="36" height="36" x="432" y="39" click="pause()"/>
-						<mx:Button id="btnPlay" label="播放" width="36" height="36" x="432" y="39" click="play()"/>
-						<mx:Button label="下一页" width="36" height="36" x="486" y="39" click="nextPage()"/>						
-						<mx:Button label="音量控制" width="36" height="36" x="539" y="39"/>						
-						<mx:Button label="换肤" width="36" height="36" x="131.95" y="39" id="button1"/>
-						<mx:Button label="全屏" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
-						<mx:Button label="字幕" width="36" height="36" x="240" y="39" id="button2"/>
-						<mx:Button label="帮助" width="36" height="36" x="78.9" y="39" id="button4"/>
-						<mx:Button label="退出" width="36" height="36" toolTip="退出" x="25.9" y="39" click="exit()" id="button5"/>
+						<mx:Button label="停止" icon="@Embed(source='image/button_stop_icon.png')" width="36" height="36"  x="319" y="39" click="stopBtnClick()" id="button6"/>
+						<mx:Button label="上一页" icon="@Embed(source='image/button_prev_icon.png')" width="36" height="36"  x="372" y="39" click="prePage()"/>
+						<mx:Button id="btnPause" label="暂停" icon="@Embed(source='image/button_pause_icon.png')" width="36" height="36" x="432" y="39" click="pause()"/>
+						<mx:Button id="btnPlay" label="播放" icon="@Embed(source='image/button_play_icon.png')" width="36" height="36" x="432" y="39" click="play()"/>
+						<mx:Button label="下一页" icon="@Embed(source='image/button_next_icon.png')" width="36" height="36" x="486" y="39" click="nextPage()"/>						
+						<mx:Button label="音量控制" icon="@Embed(source='image/colume.jpg')" width="36" height="36" x="539" y="39"/>						
+						<mx:Button label="换肤" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1"/>
+						<mx:Button label="全屏" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
+						<mx:Button label="字幕" icon="@Embed(source='image/button_text_icon.png')" width="36" height="36" x="240" y="39" id="button2"/>
+						<mx:Button label="帮助" icon="@Embed(source='image/button_help_icon.png')" width="36" height="36" x="78.9" y="39" id="button4"/>
+						<mx:Button label="退出" icon="@Embed(source='image/button_exit_icon.png')" width="36" height="36" toolTip="退出" x="25.9" y="39" click="exit()" id="button5"/>
 					</mx:Canvas>					
    				</mx:VBox>
 			</mx:AddChild>
@@ -81,6 +83,7 @@
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
 				<mx:Button x="47" y="48" label="课程目录" height="27" click="popupCourseMenu()" width="71"/>
 			</mx:AddChild>
+			<mx:SetProperty target="{swfC}" name="width" value="90%"/>
 		</mx:State>
 		
 		<mx:State name="header">			
@@ -88,7 +91,7 @@
 				<mx:SWFLoader x="120" y="10" source="{header.@path}" id="swfI"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button click="switchStates()" alpha="0.3" width="60" x="850" y="580" id="btn"/>
+				<mx:Button click="switchStates()" icon="@Embed(source='image/skip.jpg')" overIcon="@Embed(source='image/skiped.jpg')" width="60" x="850" y="579" id="btn"/>
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
@@ -139,18 +142,21 @@
 			private var app:Object;
 			
 			private function init():void
-			{	
-//				var configFile:String="config.xml";
-//				var httpSvr:HTTPService=new HTTPService(configFile);
-//				httpSvr.resultFormat="xml";
-//				httpSvr.addEventListener(ResultEvent.RESULT,resultHandler);
+			{
 				httpSvr.send();	
 				//this.currentState="header";
 			}
 			
 			internal function switchStates():void
-			{	
-				//MovieClip(swfI.content).stop();//停止片头语音
+			{	//停止片头播放
+				try
+				{
+					MovieClip(swfI.content).stop();
+				}
+				catch(e:Error)
+				{
+					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash版本有关.","停止片头播放出错");
+				}				
 				currentState = "main";											
 				this.callLater(expandAllNode);//在 FlashPlayer没有重绘之前，有些函数调用的时候，实际的组件并没有重新生成好。任何一个Flex组件都有一个callLater(method:Function,args:Array = null)方法的
 				courseItem=XMLList((treeMenuData[0].section)[0]);//初始值,默认显示第一章的第一节课内容	
@@ -193,9 +199,6 @@
 			
 			internal function normalscreen():void
 			{
-//				coursemenuWindow.removeChild(treeMenu);				
-//				coursemenuWindow=null;
-//				popupPoint=null;
 				if(coursemenuWindow.isPopUp)
 				{
 					PopUpManager.removePopUp(coursemenuWindow);
@@ -260,11 +263,23 @@
 			//tree change事件		                 
             internal function treeMenuChanged(event:Event):void 
             {
+            	progress.setProgress(0,0);      //progressBar重置 
+            	slider.value=0;  
                 courseItem=XMLList(Tree(event.currentTarget).selectedItem);
                 if(courseItem.@path==undefined)
                 {//如果当前选择的swf不存在（当前项为目录），则跳到下一个节点
-                	treeMenu.selectedIndex=treeMenu.selectedIndex+1;
-                	treeMenu.dispatchEvent(new ListEvent(ListEvent.CHANGE));//派发change事件（递归）
+                	if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
+					{
+						//Alert.show("当前项关闭","调试");	
+						treeMenu.expandChildrenOf(treeMenu.selectedItem,true);
+					}					
+					treeMenu.selectedIndex=treeMenu.selectedIndex+1;
+					if(treeMenu.dataDescriptor.isBranch(treeMenu.selectedItem)&&!treeMenu.isItemOpen(treeMenu.selectedItem))
+					{
+						//Alert.show("下一项是分支并且关闭","调试");	
+						treeMenu.expandChildrenOf(treeMenu.selectedItem,true);
+					}		
+					treeMenu.dispatchEvent(new ListEvent(ListEvent.CHANGE));//派发change事件（递归）                	
                 }
                 else
                 {
@@ -272,8 +287,7 @@
                 	swfC.source=courseItem.@path;
                 }               
                 //swfC.load(); //swfloader autoLoad="true"
-                setBreadCrumb(courseItem);              
-                progress.setProgress(0,0);      //progressBar重置          
+                setBreadCrumb(courseItem);                       
             }	
             		
 			//格式化progressBar的提示时间:取分钟
@@ -311,10 +325,10 @@
   			}
   			//定时器处理函数 
 			internal function timerHandler(event:TimerEvent):void
-			{				
+			{	
+				currentTime=formatSliderToolTip(mc.currentFrame);			
 				slider.value=mc.currentFrame;	
-				progress.setProgress(mc.currentFrame,mc.totalFrames);
-				currentTime=formatSliderToolTip(mc.currentFrame);							
+				progress.setProgress(mc.currentFrame,mc.totalFrames);											
 			}			
 			//init事件是在已加载的SWF文件的属性和方法可访问时调度
 			private function templateInit(evt:Event):void
@@ -343,19 +357,24 @@
 					if(!(treeMenu.selectedItem.hasOwnProperty("@hasFlash")&&treeMenu.selectedItem.@hasFlash=="true"))
 					{						
 						mc=MovieClip(swfC.content);	
+					}					
+					totalTime=formatSliderToolTip(mc.totalFrames);								
+					if(timer.running==false)
+					{
+						timer.start();
 					}
 				}
 				catch(e:Error)
 				{
+					Alert.okLabel="确定";
+					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash版本有关.","提示");
 					totalTime="0:00";
 					currentTime="0:00";
-					progress.setProgress(0,0);
-				}								
-				if(timer.running==false)
-				{
-					timer.start();
-				}
-				totalTime=formatSliderToolTip(mc.totalFrames);		
+					if(timer.running==true)
+					{
+						timer.stop();
+					}
+				}										
 			}	
 			//进度完成事件处理函数		
 			internal function progressComplete():void
