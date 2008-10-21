@@ -9,7 +9,6 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="multipage.mxml"/>
 <application path="index.mxml"/>
 </applications>
 <modules/>
