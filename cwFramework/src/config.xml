@@ -3,14 +3,14 @@
 	<Header path="header/splash.swf"/>
 	<CourseList>
 		<Chapter name="公司概要">
-			<section id="1" name="学习目标" path="page-template/courseGoal/courseGoal.swf" isTemplate="true"/>
+			<section id="1" name="学习目标" path="page-template/courseGoal/courseGoal.swf" isTemplate="true" hasFlash="false"/>
 			<section id="2" name="公司背景及发展状况介绍" path="course/c02.swf"/>
 			<section id="3" name="组织结构及工作流程" path="course/c09.swf"/>		
 			<section id="4" name="小结" path="course/c10.swf"/>		
 		</Chapter>
 		<Chapter name="制度指南">
 			<section id="5" name="学习目标" path="course/c11.swf"/>
-			<section id="6" name="入职办理制度" path="course/c13.swf"/>
+			<section id="6" name="电话使用方法" path="page-template/multipage/multipage.swf" isTemplate="true" hasFlash="true" isMultipage="true"/>
 			<section id="7" name="上下班打卡" path="course/c17.swf"/>
 			<section id="8" name="门禁制度" path="course/c18.swf"/>
 			<section id="9" name="着装制度" path="course/c19.swf"/>
