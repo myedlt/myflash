@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()" backgroundColor="#FFFFFF">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()" backgroundColor="#FFFFFF" currentState="header">
 	<mx:states>		
 		<mx:State name="main">				
 			<mx:RemoveChild target="{swfI}"/>
@@ -22,7 +22,7 @@
         	 					<mx:Label text="选择皮肤:" id="label2"/>
         	 					<mx:ComboBox id="skinComb" dataProvider="{skinData}" labelField="@name" change="skin_change(event)"/>
         	 				</mx:HBox>
-        	 				<mx:SWFLoader id="swfC" unload="unloadHandler()" complete="completeHandler()" autoLoad="false" scaleContent="true" width="100%" height="100%"/>
+        	 				<mx:SWFLoader id="swfC" unload="unloadHandler()" init="templateInit(event)" complete="completeHandler()" autoLoad="true" scaleContent="true" width="100%" height="100%"/>
         	 			</mx:VBox>        				
    					</mx:HDividedBox>
    					
@@ -36,8 +36,8 @@
 						<mx:Label id="total_time" width="52" height="25" fontSize="13" x="239.95" y="6" text="{totalTime}" textAlign="center"/>
 						<mx:Text width="227" height="40" text="        嘉实基金管理有限公司版权所有&#xa;技术支持:北京东方创远教育科技有限公司" fontFamily="Georgia" fontSize="12" color="#535F62" x="634" y="40" id="text1"/>
 						<mx:Label id="current_time" width="52" height="25" fontSize="13" x="176.9" y="6" text="{currentTime}" textAlign="center"/>
-						<mx:ProgressBar id="progress" mode="manual" source="{swfC}" complete="progressComplete()" minimum="0" maximum="{slider.maximum}" labelPlacement="left" label="播放" width="238.24176" height="24.505493" fontSize="15" x="319" y="6.5"/>
-						<mx:HSlider valueCommit="valueCommit()" liveDragging="true" dataTipFormatFunction="formatSliderToolTip" id="slider" change="slider_change(event)"  minimum="0" maximum="{mc.totalFrames}" thumbPress="onPress()" thumbRelease="onRelease()" buttonMode="true" useHandCursor="true" x="357.3" y="10" width="207.2"/>
+						<mx:ProgressBar id="progress" mode="manual" source="{swfC}" complete="progressComplete()" minimum="0" maximum="{mc.totalFrames}" labelPlacement="left" label="播放" width="238.24176" height="24.505493" fontSize="15" x="319" y="6.5"/>
+						<mx:HSlider id="slider" liveDragging="true" dataTipFormatFunction="formatSliderToolTip" change="slider_change(event)"  minimum="0" maximum="{mc.totalFrames}" thumbPress="onPress()" thumbRelease="onRelease()" buttonMode="true" useHandCursor="true" x="357.3" y="10" width="207.2"/>
 						<mx:Label id="current_page" height="22" width="42" textAlign="center" fontSize="14" fontWeight="bold" x="622.05" y="5" text="{currentPage}"/>
 												
 						<mx:Button label="停止" width="36" height="36"  x="319" y="39" click="stopBtnClick()" id="button6"/>
@@ -95,6 +95,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.core.UIComponent;
+			import mx.managers.SystemManager;
 			import mx.managers.PopUpManager;
 			import component.courseMenu;
 			import mx.containers.TitleWindow;
@@ -107,7 +109,8 @@
 			import mx.controls.Alert;
 			import mx.events.SliderEvent;			
 			import flash.utils.Timer;
-			import flash.events.TimerEvent;						
+			import flash.events.TimerEvent;	
+			import mx.events.FlexEvent;					
 			
 			[Bindable]
 			private var mc:MovieClip;
@@ -133,6 +136,7 @@
 			private var timer:Timer;
 			private var skinItem:XMLList;
 			private var courseItem:XMLList;
+			private var app:Object;
 			
 			private function init():void
 			{	
@@ -154,7 +158,7 @@
 				currentPage=courseItem.@id;
 				setBreadCrumb(courseItem);				
 				swfC.source=courseItem.@path;
-				swfC.load(); 								
+				//swfC.load(); 								
 				btnPlay.visible=false;
 				timer=new Timer(10);//定时器,每隔10毫秒执行一次timerHandler事件			
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);	
@@ -267,22 +271,15 @@
                 	currentPage=courseItem.@id;
                 	swfC.source=courseItem.@path;
                 }               
-                swfC.load();               
-                setBreadCrumb(courseItem);				
-                try
-				{
-					mc=MovieClip(swfC.content);
-				}
-				catch(e:Error)
-				{
-					totalTime="0:00";
-					currentTime="0:00";					
-				}	
+                //swfC.load(); //swfloader autoLoad="true"
+                setBreadCrumb(courseItem);              
                 progress.setProgress(0,0);      //progressBar重置          
-            }			
+            }	
+            		
 			//格式化progressBar的提示时间:取分钟
 			internal function formatSliderToolTip(value:int):String
     		{
+    			value=Math.ceil(value / 24);  //flash 24frames/s  			
     			var result:String = (value % 60).toString();
       		    if (result.length == 1)
       		    {
@@ -315,20 +312,38 @@
   			//定时器处理函数 
 			internal function timerHandler(event:TimerEvent):void
 			{				
-				slider.value=mc.currentFrame;				
-			}
-			//hslider valueCommit事件处理函数（当以编程方式或通过用户交互更改值时调度）
-			internal function valueCommit():void
+				slider.value=mc.currentFrame;	
+				progress.setProgress(mc.currentFrame,mc.totalFrames);
+				currentTime=formatSliderToolTip(mc.currentFrame);							
+			}			
+			//init事件是在已加载的SWF文件的属性和方法可访问时调度
+			private function templateInit(evt:Event):void
 			{
-				progress.setProgress(slider.value,slider.maximum);
-				currentTime=formatSliderToolTip(slider.value);	
+				if(treeMenu.selectedItem.hasOwnProperty("@hasFlash")&&treeMenu.selectedItem.@hasFlash=="true")
+				{//给SystemManager添加applicationComplete事件侦听器														
+					evt.target.content.addEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
+				}
 			}
+			private function appCompleteHandler(evt:Event):void
+			{
+				app=evt.target.application;				
+				app.setApp(this);//把当前application对象传给外部的swf 以便相互通信
+			}
+			public function innerSwfComplete():void
+			{
+				mc=app.mc;
+				totalTime=formatSliderToolTip(mc.totalFrames);	
+			}
+			
 			//swfloader complete事件处理函数(swf加载完成时调度)
 			internal function completeHandler():void
 			{   //Alert.show("加载完成","调试");
 				try
 				{
-					mc=MovieClip(swfC.content);
+					if(!(treeMenu.selectedItem.hasOwnProperty("@hasFlash")&&treeMenu.selectedItem.@hasFlash=="true"))
+					{						
+						mc=MovieClip(swfC.content);	
+					}
 				}
 				catch(e:Error)
 				{
@@ -409,6 +424,21 @@
 			//上一页
 			internal function prePage():void
 			{
+				if(treeMenu.selectedItem.hasOwnProperty("@isMultipage")&&treeMenu.selectedItem.@isMultipage=="true")
+				{						
+					var result:String=app.prePage();
+					if(result=="first")
+					{
+						previous();
+					}					
+				}
+				else
+				{
+					previous();
+				}				
+			}
+			private function previous():void
+			{
 				if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 				{					
 					treeMenu.expandChildrenOf(treeMenu.selectedItem,true);
@@ -428,10 +458,25 @@
 					treeMenu.selectedItem=temp;
 					prePage();//递归
 				}              				
- 				treeMenu.dispatchEvent(new ListEvent(ListEvent.CHANGE));		
+ 				treeMenu.dispatchEvent(new ListEvent(ListEvent.CHANGE));
 			}
 			//下一页
 			internal function nextPage():void
+			{
+				if(treeMenu.selectedItem.hasOwnProperty("@isMultipage")&&treeMenu.selectedItem.@isMultipage=="true")
+				{						
+					var result:String=app.nextPage();
+					if(result=="last")
+					{
+						next();
+					}					
+				}
+				else
+				{
+					next();
+				}				
+			}
+			private function next():void
 			{
 				if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 				{
