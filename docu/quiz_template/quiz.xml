@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<questions xmlns="www.rapidintake.com/xmlgrammars/fc/quiz">
+	<quiz showresults="true" quizmode="review" intro="intro" numquestions="25" randomize="false" recordStatus="none" incReview="true" incRetakeButton="true" id="quiz-1">
+		<feedback provide="true" tries="1"></feedback>
+		<introText heading="Review Time"><![CDATA[<P ALIGN="LEFT"><FONT   COLOR="#0033CC" LETTERSPACING="0" KERNING="0">[This quiz  template allows you to quickly create a review quiz or practice test. The questions are NOT tracked, the learner is given 2 tries on each question, feedback is set up for each question so you can provide help when they get it wrong and reinforcement when right, there is a quiz review at the end, and they can retake the test if they would like.]</FONT></P><P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0"></FONT></P><P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">Take this quiz to see how much you&apos;ve learned. Don&apos;t worry, your answers are not tracked and you can retake it as many times as you like. You have two chances to answer each question, with a hint between each try.</FONT></P>]]></introText>
+		<question id="mc-1" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-2" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-3" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-4" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-5" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-6" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-7" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-8" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-9" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-10" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-11" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-12" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-13" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-14" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-15" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-16" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-17" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-18" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-19" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-20" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-21" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-22" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-23" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-24" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+		<question id="mc-25" tracking="false" weight="1" overrideFeedback="true" qtype="MCH">
+			<questionText><![CDATA[<P ALIGN="LEFT"><FONT    LETTERSPACING="0" KERNING="0">[Enter the question text here]</FONT></P>]]></questionText>
+			<feedback provide="true" tries="2">
+				<triesFeedback><![CDATA[That's not correct. [Enter question-specific hint here.] Please try again.]]></triesFeedback>
+				<incorrectFeedback><![CDATA[[Replace with question-specific correction.]]]></incorrectFeedback>
+				<correctFeedback><![CDATA[[Replace with queston-specific reinforcement.]]]></correctFeedback>
+				<evalPrompt><![CDATA[Click the Check Answer button.]]></evalPrompt>
+				<initPrompt><![CDATA[Select your answer, then click Check Answer.]]></initPrompt>
+			</feedback>
+			<distractors randomize="true">
+				<distractor correct="true" wrap="false"><![CDATA[Option 1]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 2]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 3]]></distractor>
+				<distractor correct="false" wrap="false"><![CDATA[Option 4]]></distractor>
+			</distractors>
+		</question>
+	</quiz>
+</questions>
