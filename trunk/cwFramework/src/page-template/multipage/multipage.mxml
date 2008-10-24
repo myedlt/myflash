@@ -46,7 +46,7 @@
 				{
 					tabBar.selectedIndex=tabBar.selectedIndex+1;
 					tabBar.dispatchEvent(new ItemClickEvent(ItemClickEvent.ITEM_CLICK,false,false,null,tabBar.selectedIndex+1,null,model.section[tabBar.selectedIndex+1]));
-					return "";
+					return null;
 				}				
 			}
 			public function prePage():String
@@ -60,7 +60,7 @@
 				{
 					tabBar.selectedIndex=tabBar.selectedIndex-1;
 					tabBar.dispatchEvent(new ItemClickEvent(ItemClickEvent.ITEM_CLICK,false,false,null,tabBar.selectedIndex-1,null,model.section[tabBar.selectedIndex-1]));
-					return "";
+					return null;
 				}
 			}									
 		]]>
