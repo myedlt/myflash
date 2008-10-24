@@ -3,11 +3,11 @@
 	<mx:states>		
 		<mx:State name="main">				
 			<mx:RemoveChild target="{swfI}"/>
-			<mx:RemoveChild target="{btn}"/>
+			<mx:RemoveChild target="{btnSkip}"/>
 			<mx:AddChild position="lastChild">
-				<mx:VBox x="50" y="0" height="100%" width="900" id="vbox1"> 					
-					<mx:Image width="900" height="13%" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1"/>
-					<mx:HDividedBox liveDragging="true" width="900" height="73%" id="hdividedbox1">
+				<mx:VBox height="100%" width="900" id="vbox1" horizontalAlign="center" verticalAlign="middle" horizontalCenter="-28" verticalCenter="0"> 					
+					<mx:Image width="900" height="13%" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1" scaleContent="true" autoLoad="true"/>
+					<mx:HDividedBox liveDragging="true" width="900" height="73%" id="hdividedbox1" horizontalAlign="center" verticalAlign="middle">
         	 			<mx:Panel title="课程目录" width="25%" height="100%" id="panel1" fontSize="12">
         	 				<mx:Tree id="treeMenu" itemClick="treeItemClick(event)" defaultLeafIcon="@Embed(source='image/course.gif')" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)"/>
         	 			</mx:Panel>
@@ -28,7 +28,7 @@
    					</mx:HDividedBox>
    					
 					<mx:Canvas id="controlCanvas" width="900" height="14%">
-						<mx:Image source="image/panel-background.png" width="100%" height="100%" horizontalCenter="0" horizontalAlign="center" id="image2"/>
+						<mx:Image source="image/panel-background.png" width="900" height="100%" horizontalCenter="0" horizontalAlign="center" id="image2" verticalCenter="0" scaleContent="true" autoLoad="true"/>
 						<mx:Label text="第 " height="22" width="17.05" textAlign="left" fontSize="14" fontWeight="bold" x="608" y="5" id="label1"/>
 						<mx:Label text="页，共" height="22" width="50.05" textAlign="left" fontSize="14" fontWeight="bold" x="662.1" y="5"/>
 						<mx:Label text="页" height="22" width="18.05" textAlign="left" fontSize="14" fontWeight="bold" x="751.05" y="5"/>
@@ -51,7 +51,7 @@
 						<mx:Button label="字幕" icon="@Embed(source='image/button_text_icon.png')" width="36" height="36" x="240" y="39" id="button2" click="displayCaption()"/>
 						<mx:Button label="帮助" icon="@Embed(source='image/button_help_icon.png')" width="36" height="36" x="78.9" y="39" id="button4" click="showHelp()"/>
 						<mx:Button label="退出" icon="@Embed(source='image/button_exit_icon.png')" width="36" height="36" toolTip="退出" x="25.9" y="39" click="exit()" id="button5"/>
-						<mx:HSlider x="700" y="45" width="131" id="columeSlider" liveDragging="true" allowTrackClick="true" minimum="0" maximum="1" change="columeChange(event)" value="0.6"/>
+						<mx:HSlider x="700" y="45" width="106" id="columeSlider" liveDragging="true" allowTrackClick="true" minimum="0" maximum="1" change="columeChange(event)" value="0.6"/>
 						<mx:Label text="音量控制" width="67.95" height="20" fontSize="12" x="622" y="48" textAlign="center"/>
 					</mx:Canvas>					
    				</mx:VBox>
@@ -74,29 +74,34 @@
 				<mx:Button x="149" y="48" label="返回主页" height="27" width="71.9" click="normalscreen()"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{mainVBox}" name="width" value="100%"/>
-			<mx:SetProperty target="{mainVBox}" name="height" value="520"/>
-			<mx:SetProperty target="{image2}" name="height" value="87"/>
 			<mx:SetProperty target="{controlCanvas}" name="height" value="15%"/>
 			<mx:SetProperty target="{hdividedbox1}" name="height" value="85%"/>
 			<mx:SetProperty target="{swfC}" name="height" value="478"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
 				<mx:Button x="47" y="48" label="课程目录" height="27" click="popupCourseMenu()" width="71"/>
 			</mx:AddChild>
-			<mx:SetProperty target="{swfC}" name="width" value="90%"/>
+			<mx:SetProperty target="{image2}" name="x" value="0"/>
+			<mx:SetStyle target="{image2}" name="horizontalCenter"/>
+			<mx:SetProperty target="{image2}" name="y" value="0"/>
+			<mx:SetStyle target="{image2}" name="verticalCenter"/>
+			<mx:SetStyle target="{mainVBox}" name="horizontalAlign" value="center"/>
+			<mx:SetStyle target="{mainVBox}" name="verticalAlign" value="middle"/>
+			<mx:SetStyle target="{swfBox}" name="verticalAlign" value="middle"/>
 		</mx:State>
 		
 		<mx:State name="header">			
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader x="120" y="10" source="{header.@path}" id="swfI"/>
+				<mx:SWFLoader horizontalAlign="center" verticalAlign="middle" source="{header.@path}" id="swfI" scaleContent="true" width="100%" height="100%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button click="switchStates()" icon="@Embed(source='image/skip.jpg')" overIcon="@Embed(source='image/skiped.jpg')" width="60" x="850" y="579" id="btn"/>
+				<mx:Button click="switchStates()" icon="@Embed(source='image/skip.jpg')" overIcon="@Embed(source='image/skiped.jpg')" width="60" x="851" y="585" id="btnSkip"/>
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
 	
 	<mx:Script>
 		<![CDATA[
+			import flash.system.fscommand;
 			import mx.managers.SystemManager;
 			import mx.events.CloseEvent;			
 			import component.captionWindow;		
@@ -143,20 +148,21 @@
 			private var skinItem:XMLList;
 			private var courseItem:XMLList;
 			private var app:Object;
+			private var sound:Sound;
 			private var soundChan:SoundChannel;
 			private var soundTran:SoundTransform;
 			private var controlFile:XMLList;
+			private var coursemenuWindow:courseMenu;	
 			
 			private function init():void
 			{
-				httpSvr.send();	
-				//this.currentState="header";
+				httpSvr.send();
 			}
 			
 			internal function switchStates():void
-			{	//停止片头播放
+			{	
 				try
-				{
+				{//停止片头播放
 					MovieClip(swfI.content).stop();
 				}
 				catch(e:Error)
@@ -173,12 +179,11 @@
 				timer=new Timer(10);//定时器,每隔10毫秒执行一次timerHandler事件			
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);	
 				treeMenu.selectedIndex=0; 				
-			  //treeMenu.dispatchEvent(new ListEvent(ListEvent.ITEM_CLICK));			  
+			   //treeMenu.dispatchEvent(new ListEvent(ListEvent.ITEM_CLICK));
+			    this.stage.focus=this;//激活键盘状态
+				this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
 			}
-			
-			private const POPUP_OFFSET:int = 35;		
-			private var coursemenuWindow:courseMenu;			
-			
+						
 			internal function popupCourseMenu():void
 			{
 				if(!coursemenuWindow.isPopUp)
@@ -194,13 +199,16 @@
 			internal function fullscreen():void
 			{
 				this.currentState="fullscreen";
-				//初始化弹出课程目录菜单及坐标参数
-				var popupPoint:Point=new Point();
+				//初始化弹出课程目录菜单及坐标参数				
 				coursemenuWindow=new courseMenu();
 				coursemenuWindow.addChild(treeMenu);				
-				//popupPoint=this.localToGlobal(popupPoint);
-				coursemenuWindow.x=popupPoint.x+POPUP_OFFSET;
-				coursemenuWindow.y=popupPoint.y+POPUP_OFFSET;
+				coursemenuWindow.x=35;
+				coursemenuWindow.y=31;
+				if(captionWin.isPopUp)
+				{   
+					captionWin.x=180;
+					captionWin.y=505;						
+				}
 			}
 			
 			internal function normalscreen():void
@@ -211,6 +219,11 @@
 				}
 				panel1.addChild(treeMenu);
 				this.currentState="main";
+				if(captionWin.isPopUp)
+				{ 					
+					captionWin.x=280;
+					captionWin.y=511;	
+				}
 			}
 			//展开所有节点
 			internal function expandAllNode():void
@@ -234,8 +247,11 @@
 			{
 				if(btnShutSound.label=="静音")
 				{
-					soundTran.volume=evt.value;
-					soundChan.soundTransform=soundTran;
+					if(soundChan!=null)
+            		{
+            			soundTran.volume=evt.value;
+						soundChan.soundTransform=soundTran;
+            		}
 				}
 			}
 			internal function skin_change(evt:ListEvent):void
@@ -284,7 +300,11 @@
             		soundChan=null;
             		this.stage.removeEventListener(Event.ENTER_FRAME,captionHandler);
             	}  
-            	
+            	if(btnPlay.visible==true)
+				{
+					btnPlay.visible=false;
+					btnPause.visible=true;	
+				}
                 courseItem=XMLList(Tree(event.currentTarget).selectedItem);
                 if(courseItem.@tpye=="chapter"&&courseItem.@hasFlash=="false")
                 {//如果当前选择的swf不存在（当前项为目录），则跳到下一个节点
@@ -307,6 +327,7 @@
                 }                
                 setBreadCrumb(courseItem);                       
             } 
+            
            	private function loadHandle(courseItem:XMLList):void
            	{
            		if(courseItem.@type=="synchronizing")
@@ -316,7 +337,7 @@
                 	loader.load(new URLRequest(courseItem.@xml));
                 	loader.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
                 	loader.addEventListener(Event.COMPLETE,controlFileHandler);
-                	var sound:Sound=new Sound();
+                	sound=new Sound();
                 	sound.load(new URLRequest(courseItem.@mp3));
                 	sound.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
                 	soundChan=sound.play();
@@ -453,24 +474,33 @@
 				}
 				else
 				{
-					//nextPage();//播放完自动开始下一个swf
+					nextPage();//播放完自动开始下一个swf
 				}				
 			}
-			
-			internal function pause():void
+			private var currentPosition:Number;
+			public function pause():void
 			{				
 				if(timer.running==true)
 				{
 					timer.stop();
 				}
 				mc.stop();	
+				if(soundChan!=null)
+            	{
+            		currentPosition=soundChan.position;
+               		soundChan.stop();
+            	}
 				btnPause.visible=false;
 				btnPlay.visible=true;
 			}
 			
-			internal function play():void
+			public function play():void
 			{
 				mc.play();
+				if(sound!=null)
+            	{
+            		soundChan=sound.play(currentPosition);
+            	}
 				if(timer.running==false)
 				{
 					timer.start();
@@ -487,8 +517,11 @@
 				{
 					timer.start();
 				}	
-				btnPlay.visible=false;
-				btnPause.visible=true;							
+				if(btnPlay.visible==true)
+				{
+					btnPlay.visible=false;
+					btnPause.visible=true;	
+				}
 			}
 			
 			internal function gotoFrame(frame:int):void
@@ -604,8 +637,8 @@
 					var point:Point=new Point();								
 					point=swfBox.localToGlobal(point);
 					captionWin.x=point.x;				
-					captionWin.y=point.y+369;
-					captionWin.width=swfBox.width-10;
+					captionWin.y=point.y+388;
+					captionWin.width=swfBox.width-20;
 				}
 				else
 				{
@@ -644,6 +677,20 @@
 			public function showHelp():void
 			{
 				navigateToURL(new URLRequest("http://www.baidu.com"),"_blank");
+			}
+			public function onKeyUp(evt:KeyboardEvent):void
+			{//点空格键暂停或播放动画
+				if(evt.charCode==32)
+				{
+					if(btnPlay.visible==false)
+					{
+						pause();
+					}
+					else
+					{
+						play();
+					}
+				}
 			}
 		]]>
 	</mx:Script>
