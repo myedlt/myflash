@@ -19,6 +19,7 @@
 			private function onClick(evt:ItemClickEvent):void
 			{					
 				swfLoader.source=evt.item.url;
+				app.play();
 				//swfLoader.load();				
 			}
 			private function unloadHandler():void
