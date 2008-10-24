@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Synchronization>
+	<section>
+		<startTime>00:00.00</startTime>			
+		<startFrame>1</startFrame>
+		<caption>下面我们开始上课...</caption>
+	</section>
+	<section>
+		<startTime>00:01.11</startTime>			
+		<startFrame>2</startFrame>
+		<caption>青花瓷</caption>
+	</section>
+	<section>
+		<startTime>00:21.39</startTime>			
+		<startFrame>24</startFrame>
+		<caption>素眉勾勒秋千话北风龙转丹</caption>
+	</section>
+	<section>
+		<startTime>00:26.08</startTime>			
+		<startFrame>55</startFrame>
+		<caption>屏层鸟绘的牡丹一如你梳妆</caption>
+	</section>
+	<section>
+		<startTime>00:30.46</startTime>			
+		<startFrame>87</startFrame>
+		<caption>黯然腾香透过窗心事我了然</caption>
+	</section>
+	<section>
+		<startTime>00:34.93</startTime>			
+		<startFrame>110</startFrame>
+		<caption>宣纸上皱边直尺各一半</caption>
+	</section>
+	<section>
+		<startTime>00:39.49</startTime>			
+		<startFrame>123</startFrame>
+		<caption>油色渲染侍女图因为被失藏 </caption>
+	</section>
+	<section>
+		<startTime>00:43.83</startTime>			
+		<startFrame>155</startFrame>
+		<caption>而你嫣然的一笑如含苞待放 </caption>
+	</section>
+	<section>
+		<startTime>00:48.30</startTime>			
+		<startFrame>233</startFrame>
+		<caption>你的美一缕飘散</caption>
+	</section>
+	<section>
+		<startTime>00:50.77</startTime>			
+		<startFrame>555</startFrame>
+		<caption>去到我去不了的地方</caption>
+	</section>
+	<section>
+		<startTime>03:32.30</startTime>			
+		<startFrame>888</startFrame>
+		<caption>本课结束,谢谢观看!</caption>
+	</section>
+</Synchronization>
