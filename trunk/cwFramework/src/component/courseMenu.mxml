@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="232" height="480" title="课程目录" showCloseButton="true" cornerRadius="10" fontSize="12" close="close()" backgroundAlpha="1.0">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="230" height="490" title="课程目录" showCloseButton="true" cornerRadius="10" fontSize="12" close="close()" backgroundAlpha="1.0">
 	<mx:Script>
 		<![CDATA[
 			import mx.managers.PopUpManager;
