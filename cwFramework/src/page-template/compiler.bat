@@ -15,7 +15,7 @@ echo.
 mxmlc %filename%
 echo.
 set m=
-set /p m=按任意键继续, 退出请按 1:
+set /p m=按任意键继续, 退出请按 1 :
 if "%m%"=="1" goto end
 goto begin
 :end
