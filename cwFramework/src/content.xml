@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Content>
+	<Header path="header/splash.swf"/>
+	<CourseList>
+		<Chapter name="公司概要" type="chapter" hasFlash="false">
+			<section id="1" name="学习目标(页面模板)" type="template" hasFlash="false" path="page-template/courseGoal/courseGoal.swf"/>
+			<section id="2" name="公司背景及发展状况介绍(flash)" type="flash" path="course/c02.swf"/>
+			<section id="3" name="同步测试1" type="synchronizing" swf="course/course03/c02.swf"
+					 mp3="course/course03/青花瓷.mp3" xml="course/course03/control.xml"/>	
+			<section id="4" name="同步测试2" type="synchronizing" swf="course/course03/c02.swf"
+					 mp3="course/course03/青花瓷.mp3" xml="course/course03/control.xml"/>		
+			<section id="5" name="小结" type="flash" path="course/c10.swf"/>		
+		</Chapter>
+		<Chapter name="制度指南" type="chapter" hasFlash="false">
+			<section id="5" name="学习目标" type="flash" path="course/c11.swf"/>
+			<section id="6" name="电话使用方法(多页模板)" type="template" hasFlash="true" isMultipage="true" path="page-template/multipage/multipage.swf"/>
+			<section id="7" name="上下班打卡" type="flash" path="course/c17.swf"/>
+			<section id="8" name="门禁制度" type="flash" path="course/c18.swf"/>
+			<section id="9" name="着装制度" type="flash" path="course/c19.swf"/>
+			<section id="10" name="禁烟制度" type="flash" path="course/c22.swf"/>
+			<section id="11" name="办公用品领用制度" type="flash" path="course/c23.swf"/>
+			<section id="12" name="领门卡" type="flash" path="course/c24.swf"/>
+			<section id="13" name="拍标准照" type="flash" path="course/c25.swf"/>
+			<section id="14" name="薪金周期" type="flash" path="course/c26.swf"/>
+			<section id="15" name="请休假制度" type="flash" path="course/c27.swf"/>
+			<section id="16" name="财务制度和流程" type="flash" path="course/c28.swf"/>
+			<section id="17" name="培训管理办法及流程" type="flash" path="course/c32.swf"/>
+			<section id="18" name="出差制度" type="flash" path="course/c39.swf"/>
+			<section id="19" name="安保制度" type="flash" path="course/c40.swf"/>
+			<section id="20" name="小结" type="flash" path="course/c45.swf"/>	
+		</Chapter>
+		<Chapter id="21" name="综合测验" type="chapter" hasFlash="true" path="course/c86.swf"/>
+	</CourseList>
+	<Skins>
+		<skin name="系统默认" path="css/Main/SkinMain.swf"/>		
+		<skin name="OSX" path="css/OSX/OSX.swf"/>
+		<skin name="Yahoo" path="css/Yahoo/SkinYahoo.swf"/>
+		<skin name="Darkroom" path="css/DarkRoom/SkinDarkRoom.swf"/>
+	</Skins>
+</Content>
