@@ -5,19 +5,19 @@
 			<mx:RemoveChild target="{swfI}"/>
 			<mx:RemoveChild target="{btnSkip}"/>
 			<mx:AddChild position="lastChild">
-				<mx:VBox height="100%" width="900" id="vbox1" horizontalAlign="center" verticalAlign="middle" horizontalCenter="-28" verticalCenter="0"> 					
-					<mx:Image width="900" height="13%" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1" scaleContent="true" autoLoad="true"/>
-					<mx:HDividedBox liveDragging="true" width="900" height="73%" id="hdividedbox1" horizontalAlign="center" verticalAlign="middle">
-        	 			<mx:Panel title="课程目录" width="25%" height="100%" id="panel1" fontSize="12">
-        	 				<mx:Tree id="treeMenu" itemClick="treeItemClick(event)" defaultLeafIcon="@Embed(source='image/course.gif')" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)"/>
+				<mx:VBox height="100%" width="900" id="vbox1" horizontalAlign="center" verticalAlign="middle" y="0" horizontalCenter="-1"> 					
+					<mx:Image width="100%" height="78" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1" scaleContent="true" autoLoad="true"/>
+					<mx:HDividedBox liveDragging="true" width="100%" height="100%" id="hdividedbox1" horizontalAlign="center" verticalAlign="middle">
+        	 			<mx:Panel title="课程目录" width="25.5%" height="100%" id="panel1" fontSize="12" horizontalAlign="center" verticalAlign="middle">
+        	 				<mx:Tree id="treeMenu" defaultLeafIcon="@Embed(source='image/course.gif')" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)" itemOpening="onItemClosing(event)"/>
         	 			</mx:Panel>
-        	 			<mx:VBox id="mainVBox" height="100%" width="75%">
-        	 				<mx:HBox height="30" fontSize="12" verticalAlign="middle" width="100%">
+        	 			<mx:VBox id="mainVBox" height="100%" width="74.5%" horizontalAlign="center" verticalAlign="middle">
+        	 				<mx:HBox height="30" fontSize="12" verticalAlign="middle" width="100%" id="hbox1">
         	 					<mx:Image source="image/bread.gif"/>
         	 					<mx:Label text="{currentChapterName}" />
         	 					<mx:Image source="image/linkTransparent.gif"/>
         	 					<mx:Label text="{currentSectionName}"/>
-        	 					<mx:Spacer width="100%"/>
+        	 					<mx:Spacer width="100%" id="spacer1"/>
         	 					<mx:Label text="选择皮肤:" id="label2"/>
         	 					<mx:ComboBox id="skinComb" dataProvider="{skinData}" labelField="@name" change="skin_change(event)"/>
         	 				</mx:HBox>
@@ -27,8 +27,8 @@
         	 			</mx:VBox>        				
    					</mx:HDividedBox>
    					
-					<mx:Canvas id="controlCanvas" width="900" height="14%">
-						<mx:Image source="image/panel-background.png" width="900" height="100%" horizontalCenter="0" horizontalAlign="center" id="image2" verticalCenter="0" scaleContent="true" autoLoad="true"/>
+					<mx:Canvas id="controlCanvas" width="100%" height="87">
+						<mx:Image source="image/panel-background.png" width="100%" height="100%" horizontalCenter="0" horizontalAlign="center" id="image2" verticalCenter="0" scaleContent="true" autoLoad="true"/>
 						<mx:Label text="第 " height="22" width="17.05" textAlign="left" fontSize="14" fontWeight="bold" x="608" y="5" id="label1"/>
 						<mx:Label text="页，共" height="22" width="50.05" textAlign="left" fontSize="14" fontWeight="bold" x="662.1" y="5"/>
 						<mx:Label text="页" height="22" width="18.05" textAlign="left" fontSize="14" fontWeight="bold" x="751.05" y="5"/>
@@ -56,8 +56,8 @@
 					</mx:Canvas>					
    				</mx:VBox>
 			</mx:AddChild>
-			<mx:SetProperty name="height" value="622"/>
-			<mx:SetProperty name="width" value="1055"/>
+			<mx:SetStyle name="verticalAlign" value="middle"/>
+			<mx:SetProperty name="layout" value="absolute"/>
 		</mx:State>
 		
 		<mx:State name="fullscreen" basedOn="main">
@@ -71,54 +71,63 @@
 			<mx:RemoveChild target="{button3}"/>
 			<mx:RemoveChild target="{button2}"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="149" y="48" label="返回主页" height="27" width="71.9" click="normalscreen()"/>
+				<mx:Button x="110" y="50" label="返回主页" height="27" width="71.9" click="normalscreen()"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{mainVBox}" name="width" value="100%"/>
-			<mx:SetProperty target="{controlCanvas}" name="height" value="15%"/>
 			<mx:SetProperty target="{hdividedbox1}" name="height" value="85%"/>
-			<mx:SetProperty target="{swfC}" name="height" value="478"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="47" y="48" label="课程目录" height="27" click="popupCourseMenu()" width="71"/>
+				<mx:Button x="21" y="50" label="课程目录" height="27" click="popupCourseMenu()" width="71"/>
 			</mx:AddChild>
-			<mx:SetProperty target="{image2}" name="x" value="0"/>
-			<mx:SetStyle target="{image2}" name="horizontalCenter"/>
-			<mx:SetProperty target="{image2}" name="y" value="0"/>
-			<mx:SetStyle target="{image2}" name="verticalCenter"/>
 			<mx:SetStyle target="{mainVBox}" name="horizontalAlign" value="center"/>
 			<mx:SetStyle target="{mainVBox}" name="verticalAlign" value="middle"/>
 			<mx:SetStyle target="{swfBox}" name="verticalAlign" value="middle"/>
+			<mx:RemoveChild target="{spacer1}"/>
+			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
+				<mx:Button x="200" y="50" label="再次全屏" height="27" width="73" click="again()"/>
+			</mx:AddChild>
 		</mx:State>
 		
 		<mx:State name="header">			
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader horizontalAlign="center" verticalAlign="middle" source="{header.@path}" id="swfI" scaleContent="true" width="100%" height="100%"/>
+				<mx:SWFLoader horizontalAlign="center" verticalAlign="middle" source="{header.@path}" id="swfI" scaleContent="true" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" autoLoad="true"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Button click="switchStates()" icon="@Embed(source='image/skip.jpg')" overIcon="@Embed(source='image/skiped.jpg')" width="60" x="851" y="585" id="btnSkip"/>
+			</mx:AddChild>
+			<mx:SetStyle name="verticalAlign" value="middle"/>
+		</mx:State>
+		<mx:State name="again" basedOn="fullscreen">
+			<mx:RemoveChild target="{image2}"/>
+			<mx:RemoveChild target="{controlCanvas}"/>
+			<mx:SetProperty target="{hdividedbox1}" name="height" value="100%"/>
+			<mx:AddChild relativeTo="{hbox1}" position="lastChild">
+				<mx:Button label="返回" id="button7" click="back()"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{button7}" position="before">
+				<mx:Spacer width="100%"/>
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
 	
 	<mx:Script>
 		<![CDATA[
-			import flash.system.fscommand;
-			import mx.managers.SystemManager;
-			import mx.events.CloseEvent;			
+			import mx.events.TreeEvent;	
+			import mx.controls.Alert;		
+			import mx.managers.SystemManager;						
 			import component.captionWindow;		
 			import mx.managers.PopUpManager;
 			import component.courseMenu;			
 			import flash.net.navigateToURL;
 			import mx.controls.ComboBox;			
 			import mx.events.ListEvent;			
-			import mx.rpc.events.ResultEvent;
-			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;			
 			import mx.events.SliderEvent;			
 			import flash.utils.Timer;
 			import flash.events.TimerEvent;	
 			import mx.events.FlexEvent;					
 			
 			[Bindable]
-			private var mc:MovieClip;
+			private var mc:MovieClip=null;
 			[Bindable]
 			private var treeMenuData:XMLList;
 			[Bindable]
@@ -137,6 +146,7 @@
 			private var currentPage:int;
 			[Bindable]
 			private var totalPage:int;
+			
 			[Embed(source="image/button_sound_icon.png")]
 			[Bindable]
 			private var shutIcon:Class;
@@ -153,6 +163,8 @@
 			private var soundTran:SoundTransform;
 			private var controlFile:XMLList;
 			private var coursemenuWindow:courseMenu;	
+			private var currentPosition:Number;
+			private var tempItem:Object=null;
 			
 			private function init():void
 			{
@@ -178,17 +190,19 @@
 				btnPlay.visible=false;
 				timer=new Timer(10);//定时器,每隔10毫秒执行一次timerHandler事件			
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);	
-				treeMenu.selectedIndex=0; 				
-			   //treeMenu.dispatchEvent(new ListEvent(ListEvent.ITEM_CLICK));
 			    this.stage.focus=this;//激活键盘状态
 				this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
 			}
-						
+					
 			internal function popupCourseMenu():void
-			{
+			{	
 				if(!coursemenuWindow.isPopUp)
 				{
-					PopUpManager.addPopUp(coursemenuWindow,this,false);
+					PopUpManager.addPopUp(coursemenuWindow,swfC,false);
+					var point:Point=new Point();					
+					point=swfC.localToGlobal(point);					
+					coursemenuWindow.x=point.x;
+					coursemenuWindow.y=point.y;
 				}
 				else
 				{
@@ -198,16 +212,13 @@
 			
 			internal function fullscreen():void
 			{
-				this.currentState="fullscreen";
-				//初始化弹出课程目录菜单及坐标参数				
+				this.currentState="fullscreen";						
 				coursemenuWindow=new courseMenu();
-				coursemenuWindow.addChild(treeMenu);				
-				coursemenuWindow.x=35;
-				coursemenuWindow.y=31;
+				coursemenuWindow.addChild(treeMenu);
 				if(captionWin.isPopUp)
 				{   
-					captionWin.x=180;
-					captionWin.y=505;						
+					captionWin.x=(this.width-captionWin.width)/2;
+					captionWin.y=this.height-87-53-9;						
 				}
 			}
 			
@@ -221,10 +232,22 @@
 				this.currentState="main";
 				if(captionWin.isPopUp)
 				{ 					
-					captionWin.x=280;
-					captionWin.y=511;	
+					captionWin.x=294;
+					captionWin.y=this.height-87-53-5;
 				}
 			}
+			
+			public function again():void
+			{
+				this.currentState="again";	
+				this.stage.displayState=StageDisplayState.FULL_SCREEN;
+			}
+			
+			public function back():void
+			{
+				fullscreen();	
+			}
+			
 			//展开所有节点
 			internal function expandAllNode():void
 			{
@@ -233,16 +256,18 @@
 					treeMenu.expandChildrenOf(item,true);
 				}
 			}
+			
 			//当点击分支（目录）时，实现展开或折叠（晚于change事件）
-			public function treeItemClick(evt:ListEvent):void
-			{
-				var item:Object=Tree(evt.currentTarget).selectedItem;
-				if(treeMenu.dataDescriptor.isBranch(item))
-				{
-					treeMenu.expandItem(item,!treeMenu.isItemOpen(item),true);
-				}
-				//Tree(evt.currentTarget).selectedItem=null;
-			}
+//			public function treeItemClick(evt:ListEvent):void
+//			{
+//				var item:Object=Tree(evt.currentTarget).selectedItem;
+//				if(treeMenu.dataDescriptor.isBranch(item))
+//				{
+//					treeMenu.expandItem(item,!treeMenu.isItemOpen(item),true);
+//				}
+//				//Tree(evt.currentTarget).selectedItem=null;//可以连续点击同一节点
+//			}
+			
 			private function columeChange(evt:SliderEvent):void
 			{
 				if(btnShutSound.label=="静音")
@@ -254,6 +279,7 @@
             		}
 				}
 			}
+			
 			internal function skin_change(evt:ListEvent):void
 			{
 				this.unloadallStyle();			
@@ -268,6 +294,7 @@
 					StyleManager.unloadStyleDeclarations(skinItem.@path,true);
 				}				
 			}
+			
 			//httpservice结果处理函数
 			internal function resultHandler(event:ResultEvent):void
 			{				
@@ -276,6 +303,7 @@
 				skinData=XMLList(XML(event.result).Skins.skin);	
 				this.currentState="header";					
 			}
+			
 			 //设定面包屑
 			internal function setBreadCrumb(item:XMLList):void
 			{
@@ -289,6 +317,16 @@
                 }
 				this.currentSectionName=item.@name;
 			}
+			
+			//在树的分支打开或关闭前一刻调度 如果关闭的分支是当前项的父类,则把当前项保存到临时变量tempItem中 便于"上一页/下一页"操作
+			public function onItemClosing(evt:TreeEvent):void
+			{
+				if(evt.item==treeMenu.getParentItem(treeMenu.selectedItem))
+				{
+					tempItem=treeMenu.selectedItem;
+				}
+			}
+			
 			//tree change事件		                 
             internal function treeMenuChanged(event:Event):void 
             {
@@ -306,7 +344,7 @@
 					btnPause.visible=true;	
 				}
                 courseItem=XMLList(Tree(event.currentTarget).selectedItem);
-                if(courseItem.@tpye=="chapter"&&courseItem.@hasFlash=="false")
+                if(courseItem.@type=="chapter"&&courseItem.@hasFlash=="false")
                 {//如果当前选择的swf不存在（当前项为目录），则跳到下一个节点
                 	if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 					{
@@ -351,16 +389,22 @@
                 {
                 	currentPage=courseItem.@id;
                 	swfC.source=courseItem.@path;
-                	captionWin.message="无字幕";
+                	captionWin.message="无字幕...";
                 }               
            	}
+           	
+           	public function convertToMS(time:String):Number
+           	{
+           		return (Number(time.substr(0,2))*60+Number(time.substr(3,5)))*1000;
+           	}
+           	
             private function captionHandler(evt:Event):void
             {  
-            	var caption:String="无字幕"; //缓冲变量 
+            	var caption:String="无字幕..."; //缓冲变量 
             	for(var i:int=1;i<controlFile.length();i++)
             	{
-            		var time:Number=Number(String(controlFile[i].startTime).substr(0,2))*60+Number(String(controlFile[i].startTime).substr(3,5));
-            		if(soundChan.position<time*1000)
+            		var time:Number=convertToMS(controlFile[i].startTime);
+            		if(soundChan.position<time)
             		{
             			caption=String(controlFile[i-1].caption); 
             			break;
@@ -369,14 +413,17 @@
             	}
             	captionWin.message=caption; 
             }
+            
             private function controlFileHandler(evt:Event):void
             {
             	controlFile=XMLList(evt.target.data).section;             	          	
-            }	
+            }
+            	
             public function ioErrorHandler(evt:IOErrorEvent):void
             {
             	Alert.show("加载外部文件时出错,请检查路径是否正确!\nMessage:"+evt.target.toString(),"错误提示");
-            }		
+            }
+            		
 			//格式化progressBar的提示时间:取分钟
 			internal function formatSliderToolTip(value:int):String
     		{
@@ -391,11 +438,16 @@
        		    	result = Math.floor(value / 60).toString() + ":" + result;
        		  	}      			      			 
       		    return result;
-  			}   
+  			} 
+  			  
   			//swfloader删除加载的对象时；或同一 SWFLoader控件执行另一加载，并且在新加载开始之前删除原始内容时调度。
   			internal function unloadHandler():void
   			{
-  				mc.gotoAndStop(0);//停止上一swf实例播放  				
+  				if(mc!=null)
+  				{	
+  					mc.gotoAndStop(0);//停止上一swf实例播放
+  					mc=null;
+  				}				
   			}
   			
   			internal function getTotalPages():int
@@ -409,13 +461,15 @@
   				}
   				return count;
   			}
+  			
   			//定时器处理函数 
 			internal function timerHandler(event:TimerEvent):void
 			{	
 				currentTime=formatSliderToolTip(mc.currentFrame);			
 				slider.value=mc.currentFrame;	
 				progress.setProgress(mc.currentFrame,mc.totalFrames);											
-			}			
+			}	
+					
 			//init事件是在已加载的SWF文件的属性和方法可访问时调度
 			private function templateInit(evt:Event):void
 			{
@@ -424,45 +478,83 @@
 					evt.target.content.addEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
 				}
 			}
+			
 			private function appCompleteHandler(evt:Event):void
 			{
 				app=evt.target.application;				
 				app.setApp(this);//把当前application对象传给外部的swf 以便相互通信
 				SystemManager(evt.target).removeEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
 			}
+			
 			public function innerSwfComplete():void
 			{
 				mc=app.mc;
-				totalTime=formatSliderToolTip(mc.totalFrames);	
+				totalTime=formatSliderToolTip(mc.totalFrames);
+				normalHandler();	
 			}
 			
 			//swfloader complete事件处理函数(swf加载完成时调度)
 			internal function completeHandler():void
-			{   //Alert.show("加载完成","调试");
-				try
+			{   
+				if(treeMenu.selectedIndex==-1)
 				{
-					if(treeMenu.selectedItem.@type!="template")
-					{						
-						mc=MovieClip(swfC.content);	
-					}					
-					totalTime=formatSliderToolTip(mc.totalFrames);								
-					if(timer.running==false)
-					{
-						timer.start();
-					}
+					treeMenu.selectedIndex=1;	
 				}
-				catch(e:Error)
-				{
-					Alert.okLabel="确定";
-					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash版本有关.","提示");
-					totalTime="0:00";
-					currentTime="0:00";
-					if(timer.running==true)
-					{
-						timer.stop();
+				if(treeMenu.selectedItem.@type!="template")
+				{	
+					try
+					{					
+						mc=MovieClip(swfC.content);
+						totalTime=formatSliderToolTip(mc.totalFrames);
+						normalHandler();
 					}
-				}										
+					catch(e:Error)
+					{
+						Alert.okLabel="确定";
+						Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash版本有关.","提示");
+						errorHandler();
+					}		
+				}
+				else
+				{ 	
+					errorHandler();
+				}					
 			}	
+			
+			public function normalHandler():void
+			{
+				if(timer.running==false)
+				{
+					timer.start();
+				}
+				if(slider.enabled==false)
+				{
+					slider.enabled=true;
+				}
+				if(progress.enabled==false)
+				{
+					progress.enabled=true;
+				}	
+			}
+			
+			public function errorHandler():void
+			{
+				totalTime="0:00";
+				currentTime="0:00";
+				if(slider.enabled==true)
+				{
+					slider.enabled=false;
+				}
+				if(timer.running==true)
+				{
+					timer.stop();
+				}
+				if(progress.enabled==true)
+				{
+					progress.enabled=false;
+				}	
+			}
+			
 			//进度完成事件处理函数		
 			internal function progressComplete():void
 			{
@@ -477,7 +569,7 @@
 					nextPage();//播放完自动开始下一个swf
 				}				
 			}
-			private var currentPosition:Number;
+			
 			public function pause():void
 			{				
 				if(timer.running==true)
@@ -528,6 +620,7 @@
 			{
 				mc.gotoAndPlay(frame);
 			}
+			
 			//当前swf重新播放
 			internal function stopBtnClick():void
 			{
@@ -539,6 +632,7 @@
 				btnPlay.visible=false;
 				btnPause.visible=true;
 			}
+			
 			//上一页
 			internal function prePage():void
 			{
@@ -555,17 +649,23 @@
 					previous();
 				}				
 			}
+			
 			private function previous():void
 			{
 				if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 				{					
 					treeMenu.expandChildrenOf(treeMenu.selectedItem,true);
 				}
-				var temp:Object=treeMenu.selectedItem;					
+				if(tempItem!=null)
+				{
+					treeMenu.selectedItem=tempItem;
+					tempItem=null;
+				}
+				var temp:Object=treeMenu.selectedItem;				
 				treeMenu.selectedIndex=treeMenu.selectedIndex-1; 
-				if(treeMenu.selectedItem.@id==undefined)
+				if(treeMenu.selectedItem.@type=="chapter" && treeMenu.selectedItem.@hasFlash=="false")
                 {
-                	if(treeMenu.selectedItem==treeMenu.getParentItem(temp))
+                	if(treeMenu.selectedItem==treeMenu.getParentItem(temp) && treeMenu.selectedIndex!=0)
                 	{
                 		treeMenu.selectedIndex=treeMenu.selectedIndex-1;
                 	}                	
@@ -578,11 +678,12 @@
 				}              				
  				treeMenu.dispatchEvent(new ListEvent(ListEvent.CHANGE));
 			}
+			
 			//下一页
 			internal function nextPage():void
 			{
 				if(treeMenu.selectedItem.@type=="template"&&treeMenu.selectedItem.@isMultipage=="true")
-				{						
+				{				
 					var result:String=app.nextPage();
 					if(result=="last")
 					{
@@ -594,21 +695,20 @@
 					next();
 				}				
 			}
+			
 			private function next():void
 			{
 				if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 				{
 					//Alert.show("当前项关闭","调试");	
 					treeMenu.expandChildrenOf(treeMenu.selectedItem,true);
-				}				
-				if(treeMenu.selectedIndex==0)
-				{
-					treeMenu.selectedIndex=treeMenu.selectedIndex+2;
 				}
-				else
+				if(tempItem!=null)
 				{
-					treeMenu.selectedIndex=treeMenu.selectedIndex+1;
-				}	
+					treeMenu.selectedItem=tempItem;
+					tempItem=null;
+				}				
+				treeMenu.selectedIndex=treeMenu.selectedIndex+1;
 				//Alert.show(treeMenu.selectedIndex.toString(),"调试");	
 				if(treeMenu.dataDescriptor.isBranch(treeMenu.selectedItem)&&!treeMenu.isItemOpen(treeMenu.selectedItem))
 				{
@@ -617,16 +717,19 @@
 				}		
 				treeMenu.dispatchEvent(new ListEvent(ListEvent.CHANGE));
 			}
+			
 			//progressBar 点击鼠标开始拖动时触发
 			internal function onPress():void
 			{
 				pause();							
 			}
+			
 			//拖动结束松开鼠标时触发
 			internal function onRelease():void
 			{
 				play();									
 			}
+			
 			//显示字幕
 			private var captionWin:captionWindow=new captionWindow();
 			private function displayCaption():void
@@ -637,8 +740,8 @@
 					var point:Point=new Point();								
 					point=swfBox.localToGlobal(point);
 					captionWin.x=point.x;				
-					captionWin.y=point.y+388;
-					captionWin.width=swfBox.width-20;
+					captionWin.y=this.height-87-53-5;
+					captionWin.width=swfBox.width-10;
 				}
 				else
 				{
@@ -669,15 +772,18 @@
                 	btnShutSound.label="静音";
             	}
 			}
+			
 			//关闭当前程序的html页面
 			public function exit():void
 			{//一些浏览器不支持通过 navigateToURL() 方法使用 javascript 协议。而应考虑使用 ExternalInterface API 的 call() 方法在包含该内容的 HTML 页中调用 JavaScript 方法。
 				navigateToURL(new URLRequest("javascript:window.close()"),"_self");
 			}
+			
 			public function showHelp():void
 			{
 				navigateToURL(new URLRequest("http://www.baidu.com"),"_blank");
 			}
+			
 			public function onKeyUp(evt:KeyboardEvent):void
 			{//点空格键暂停或播放动画
 				if(evt.charCode==32)
@@ -695,5 +801,5 @@
 		]]>
 	</mx:Script>
 	
-	<mx:HTTPService id="httpSvr" url="config.xml" result="resultHandler(event)" resultFormat="xml"/>
+	<mx:HTTPService id="httpSvr" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 </mx:Application>
