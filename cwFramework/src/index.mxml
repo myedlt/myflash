@@ -46,7 +46,7 @@
 						<mx:Button id="btnPlay" label="播放" icon="@Embed(source='image/button_play_icon.png')" width="36" height="36" x="432" y="39" click="play()"/>
 						<mx:Button label="下一页" icon="@Embed(source='image/button_next_icon.png')" width="36" height="36" x="486" y="39" click="nextPage()"/>						
 						<mx:Button id="btnShutSound" label="静音" icon="@Embed(source='image/colume.jpg')" width="36" height="36" x="539" y="39" click="shutSound()"/>						
-						<mx:Button label="换肤" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1"/>
+						<mx:Button label="系统配置" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1"/>
 						<mx:Button label="全屏" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
 						<mx:Button label="字幕" icon="@Embed(source='image/button_text_icon.png')" width="36" height="36" x="240" y="39" id="button2" click="displayCaption()"/>
 						<mx:Button label="帮助" icon="@Embed(source='image/button_help_icon.png')" width="36" height="36" x="78.9" y="39" id="button4" click="showHelp()"/>
@@ -71,7 +71,7 @@
 			<mx:RemoveChild target="{button3}"/>
 			<mx:RemoveChild target="{button2}"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="110" y="50" label="返回主页" height="27" width="71.9" click="normalscreen()"/>
+				<mx:Button x="198.05" y="50" label="返回主页" height="27" width="71.9" click="normalscreen()"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{mainVBox}" name="width" value="100%"/>
 			<mx:SetProperty target="{hdividedbox1}" name="height" value="85%"/>
@@ -83,7 +83,7 @@
 			<mx:SetStyle target="{swfBox}" name="verticalAlign" value="middle"/>
 			<mx:RemoveChild target="{spacer1}"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="200" y="50" label="再次全屏" height="27" width="73" click="again()"/>
+				<mx:Button x="109.05" y="50" label="再次全屏" height="27" width="73" click="again()"/>
 			</mx:AddChild>
 		</mx:State>
 		
@@ -111,6 +111,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.messaging.config.ConfigMap;
 			import mx.events.TreeEvent;	
 			import mx.controls.Alert;		
 			import mx.managers.SystemManager;						
@@ -188,7 +189,7 @@
 				loadHandle(courseItem);
 				setBreadCrumb(courseItem);									
 				btnPlay.visible=false;
-				timer=new Timer(10);//定时器,每隔10毫秒执行一次timerHandler事件			
+				timer=new Timer(40);//定时器,每隔10毫秒(一帧83.3毫秒)执行一次timerHandler事件			
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);	
 			    this.stage.focus=this;//激活键盘状态
 				this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
@@ -218,7 +219,7 @@
 				if(captionWin.isPopUp)
 				{   
 					captionWin.x=(this.width-captionWin.width)/2;
-					captionWin.y=this.height-87-53-9;						
+					captionWin.y=this.height-87-53-12;						
 				}
 			}
 			
@@ -327,17 +328,24 @@
 				}
 			}
 			
-			//tree change事件		                 
-            internal function treeMenuChanged(event:Event):void 
-            {
-            	progress.setProgress(0,0);//progressBar重置 
-            	slider.value=0;
-            	if(soundChan!=null)
+			public function stopSound():void
+			{
+				if(soundChan!=null)
             	{
             		soundChan.stop();
             		soundChan=null;
             		this.stage.removeEventListener(Event.ENTER_FRAME,captionHandler);
             	}  
+			}
+			
+			//tree change事件		                 
+            internal function treeMenuChanged(event:Event):void 
+            {
+            	//progress重置 
+            	progress.setProgress(0,0);
+            	slider.value=0;
+            	stopSound();
+            	
             	if(btnPlay.visible==true)
 				{
 					btnPlay.visible=false;
@@ -375,15 +383,6 @@
                 	loader.load(new URLRequest(courseItem.@xml));
                 	loader.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
                 	loader.addEventListener(Event.COMPLETE,controlFileHandler);
-                	sound=new Sound();
-                	sound.load(new URLRequest(courseItem.@mp3));
-                	sound.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
-                	soundChan=sound.play();
-                	soundTran=soundChan.soundTransform;
-                	soundTran.volume=columeSlider.value;
-                	soundChan.soundTransform=soundTran;
-                	this.stage.addEventListener(Event.ENTER_FRAME,captionHandler);
-                	swfC.source=courseItem.@swf;
                 }
                 else
                 {
@@ -391,6 +390,15 @@
                 	swfC.source=courseItem.@path;
                 	captionWin.message="无字幕...";
                 }               
+           	}
+           	
+           	public function startSound(position:Number):void
+           	{
+                soundChan=sound.play(position);
+              	soundTran=soundChan.soundTransform;
+              	soundTran.volume=columeSlider.value;
+              	soundChan.soundTransform=soundTran;
+              	this.stage.addEventListener(Event.ENTER_FRAME,captionHandler);
            	}
            	
            	public function convertToMS(time:String):Number
@@ -416,7 +424,16 @@
             
             private function controlFileHandler(evt:Event):void
             {
-            	controlFile=XMLList(evt.target.data).section;             	          	
+            	controlFile=XMLList(evt.target.data).section; 
+            	sound=new Sound();
+                sound.load(new URLRequest(courseItem.@mp3));
+                sound.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
+                sound.addEventListener(Event.COMPLETE,soundLoadComplete);
+            }
+            
+            public function soundLoadComplete(evt:Event):void
+            {
+            	swfC.source=treeMenu.selectedItem.@swf; 
             }
             	
             public function ioErrorHandler(evt:IOErrorEvent):void
@@ -464,7 +481,11 @@
   			
   			//定时器处理函数 
 			internal function timerHandler(event:TimerEvent):void
-			{	
+			{
+				if(treeMenu.selectedItem.@type=="synchronizing")
+				{
+					synchronizationHandler();
+				}	
 				currentTime=formatSliderToolTip(mc.currentFrame);			
 				slider.value=mc.currentFrame;	
 				progress.setProgress(mc.currentFrame,mc.totalFrames);											
@@ -505,6 +526,10 @@
 					try
 					{					
 						mc=MovieClip(swfC.content);
+						if(int(controlFile[0].startFrame)==1)
+						{
+							soundHandler(controlFile[0]);
+						}
 						totalTime=formatSliderToolTip(mc.totalFrames);
 						normalHandler();
 					}
@@ -520,6 +545,15 @@
 					errorHandler();
 				}					
 			}	
+			
+			public function soundHandler(item:XML):void
+			{
+				var interval:Number=convertToMS(item.endTime)-convertToMS(item.startTime);
+				startSound(item.startTime);
+				intervalTimer=new Timer(interval,1);
+				intervalTimer.addEventListener(TimerEvent.TIMER,stopSound);
+				intervalTimer.start();
+			}
 			
 			public function normalHandler():void
 			{
@@ -553,6 +587,18 @@
 				{
 					progress.enabled=false;
 				}	
+			}
+			private var intervalTimer:Timer;
+			public function synchronizationHandler():void
+			{
+				for each(var item:XML in controlFile)
+				{
+					if(int(item.startFrame)==mc.currentFrame)
+					{
+						soundHandler(item);
+						break;
+					}
+				}
 			}
 			
 			//进度完成事件处理函数		
