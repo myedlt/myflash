@@ -5,10 +5,9 @@
 		<Chapter name="公司概要" type="chapter" hasFlash="false">
 			<section id="1" name="学习目标(页面模板)" type="template" hasFlash="false" path="page-template/courseGoal/courseGoal.swf"/>
 			<section id="2" name="公司背景及发展状况介绍(flash)" type="flash" path="course/c02.swf"/>
-			<section id="3" name="同步测试1" type="synchronizing" swf="course/course03/c02.swf"
+			<section id="3" name="同步测试" type="synchronizing" swf="course/course03/c02.swf"
 					 mp3="course/course03/青花瓷.mp3" xml="course/course03/control.xml"/>	
-			<section id="4" name="同步测试2" type="synchronizing" swf="course/course03/c02.swf"
-					 mp3="course/course03/青花瓷.mp3" xml="course/course03/control.xml"/>		
+			<section id="4" name="组织结构及工作流程" type="flash" path="course/c09.swf"/>		
 			<section id="5" name="小结" type="flash" path="course/c10.swf"/>		
 		</Chapter>
 		<Chapter name="制度指南" type="chapter" hasFlash="false">
