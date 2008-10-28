@@ -9,11 +9,10 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="MyModule.mxml"/>
 <application path="introduce.mxml"/>
-<application path="indexST.mxml"/>
+<application path="MyModule.mxml"/>
 <application path="SkinDemoApp.mxml"/>
-<application path="Navigator.mxml"/>
+<application path="indexST.mxml"/>
 <application path="sandbox.mxml"/>
 <application path="styleManager.mxml"/>
 <application path="index.mxml"/>
