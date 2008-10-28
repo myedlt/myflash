@@ -17,13 +17,8 @@
         	 					<mx:Label text="{currentChapterName}" />
         	 					<mx:Image source="image/linkTransparent.gif"/>
         	 					<mx:Label text="{currentSectionName}"/>
-        	 					<mx:Spacer width="100%" id="spacer1"/>
-        	 					<mx:Label text="选择皮肤:" id="label2"/>
-        	 					<mx:ComboBox id="skinComb" dataProvider="{skinData}" labelField="@name" change="skin_change(event)"/>
-        	 				</mx:HBox>
-        	 				<mx:VBox id="swfBox" horizontalAlign="center" width="100%" height="100%">
-        	 					<mx:SWFLoader id="swfC" unload="unloadHandler()" init="templateInit(event)" complete="completeHandler()" autoLoad="true" scaleContent="true" width="100%" height="100%"/>
-        	 				</mx:VBox>        	 				
+        	 				</mx:HBox>        	 				
+        	 				<mx:SWFLoader id="swfC" unload="unloadHandler()" init="templateInit(event)" complete="completeHandler()" autoLoad="true" scaleContent="true" horizontalAlign="center" width="100%" height="100%"/>
         	 			</mx:VBox>        				
    					</mx:HDividedBox>
    					
@@ -46,7 +41,7 @@
 						<mx:Button id="btnPlay" label="播放" icon="@Embed(source='image/button_play_icon.png')" width="36" height="36" x="432" y="39" click="play()"/>
 						<mx:Button label="下一页" icon="@Embed(source='image/button_next_icon.png')" width="36" height="36" x="486" y="39" click="nextPage()"/>						
 						<mx:Button id="btnShutSound" label="静音" icon="@Embed(source='image/colume.jpg')" width="36" height="36" x="539" y="39" click="shutSound()"/>						
-						<mx:Button label="系统配置" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1"/>
+						<mx:Button label="系统配置" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1" click="sysConfig()"/>
 						<mx:Button label="全屏" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
 						<mx:Button label="字幕" icon="@Embed(source='image/button_text_icon.png')" width="36" height="36" x="240" y="39" id="button2" click="displayCaption()"/>
 						<mx:Button label="帮助" icon="@Embed(source='image/button_help_icon.png')" width="36" height="36" x="78.9" y="39" id="button4" click="showHelp()"/>
@@ -63,8 +58,6 @@
 		<mx:State name="fullscreen" basedOn="main">
 			<mx:RemoveChild target="{image1}"/>
 			<mx:RemoveChild target="{panel1}"/>
-			<mx:RemoveChild target="{label2}"/>
-			<mx:RemoveChild target="{skinComb}"/>
 			<mx:RemoveChild target="{button5}"/>
 			<mx:RemoveChild target="{button4}"/>
 			<mx:RemoveChild target="{button1}"/>
@@ -80,8 +73,7 @@
 			</mx:AddChild>
 			<mx:SetStyle target="{mainVBox}" name="horizontalAlign" value="center"/>
 			<mx:SetStyle target="{mainVBox}" name="verticalAlign" value="middle"/>
-			<mx:SetStyle target="{swfBox}" name="verticalAlign" value="middle"/>
-			<mx:RemoveChild target="{spacer1}"/>
+			<mx:SetStyle target="{swfC}" name="verticalAlign" value="middle"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
 				<mx:Button x="109.05" y="50" label="再次全屏" height="27" width="73" click="again()"/>
 			</mx:AddChild>
@@ -96,6 +88,7 @@
 			</mx:AddChild>
 			<mx:SetStyle name="verticalAlign" value="middle"/>
 		</mx:State>
+		
 		<mx:State name="again" basedOn="fullscreen">
 			<mx:RemoveChild target="{image2}"/>
 			<mx:RemoveChild target="{controlCanvas}"/>
@@ -308,20 +301,20 @@
 				}
 			}
 			
-			internal function skin_change(evt:ListEvent):void
-			{
-				this.unloadallStyle();			
-				skinItem=XMLList(ComboBox(evt.currentTarget).selectedItem);
-				StyleManager.loadStyleDeclarations(skinItem.@path,true);
-			}
+//			internal function skin_change(evt:ListEvent):void
+//			{
+//				this.unloadallStyle();			
+//				skinItem=XMLList(ComboBox(evt.currentTarget).selectedItem);
+//				StyleManager.loadStyleDeclarations(skinItem.@path,true);
+//			}
 			
-			internal function unloadallStyle():void			
-			{
-				for each(var skinItem:XML in this.skinComb.dataProvider)
-				{					
-					StyleManager.unloadStyleDeclarations(skinItem.@path,true);
-				}				
-			}
+//			internal function unloadallStyle():void			
+//			{
+//				for each(var skinItem:XML in this.skinComb.dataProvider)
+//				{					
+//					StyleManager.unloadStyleDeclarations(skinItem.@path,true);
+//				}				
+//			}
 			
 			//httpservice结果处理函数
 			internal function resultHandler(event:ResultEvent):void
@@ -608,9 +601,6 @@
 			//swfloader complete事件处理函数(swf加载完成时调度)
 			internal function completeHandler():void
 			{
-				var id:String=treeMenu.selectedItem.@id; 
-				readedCourseInfo.push(id);
-				
 				if(treeMenu.selectedIndex==-1)
 				{
 					treeMenu.selectedIndex=1;	
@@ -629,7 +619,7 @@
 					}
 					catch(e:Error)
 					{
-						Alert.okLabel="确定";
+						Alert.okLabel="确定";						
 						Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash版本有关.","提示");
 						errorHandler();
 					}		
@@ -637,7 +627,8 @@
 				else if(treeMenu.selectedItem.@isMultipage!="true")
 				{ 
 					errorHandler();
-				}					
+				}
+				writeLog();	//写日志				
 			}	
 			
 			public function soundHandler(item:XML):void
@@ -878,12 +869,12 @@
 			{
 				if(!captionWin.isPopUp)
 				{
-					PopUpManager.addPopUp(captionWin,swfBox);
+					PopUpManager.addPopUp(captionWin,swfC);
 					var point:Point=new Point();								
-					point=swfBox.localToGlobal(point);
+					point=swfC.localToGlobal(point);
 					captionWin.x=point.x;				
 					captionWin.y=this.height-87-53-5;
-					captionWin.width=swfBox.width-10;
+					captionWin.width=swfC.width-10;
 				}
 				else
 				{
@@ -943,10 +934,37 @@
 			
 			public function writeLog():void
 			{
-				
+				var flag:int=0;
+				for(var i:int=0;i<readedCourseInfo.length;i++)
+				{
+					if(treeMenu.selectedItem.@id==readedCourseInfo[i])
+					{
+						flag=1;
+						break;
+					}
+				}
+				if(flag==0)
+				{
+					treeMenu.setItemIcon(treeMenu.selectedItem,readedIcon,null);
+					readedCourseInfo.push(String(treeMenu.selectedItem.@id));
+				}
+			}
+			
+			private function sysConfig():void
+			{
+				navigateToURL(new URLRequest("config/sysConfig.html"),"_self");
 			}
 		]]>
 	</mx:Script>
-	
+	<mx:Style>
+        Alert {
+            backgroundAlpha: 0.3;
+            backgroundColor: red;
+            borderAlpha: 0.3;
+            borderColor: red;
+            dropShadowEnabled: false;
+            font-size:12;
+        }
+    </mx:Style>
 	<mx:HTTPService id="httpSvr" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 </mx:Application>
