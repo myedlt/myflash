@@ -90,7 +90,8 @@
 		.myFont {font-size:15}
 	</mx:Style>
 	<mx:WipeLeft id="myWL" duration="3000" />
-	<mx:Button x="22" y="119" label="变量绑定" click="updateText()" width="118"  rollOverEffect="myWL"/>
+	<mx:Button x="22" y="119" label="变量绑定" click="updateText()" width="118"  rollOverEffect="myWL" />
+	<mx:Button x="22" y="148" label="按钮放大" width="118"  mouseDownEffect="{myResize}" />
 	<mx:Button x="22" y="89" label="文字动画" click="aniText()" width="118"/>
 	<mx:TextArea x="22" y="23" id="myText" editable="false" text="我走，我走走走！" height="25" width="118"/>  
 	<mx:TextArea x="22" y="56" id="myTextBind" editable="false" text="{myText.text}" height="25" width="118"/>
@@ -107,23 +108,15 @@
 		<mx:Canvas label="" width="100%" height="100%">
 		</mx:Canvas>
 	</mx:ViewStack>
-	<mx:Panel x="363" y="126" width="192" height="137" layout="absolute">
-		<mx:TextInput x="67" y="10" width="95" id="postcode"/>
-		<mx:Label x="10" y="10" text="邮编：" width="49" fontSize="12"/>
-		<mx:Label x="10" y="47" text="电话：" width="49" fontSize="12"/>
-		<mx:TextInput x="67" y="47" width="95" id="phone"/>
-	</mx:Panel>
-	<MyComps:MyComboBox x="22" y="149" width="118" height="73"/>
 	<mx:Fade id="myFade" duration="5000" />
-	<mx:Image x="230" y="271" width="97" height="145" source="assets/0529_389706.jpg" creationCompleteEffect="myFade"/>
-	<mx:ButtonBar x="22" y="230" width="238" height="33" >
+	<mx:ButtonBar x="317" y="120" width="238" height="33" >
 		<mx:dataProvider>
 			<mx:String>见龙在田</mx:String>
 			<mx:String>飞龙在天</mx:String>
 			<mx:String>亢龙有悔</mx:String>
 		</mx:dataProvider>
 	</mx:ButtonBar>
-	<mx:ViewStack x="22" y="430" id="viewstack2" width="77" height="84">
+	<mx:ViewStack x="258" y="21" id="viewstack2" width="77" height="84">
 		<mx:Canvas label="View 1" width="100%" height="100%">
 		</mx:Canvas>
 		<mx:Canvas label="" width="100%" height="100%">
@@ -131,34 +124,14 @@
 		<mx:Canvas label="" width="100%" height="100%">
 		</mx:Canvas>
 	</mx:ViewStack>
-	<mx:HRule x="203" y="174" height="30" width="118"/>
-	<mx:LinkButton x="168" y="191" label="LinkButton"/>
-	<mx:DateChooser x="574.85" y="339" height="158" width="191.35"/>
-	<mx:Accordion x="574.85" y="105" width="191.39394" height="201.87878" resizeToContent="true">
-		<mx:Canvas label="上海" width="100%" height="100%">
-			<mx:Button x="10" y="10" label="Button"/>
-		</mx:Canvas>
-		<mx:VBox label="A" width="100%" height="100%">
-			<mx:LinkButton label="LinkButton"/>
-			<mx:LinkButton label="LinkButton"/>
-			<mx:LinkButton label="LinkButton"/>
-			<mx:LinkButton label="LinkButton"/>
-			<mx:LinkButton label="LinkButton"/>
-		</mx:VBox>
-	</mx:Accordion>
+	<mx:HRule x="159" y="111" height="30" width="118"/>
+	<mx:LinkButton x="159" y="131" label="LinkButton"/>
 	<mx:Button x="628" y="22" label="Darkroom" click="switchToDarkRoom()" width="138.2"/>
 	<mx:Button x="628" y="48" label="HuHJ" click="switchToMain()"/>
 	<mx:Button x="704.2" y="48" label="Yahoo" click="switchToYahoo()"/>
 	<mx:Button x="716.2" y="74" label="OSX" click="switchToOSX()"/>
 	<mx:Button x="628" y="74" label="Windows" click="switchToWindows()" width="78"/>
-	<mx:Accordion x="22" y="271" width="200" height="121" resizeToContent="true">
-		<mx:Canvas label="Accordion Pane 1" width="100%" height="100%">
-			<mx:Button x="10" y="10" label="Button"/>
-			<mx:Button x="10" y="40" label="Button"/>
-			<mx:Button x="10" y="70" label="Button"/>
-		</mx:Canvas>
-	</mx:Accordion>
-	<mx:List width="91" height="145" x="159" y="21">
+	<mx:List width="91" height="84" x="159" y="21">
 		<mx:dataProvider>
 			<mx:Array>
 				<mx:String>中国</mx:String>
@@ -168,14 +141,68 @@
 			</mx:Array>
 		</mx:dataProvider>
 	</mx:List>
-	<mx:Button x="149" y="400" label="GetChild" id="GetChild" click="getMyChild()"/>
-	<mx:Text x="22" y="400" text="Text" width="125" height="22" id="Name"/>
+	<mx:Button x="693.2" y="126" label="GetChild" id="GetChild" click="getMyChild()"/>
+	<mx:Text x="574.85" y="128" text="Text" width="110.35" height="22" id="Name"/>
 	<ns3:MyContainer x="363" y="283">
 		<mx:VBox>
 			<mx:Button label="Button"/>
 		</mx:VBox>		
 	</ns3:MyContainer>
-
+	<mx:TabNavigator x="22" y="178" width="745.2" height="384">
+		<mx:Canvas label="Tab 1" width="100%" height="100%">
+			<mx:Accordion x="10" y="25" width="200" height="121" resizeToContent="true">
+				<mx:Canvas label="Accordion Pane 1" width="100%" height="100%">
+					<mx:Button x="10" y="10" label="Button"/>
+					<mx:Button x="10" y="40" label="Button"/>
+					<mx:Button x="10" y="70" label="Button"/>
+				</mx:Canvas>
+			</mx:Accordion>
+			<mx:DateChooser x="232.85" y="25" height="158" width="191.35"/>
+			<mx:Accordion x="449.85" y="25" width="191.39394" height="201.87878" resizeToContent="true">
+				<mx:Canvas label="上海" width="100%" height="100%">
+					<mx:Button x="10" y="10" label="Button"/>
+				</mx:Canvas>
+				<mx:VBox label="A" width="100%" height="100%">
+					<mx:LinkButton label="LinkButton"/>
+					<mx:LinkButton label="LinkButton"/>
+					<mx:LinkButton label="LinkButton"/>
+					<mx:LinkButton label="LinkButton"/>
+					<mx:LinkButton label="LinkButton"/>
+				</mx:VBox>
+			</mx:Accordion>
+		</mx:Canvas>
+		<mx:Canvas label="" width="100%" height="100%">
+			<mx:Form x="10" y="10" width="192">
+				<mx:FormHeading label="Heading" textAlign="left"/>
+				<mx:FormItem label="Label">
+					<mx:TextInput width="118"/>
+				
+				</mx:FormItem>
+				<mx:FormItem label="Label">
+					<mx:TextInput width="118"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:TitleWindow x="230.85" y="10" width="325" height="143" layout="absolute" title="TitleWindow" id="myTitleWindow">
+				<mx:TabNavigator x="0" y="0" width="200" height="200">
+					<mx:Canvas label="Tab 1" width="100%" height="100%">
+					</mx:Canvas>
+				</mx:TabNavigator>
+			</mx:TitleWindow>
+		</mx:Canvas>
+		<mx:HDividedBox label="" width="100%" height="100%">
+			<mx:Image width="97" height="145" source="assets/0529_389706.jpg" creationCompleteEffect="myFade"/>
+			<MyComps:MyComboBox width="118" height="145"/>
+			<mx:Panel width="164" height="137" layout="absolute">
+				<mx:TextInput x="67" y="10" width="67" id="postcode"/>
+				<mx:Label x="10" y="10" text="邮编：" width="49" fontSize="12"/>
+				<mx:Label x="10" y="47" text="电话：" width="49" fontSize="12"/>
+				<mx:TextInput x="67" y="47" width="67" id="phone"/>
+			</mx:Panel>
+		</mx:HDividedBox>
+	</mx:TabNavigator>
+	<mx:Resize id="myResize" widthBy="10" heightBy="10" duration="200">
+		
+	</mx:Resize>
 
 
 </mx:Application>
