@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()" backgroundColor="#FFFFFF" currentState="header">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()" currentState="header">
 	<mx:states>		
 		<mx:State name="main">				
 			<mx:RemoveChild target="{swfI}"/>
@@ -205,12 +205,12 @@
 								
 				currentState = "main";											
 				this.callLater(expandAllNode);//在 FlashPlayer没有重绘之前，有些函数调用的时候，实际的组件并没有重新生成好。任何一个Flex组件都有一个callLater(method:Function,args:Array = null)方法的
-				courseItem=XMLList((treeMenuData[0].section)[0]);//初始值,默认显示第一章的第一节课内容	
 				totalPage=getTotalPages();
+				courseItem=XMLList((treeMenuData[0].section)[0]);//初始值,默认显示第一章的第一节课内容	
 				loadHandle(courseItem);
 				setBreadCrumb(courseItem);									
 				btnPlay.visible=false;
-				timer=new Timer(40);//定时器,每隔10毫秒(一帧83.3毫秒)执行一次timerHandler事件			
+				timer=new Timer(60);//定时器,每隔10毫秒(一帧83.3毫秒)执行一次timerHandler事件			
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);	
 			    this.stage.focus=this;//激活键盘状态
 				this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
@@ -974,7 +974,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:Style>
+	<!--<mx:Style>
         Alert {
             backgroundAlpha: 0.3;
             backgroundColor: red;
@@ -983,6 +983,7 @@
             dropShadowEnabled: false;
             font-size:12;
         }
-    </mx:Style>
+    </mx:Style>-->
+    <mx:Style source="css/windowsXPSkin/windowsXP.css"/>
 	<mx:HTTPService id="httpSvr" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 </mx:Application>
