@@ -42,7 +42,7 @@
 						<mx:Button label="下一页" icon="@Embed(source='image/button_next_icon.png')" width="36" height="36" x="486" y="39" click="nextPage()"/>						
 						<mx:Button id="btnShutSound" label="静音" icon="@Embed(source='image/colume.jpg')" width="36" height="36" x="539" y="39" click="shutSound()"/>						
 						<mx:Button label="系统配置" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1" click="popupSysConfig()"/>
-						<mx:Button label="精简模式" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
+						<mx:Button label="精简模式" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="simpleModel()" id="button3"/>
 						<mx:Button label="字幕" icon="@Embed(source='image/button_text_icon.png')" width="36" height="36" x="240" y="39" id="button2" click="displayCaption()"/>
 						<mx:Button label="帮助" icon="@Embed(source='image/button_help_icon.png')" width="36" height="36" x="78.9" y="39" id="button4" click="showHelp()"/>
 						<mx:Button label="退出" icon="@Embed(source='image/button_exit_icon.png')" width="36" height="36" toolTip="退出" x="25.9" y="39" click="exit()" id="button5"/>
@@ -55,7 +55,7 @@
 			<mx:SetProperty name="layout" value="absolute"/>
 		</mx:State>
 		
-		<mx:State name="fullscreen" basedOn="main">
+		<mx:State name="simpleModel" basedOn="main">
 			<mx:RemoveChild target="{image1}"/>
 			<mx:RemoveChild target="{panel1}"/>
 			<mx:RemoveChild target="{button5}"/>
@@ -75,7 +75,7 @@
 			<mx:SetStyle target="{mainVBox}" name="verticalAlign" value="middle"/>
 			<mx:SetStyle target="{swfC}" name="verticalAlign" value="middle"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="109.05" y="50" label="全屏显示" height="27" width="81" click="again()"/>
+				<mx:Button x="109.05" y="50" label="全屏显示" height="27" width="81" click="fullscreen()"/>
 			</mx:AddChild>
 		</mx:State>
 		
@@ -89,7 +89,7 @@
 			<mx:SetStyle name="verticalAlign" value="middle"/>
 		</mx:State>
 		
-		<mx:State name="again" basedOn="fullscreen">
+		<mx:State name="fullscreen" basedOn="simpleModel">
 			<mx:RemoveChild target="{image2}"/>
 			<mx:RemoveChild target="{controlCanvas}"/>
 			<mx:SetProperty target="{hdividedbox1}" name="height" value="100%"/>
@@ -163,9 +163,9 @@
 			private var tempItem:Object=null;
 			private var readedCourseInfo:Array=new Array();
 			private var so:SharedObject;
-			private var captionWin:captionWindow=new captionWindow();
-			private var sysConfigWin:sysConfig=new sysConfig();
+			private var captionWin:captionWindow=new captionWindow();			
 			private var oldSkinUrl:String;
+			public const DEFAULT_SKIN:String="css/default/defaultSkin.swf";
 			
 			private function init():void
 			{
@@ -184,7 +184,7 @@
 					}
 					else
 					{
-						oldSkinUrl="css/default/defaultSkin.swf";
+						oldSkinUrl=DEFAULT_SKIN;
 						StyleManager.loadStyleDeclarations(oldSkinUrl,true);
 					}
 					if(so.data.readedInfo==null)
@@ -198,7 +198,7 @@
 				}
 			}
 			
-			internal function main():void
+			public function main():void
 			{	
 				try
 				{//停止片头播放
@@ -219,7 +219,18 @@
 				timer=new Timer(60);//定时器,每隔10毫秒(一帧83.3毫秒)执行一次timerHandler事件			
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);	
 			    this.stage.focus=this;//激活键盘状态
-				this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
+				
+				if(so!=null&&so.data.shortcutPS!=null)
+				{
+					if(so.data.shortcutPS==true)
+					{
+						this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
+					}					
+				}
+				else
+				{
+					this.addEventListener(KeyboardEvent.KEY_UP,onKeyUp);
+				}
 			}
 					
 			internal function popupCourseMenu():void
@@ -238,9 +249,9 @@
 				}			
 			}
 			
-			internal function fullscreen():void
+			internal function simpleModel():void
 			{
-				this.currentState="fullscreen";						
+				this.currentState="simpleModel";						
 				coursemenuWin=new courseMenu();
 				coursemenuWin.addChild(treeMenu);
 				if(captionWin.isPopUp)
@@ -265,15 +276,15 @@
 				}
 			}
 			
-			public function again():void
+			public function fullscreen():void
 			{
-				this.currentState="again";	
+				this.currentState="fullscreen";	
 				this.stage.displayState=StageDisplayState.FULL_SCREEN;
 			}
 			
 			public function back():void
 			{
-				fullscreen();	
+				simpleModel();	
 			}
 			
 			//展开所有节点
@@ -350,6 +361,21 @@
 			}
 			
 			private function onItemRollOver(event:ListEvent):void
+			{
+				if(so!=null&&so.data.showMenuItemTip!=null)
+				{
+					if(so.data.showMenuItemTip==true)
+					{
+						itemRollOver(event);
+					}					
+				}
+				else
+				{
+					itemRollOver(event);
+				}				
+			}
+			
+			private function itemRollOver(event:ListEvent):void
 			{
 				var item:XML = event.itemRenderer.data as XML;
 				event.target.toolTip = null;
@@ -467,6 +493,25 @@
            	}
            	
            	public function readedIconFun(item:Object):*
+           	{
+           		if(so!=null&&so.data.markReaded!=null)
+				{
+					if(so.data.markReaded==true)
+					{
+						return iconFunction(item);
+					}
+					else
+					{
+						return defaultLeafIcon;
+					}
+				}
+				else
+				{
+					return iconFunction(item);
+				}
+           	}
+           	
+           	private function iconFunction(item:Object):*
            	{
            		var node:XML=item as XML;
            		var returnIcon:Class=defaultLeafIcon;
@@ -985,13 +1030,20 @@
 				}
 				if(flag==0)
 				{
-					treeMenu.setItemIcon(treeMenu.selectedItem,readedIcon,null);
+					if(so!=null&&so.data.markReaded!=null)
+					{
+						if(so.data.markReaded==true)
+						{
+							treeMenu.setItemIcon(treeMenu.selectedItem,readedIcon,null);
+						}						
+					}					
 					readedCourseInfo.push(String(treeMenu.selectedItem.@id));
 				}
 			}
 			
 			private function popupSysConfig():void
 			{
+				var sysConfigWin:sysConfig=new sysConfig();
 				sysConfigWin.setApp(this);				
 				PopUpManager.addPopUp(sysConfigWin,this,true);
 				PopUpManager.centerPopUp(sysConfigWin);
