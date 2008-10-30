@@ -22,6 +22,17 @@
 			private function close():void
 			{
 				PopUpManager.removePopUp(this);
+				if(lso!=null&&lso.data.currentSkin!=null)
+				{
+					if(lso.data.currentSkin!=skinComb.selectedItem.path)
+					{
+						this.app.skinChange(lso.data.currentSkin);
+					}					
+				}
+				else
+				{
+					app.skinChange(app.DEFAULT_SKIN);
+				}
 			}
 			private function init():void
 			{
@@ -86,8 +97,8 @@
 				lso.data.bgMusic=bgMusic.selected;
 				
 				lso.flush();
-				close();
-				this.app.currentState="main";
+				PopUpManager.removePopUp(this);
+				this.app.main();
 			}
 			private function restore():void
 			{
@@ -95,9 +106,13 @@
 				hideReaded.selected=false;
 				showMenuItemTip.selected=true;
 				playOption.selectedValue=0;
-				shortcutPS.selected=true;
-				currentSkinIndex=0;
+				shortcutPS.selected=true;				
 				bgMusic.selected=false;
+				if(skinComb.selectedIndex!=0)
+				{
+					skinComb.selectedIndex=0;
+					skinComb.dispatchEvent(new ListEvent(ListEvent.CHANGE));
+				}				
 			}			
 		]]>
 	</mx:Script>
