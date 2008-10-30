@@ -32,7 +32,7 @@
 						<mx:Label id="total_time" width="52" height="25" fontSize="13" x="239.95" y="6" text="{totalTime}" textAlign="center"/>
 						<mx:Label id="current_time" width="52" height="25" fontSize="13" x="176.9" y="6" text="{currentTime}" textAlign="center"/>
 						<mx:ProgressBar id="progress" mode="manual" source="{swfC}" complete="progressComplete()" minimum="0" maximum="{mc.totalFrames}" labelPlacement="left" label="播放" width="238.24176" height="24.505493" fontSize="15" x="319" y="6.5"/>
-						<mx:HSlider id="slider" liveDragging="true" dataTipFormatFunction="formatSliderToolTip" change="slider_change(event)"  minimum="0" maximum="{mc.totalFrames}" thumbPress="onPress()" thumbRelease="onRelease()" buttonMode="true" useHandCursor="true" x="357.3" y="10" width="207.2"/>
+						<mx:HSlider id="slider" liveDragging="true" dataTipFormatFunction="formatSliderToolTip" change="sliderChange(event)"  minimum="0" maximum="{mc.totalFrames}" thumbPress="onPress()" thumbRelease="onRelease()" buttonMode="true" useHandCursor="true" x="357.3" y="10" width="207.2"/>
 						<mx:Label id="current_page" height="22" width="42" textAlign="center" fontSize="14" fontWeight="bold" x="622.05" y="5" text="{currentPage}"/>
 												
 						<mx:Button label="停止" icon="@Embed(source='image/button_stop_icon.png')" width="36" height="36"  x="319" y="39" click="stopBtnClick()" id="button6"/>
@@ -521,13 +521,14 @@
             	sound=new Sound();
                 sound.load(new URLRequest(courseItem.@mp3));
                 sound.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
-                sound.addEventListener(Event.COMPLETE,soundLoadComplete);
+               // sound.addEventListener(Event.COMPLETE,soundLoadComplete);
+                swfC.source=treeMenu.selectedItem.@swf; 
             }
             
-            public function soundLoadComplete(evt:Event):void
-            {
-            	swfC.source=treeMenu.selectedItem.@swf; 
-            }
+//            public function soundLoadComplete(evt:Event):void
+//            {
+//            	swfC.source=treeMenu.selectedItem.@swf; 
+//            }
             	
             public function ioErrorHandler(evt:IOErrorEvent):void
             {
@@ -698,16 +699,40 @@
 			//进度完成事件处理函数		
 			internal function progressComplete():void
 			{
+				if(so!=null&&so.data.playOption!=null)
+				{
+					if(so.data.playOption==0)
+					{
+						continuePlay();
+					}
+					else
+					{
+						stopPlay();
+					}
+				}
+				else
+				{
+					continuePlay();
+				}
+			}
+			
+			private function continuePlay():void
+			{
 				if(currentPage==totalPage)
 				{//如果播放完最后一页则停止
-					timer.stop();
- 					btnPause.visible=false;
- 					btnPlay.visible=true;
+					stopPlay();
 				}
 				else
 				{
 					nextPage();//播放完自动开始下一个swf
-				}				
+				}	
+			}
+			
+			private function stopPlay():void
+			{
+				timer.stop();
+ 				btnPause.visible=false;
+ 				btnPlay.visible=true;
 			}
 			
 			public function pause():void
@@ -743,7 +768,7 @@
 				btnPause.visible=true;
 			}
 			
-			internal function slider_change(evt:SliderEvent):void
+			internal function sliderChange(evt:SliderEvent):void
 			{				
 				progress.setProgress(evt.value,slider.maximum);	
 				gotoFrame(evt.value);			
@@ -967,8 +992,7 @@
 			
 			private function popupSysConfig():void
 			{
-				sysConfigWin.setApp(this);
-				sysConfigWin.setCurrentSkinIndex(oldSkinUrl);
+				sysConfigWin.setApp(this);				
 				PopUpManager.addPopUp(sysConfigWin,this,true);
 				PopUpManager.centerPopUp(sysConfigWin);
 			}
