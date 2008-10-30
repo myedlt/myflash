@@ -13,7 +13,7 @@
 			private var lso:SharedObject;
 			private var app:Object;	
 			[Bindable]
-			private var currentSkinIndex;		
+			private var currentSkinIndex:int;		
 			
 			public function setApp(app:Object):void
 			{
@@ -29,29 +29,75 @@
 				if(lso==null)
 				{
 					Alert.show("无法获取本地共享对象!","Error");
-				}				
-			}
-			public function setCurrentSkinIndex(path:String):void
-			{
-				for(var i:int=0;i<skinList.skin.length;i++)
+				}
+				else
 				{
-					if(path==skinList.skin[i].path)
+					if(lso.data.markReaded!=null)
 					{
-						currentSkinIndex=i;
-						break;
+						markReaded.selected=lso.data.markReaded;
+					}
+					if(lso.data.hideReaded!=null)
+					{
+						hideReaded.selected=lso.data.hideReaded;
+					}
+					if(lso.data.showMenuItemTip!=null)
+					{
+						showMenuItemTip.selected=lso.data.showMenuItemTip;
+					}
+					if(lso.data.playOption!=null)
+					{
+						playOption.selectedValue=lso.data.playOption;
+					}
+					if(lso.data.shortcutPS!=null)
+					{
+						shortcutPS.selected=lso.data.shortcutPS;
+					}
+					if(lso.data.currentSkin!=null)
+					{
+						for(var i:int=0;i<skinList.skin.length;i++)
+						{
+							if(lso.data.currentSkin==skinList.skin[i].path)
+							{
+								currentSkinIndex=i;
+								break;
+							}
+						}
+					}
+					if(lso.data.bgMusic!=null)
+					{
+						bgMusic.selected=lso.data.bgMusic;
 					}
 				}
-			}
+								
+			}			
 			private function onChange(evt:ListEvent):void
 			{
 				this.app.skinChange(ComboBox(evt.currentTarget).selectedItem.path);
 			}
 			private function save():void
 			{
-				var str:String=skinComb.selectedItem.path;
-				lso.data.currentSkin=str;
+				var skinUrl:String=skinComb.selectedItem.path;
+				lso.data.currentSkin=skinUrl;
+				lso.data.markReaded=markReaded.selected;
+				lso.data.hideReaded=hideReaded.selected;
+				lso.data.showMenuItemTip=showMenuItemTip.selected;
+				lso.data.playOption=playOption.selectedValue;
+				lso.data.shortcutPS=shortcutPS.selected;
+				lso.data.bgMusic=bgMusic.selected;
+				
+				lso.flush();
 				close();
 				this.app.currentState="main";
+			}
+			private function restore():void
+			{
+				markReaded.selected=true;
+				hideReaded.selected=false;
+				showMenuItemTip.selected=true;
+				playOption.selectedValue=0;
+				shortcutPS.selected=true;
+				currentSkinIndex=0;
+				bgMusic.selected=false;
 			}			
 		]]>
 	</mx:Script>
@@ -59,17 +105,17 @@
 	
 	<mx:Form width="48%" label="课件选项" borderStyle="solid" cornerRadius="5" top="10" bottom="10" left="10">
 		<mx:FormItem label="课件目录展示">
-			<mx:CheckBox id="readedCourse" label="标示已学课程" selected="true"/>
-			<mx:CheckBox id="hideCourse" label="隐藏已学课程"/>
-			<mx:CheckBox id="showToolTip" label="目录项提示" selected="true"/>
+			<mx:CheckBox id="markReaded" label="标示已学课程" selected="true"/>
+			<mx:CheckBox id="hideReaded" label="隐藏已学课程"/>
+			<mx:CheckBox id="showMenuItemTip" label="目录项提示" selected="true"/>
 		</mx:FormItem>
 		<mx:FormItem label="课件播放模式">
 			<mx:RadioButtonGroup id="playOption"/>
-			<mx:RadioButton label="播放完继续" groupName="playOption" selected="true"/>
-			<mx:RadioButton label="播放完停止" groupName="playOption"/>
+			<mx:RadioButton label="播放完继续" groupName="playOption" selected="true" value="0"/>
+			<mx:RadioButton label="播放完停止" groupName="playOption" value="1"/>
 		</mx:FormItem>
 		<mx:FormItem label="快捷键设置">
-			<mx:CheckBox id="shortcut" label="播放/暂停--空格键【space】" selected="true"/>
+			<mx:CheckBox id="shortcutPS" label="播放/暂停--空格键【space】" selected="true"/>
 		</mx:FormItem>
 	</mx:Form>
 		
@@ -84,6 +130,6 @@
 		
 	<mx:ControlBar horizontalAlign="center" verticalAlign="middle">
 		<mx:Button label="保存设置" click="save()"/>
-		<mx:Button label="恢复默认"/>
+		<mx:Button label="恢复默认" click="restore()"/>
 	</mx:ControlBar>
 </mx:TitleWindow>
