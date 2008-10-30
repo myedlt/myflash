@@ -150,7 +150,8 @@
 			[Embed(source="image/course.gif")]
 			private var defaultLeafIcon:Class;
 			
-			private var timer:Timer;
+			private var timer:Timer;//全局定时器 控制播放进度条
+			private var intervalTimer:Timer;//局部定时器 控制同步时的音频播放
 			private var skinItem:XMLList;
 			private var courseItem:XMLList;
 			private var app:Object;
@@ -233,7 +234,7 @@
 				}
 			}
 					
-			internal function popupCourseMenu():void
+			public function popupCourseMenu():void
 			{	
 				if(!coursemenuWin.isPopUp)
 				{
@@ -249,7 +250,7 @@
 				}			
 			}
 			
-			internal function simpleModel():void
+			public function simpleModel():void
 			{
 				this.currentState="simpleModel";						
 				coursemenuWin=new courseMenu();
@@ -261,7 +262,7 @@
 				}
 			}
 			
-			internal function normalscreen():void
+			public function normalscreen():void
 			{
 				if(coursemenuWin.isPopUp)
 				{
@@ -288,7 +289,7 @@
 			}
 			
 			//展开所有节点
-			internal function expandAllNode():void
+			public function expandAllNode():void
 			{
 				for each(var item:XML in treeMenu.dataProvider)
 				{					
@@ -307,20 +308,24 @@
 //				//Tree(evt.currentTarget).selectedItem=null;//可以连续点击同一节点
 //			}
 			
-			private function columeChange(evt:SliderEvent):void
+			public function columeChange(evt:SliderEvent):void
 			{
 				if(btnShutSound.label=="静音")
 				{
-					if(soundChan!=null)
-            		{
-            			soundTran.volume=evt.value;
-						soundChan.soundTransform=soundTran;
-            		}
+//					if(soundChan!=null)
+//            		{
+//            			soundTran.volume=evt.value;
+//						soundChan.soundTransform=soundTran;
+//            		}
+					//控制全局音量
+					soundTran=SoundMixer.soundTransform;
+					soundTran.volume=evt.value;
+					SoundMixer.soundTransform=soundTran;
 				}
 			}
 			
 			//httpservice结果处理函数
-			internal function resultHandler(event:ResultEvent):void
+			public function resultHandler(event:ResultEvent):void
 			{				
 				header=XMLList(XML(event.result).Header);						
 				treeMenuData=XMLList(XML(event.result).CourseList.Chapter);	
@@ -328,7 +333,7 @@
 			}
 			
 			 //设定面包屑
-			internal function setBreadCrumb(item:XMLList):void
+			public function setBreadCrumb(item:XMLList):void
 			{
 				if(item.parent().@name==undefined)
                 {
@@ -360,7 +365,7 @@
             	}  
 			}
 			
-			private function onItemRollOver(event:ListEvent):void
+			public function onItemRollOver(event:ListEvent):void
 			{
 				if(so!=null&&so.data.showMenuItemTip!=null)
 				{
@@ -375,7 +380,7 @@
 				}				
 			}
 			
-			private function itemRollOver(event:ListEvent):void
+			public function itemRollOver(event:ListEvent):void
 			{
 				var item:XML = event.itemRenderer.data as XML;
 				event.target.toolTip = null;
@@ -390,7 +395,7 @@
 	    		}	
 			}
 			
-			private function onItemRollOut(event:ListEvent):void
+			public function onItemRollOut(event:ListEvent):void
 			{
 				if (event.target.toolTip != null)
 	    		{
@@ -399,7 +404,7 @@
 			}
 			
 			//tree change事件		                 
-            internal function treeMenuChanged(event:Event):void 
+            public function treeMenuChanged(event:Event):void 
             {
             	//progress重置 
             	progress.setProgress(0,0);
@@ -434,7 +439,7 @@
                 setBreadCrumb(courseItem);                       
             } 
             
-           	private function loadHandle(courseItem:XMLList):void
+           	public function loadHandle(courseItem:XMLList):void
            	{
            		if(courseItem.@type=="synchronizing")
                 {
@@ -511,7 +516,7 @@
 				}
            	}
            	
-           	private function iconFunction(item:Object):*
+           	public function iconFunction(item:Object):*
            	{
            		var node:XML=item as XML;
            		var returnIcon:Class=defaultLeafIcon;
@@ -544,7 +549,7 @@
            		return (Number(time.substr(0,2))*60+Number(time.substr(3,5)))*1000;
            	}
            	
-            private function captionHandler(evt:Event):void
+            public function captionHandler(evt:Event):void
             {  
             	var caption:String="无字幕..."; //缓冲变量 
             	for(var i:int=1;i<controlFile.length();i++)
@@ -560,7 +565,7 @@
             	captionWin.message=caption; 
             }
             
-            private function controlFileHandler(evt:Event):void
+            public function controlFileHandler(evt:Event):void
             {
             	controlFile=XMLList(evt.target.data).section; 
             	sound=new Sound();
@@ -581,7 +586,7 @@
             }
             		
 			//格式化progressBar的提示时间:取分钟
-			internal function formatSliderToolTip(value:int):String
+			public function formatSliderToolTip(value:int):String
     		{
     			value=Math.ceil(value / 12);  //flash 12frames/s  			
     			var result:String = (value % 60).toString();
@@ -597,7 +602,7 @@
   			} 
   			  
   			//swfloader删除加载的对象时；或同一 SWFLoader控件执行另一加载，并且在新加载开始之前删除原始内容时调度。
-  			internal function unloadHandler():void
+  			public function unloadHandler():void
   			{
   				if(mc!=null)
   				{	
@@ -606,7 +611,7 @@
   				}				
   			}
   			
-  			internal function getTotalPages():int
+  			public function getTotalPages():int
   			{
   				var count:int=0;
   				for(var i:int=0;i<treeMenuData.length();i++)
@@ -619,7 +624,7 @@
   			}
   			
   			//定时器处理函数 
-			internal function timerHandler(event:TimerEvent):void
+			public function timerHandler(event:TimerEvent):void
 			{
 				if(treeMenu.selectedItem.@type=="synchronizing")
 				{
@@ -631,7 +636,7 @@
 			}	
 					
 			//init事件是在已加载的SWF文件的属性和方法可访问时调度
-			private function templateInit(evt:Event):void
+			public function templateInit(evt:Event):void
 			{
 				if(treeMenu.selectedItem.@type=="template"&&treeMenu.selectedItem.@hasFlash=="true")
 				{//给SystemManager添加applicationComplete事件侦听器														
@@ -639,7 +644,7 @@
 				}
 			}
 			
-			private function appCompleteHandler(evt:Event):void
+			public function appCompleteHandler(evt:Event):void
 			{
 				app=evt.target.application;				
 				app.setApp(this);//把当前application对象传给外部的swf 以便相互通信
@@ -654,7 +659,7 @@
 			}
 			
 			//swfloader complete事件处理函数(swf加载完成时调度)
-			internal function completeHandler():void
+			public function completeHandler():void
 			{
 				if(treeMenu.selectedIndex==-1)
 				{
@@ -728,7 +733,7 @@
 					progress.enabled=false;
 				}	
 			}
-			private var intervalTimer:Timer;
+			
 			public function synchronizationHandler():void
 			{
 				for each(var item:XML in controlFile)
@@ -742,7 +747,7 @@
 			}
 			
 			//进度完成事件处理函数		
-			internal function progressComplete():void
+			public function progressComplete():void
 			{
 				if(so!=null&&so.data.playOption!=null)
 				{
@@ -761,7 +766,7 @@
 				}
 			}
 			
-			private function continuePlay():void
+			public function continuePlay():void
 			{
 				if(currentPage==totalPage)
 				{//如果播放完最后一页则停止
@@ -773,7 +778,7 @@
 				}	
 			}
 			
-			private function stopPlay():void
+			public function stopPlay():void
 			{
 				timer.stop();
  				btnPause.visible=false;
@@ -813,7 +818,7 @@
 				btnPause.visible=true;
 			}
 			
-			internal function sliderChange(evt:SliderEvent):void
+			public function sliderChange(evt:SliderEvent):void
 			{				
 				progress.setProgress(evt.value,slider.maximum);	
 				gotoFrame(evt.value);			
@@ -828,13 +833,13 @@
 				}
 			}
 			
-			internal function gotoFrame(frame:int):void
+			public function gotoFrame(frame:int):void
 			{
 				mc.gotoAndPlay(frame);
 			}
 			
 			//当前swf重新播放
-			internal function stopBtnClick():void
+			public function stopBtnClick():void
 			{
 				gotoFrame(0);
 				if(timer.running==false)
@@ -846,7 +851,7 @@
 			}
 			
 			//上一页
-			internal function prePage():void
+			public function prePage():void
 			{
 				if(treeMenu.selectedItem.@type=="template"&&treeMenu.selectedItem.@isMultipage=="true")
 				{						
@@ -862,7 +867,7 @@
 				}				
 			}
 			
-			private function previous():void
+			public function previous():void
 			{
 				if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 				{					
@@ -892,7 +897,7 @@
 			}
 			
 			//下一页
-			internal function nextPage():void
+			public function nextPage():void
 			{
 				if(treeMenu.selectedItem.@type=="template"&&treeMenu.selectedItem.@isMultipage=="true")
 				{				
@@ -908,7 +913,7 @@
 				}				
 			}
 			
-			private function next():void
+			public function next():void
 			{
 				if(!treeMenu.isItemOpen(treeMenu.getParentItem(treeMenu.selectedItem)))
 				{
@@ -931,19 +936,19 @@
 			}
 			
 			//progressBar 点击鼠标开始拖动时触发
-			internal function onPress():void
+			public function onPress():void
 			{
 				pause();							
 			}
 			
 			//拖动结束松开鼠标时触发
-			internal function onRelease():void
+			public function onRelease():void
 			{
 				play();									
 			}
 			
 			//显示字幕		
-			private function displayCaption():void
+			public function displayCaption():void
 			{
 				if(!captionWin.isPopUp)
 				{
@@ -965,21 +970,29 @@
             	if(btnShutSound.label=="静音")
             	{
             		btnShutSound.setStyle("icon",shutIcon);
-            		if(soundChan!=null)
-            		{
-            			soundTran.volume=0;
-               			soundChan.soundTransform=soundTran;
-            		}
+//            		if(soundChan!=null)
+//            		{
+//            			soundTran.volume=0;
+//               			soundChan.soundTransform=soundTran;
+//            		}
+					//控制全局声音
+					soundTran=SoundMixer.soundTransform;
+					soundTran.volume=0;
+					SoundMixer.soundTransform=soundTran;
                		btnShutSound.label="有音";
             	}
             	else
             	{
             		btnShutSound.setStyle("icon",openIcon);
-            		if(soundChan!=null)
-            		{
-            			soundTran.volume=columeSlider.value;
-                		soundChan.soundTransform=soundTran;
-            		}
+//            		if(soundChan!=null)
+//            		{
+//            			soundTran.volume=columeSlider.value;
+//                		soundChan.soundTransform=soundTran;
+//            		}
+					//控制全局声音
+					soundTran=SoundMixer.soundTransform;
+					soundTran.volume=columeSlider.value;
+					SoundMixer.soundTransform=soundTran;
                 	btnShutSound.label="静音";
             	}
 			}
@@ -987,7 +1000,7 @@
 			//关闭当前程序的html页面
 			public function exit():void
 			{//一些浏览器不支持通过 navigateToURL() 方法使用 javascript 协议。而应考虑使用 ExternalInterface API 的 call() 方法在包含该内容的 HTML 页中调用 JavaScript 方法。
-				navigateToURL(new URLRequest("javascript:window.close()"),"_self");
+				navigateToURL(new URLRequest("javascript:window.opener=null;window.close()"),"_self");//"window.opener=null"使关闭窗口时不弹出确认信息窗口
 			}
 			
 			public function showHelp():void
@@ -1036,12 +1049,16 @@
 						{
 							treeMenu.setItemIcon(treeMenu.selectedItem,readedIcon,null);
 						}						
+					}
+					else
+					{
+						treeMenu.setItemIcon(treeMenu.selectedItem,readedIcon,null);
 					}					
 					readedCourseInfo.push(String(treeMenu.selectedItem.@id));
 				}
 			}
 			
-			private function popupSysConfig():void
+			public function popupSysConfig():void
 			{
 				var sysConfigWin:sysConfig=new sysConfig();
 				sysConfigWin.setApp(this);				
