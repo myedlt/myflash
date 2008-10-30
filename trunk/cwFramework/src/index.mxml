@@ -8,11 +8,11 @@
 				<mx:VBox height="100%" width="900" id="vbox1" horizontalAlign="center" verticalAlign="middle" y="0" horizontalCenter="-1"> 					
 					<mx:Image width="100%" height="78" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1" scaleContent="true" autoLoad="true"/>
 					<mx:HDividedBox liveDragging="true" width="100%" height="100%" id="hdividedbox1" horizontalAlign="center" verticalAlign="middle">
-        	 			<mx:Panel title="课程目录" width="25.5%" height="100%" id="panel1" fontSize="12" horizontalAlign="center" verticalAlign="middle">
+        	 			<mx:Panel title="课程目录" width="25.5%" height="100%" id="panel1" horizontalAlign="center" verticalAlign="middle">
         	 				<mx:Tree id="treeMenu" iconFunction="readedIconFun" itemRollOver="onItemRollOver(event)" itemRollOut="onItemRollOut(event)" width="100%" height="100%" labelField="@name" dataProvider="{treeMenuData}" change="treeMenuChanged(event)" itemOpening="onItemClosing(event)"/>
         	 			</mx:Panel>
         	 			<mx:VBox id="mainVBox" height="100%" width="74.5%" horizontalAlign="center" verticalAlign="middle">
-        	 				<mx:HBox height="30" fontSize="12" verticalAlign="middle" width="100%" id="hbox1">
+        	 				<mx:HBox height="30" verticalAlign="middle" width="100%" id="hbox1">
         	 					<mx:Image source="image/bread.gif"/>
         	 					<mx:Label text="{currentChapterName}" />
         	 					<mx:Image source="image/linkTransparent.gif"/>
@@ -41,13 +41,13 @@
 						<mx:Button id="btnPlay" label="播放" icon="@Embed(source='image/button_play_icon.png')" width="36" height="36" x="432" y="39" click="play()"/>
 						<mx:Button label="下一页" icon="@Embed(source='image/button_next_icon.png')" width="36" height="36" x="486" y="39" click="nextPage()"/>						
 						<mx:Button id="btnShutSound" label="静音" icon="@Embed(source='image/colume.jpg')" width="36" height="36" x="539" y="39" click="shutSound()"/>						
-						<mx:Button label="系统配置" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1" click="sysConfig()"/>
-						<mx:Button label="全屏" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
+						<mx:Button label="系统配置" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="131.95" y="39" id="button1" click="popupSysConfig()"/>
+						<mx:Button label="精简模式" icon="@Embed(source='image/button_book_icon.png')" width="36" height="36" x="185.9" y="39" click="fullscreen()" id="button3"/>
 						<mx:Button label="字幕" icon="@Embed(source='image/button_text_icon.png')" width="36" height="36" x="240" y="39" id="button2" click="displayCaption()"/>
 						<mx:Button label="帮助" icon="@Embed(source='image/button_help_icon.png')" width="36" height="36" x="78.9" y="39" id="button4" click="showHelp()"/>
 						<mx:Button label="退出" icon="@Embed(source='image/button_exit_icon.png')" width="36" height="36" toolTip="退出" x="25.9" y="39" click="exit()" id="button5"/>
 						<mx:HSlider x="700" y="45" width="106" id="columeSlider" liveDragging="true" allowTrackClick="true" minimum="0" maximum="1" change="columeChange(event)" value="0.6"/>
-						<mx:Label text="音量控制" width="67.95" height="20" fontSize="12" x="622" y="48" textAlign="center"/>
+						<mx:Label text="音量控制" width="67.95" height="20" x="622" y="48" textAlign="center"/>
 					</mx:Canvas>					
    				</mx:VBox>
 			</mx:AddChild>
@@ -64,18 +64,18 @@
 			<mx:RemoveChild target="{button3}"/>
 			<mx:RemoveChild target="{button2}"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="198.05" y="50" label="返回主页" height="27" width="71.9" click="normalscreen()"/>
+				<mx:Button x="198.05" y="50" label="返回主页" height="27" width="79.9" click="normalscreen()"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{mainVBox}" name="width" value="100%"/>
 			<mx:SetProperty target="{hdividedbox1}" name="height" value="85%"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="21" y="50" label="课程目录" height="27" click="popupCourseMenu()" width="71"/>
+				<mx:Button x="21" y="50" label="课程目录" height="27" click="popupCourseMenu()" width="80.05"/>
 			</mx:AddChild>
 			<mx:SetStyle target="{mainVBox}" name="horizontalAlign" value="center"/>
 			<mx:SetStyle target="{mainVBox}" name="verticalAlign" value="middle"/>
 			<mx:SetStyle target="{swfC}" name="verticalAlign" value="middle"/>
 			<mx:AddChild relativeTo="{controlCanvas}" position="lastChild">
-				<mx:Button x="109.05" y="50" label="再次全屏" height="27" width="73" click="again()"/>
+				<mx:Button x="109.05" y="50" label="全屏显示" height="27" width="81" click="again()"/>
 			</mx:AddChild>
 		</mx:State>
 		
@@ -104,6 +104,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import component.sysConfig;
 			import mx.managers.ToolTipManager;
 			import flash.net.SharedObject;
 			import mx.events.TreeEvent;	
@@ -130,8 +131,6 @@
 			[Bindable]
 			private var currentSectionName:String;
 			[Bindable]
-			private var skinData:XMLList;
-			[Bindable]
 			private var header:XMLList;	
 			[Bindable]
 			private var currentTime:String="0:00";
@@ -142,16 +141,12 @@
 			[Bindable]
 			private var totalPage:int;
 			
-			[Bindable]
 			[Embed(source="image/button_sound_icon.png")]
 			private var shutIcon:Class;
-			[Bindable]
 			[Embed(source="image/colume.jpg")]
 			private var openIcon:Class;
-			[Bindable]
 			[Embed(source="image/confirm.gif")]
 			private var readedIcon:Class;
-			[Bindable]
 			[Embed(source="image/course.gif")]
 			private var defaultLeafIcon:Class;
 			
@@ -163,16 +158,44 @@
 			private var soundChan:SoundChannel;
 			private var soundTran:SoundTransform;
 			private var controlFile:XMLList;
-			private var coursemenuWindow:courseMenu;	
+			private var coursemenuWin:courseMenu;	
 			private var currentPosition:Number;
 			private var tempItem:Object=null;
 			private var readedCourseInfo:Array=new Array();
 			private var so:SharedObject;
 			private var captionWin:captionWindow=new captionWindow();
+			private var sysConfigWin:sysConfig=new sysConfig();
+			private var oldSkinUrl:String;
 			
 			private function init():void
 			{
 				httpSvr.send();
+				so=SharedObject.getLocal("logInfo","/");
+				if(so==null)
+				{
+					Alert.show("无法创建或获取本地共享对象!","Error");
+				}
+				else
+				{
+					if(so.data.currentSkin!=null)
+					{
+						StyleManager.loadStyleDeclarations(so.data.currentSkin,true);
+						oldSkinUrl=so.data.currentSkin;
+					}
+					else
+					{
+						oldSkinUrl="css/default/defaultSkin.swf";
+						StyleManager.loadStyleDeclarations(oldSkinUrl,true);
+					}
+					if(so.data.readedInfo==null)
+					{
+						so.data.readedInfo=readedCourseInfo;
+					}
+					else
+					{
+						readedCourseInfo=so.data.readedInfo;
+					}
+				}
 			}
 			
 			internal function main():void
@@ -184,23 +207,6 @@
 				catch(e:Error)
 				{
 					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash版本有关.","停止片头播放出错");
-				}
-				
-				so=SharedObject.getLocal("logInfo","/");
-				if(so==null)
-				{
-					Alert.show("无法创建或获取本地共享对象!","Error");
-				}
-				else
-				{
-					if(so.data.readedInfo==null)
-					{
-						so.data.readedInfo=readedCourseInfo;
-					}
-					else
-					{
-						readedCourseInfo=so.data.readedInfo;
-					}
 				}
 								
 				currentState = "main";											
@@ -218,25 +224,25 @@
 					
 			internal function popupCourseMenu():void
 			{	
-				if(!coursemenuWindow.isPopUp)
+				if(!coursemenuWin.isPopUp)
 				{
-					PopUpManager.addPopUp(coursemenuWindow,swfC,false);
+					PopUpManager.addPopUp(coursemenuWin,swfC,false);
 					var point:Point=new Point();					
 					point=swfC.localToGlobal(point);					
-					coursemenuWindow.x=point.x;
-					coursemenuWindow.y=point.y;
+					coursemenuWin.x=point.x;
+					coursemenuWin.y=point.y;
 				}
 				else
 				{
-					PopUpManager.removePopUp(coursemenuWindow);
+					PopUpManager.removePopUp(coursemenuWin);
 				}			
 			}
 			
 			internal function fullscreen():void
 			{
 				this.currentState="fullscreen";						
-				coursemenuWindow=new courseMenu();
-				coursemenuWindow.addChild(treeMenu);
+				coursemenuWin=new courseMenu();
+				coursemenuWin.addChild(treeMenu);
 				if(captionWin.isPopUp)
 				{   
 					captionWin.x=(this.width-captionWin.width)/2;
@@ -246,9 +252,9 @@
 			
 			internal function normalscreen():void
 			{
-				if(coursemenuWindow.isPopUp)
+				if(coursemenuWin.isPopUp)
 				{
-					PopUpManager.removePopUp(coursemenuWindow);
+					PopUpManager.removePopUp(coursemenuWin);
 				}
 				panel1.addChild(treeMenu);
 				this.currentState="main";
@@ -302,27 +308,11 @@
 				}
 			}
 			
-//			internal function skin_change(evt:ListEvent):void
-//			{
-//				this.unloadallStyle();			
-//				skinItem=XMLList(ComboBox(evt.currentTarget).selectedItem);
-//				StyleManager.loadStyleDeclarations(skinItem.@path,true);
-//			}
-			
-//			internal function unloadallStyle():void			
-//			{
-//				for each(var skinItem:XML in this.skinComb.dataProvider)
-//				{					
-//					StyleManager.unloadStyleDeclarations(skinItem.@path,true);
-//				}				
-//			}
-			
 			//httpservice结果处理函数
 			internal function resultHandler(event:ResultEvent):void
 			{				
 				header=XMLList(XML(event.result).Header);						
 				treeMenuData=XMLList(XML(event.result).CourseList.Chapter);	
-				skinData=XMLList(XML(event.result).Skins.skin);	
 				this.currentState="header";					
 			}
 			
@@ -365,7 +355,7 @@
 				event.target.toolTip = null;
 	    		if (!(item.@type=="chapter" && item.@hasFlash=="false"))
 	    		{
-	    			var tipText:String = item.@name;
+	    			var tipText:String = item.@length;
 		    		var itemX:int = event.itemRenderer.x;
 		    		var itemY:int = event.itemRenderer.y;
 		    		var point:Point = event.currentTarget.contentToGlobal(new Point(itemX,itemY));			    		
@@ -950,6 +940,13 @@
 				}
 			}
 			
+			public function skinChange(url:String):void
+			{
+				StyleManager.unloadStyleDeclarations(oldSkinUrl);
+				StyleManager.loadStyleDeclarations(url,true);
+				oldSkinUrl=url;
+			}
+			
 			public function writeLog():void
 			{
 				var flag:int=0;
@@ -968,22 +965,15 @@
 				}
 			}
 			
-			private function sysConfig():void
+			private function popupSysConfig():void
 			{
-				navigateToURL(new URLRequest("config/sysConfig.html"),"_self");
+				sysConfigWin.setApp(this);
+				sysConfigWin.setCurrentSkinIndex(oldSkinUrl);
+				PopUpManager.addPopUp(sysConfigWin,this,true);
+				PopUpManager.centerPopUp(sysConfigWin);
 			}
 		]]>
-	</mx:Script>
-	<!--<mx:Style>
-        Alert {
-            backgroundAlpha: 0.3;
-            backgroundColor: red;
-            borderAlpha: 0.3;
-            borderColor: red;
-            dropShadowEnabled: false;
-            font-size:12;
-        }
-    </mx:Style>-->
-    <mx:Style source="css/windowsXPSkin/windowsXP.css"/>
+	</mx:Script>	
+   
 	<mx:HTTPService id="httpSvr" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 </mx:Application>
