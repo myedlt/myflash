@@ -75,6 +75,32 @@
 							<mx:SWFLoader x="0" y="29" height="359" width="636" id="swfLoader" scaleContent="true"/>
 							<mx:Button label="全屏显示" width="61" height="21" x="568" y="361.5"/>
 							<mx:Image x="0" y="390" width="636" height="50" id="controlImg" source="image/controlBar.jpg"/>
+							<mx:Label x="234" y="410" text="1" width="21"/>
+							<mx:HSlider x="7" y="393" width="620"/>
+							<mx:Button x="66" y="408" label="stop" width="28"/>
+							<mx:Button x="45" y="408" label="pause" width="24"/>
+							<mx:LinkButton x="138" y="408" label="前一页"/>
+							<mx:LinkButton x="311" y="408" label="后一页"/>
+							<mx:ComboBox x="438" y="407.5" width="50" id="jumpComb">
+								<mx:Array>
+									<mx:Object label="1" data=""/>
+									<mx:Object label="2" data=""/>
+									<mx:Object label="3" data=""/>
+									<mx:Object label="4" data=""/>
+									<mx:Object label="5" data=""/>
+									<mx:Object label="6" data=""/>
+									<mx:Object label="7" data=""/>
+									<mx:Object label="8" data=""/>
+								</mx:Array>
+							</mx:ComboBox>
+							<mx:Button x="20" y="408" label="play" width="27"/>
+							<mx:Button x="533" y="408.5" label="colume" width="22"/>
+							<mx:HSlider x="566" y="414.5" width="58"/>
+							<mx:Label x="194" y="410" text="当前页"/>
+							<mx:Label x="252" y="410" text="总页数" width="38"/>
+							<mx:Label x="369" y="410" text="直接跳转到" width="70"/>
+							<mx:Label x="491" y="410.5" text="页" width="18"/>
+							<mx:Label x="294" y="410" text="8" width="20"/>
 						</mx:Canvas>
 					</mx:HBox>
 				</mx:VBox>
