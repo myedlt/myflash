@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()">
+	<mx:Model id="xml" source="content.xml"/>		
+	<mx:Style>
+		Button
+		{
+			padding-left:0;
+			padding-right:0;
+		}	
+	</mx:Style>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.containers.GridItem;
+			import mx.containers.GridRow;
+			import mx.controls.Button;
+			import mx.controls.Alert;
+			
+			private function init():void
+			{//课程菜单初始化
+				for(var i:int=0;i<8;i++)
+				{//8行3列
+					var gridRow:GridRow=new GridRow();
+					gridMenu.addChildAt(gridRow,i);
+					for(var j:int=0;j<3;j++)
+					{
+						var gridItem:GridItem=new GridItem();
+						GridRow(gridMenu.getChildAt(i)).addChildAt(gridItem,j);
+					}
+				}
+				for each(var item:Object in xml.node.node)
+				{
+					var btn:Button=new Button();
+					btn.width=39;
+					btn.height=39;
+					btn.label=item.label;
+					btn.data=item.data;
+					var row:int=item.row;
+					var col:int=item.col;					
+					btn.addEventListener(MouseEvent.CLICK,onMenuClick);										
+					GridItem(GridRow(gridMenu.getChildAt(row-1)).getChildAt(col-1)).addChild(btn);
+				}				
+			}
+			private function onMenuClick(evt:MouseEvent):void
+			{				
+				Alert.show(Button(evt.target).data.toString());
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:states>
+		<mx:State name="main">
+			<mx:AddChild position="lastChild">
+				<mx:VBox height="515" width="778" horizontalCenter="0" verticalCenter="0" horizontalAlign="center" verticalAlign="middle" id="mainBox" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" verticalGap="0">
+					<mx:Canvas width="100%" height="68" id="headerCanvas">
+						<mx:Image id="logoImg" scaleContent="true" autoLoad="true" source="image/6.jpg" width="100%" height="100%" horizontalCenter="0" verticalCenter="0"/>
+						<mx:Button x="552.5" y="36" label="首页" width="51" height="25"/>
+						<mx:Button x="606.5" y="36" label="笔记" width="51" height="25"/>
+						<mx:Button x="660.5" y="36" label="帮助" width="51" height="25"/>
+						<mx:Button x="714.5" y="36" label="退出" width="51" height="25"/>
+					</mx:Canvas>
+					<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" id="contentBox" horizontalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
+						<mx:VBox height="100%" width="133" horizontalAlign="center" verticalAlign="middle" id="leftBox" verticalGap="0">
+							<mx:Grid id="gridMenu" x="416.5" y="71" width="133" height="418" backgroundImage="@Embed(source='image/left.jpg')" horizontalGap="0" verticalGap="0" paddingLeft="9" paddingRight="6" paddingTop="63" paddingBottom="43"/>
+							<mx:Image id="bottomImg" source="image/8.jpg" width="100%" height="28"/>
+						</mx:VBox>
+						<mx:Canvas width="100%" height="100%" id="rightCanvas" backgroundImage="@Embed(source='image/10.jpg')">
+							<mx:HBox x="0" y="0" width="636" height="27" verticalAlign="middle" backgroundColor="#3574AE" color="#FFFFFF" horizontalGap="3">
+								<mx:Spacer width="4"/>
+								<mx:Image height="18" source="image/9.jpg" scaleContent="true" autoLoad="true" width="18"/>
+								<mx:Label text="首页"/>
+								<mx:Label text="-&gt;"/>
+								<mx:Label text="科学架构"/>
+							</mx:HBox>
+							<mx:SWFLoader x="0" y="29" height="359" width="636" id="swfLoader" scaleContent="true"/>
+							<mx:Button label="全屏显示" width="61" height="21" x="568" y="361.5"/>
+							<mx:Image x="0" y="390" width="636" height="50" id="controlImg" source="image/3.jpg"/>
+						</mx:Canvas>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:AddChild>
+			<mx:SetStyle name="backgroundColor" value="#FFFFFF"/>
+			<mx:SetStyle name="fontSize" value="12"/>
+		</mx:State>
+	</mx:states>
+	
+</mx:Application>

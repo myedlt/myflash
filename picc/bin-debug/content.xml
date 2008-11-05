@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node>
+	<node label="课程列表"><!-- 共8行3列 -->
+		<node label="目标" row="1" col="2" data="course/01.swf"/>
+		<node label="架构" row="2" col="1" data="course/02.swf"/>
+		<node label="文化" row="2" col="2" data="course/03.swf"/>
+		<node label="制度" row="3" col="3" data="course/04.swf"/>
+		<node label="领导" row="4" col="2" data="course/05.swf"/>
+		<node label="支持" row="5" col="1" data="course/06.swf"/>
+		<node label="环境" row="5" col="3" data="course/07.swf"/>
+		<node label="管理" row="6" col="3" data="course/08.swf"/>
+	</node>
+</node>
