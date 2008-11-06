@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()">
-	<mx:Model id="xml" source="content.xml"/>		
-	<mx:Style>
-		Button
-		{
-			padding-left:0;
-			padding-right:0;
-		}	
-	</mx:Style>
-	
+	<mx:Model id="xmlData" source="content.xml"/>	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.containers.GridItem;
 			import mx.containers.GridRow;
-			import mx.controls.Button;
-			import mx.controls.Alert;
+			import mx.controls.Button;			
 			
 			private function init():void
 			{//课程菜单初始化
@@ -28,11 +20,11 @@
 						GridRow(gridMenu.getChildAt(i)).addChildAt(gridItem,j);
 					}
 				}
-				for each(var item:Object in xml.node.node)
+				for each(var item:Object in xmlData.MenuItems.menuItem)
 				{
 					var btn:Button=new Button();
-					btn.width=39;
-					btn.height=39;
+					btn.width=42;
+					btn.height=42;
 					btn.label=item.label;
 					btn.data=item.data;
 					var row:int=item.row;
@@ -41,6 +33,7 @@
 					GridItem(GridRow(gridMenu.getChildAt(row-1)).getChildAt(col-1)).addChild(btn);
 				}				
 			}
+			
 			private function onMenuClick(evt:MouseEvent):void
 			{				
 				Alert.show(Button(evt.target).data.toString());
@@ -51,37 +44,37 @@
 	<mx:states>
 		<mx:State name="main">
 			<mx:AddChild position="lastChild">
-				<mx:VBox height="515" width="778" horizontalCenter="0" verticalCenter="0" horizontalAlign="center" verticalAlign="middle" id="mainBox" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" verticalGap="0">
-					<mx:Canvas width="100%" height="68" id="headerCanvas">
-						<mx:Image id="logoImg" scaleContent="true" autoLoad="true" source="image/header.jpg" width="100%" height="100%" horizontalCenter="0" verticalCenter="0"/>
-						<mx:Button x="552.5" y="36" label="首页" width="51" height="25"/>
-						<mx:Button x="606.5" y="36" label="笔记" width="51" height="25"/>
-						<mx:Button x="660.5" y="36" label="帮助" width="51" height="25"/>
-						<mx:Button x="714.5" y="36" label="退出" width="51" height="25"/>
-					</mx:Canvas>
-					<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" id="contentBox" horizontalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
-						<mx:VBox height="100%" width="133" horizontalAlign="center" verticalAlign="middle" id="leftBox" verticalGap="0">
-							<mx:Grid id="gridMenu" x="416.5" y="71" width="133" height="418" backgroundImage="@Embed(source='image/leftMenu.jpg')" horizontalGap="0" verticalGap="0" paddingLeft="9" paddingRight="6" paddingTop="63" paddingBottom="43"/>
-							<mx:Image id="bottomImg" source="image/bottomTitle.jpg" width="100%" height="28"/>
-						</mx:VBox>
-						<mx:Canvas width="100%" height="100%" id="rightCanvas" backgroundImage="@Embed(source='image/bg.jpg')">
-							<mx:HBox x="0" y="0" width="636" height="27" verticalAlign="middle" backgroundColor="#2164A3" color="#FFFFFF" horizontalGap="3">
-								<mx:Spacer width="4"/>
-								<mx:Image height="18" source="image/starFlag.jpg" scaleContent="true" autoLoad="true" width="18"/>
-								<mx:Label text="首页"/>
-								<mx:Label text="-&gt;"/>
-								<mx:Label text="科学架构"/>
-							</mx:HBox>
-							<mx:SWFLoader x="0" y="29" height="359" width="636" id="swfLoader" scaleContent="true"/>
-							<mx:Button label="全屏显示" width="61" height="21" x="568" y="361.5"/>
-							<mx:Image x="0" y="390" width="636" height="50" id="controlImg" source="image/controlBar.jpg"/>
-							<mx:Label x="234" y="410" text="1" width="21"/>
-							<mx:HSlider x="7" y="393" width="620"/>
-							<mx:Button x="66" y="408" label="stop" width="28"/>
-							<mx:Button x="45" y="408" label="pause" width="24"/>
-							<mx:LinkButton x="138" y="408" label="前一页"/>
-							<mx:LinkButton x="311" y="408" label="后一页"/>
-							<mx:ComboBox x="438" y="407.5" width="50" id="jumpComb">
+				<mx:Canvas height="550" width="800" backgroundImage="@Embed(source='image/background.jpg')" horizontalCenter="0" verticalCenter="0" id="mainCanvas">
+					<mx:Button x="573" y="37" label="首页" width="51" height="25"/>
+					<mx:Button x="627" y="37" label="笔记" width="51" height="25"/>
+					<mx:Button x="681" y="37" label="帮助" width="51" height="25"/>
+					<mx:Button x="735" y="37" label="退出" width="51" height="25"/>
+									
+					<mx:Grid id="gridMenu" x="6" y="132" width="126" height="334" horizontalGap="0" verticalGap="0"/>
+											
+					<mx:HBox x="133" y="72" width="654" height="26" verticalAlign="middle" horizontalGap="3">
+						<mx:Label text="首页"/>
+						<mx:Label text="-&gt;"/>
+						<mx:Label text="科学架构"/>
+					</mx:HBox>
+					<mx:SWFLoader x="133" y="99" height="389" width="654" id="swfLoader" scaleContent="true"/>
+					<mx:Button label="全屏显示" width="62" height="20" x="715" y="459"/>
+					
+					<mx:Image x="133" y="489" width="654" height="49" source="image/controlBar.jpg"/>
+						<mx:HSlider x="142" y="492" width="620" height="10"/>
+						<mx:Button x="147" y="509" label="play" width="22"/>
+						<mx:Button x="174" y="509" label="pause" width="22"/>
+						<mx:Button x="201" y="509" label="stop" width="22"/>
+							
+						<mx:Image x="260" y="503" width="401" height="31" source="image/subControlBar.jpg"/>
+							<mx:LinkButton x="269" y="509" label="前一页" textDecoration="underline"/>
+							<mx:Label x="326" y="511" text="当前页"/>
+							<mx:Label x="365" y="511" text="1" textAlign="center"/>
+							<mx:Label x="389" y="510" text="总页数"/>
+							<mx:Label x="427" y="510" text="8" textAlign="center"/>
+							<mx:LinkButton x="451" y="508" label="后一页" textDecoration="underline"/>
+							<mx:Label x="512" y="510" text="直接跳转到"/>
+							<mx:ComboBox x="575" y="508" width="49">
 								<mx:Array>
 									<mx:Object label="1" data=""/>
 									<mx:Object label="2" data=""/>
@@ -90,25 +83,18 @@
 									<mx:Object label="5" data=""/>
 									<mx:Object label="6" data=""/>
 									<mx:Object label="7" data=""/>
-									<mx:Object label="8" data=""/>
 								</mx:Array>
 							</mx:ComboBox>
-							<mx:Button x="20" y="408" label="play" width="27"/>
-							<mx:Button x="533" y="408.5" label="colume" width="22"/>
-							<mx:HSlider x="566" y="414.5" width="58"/>
-							<mx:Label x="194" y="410" text="当前页"/>
-							<mx:Label x="252" y="410" text="总页数" width="38"/>
-							<mx:Label x="369" y="410" text="直接跳转到" width="70"/>
-							<mx:Label x="491" y="410.5" text="页" width="18"/>
-							<mx:Label x="294" y="410" text="8" width="20"/>
-						</mx:Canvas>
-					</mx:HBox>
-				</mx:VBox>
-			</mx:AddChild>
-			<mx:SetStyle name="backgroundColor" value="#FFFFFF"/>
-			<mx:SetStyle name="fontSize" value="12"/>
-			<mx:SetStyle name="borderColor" value="#FFFFFF"/>
+							<mx:Label x="628" y="510" text="页" textAlign="center"/>
+							
+						<mx:Button x="676" y="507" label="shut" width="22"/>						
+						<mx:HSlider x="705" y="510" width="60"/>
+				</mx:Canvas>
+			</mx:AddChild>			
 		</mx:State>
+		
+		<mx:State name="fullscreen" basedOn="main"/>
+		<mx:State name="header"/>
 	</mx:states>
 	
 </mx:Application>
