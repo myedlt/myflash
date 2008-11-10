@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<course course_title="中层经理人的角色认知">
+	<chapter identifier="S1" chapter_title="中层经理人的角色认知">01</chapter>
+	<chapter identifier="S2" chapter_title="第一单元 领导者基础">02</chapter>
+	<chapter identifier="S3" chapter_title="第一单元 领导者基础 > 第一课 领导者的特质">03</chapter>
+	<chapter identifier="S4" chapter_title="第一单元 领导者基础 > 第二课 领导风格">04</chapter>
+	<chapter identifier="S5" chapter_title="第一单元 领导者基础 > 第三课 领导者的权力和权术">05</chapter>
+	<chapter identifier="S6" chapter_title="第一单元 领导者基础">06</chapter>
+	<chapter identifier="S7" chapter_title="第二单元 中层经理的角色">07</chapter>
+	<chapter identifier="S8" chapter_title="第二单元 中层经理的角色 > 第一课 作为下属的中层经理">08</chapter>
+	<chapter identifier="S9" chapter_title="第二单元 中层经理的角色 > 第二课 作为同事的中层经理">09</chapter>
+	<chapter identifier="S10" chapter_title="第二单元 中层经理的角色 > 第三课 作为上司的中层经理">10</chapter>
+	<chapter identifier="S11" chapter_title="第二单元 中层经理的角色">11</chapter>
+	<chapter identifier="S12" chapter_title="情景模拟与课程结束">12</chapter>
+</course>

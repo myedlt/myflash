@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Power+商务课程</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<SCRIPT language=javascript src="../utility/APIWrapper.js"></SCRIPT>
+<SCRIPT language=javascript src="../utility/SCOFunctions.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2"> 
+<!--  
+
+loadPage();
+//var locationStr="0111";
+var locationStr = doLMSGetValue("cmi.core.lesson_location");
+//alert("remembered location: "+ locationStr);
+/*var id =	doLMSGetValue( "cmi.core.student_id" );
+var name =    doLMSGetValue( "cmi.core.student_name" );
+
+var total =    doLMSGetValue( "cmi.core.total_time" );
+alert("id:"+id+"\n"+"name:"+name+"\n"+"position:"+"\n"+"status:"+status+"\n"+"total:"+total+"\n");
+*/
+function openWin(urlPop){
+var windowW = 538 // wide:800
+var windowH = 450 // high:600
+var windowX = 0 // from left
+var windowY = 0 // from top
+var title =  "new_win"
+var strFeature = "width=" + windowW + ",height=" + windowH + ",top=" + windowY + ",left=" + windowX +", scrollbars";
+var popupwnd = window.open(urlPop,title,strFeature);
+    popupwnd.focus();
+}
+
+function openWin1(urlPop){
+var windowW = 806 // wide:800
+var windowH = 597 // high:600
+var windowX = 0 // from left
+var windowY = 0 // from top
+var title =  "new_win"
+var strFeature = "width=" + windowW + ",height=" + windowH + ",top=" + windowY + ",left=" + windowX +", scrollbars";
+var popupwnd = window.open(urlPop,title,strFeature);
+    popupwnd.focus();
+}
+
+function window_close(){
+if(confirm ("您是否退出本课程 ？"))
+{
+//doContinue('completed');
+//unloadPage();
+
+
+top.close();
+
+}
+}
+function scoFinished(){
+	doContinue('completed');
+	//alert("本章学习完毕，请点击章节目录继续学习！");
+}
+function nextPage (){
+//alert("visit next page!");
+//
+
+unloadPage();
+window.document.navigator.SetVariable("unloadStatus", "unload");
+}
+function prePage (){
+//alert("visit next page!");
+//
+
+unloadPage();
+window.document.navigator.SetVariable("unloadStatus", "prePage");
+}
+function endPage (){
+//alert("visit next page!");
+//
+
+unloadPage();
+window.document.navigator.SetVariable("unloadStatus", "endPage");
+}
+function firstPage (){
+//alert("visit next page!");
+//
+
+unloadPage();
+window.document.navigator.SetVariable("unloadStatus", "firstPage");
+}
+function refresh (){
+//alert("visit next page!");
+//
+
+unloadPage();
+window.document.navigator.SetVariable("unloadStatus", "refresh");
+}
+function navigator_DoFSCommand(command, args) { 
+
+
+
+if(command == "setScoID"){
+	var api = getAPIHandle();
+
+	if (api == null)
+	{
+      //alert("Unable to locate the LMS's API Implementation.\nLMSGetDiagnostic was not successful.");
+	}
+	api.setSCOID(args);
+	//alert("This SCO_ID is "+args);
+	}
+if(command == "load_page"){
+	loadPage();
+	//var api = getAPIHandle();
+	//var value = api.LMSGetValue("cmi.core.student_name");
+	//alert("value: "+value);
+        //doContinue('completed');
+	}
+if(command == "unload_page"){
+//alert("unload page!!!");
+   unloadPage();
+}
+if(command == "doContinue"){
+//alert("doContinue "+args);
+	doContinue(args);
+	}
+if(command == "send_var"){
+	//alert("keywords=" + args);
+	openWin1("Search.htm?KeyWords=" + args);
+}
+if(command == "send_score"){
+	doLMSSetValue("cmi.core.score.raw", args); //sco的得分。
+    doLMSCommit();
+}
+}
+
+function getLast(){
+var coreSCOLocation =  doLMSGetValue("cmi.core.lesson_location");
+//var coreSCOLocation =  locationStr;
+//coreSCOLocation="0112";
+//alert("coreSCOLocation is here  !!");
+//alert("coreSCOLocation =  "+coreSCOLocation);
+if (LMSGetLastError() == "0")
+{
+   // coreSCOLocation contains an anchor name defined in the 
+   // HTML page
+alert("coreSCOLocation=  "+coreSCOLocation);
+   // Start the SCO off where the student left off
+   //   window.location.hash = coreSCOLocation;
+}
+else
+{
+   // Error processing  
+ alert("Can not find last location ! ");
+}
+}
+//doLMSSetValue("cmi.core.lesson_location",slocationStr);
+//--> 
+</SCRIPT> 
+<SCRIPT LANGUAGE="VBScript">
+<!-- 
+// Catch the fscommand in ie with vbscript, and pass
+// it on to JavaScript.
+
+Sub navigator_FSCommand(ByVal command, ByVal args)
+    call navigator_DoFSCommand(command, args)
+end sub
+
+//-->
+</SCRIPT>
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+ codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0"
+ WIDTH="790" HEIGHT="572" id="navigator">
+ <PARAM NAME=movie VALUE="..\flashes\sco01.swf"> <PARAM NAME=quality VALUE=high> <PARAM NAME=bgcolor VALUE=#FFFFFF> 
+ <EMBED src="..\flashes\sco01.swf" quality=high bgcolor=#FFFFFF  WIDTH="790" HEIGHT="572" NAME="navigator" swLiveConnect="true" TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>
+</OBJECT>
+</body>
+</html>
