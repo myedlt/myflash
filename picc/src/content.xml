@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Content>
+	<Banners label="文字信息(swf)">
+		<banner label="logo" data="flashes/logo.swf"/>
+		<banner label="courseName_L" data="flashes/courseName_L.swf"/>
+		<banner label="courseName_S" data="flashes/courseName_S.swf"/>
+		<banner label="menuTitle" data="flashes/menuTitle.swf"/>
+	</Banners>
 	<Images label="图片信息">
-		<image label="logo" data="image/logo.jpg"/>
-		<image label="menuTitle" data="image/menuTitle.jpg"/>
-		<image label="headerTitle" data="image/headerTitle.jpg"/>
-		<image label="bottomTitle" data="image/bottomTitle.jpg"/>
+		<image label="background" data="images/background.jpg"/>
+		<image label="controlBar" data="images/controlBar.jpg"/>
+		<image label="subControlBar" data="images/subControlBar.jpg"/>
+		<image label="swfBg" data="images/swfBg.jpg"/>
 	</Images>
-	<MenuItems label="课程目录"> <!-- 共8行3列(每项的row和col属性不能超出范围) -->
-		<menuItem label="目标" row="1" col="2" data="course/01.swf"/>
-		<menuItem label="架构" row="2" col="1" data="course/02.swf"/>
-		<menuItem label="文化" row="2" col="2" data="course/03.swf"/>
-		<menuItem label="制度" row="3" col="3" data="course/04.swf"/>
-		<menuItem label="领导" row="4" col="2" data="course/05.swf"/>
-		<menuItem label="支持" row="5" col="1" data="course/06.swf"/>
-		<menuItem label="环境" row="5" col="3" data="course/07.swf"/>
-		<menuItem label="管理" row="6" col="3" data="course/08.swf"/>
+	<Header label="片头" data="flashs/header.swf"/>
+	<Help label="帮助" data="flashs/help.swf"/>
+	<MenuItems label="课程菜单"> <!-- 共8行3列(每项的row和col属性不能超出范围) 请按课程顺序一次排列 -->
+		<menuItem label="目标" row="1" col="2" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses01.xml"/>
+		<menuItem label="架构" row="2" col="1" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses02.xml"/>
+		<menuItem label="文化" row="2" col="2" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses03.xml"/>
+		<menuItem label="制度" row="3" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses04.xml"/>
+		<menuItem label="领导" row="4" col="2" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses05.xml"/>
+		<menuItem label="支持" row="5" col="1" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses06.xml"/>
+		<menuItem label="环境" row="5" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses07.xml"/>
+		<menuItem label="管理" row="6" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses08.xml"/>
 	</MenuItems>
 </Content>
