@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()">
-	<mx:Model id="xmlData" source="content.xml"/>	
+	<mx:Model id="content" source="content.xml"/>	
 	<mx:Script>
 		<![CDATA[
-			import mx.controls.Alert;
+			import mx.events.SliderEvent;
+			import mx.collections.ArrayCollection;
+			import mx.events.ListEvent;
 			import mx.containers.GridItem;
 			import mx.containers.GridRow;
-			import mx.controls.Button;			
+			import mx.controls.Button;
+			import mx.controls.Alert;			
+			
+			[Bindable]
+			private var mc:MovieClip;
+			[Bindable]
+			private var currSectionNum:int;
+			[Bindable]
+			private var totalSectionNum:int;
+			[Bindable]
+			private var currChapterName:String;
+			[Bindable]
+			private var currSectionName:String;
+			[Bindable]
+			private var menuItemArray:ArrayCollection=new ArrayCollection();
+			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
+			private var timer:Timer=new Timer(60);
 			
 			private function init():void
 			{//课程菜单初始化
@@ -20,7 +38,8 @@
 						GridRow(gridMenu.getChildAt(i)).addChildAt(gridItem,j);
 					}
 				}
-				for each(var item:Object in xmlData.MenuItems.menuItem)
+				var count:int=0;
+				for each(var item:Object in content.MenuItems.menuItem)
 				{
 					var btn:Button=new Button();
 					btn.width=42;
@@ -31,12 +50,167 @@
 					var col:int=item.col;					
 					btn.addEventListener(MouseEvent.CLICK,onMenuClick);										
 					GridItem(GridRow(gridMenu.getChildAt(row-1)).getChildAt(col-1)).addChild(btn);
-				}				
+					menuItemArray.addItem({count:++count,label:item.label,data:item.data});
+				}
+				timer.addEventListener(TimerEvent.TIMER,timerHandler);
+				totalSectionNum=menuItemArray.getItemAt(menuItemArray.length-1).count;				
+			}
+			
+			private function timerHandler(evt:TimerEvent):void
+			{
+				progressSlider.value=mc.currentFrame;
+				if(progressSlider.value==progressSlider.maximum)
+				{
+					timer.stop();
+				}
 			}
 			
 			private function onMenuClick(evt:MouseEvent):void
 			{				
-				Alert.show(Button(evt.target).data.toString());
+				swfLoader.load(Button(evt.target).data);			
+			}
+			
+			private function gotoPage(evt:ListEvent):void
+			{
+				var item:Object=ComboBox(evt.target).selectedItem;
+				//swfLoader.load(item.data);
+				swfLoader.source=item.data;
+				callLater(swfLoader.load);//解决swf显示问题
+				gotoComb.selectedItem=null;		
+			}
+			
+			private function fullscreen():void
+			{
+				this.currentState="fullscreen";
+				this.stage.displayState=StageDisplayState.FULL_SCREEN;
+			}
+			
+			private function swfUnload():void
+			{
+				mc.gotoAndStop(0);
+			}
+			
+			private function normalState():void
+			{
+				this.stage.displayState=StageDisplayState.NORMAL;
+				this.currentState="main";
+			}
+			
+			private function loadComplete(evt:Event):void
+			{
+				mc=MovieClip(evt.target.content);
+				if(timer.running==false)
+				{
+					timer.start();
+				}
+				setCurrentOption();
+			}
+			
+			private function columeControlHandler():void
+			{
+				if(columeControl.label=="shut")
+				{
+					columeControl.label="open";
+					soundTrans.volume=0;
+					SoundMixer.soundTransform=soundTrans;
+				}
+				else
+				{
+					columeControl.label="shut";
+					soundTrans.volume=columeSlider.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}
+			
+			private function columeChange(evt:SliderEvent):void
+			{
+				if(columeControl.label=="shut")
+				{
+					soundTrans.volume=evt.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}
+			
+			private function play():void
+			{
+				if(timer.running==false)
+				{
+					timer.start();
+				}
+				mc.play();
+			}
+			
+			private function pause():void
+			{
+				mc.stop();
+				if(timer.running==true)
+				{
+					timer.stop();
+				}
+			}
+			
+			private function stop():void
+			{
+				if(timer.running==true)
+				{
+					timer.stop();
+				}
+				progressSlider.value=progressSlider.minimum;
+				mc.gotoAndStop(0);
+			}
+			
+			private function setCurrentOption():void
+			{
+				if(navFlag.visible==false)
+				{
+					navFlag.visible=true;
+				}
+				for each(var item:Object in menuItemArray)
+				{
+					if(item.data==swfLoader.source)
+					{
+						currChapterName=item.label;
+						currSectionNum=item.count;						
+					}
+				}
+			}
+			
+			private function formatProgressToolTip(value:int):String
+    		{
+    			value=Math.ceil(value / 12);  //flash 12frames/s  			
+    			var result:String = (value % 60).toString();
+      		    if (result.length == 1)
+      		    {
+         			result = Math.floor(value / 60).toString() + ":0" + result;
+       		 	}
+      			else
+			  	{
+       		    	result = Math.floor(value / 60).toString() + ":" + result;
+       		  	}      			      			 
+      		    return result;
+  			} 
+  			
+  			private function formatColumeToolTip(value:Number):String
+  			{
+  				var temp:String=value.toString();
+  				if(temp.length==1)
+  				{
+  					return temp+".0";
+  				}
+  				else
+  				{
+  					return temp.substr(0,3);
+  				}
+  			}
+  		
+			private function help():void
+			{
+				navigateToURL(new URLRequest("http://www.baidu.com"),"_blank");
+			}
+				
+  			private function exit():void
+			{//一些浏览器不支持通过 navigateToURL() 方法使用 javascript 协议。而应考虑使用 ExternalInterface API 的 call() 方法在包含该内容的 HTML 页中调用 JavaScript 方法。
+				navigateToURL(new URLRequest("javascript:window.close()"),"_self");//"window.opener=null"使关闭窗口时不弹出确认信息窗口
 			}
 		]]>
 	</mx:Script>
@@ -45,56 +219,98 @@
 		<mx:State name="main">
 			<mx:AddChild position="lastChild">
 				<mx:Canvas height="550" width="800" backgroundImage="@Embed(source='image/background.jpg')" horizontalCenter="0" verticalCenter="0" id="mainCanvas">
-					<mx:Button x="573" y="37" label="首页" width="51" height="25"/>
-					<mx:Button x="627" y="37" label="笔记" width="51" height="25"/>
-					<mx:Button x="681" y="37" label="帮助" width="51" height="25"/>
-					<mx:Button x="735" y="37" label="退出" width="51" height="25"/>
+					<mx:Button x="627" y="37" label="笔记" width="51" height="25" id="button7"/>
+					<mx:Button x="681" y="37" label="帮助" width="51" height="25" id="button8" click="help()"/>
+					<mx:Button x="735" y="37" label="退出" width="51" height="25" id="button9" click="exit()"/>
 									
 					<mx:Grid id="gridMenu" x="6" y="132" width="126" height="334" horizontalGap="0" verticalGap="0"/>
 											
-					<mx:HBox x="133" y="72" width="654" height="26" verticalAlign="middle" horizontalGap="3">
-						<mx:Label text="首页"/>
-						<mx:Label text="-&gt;"/>
-						<mx:Label text="科学架构"/>
+					<mx:HBox x="133" y="72" width="654" height="26" verticalAlign="middle" horizontalGap="3" id="hbox1">
+						<mx:Label text="{currChapterName}"/>
+						<mx:Label id="navFlag" text="-&gt;" visible="false"/>
+						<mx:Label text="{currSectionName}"/>
 					</mx:HBox>
-					<mx:SWFLoader x="133" y="99" height="389" width="654" id="swfLoader" scaleContent="true"/>
-					<mx:Button label="全屏显示" width="62" height="20" x="715" y="459"/>
+					<mx:VBox x="133" y="99" height="389" width="654" backgroundImage="@Embed(source='image/swfBG.jpg')" horizontalAlign="center" verticalAlign="middle" verticalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" id="vbox1">
+						<mx:SWFLoader id="swfLoader" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" height="100%" width="100%" horizontalAlign="center" verticalAlign="middle"/>
+					</mx:VBox>
+					<mx:Button label="全屏显示" width="62" height="20" x="715" y="459" id="button5" click="fullscreen()"/>
 					
-					<mx:Image x="133" y="489" width="654" height="49" source="image/controlBar.jpg"/>
-						<mx:HSlider x="142" y="492" width="620" height="10"/>
-						<mx:Button x="147" y="509" label="play" width="22"/>
-						<mx:Button x="174" y="509" label="pause" width="22"/>
-						<mx:Button x="201" y="509" label="stop" width="22"/>
+					<mx:Image x="133" y="489" width="654" height="49" source="image/controlBar.jpg" id="image1"/>
+						<mx:HSlider x="142" y="490" width="620" height="10" id="progressSlider" minimum="0" maximum="{mc.totalFrames}" dataTipFormatFunction="formatProgressToolTip"/>
+						<mx:Button x="147" y="509" label="play" width="22" id="button3" click="play()"/>
+						<mx:Button x="174" y="509" label="pause" width="22" id="button2" click="pause()"/>
+						<mx:Button x="201" y="509" label="stop" width="22" id="button1" click="stop()"/>
 							
-						<mx:Image x="260" y="503" width="401" height="31" source="image/subControlBar.jpg"/>
-							<mx:LinkButton x="269" y="509" label="前一页" textDecoration="underline"/>
-							<mx:Label x="326" y="511" text="当前页"/>
-							<mx:Label x="365" y="511" text="1" textAlign="center"/>
-							<mx:Label x="389" y="510" text="总页数"/>
-							<mx:Label x="427" y="510" text="8" textAlign="center"/>
-							<mx:LinkButton x="451" y="508" label="后一页" textDecoration="underline"/>
-							<mx:Label x="512" y="510" text="直接跳转到"/>
-							<mx:ComboBox x="575" y="508" width="49">
-								<mx:Array>
-									<mx:Object label="1" data=""/>
-									<mx:Object label="2" data=""/>
-									<mx:Object label="3" data=""/>
-									<mx:Object label="4" data=""/>
-									<mx:Object label="5" data=""/>
-									<mx:Object label="6" data=""/>
-									<mx:Object label="7" data=""/>
-								</mx:Array>
-							</mx:ComboBox>
-							<mx:Label x="628" y="510" text="页" textAlign="center"/>
+						<mx:Image x="260" y="503" width="401" height="31" source="image/subControlBar.jpg" id="image2"/>
+							<mx:LinkButton x="270" y="508" label="前一页" id="linkbutton1"/>
+							<mx:Label x="326" y="511" text="当前页" id="label1"/>
+							<mx:Label x="365" y="511" text="{currSectionNum}" textAlign="center" id="label3"/>
+							<mx:Label x="389" y="510" text="总页数" id="label2"/>
+							<mx:Label x="427" y="510" text="{totalSectionNum}" textAlign="center" id="label4"/>
+							<mx:LinkButton x="451" y="508" label="后一页" id="linkbutton2"/>
+							<mx:Label x="512" y="510" text="直接跳转到" id="label5"/>
+							<mx:ComboBox x="575" y="508" width="49" id="gotoComb" dataProvider="{menuItemArray}" change="gotoPage(event)" labelField="count"/>
+							<mx:Label x="628" y="510" text="页" textAlign="center" id="label6"/>
 							
-						<mx:Button x="676" y="507" label="shut" width="22"/>						
-						<mx:HSlider x="705" y="510" width="60"/>
+						<mx:Button x="676" y="507" label="shut" width="22" id="columeControl" click="columeControlHandler()"/>						
+						<mx:HSlider x="705" y="510" width="60" id="columeSlider" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip"/>
 				</mx:Canvas>
 			</mx:AddChild>			
 		</mx:State>
-		
-		<mx:State name="fullscreen" basedOn="main"/>
-		<mx:State name="header"/>
+		<mx:State name="fullscreen" basedOn="main">			
+			<mx:RemoveChild target="{button7}"/>
+			<mx:RemoveChild target="{button8}"/>
+			<mx:RemoveChild target="{button9}"/>
+			<mx:RemoveChild target="{gridMenu}"/>
+			<mx:RemoveChild target="{hbox1}"/>
+			<mx:RemoveChild target="{image1}"/>
+			<mx:RemoveChild target="{button3}"/>
+			<mx:RemoveChild target="{button2}"/>
+			<mx:RemoveChild target="{button1}"/>
+			<mx:RemoveChild target="{progressSlider}"/>
+			<mx:RemoveChild target="{image2}"/>
+			<mx:RemoveChild target="{linkbutton1}"/>
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:RemoveChild target="{linkbutton2}"/>
+			<mx:RemoveChild target="{label5}"/>
+			<mx:RemoveChild target="{gotoComb}"/>
+			<mx:RemoveChild target="{label6}"/>
+			<mx:RemoveChild target="{columeControl}"/>
+			<mx:RemoveChild target="{columeSlider}"/>
+			<mx:RemoveChild target="{button5}"/>
+			<mx:SetProperty target="{swfLoader}" name="width" value="100%"/>
+			<mx:SetProperty target="{swfLoader}" name="x" value="0"/>
+			<mx:SetProperty target="{swfLoader}" name="height" value="100%"/>
+			<mx:SetProperty target="{swfLoader}" name="y" value="0"/>
+			<mx:SetProperty target="{mainCanvas}" name="width" value="100%"/>
+			<mx:SetProperty target="{mainCanvas}" name="height" value="100%"/>
+			<mx:SetStyle target="{mainCanvas}" name="backgroundImage"/>
+			<mx:AddChild relativeTo="{mainCanvas}" position="lastChild">
+				<mx:Button label="退出全屏" right="35" top="20" height="22" click="normalState()"/>
+			</mx:AddChild>
+			<mx:SetStyle name="horizontalAlign" value="center"/>
+			<mx:SetStyle name="verticalAlign" value="middle"/>
+			<mx:SetProperty name="width" value="100%"/>
+			<mx:SetProperty name="height" value="100%"/>
+			<mx:SetStyle target="{mainCanvas}" name="horizontalCenter"/>
+			<mx:SetStyle target="{mainCanvas}" name="verticalCenter"/>
+			<mx:SetProperty name="layout" value="vertical"/>
+			<mx:SetProperty target="{vbox1}" name="width" value="100%"/>
+			<mx:SetProperty target="{vbox1}" name="height" value="100%"/>
+			<mx:SetProperty target="{vbox1}" name="x"/>
+			<mx:SetStyle target="{vbox1}" name="horizontalCenter" value="0"/>
+			<mx:SetProperty target="{vbox1}" name="y"/>
+			<mx:SetStyle target="{vbox1}" name="verticalCenter" value="0"/>
+			<mx:SetStyle target="{vbox1}" name="backgroundImage"/>
+		</mx:State>
+		<mx:State name="header">
+			<mx:AddChild position="lastChild">
+				<mx:SWFLoader width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true"/>
+			</mx:AddChild>
+		</mx:State>
 	</mx:states>
 	
 </mx:Application>
