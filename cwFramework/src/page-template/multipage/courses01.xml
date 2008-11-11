@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Sections label="电话使用方法">
+	<section label="第一节" data="../../courses/course01/c01.swf"/>
+	<section label="第二节" data="../../courses/course01/c02.swf"/>
+	<section label="第三节" data="../../courses/course01/c03.swf"/>
+	<section label="第四节" data="../../courses/course01/c04.swf"/>
+	<section label="第五节" data="../../courses/course01/c05.swf"/>
+	<section label="第六节" data="../../courses/course01/c06.swf"/>
+	<section label="第七节" data="../../courses/course01/c07.swf"/>
+	<section label="第八节" data="../../courses/course01/c08.swf"/>
+</Sections>
