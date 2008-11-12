@@ -2,7 +2,10 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()">
 	<mx:Model id="content" source="content.xml"/>	
 	<mx:Script>
-		<![CDATA[			
+		<![CDATA[
+			import mx.controls.PopUpButton;
+			import mx.managers.PopUpManager;
+			import component.NoteManage;			
 			import mx.managers.SystemManager;
 			import mx.events.FlexEvent;
 			import mx.events.SliderEvent;
@@ -156,7 +159,7 @@
 				{
 					if(gotoComb.dataProvider==menuItemArray2 && this.currSectionNum!=this.totalSectionNum)
 					{
-						nextBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 					}
 					else
 					{
@@ -482,7 +485,11 @@
   			
   			private function note():void
   			{
-  				
+  				pause();
+  				var noteManage:NoteManage=new NoteManage();
+  				noteManage.setApp(this);
+  				PopUpManager.addPopUp(noteManage,this,true);
+  				PopUpManager.centerPopUp(noteManage);
   			}
   			
 			private function help():void
@@ -497,42 +504,59 @@
 		]]>
 	</mx:Script>
 	
+	<mx:Style>
+		global
+		{
+			font-size:12;
+			font-family:"黑体";
+		}
+		Button
+		{
+			padding-left:0;
+			padding-right:0;
+		}
+		LinkButton
+		{
+			text-decoration:underline;
+		}
+		
+	</mx:Style>
 	<mx:states>
 		<mx:State name="main">
 			<mx:AddChild position="lastChild">
 				<mx:Canvas height="550" width="800" backgroundImage="@Embed(source='images/background.jpg')" horizontalCenter="0" verticalCenter="0" id="mainCanvas">
 					<mx:Image x="26" y="25" id="logoImg" source="{logo}"/>						
 					<mx:Image x="300" y="23" id="courseNameLImg" source="{courseNameL}"/>
-					<mx:Button x="627" y="37" label="笔记" width="51" height="25" id="button7" click="note()"/>
-					<mx:Button x="681" y="37" label="帮助" width="51" height="25" id="button8" click="help()"/>
-					<mx:Button x="735" y="37" label="退出" width="51" height="25" id="button9" click="exit()"/>
+					<mx:Button x="627" y="37" label="笔记" width="51" height="25" id="button7" click="note()" fontWeight="normal"/>
+					<mx:Button x="681" y="37" label="帮助" width="51" height="25" id="button8" click="help()" fontWeight="normal"/>
+					<mx:Button x="735" y="37" label="退出" width="51" height="25" id="button9" click="exit()" fontWeight="normal"/>
 					
 					<mx:Image x="8" y="81" id="menuTitleImg" source="{menuTitle}"/>				
 					<mx:Grid id="gridMenu" x="4.5" y="128" width="127" height="338" horizontalGap="1" verticalGap="1.5"/>
 					<mx:Image x="6" y="526" id="courseNameSImg" source="{courseNameS}"/>
 											
-					<mx:HBox x="133" y="72" width="654" height="26" verticalAlign="middle" horizontalGap="3" id="hbox1">
+					<mx:HBox x="133" y="72" width="654" height="26" verticalAlign="middle" horizontalGap="3" id="hbox1" color="#FFFFFF">
 						<mx:Spacer width="20"/>
 						<mx:Label text="{currChapterName}" id="chapterName"/>
-						<mx:Label id="navFlag" text="-&gt;"/>
+						<mx:Label id="navFlag" text="-&gt;" fontFamily="Courier New"/>
 						<mx:Label text="{currSectionName}" id="sectionName"/>
 					</mx:HBox>					
 					<mx:SWFLoader id="mainLoader" init="multipageHandler(event)" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" x="133" y="99" height="388" width="654" horizontalAlign="center" verticalAlign="middle"/>
-					<mx:Button label="全屏显示" width="62" height="20" x="715" y="459" id="button5" click="fullscreen()"/>
+					<mx:Button label="全屏显示" width="62" height="20" x="715" y="459" id="button5" click="fullscreen()" fontSize="11" fontWeight="normal"/>
 					
 					<mx:HSlider x="142" y="490" width="620" height="10" id="progressSlider" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true"/>
 					<mx:Button x="153" y="509" label="play" width="22" id="button3" click="play()"/>
 					<mx:Button x="180" y="509" label="pause" width="22" id="button2" click="pause()"/>
 					<mx:Button x="207" y="509" label="stop" width="22" id="button1" click="stop()"/>
-						<mx:LinkButton x="270" y="508" label="前一页" id="preBtn" click="prePage()"/>
-						<mx:Label x="326" y="511" text="当前页" id="label1"/>
-						<mx:Label x="365" y="511" text="{currSectionNum}" textAlign="center" id="label3"/>
-						<mx:Label x="389" y="510" text="总页数" id="label2"/>
-						<mx:Label x="427" y="510" text="{totalSectionNum}" textAlign="center" id="label4"/>
-						<mx:LinkButton x="451" y="508" label="后一页" id="nextBtn" click="nextPage()"/>
-						<mx:Label x="512" y="510" text="直接跳转到" id="label5"/>
-						<mx:ComboBox x="575" y="508" width="49" id="gotoComb" change="gotoPage(event)" labelField="count"/>
-						<mx:Label x="628" y="510" text="页" textAlign="center" id="label6"/>
+						<mx:LinkButton x="269" y="507" label="前一页" id="btnPreviouse" click="prePage()" fontWeight="normal"/>
+						<mx:Label x="326" y="509" text="当前页" id="label1"/>
+						<mx:Label x="365" y="510" text="{currSectionNum}" textAlign="center" id="label3"/>
+						<mx:Label x="389" y="509" text="总页数" id="label2"/>
+						<mx:Label x="430" y="510" text="{totalSectionNum}" textAlign="center" id="label4"/>
+						<mx:LinkButton x="450" y="507" label="后一页" id="btnNext" click="nextPage()" fontWeight="normal"/>
+						<mx:Label x="512" y="509" text="直接跳转到" id="label5"/>
+						<mx:ComboBox x="578" y="507" width="49" id="gotoComb" change="gotoPage(event)" labelField="count" fontSize="10"/>
+						<mx:Label x="628" y="509" text="页" textAlign="center" id="label6"/>
 							
 						<mx:Button x="677" y="504" label="shut" width="22" id="columeControl" click="columeControlHandler()"/>						
 						<mx:HSlider x="706" y="505" width="60" id="columeSlider" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip"/>
@@ -553,12 +577,12 @@
 			<mx:RemoveChild target="{button2}"/>
 			<mx:RemoveChild target="{button1}"/>
 			<mx:RemoveChild target="{progressSlider}"/>			
-			<mx:RemoveChild target="{preBtn}"/>
+			<mx:RemoveChild target="{btnPreviouse}"/>
 			<mx:RemoveChild target="{label1}"/>
 			<mx:RemoveChild target="{label3}"/>
 			<mx:RemoveChild target="{label2}"/>
 			<mx:RemoveChild target="{label4}"/>
-			<mx:RemoveChild target="{nextBtn}"/>
+			<mx:RemoveChild target="{btnNext}"/>
 			<mx:RemoveChild target="{label5}"/>
 			<mx:RemoveChild target="{gotoComb}"/>
 			<mx:RemoveChild target="{label6}"/>
