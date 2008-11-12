@@ -20,16 +20,15 @@
 		<menuItem label="管理" row="6" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses08.xml"/>
 	</MenuItems>
 	<EffectButton>
-		<button row="1" col="3" hasEffect="false"/>
-		<button row="2" col="3" hasEffect="true"/>
-		<button row="3" col="1" hasEffect="false"/>
-		<button row="3" col="2" hasEffect="true"/>
-		<button row="4" col="1" hasEffect="true"/>
-		<button row="5" col="2" hasEffect="false"/>
-		<button row="6" col="1" hasEffect="false"/>
-		<button row="6" col="2" hasEffect="true"/>
-		<button row="7" col="2" hasEffect="false"/>
-		<button row="7" col="3" hasEffect="true"/>
-		<button row="8" col="2" hasEffect="false"/>
+		<button row="1" col="3" hasEffect="false" swf="flashes/buttons/1.swf"/>
+		<button row="2" col="3" hasEffect="true" swf="flashes/buttons/2.swf"/>
+		<button row="3" col="1" hasEffect="false" swf="flashes/buttons/3.swf"/>
+		<button row="3" col="2" hasEffect="true" swf="flashes/buttons/4.swf"/>
+		<button row="4" col="1" hasEffect="true" swf="flashes/buttons/5.swf"/>
+		<button row="5" col="2" hasEffect="false" swf="flashes/buttons/6.swf"/>
+		<button row="6" col="1" hasEffect="false" swf="flashes/buttons/7.swf"/>
+		<button row="6" col="2" hasEffect="true" swf="flashes/buttons/8.swf"/>		
+		<button row="7" col="3" hasEffect="true" swf="flashes/buttons/9.swf"/>
+		<button row="8" col="2" hasEffect="false" swf="flashes/buttons/10.swf"/>
 	</EffectButton>
 </Content>
