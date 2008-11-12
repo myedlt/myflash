@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()">
 	<mx:Model id="content" source="content.xml"/>	
 	<mx:Script>
-		<![CDATA[
+		<![CDATA[			
 			import mx.managers.SystemManager;
 			import mx.events.FlexEvent;
 			import mx.events.SliderEvent;
@@ -36,11 +36,16 @@
 			private var menuItemArray2:ArrayCollection;//多页 
 			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
 			private var timer:Timer=new Timer(60);
-			private var temp:String=null;
+			private var temp:String;
 			private var app:Object;
+			private var lso:SharedObject;
+			private var isContinue:Boolean;
+			private var lastCourseInfo:Object;			
 			
 			private function init():void
-			{//课程菜单初始化
+			{
+				Alert.okLabel="确定";	
+				//课程菜单初始化
 				for(var i:int=0;i<8;i++)
 				{//8行3列
 					var gridRow:GridRow=new GridRow();
@@ -78,26 +83,70 @@
 					GridItem(GridRow(gridMenu.getChildAt(row-1)).getChildAt(col-1)).addChild(btn);
 					menuItemArray1.addItem({count:++count,button:btn});
 				}
-				for each(var item1:Object in content.EffectButton.button)
+				for each(var btnItem:Object in content.EffectButton.button)
 				{
-					var btn1:Button=new Button();
-					btn1.width=41;
-					btn1.height=41;
-					if(item1.hasOwnProperty("hasEffect")&&item1.hasEffect==true)
-					{
-						
-					}
-					btn1.enabled=false;
-					var row1:int=item1.row;
-					var col1:int=item1.col;													
-					GridItem(GridRow(gridMenu.getChildAt(row1-1)).getChildAt(col1-1)).addChild(btn1);	
+					var img:Image=new Image();
+					img.width=41;
+					img.height=41;
+					img.load(btnItem.swf);
+					GridItem(GridRow(gridMenu.getChildAt(btnItem.row-1)).getChildAt(btnItem.col-1)).addChild(img);	
 				}
 				this.courseNameL=content.Banners.courseNameL.data;
 				this.logo=content.Banners.logo.data;
 				this.menuTitle=content.Banners.menuTitle.data;
 				this.courseNameS=content.Banners.courseNameS.data;
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);								
-				firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				lso=SharedObject.getLocal("lastCourseInfo","/");
+				if(lso==null)
+				{
+					Alert.show("无法创建或获取本地共享对象!","Error");
+					firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				}
+				else
+				{
+					if(isContinue && lso.data.info!=null)
+					{
+						if(lso.data.info.isMultipage)
+						{
+							for each(var arrayItem:Object in menuItemArray1)
+							{
+								if(arrayItem.button.label==lso.data.info.currChapterName)
+								{					
+									Button(menuItemArray1[arrayItem.count-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+									break;						
+								}
+							} 
+						}
+						else
+						{
+							Button(menuItemArray1[lso.data.info.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						}
+					}
+					else
+					{
+						if(isContinue)
+						{
+							isContinue=false;
+						}
+						firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+					}					
+				}
+				//注册回调函数,让外部js调用
+				if(ExternalInterface.available)
+				{
+                	try
+					{
+						ExternalInterface.addCallback("writeLog",writeLog);						
+					}
+					catch(error:SecurityError)
+					{
+						Alert.show("给外部js添加回调函数时出错,可能存在安全沙箱问题!\n"+error.message,"错误提示");
+					}
+           	 	}
+           	 	else
+           	 	{
+           	 		Alert.show("External interface is not available for this container!");
+           	 	}
 			}
 			
 			private function timerHandler(evt:TimerEvent):void
@@ -161,10 +210,14 @@
 					try
 					{
 						mc=MovieClip(evt.target.content);
+						if(isContinue)
+						{
+							mc.gotoAndStop(lso.data.info.currFrame);
+							isContinue=false;
+						}
 					}
 					catch(e:Error)
-					{
-						Alert.okLabel="确定";						
+					{											
 						Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
 					}			
 					if(timer.running==false)
@@ -206,6 +259,12 @@
 				this.currSectionName=app.currCourse;
 				this.currSectionNum=app.currPage;
 				this.mc=app.mc;
+				if(isContinue)
+				{
+					app.gotoPage(lso.data.info.currSectionNum-1);
+					mc.gotoAndStop(lso.data.info.currFrame);
+					isContinue=false;
+				}
 				if(timer.running==false)
 				{
 					timer.start();
@@ -409,7 +468,23 @@
   					return temp.substr(0,3);
   				}
   			}
-  		
+  			
+  			private function writeLog():void
+  			{
+  				lastCourseInfo=new Object();
+  				lastCourseInfo.isMultipage=gotoComb.dataProvider==menuItemArray2?true:false;
+  				lastCourseInfo.currChapterName=this.currChapterName;
+  				lastCourseInfo.currSectionNum=this.currSectionNum;
+  				lastCourseInfo.currFrame=mc.currentFrame;
+  				lso.data.info=lastCourseInfo;
+  				lso.flush();
+  			}
+  			
+  			private function note():void
+  			{
+  				
+  			}
+  			
 			private function help():void
 			{
 				navigateToURL(new URLRequest("http://www.baidu.com"),"_blank");
@@ -428,7 +503,7 @@
 				<mx:Canvas height="550" width="800" backgroundImage="@Embed(source='images/background.jpg')" horizontalCenter="0" verticalCenter="0" id="mainCanvas">
 					<mx:Image x="26" y="25" id="logoImg" source="{logo}"/>						
 					<mx:Image x="300" y="23" id="courseNameLImg" source="{courseNameL}"/>
-					<mx:Button x="627" y="37" label="笔记" width="51" height="25" id="button7"/>
+					<mx:Button x="627" y="37" label="笔记" width="51" height="25" id="button7" click="note()"/>
 					<mx:Button x="681" y="37" label="帮助" width="51" height="25" id="button8" click="help()"/>
 					<mx:Button x="735" y="37" label="退出" width="51" height="25" id="button9" click="exit()"/>
 					
