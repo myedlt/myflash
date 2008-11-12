@@ -23,7 +23,8 @@
 				var loader:URLLoader=new URLLoader();
 				loader.load(new URLRequest(xmlUrl));
 				loader.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
-				loader.addEventListener(Event.COMPLETE,xmlLoadComplete);							
+				loader.addEventListener(Event.COMPLETE,xmlLoadComplete);
+				Alert.okLabel="确定";							
 			}
 			private function xmlLoadComplete(evt:Event):void
 			{
@@ -73,8 +74,7 @@
 					mc=MovieClip(swfLoader.content);
 				}
 				catch(e:Error)
-				{
-					Alert.okLabel="确定";						
+				{									
 					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
 				}				
 				if(app!=null)
