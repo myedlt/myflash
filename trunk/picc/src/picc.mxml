@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()">
-	<mx:Model id="content" source="content.xml"/>	
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="header">
+	<mx:Model id="content" source="content.xml"/>
+	<mx:Style source="skin/defaultSkin.css"/>	
 	<mx:Script>
 		<![CDATA[
 			import mx.controls.PopUpButton;
@@ -44,9 +45,11 @@
 			private var lso:SharedObject;
 			private var isContinue:Boolean;
 			private var lastCourseInfo:Object;			
+			private var noteManage:NoteManage=new NoteManage();
 			
 			private function init():void
 			{
+				this.currentState="main";
 				Alert.okLabel="确定";	
 				//课程菜单初始化
 				for(var i:int=0;i<8;i++)
@@ -66,7 +69,8 @@
 				{
 					var btn:Button=new Button();
 					btn.width=41;
-					btn.height=41;					
+					btn.height=41;	
+					btn.styleName="menuButton";				
 					btn.label=item.label;	
 					if(item.hasOwnProperty("isMultipage")&&item.isMultipage==true)
 					{	
@@ -485,42 +489,60 @@
   			
   			private function note():void
   			{
-  				pause();
-  				var noteManage:NoteManage=new NoteManage();
-  				noteManage.setApp(this);
-  				PopUpManager.addPopUp(noteManage,this,true);
-  				PopUpManager.centerPopUp(noteManage);
+  				if(!noteManage.isPopUp)
+  				{
+  					pause();
+  					var point:Point=new Point();								
+					point=mainLoader.localToGlobal(point);
+  					noteManage.x=point.x;
+  					noteManage.y=point.y;  				
+  					PopUpManager.addPopUp(noteManage,this);  
+  				}
   			}
   			
 			private function help():void
 			{
-				navigateToURL(new URLRequest("http://www.baidu.com"),"_blank");
+				navigateToURL(new URLRequest(content.Help.data),"_blank");
 			}
 				
   			private function exit():void
 			{//一些浏览器不支持通过 navigateToURL() 方法使用 javascript 协议。而应考虑使用 ExternalInterface API 的 call() 方法在包含该内容的 HTML 页中调用 JavaScript 方法。
 				navigateToURL(new URLRequest("javascript:window.close()"),"_self");//"window.opener=null"使关闭窗口时不弹出确认信息窗口
 			}
+			private function skip():void
+			{
+				if(this.currentState=="header")
+				{
+					mc.gotoAndStop(mc.totalFrames);
+					btnBegin.visible=true;
+					btnGoOn.visible=true;
+					btnSkip.visible=false;
+				}
+				else
+				{
+					mc.gotoAndStop(0);
+					init();
+				}
+				
+			}
+			private function headerLoadComp():void
+			{
+				mc=MovieClip(headLoader.content);
+			}
+			private function beginStudy():void
+			{
+				this.currentState="begin";
+				headLoader.source=content.Begin.data;
+				btnSkip.visible=true;
+			}
+			private function goOnStudy():void
+			{
+				this.isContinue=true;
+				init();
+			}
 		]]>
-	</mx:Script>
+	</mx:Script>	
 	
-	<mx:Style>
-		global
-		{
-			font-size:12;
-			font-family:"黑体";
-		}
-		Button
-		{
-			padding-left:0;
-			padding-right:0;
-		}
-		LinkButton
-		{
-			text-decoration:underline;
-		}
-		
-	</mx:Style>
 	<mx:states>
 		<mx:State name="main">
 			<mx:AddChild position="lastChild">
@@ -616,9 +638,19 @@
 		</mx:State>
 		<mx:State name="header">
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true"/>
-			</mx:AddChild>
+				<mx:Canvas width="585" height="389" verticalCenter="0" horizontalCenter="0" id="canvas1">
+					<mx:SWFLoader source="{content.Header.data}" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true" complete="headerLoadComp()"/>
+					<mx:Button label="Skip" id="btnSkip" right="13" bottom="6" click="skip()" styleName="skipButton"/>
+					<mx:Button label="开始学习" id="btnBegin" left="223" y="220" visible="false" click="beginStudy()"/>
+					<mx:Button label="继续学习" id="btnGoOn" right="223" y="220" visible="false" click="goOnStudy()"/>
+				</mx:Canvas>
+			</mx:AddChild>			
 		</mx:State>
-	</mx:states>
-	
+		<mx:State name="begin" basedOn="header">
+			<mx:RemoveChild target="{btnBegin}"/>
+			<mx:RemoveChild target="{btnGoOn}"/>
+			<mx:SetProperty target="{canvas1}" name="width" value="800"/>
+			<mx:SetProperty target="{canvas1}" name="height" value="550"/>
+		</mx:State>
+	</mx:states>	
 </mx:Application>

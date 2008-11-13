@@ -6,18 +6,19 @@
 		<courseNameS label="课程名称(小)" data="flashes/courseNameS.swf"/>
 		<menuTitle label="菜单标题" data="flashes/menuTitle.swf"/>
 	</Banners>		
-	<Header label="片头" data="flashs/header.swf"/>
-	<Help label="帮助" data="flashs/help.swf"/>
+	<Header label="片头" data="flashes/header.swf"/>
+	<Begin label="滴水的故事" data="flashes/begin.swf"/>
+	<Help label="帮助" data="help/help.html"/>
 	<!-- 请按顺序一次排列,共8行3列(每项的row和col属性不能超出范围) -->
 	<MenuItems label="课程菜单"> 
-		<menuItem label="目标" row="1" col="2" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses01.xml"/>
-		<menuItem label="架构" row="2" col="1" isMultipage="fale" data="courses/unit02_01.swf"/>
-		<menuItem label="文化" row="2" col="2" isMultipage="fale" data="courses/unit01_22.swf"/>
-		<menuItem label="制度" row="3" col="3" isMultipage="fale" data="courses/unit02_04.swf"/>
-		<menuItem label="领导" row="4" col="2" isMultipage="fale" data="courses/unit02_05.swf"/>
-		<menuItem label="支持" row="5" col="1" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses06.xml"/>
-		<menuItem label="环境" row="5" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses07.xml"/>
-		<menuItem label="管理" row="6" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/courses08.xml"/>
+		<menuItem label="目标" row="1" col="2" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/unit01.xml"/>
+		<menuItem label="架构" row="2" col="1" isMultipage="fale" data="template/multipage/multipage.swf" xml="template/multipage/unit02.xml"/>
+		<menuItem label="文化" row="2" col="2" isMultipage="fale" data="template/multipage/multipage.swf" xml="template/multipage/unit03.xml"/>
+		<menuItem label="制度" row="3" col="3" isMultipage="fale" data="template/multipage/multipage.swf" xml="template/multipage/unit04.xml"/>
+		<menuItem label="领导" row="4" col="2" isMultipage="fale" data="template/multipage/multipage.swf" xml="template/multipage/unit05.xml"/>
+		<menuItem label="支持" row="5" col="1" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/unit06.xml"/>
+		<menuItem label="环境" row="5" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/unit07.xml"/>
+		<menuItem label="管理" row="6" col="3" isMultipage="true" data="template/multipage/multipage.swf" xml="template/multipage/unit08.xml"/>
 	</MenuItems>
 	<EffectButton>
 		<button row="1" col="3" hasEffect="false" swf="flashes/buttons/1.swf"/>
