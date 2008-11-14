@@ -1,0 +1,12 @@
+
+C:\Documents and Settings\huhj\Application Data\Macromedia\Flash Player\#Security\FlashPlayerTrust\flexbuilder.cfg
+FlexBuilder 用于自动对开发下的工程授予信任。
+
+样例内容：
+	D:\ATemp\ContineoWS\.metadata\.plugins\com.adobe.flash.profiler
+	D:\ATemp\FlexWS\Test\bin-debug
+	D:\xampp\htdocs\flex
+	
+Flex建好的swf应放到一个非信任的目录中测试。
+FlexBuilder  默认local-with-networking
+Flash CS3 默认local-with-filesystem
