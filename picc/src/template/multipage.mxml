@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#FFFFFF">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.ListEvent;
+			import mx.events.ItemClickEvent;			
+			import mx.controls.Alert;
+			
+			public var xmlUrl:String;
+			public var mc:MovieClip;//当前movieclip对象,供外部调用					
+			public var model:ArrayCollection;
+			public var currCourse:String;
+			public var currPage:int;
+			private var app:Object;//获得的外部application对象
+			
+			public function setApp(app:Object):void
+			{
+				this.app=app;
+			}
+			public function init():void
+			{
+				var loader:URLLoader=new URLLoader();
+				loader.load(new URLRequest(xmlUrl));
+				loader.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
+				loader.addEventListener(Event.COMPLETE,xmlLoadComplete);
+				Alert.okLabel="确定";							
+			}
+			private function xmlLoadComplete(evt:Event):void
+			{
+				model=xmlToArray(XMLList(XML(evt.target.data).section));
+				if(app!=null)
+				{
+					app.innerArrayComplete();
+				}	
+				tabBar.dataProvider=model;
+				tabBar.labelField="count";			
+				gotoPage(0);
+				//swfLoader.source=model[0].data;
+			}
+			private function ioErrorHandler(evt:IOErrorEvent):void
+            {
+            	Alert.show("加载外部文件时出错,请检查路径是否正确!\nMessage:"+evt.target.toString(),"错误提示");
+            }
+            private function xmlToArray(xmlList:XMLList):ArrayCollection
+            {
+            	var array:ArrayCollection=new ArrayCollection();
+            	var count:int=0;
+            	for each(var item:XML in xmlList)
+            	{
+            		array.addItem({count:++count,label:item.@label,data:item.@data});
+            	}            	
+            	return array;
+            }
+			private function onClick(evt:ItemClickEvent):void
+			{
+				this.currCourse=evt.item.label;
+				this.currPage=evt.item.count;					
+				swfLoader.source=evt.item.data;
+				//app.play();
+			}
+			private function unloadHandler():void
+			{
+				if(mc!=null)
+				{
+					mc.gotoAndStop(0);
+					mc=null;
+				}
+			}
+			private function loadComplete():void
+			{
+				try
+				{
+					mc=MovieClip(swfLoader.content);
+				}
+				catch(e:Error)
+				{									
+					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
+				}				
+				if(app!=null)
+				{
+					app.innerSwfComplete();
+				}				
+			}			
+			//可供外部程序调用
+			public function nextPage():String
+			{
+				if(tabBar.selectedIndex==tabBar.numChildren-1)
+				{
+					//unloadHandler();
+					return "last";
+				}
+				else
+				{
+					tabBar.selectedIndex=tabBar.selectedIndex+1;
+					tabBar.dispatchEvent(new ItemClickEvent(ItemClickEvent.ITEM_CLICK,false,false,null,tabBar.selectedIndex+1,null,model[tabBar.selectedIndex+1]));
+					return null;
+				}				
+			}
+			public function prePage():String
+			{
+				if(tabBar.selectedIndex==0)
+				{
+					//unloadHandler();
+					return "first";
+				}
+				else
+				{
+					tabBar.selectedIndex=tabBar.selectedIndex-1;
+					tabBar.dispatchEvent(new ItemClickEvent(ItemClickEvent.ITEM_CLICK,false,false,null,tabBar.selectedIndex-1,null,model[tabBar.selectedIndex-1]));
+					return null;
+				}
+			}
+			public function gotoPage(index:int):void
+			{
+				tabBar.selectedIndex=index;
+				tabBar.dispatchEvent(new ItemClickEvent(ItemClickEvent.ITEM_CLICK,false,false,null,index,null,model[index]));
+			}
+			/*private function test(evt:ListEvent):void
+			{
+				Alert.show(ComboBox(evt.target).selectedIndex.toString());
+				gotoPage(ComboBox(evt.target).selectedItem.data);
+				//gotoComb.selectedItem=null;
+			}*/								
+		]]>
+	</mx:Script>
+	<mx:VBox height="100%" width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0" horizontalCenter="0" verticalCenter="0">
+		<mx:TabBar id="tabBar" itemClick="onClick(event)" width="0" height="0"/>				
+		<mx:SWFLoader id="swfLoader" complete="loadComplete()" unload="unloadHandler()" autoLoad="true" scaleContent="true" width="100%" height="100%" horizontalAlign="center" verticalAlign="middle"/>		
+		<!--
+		<mx:Button click="nextPage()" label="next"/>
+		<mx:Button click="prePage()" label="previous"/>
+		<mx:ComboBox id="gotoComb" change="test(event)">
+			<mx:Array>
+				<mx:Object label="1" data="0"/>
+				<mx:Object label="2" data="1"/>
+				<mx:Object label="3" data="2"/>
+			</mx:Array>
+		</mx:ComboBox>
+		-->
+	</mx:VBox>
+</mx:Application>
