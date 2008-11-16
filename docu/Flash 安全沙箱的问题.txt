@@ -10,3 +10,7 @@ FlexBuilder 用于自动对开发下的工程授予信任。
 Flex建好的swf应放到一个非信任的目录中测试。
 FlexBuilder  默认local-with-networking
 Flash CS3 默认local-with-filesystem
+
+公共库路径：C:\Program Files\Adobe\Adobe Flash CS4\en\Configuration\Libraries			手动拷贝到此
+模板路径：C:\Program Files\Adobe\Adobe Flash CS4\en\Configuration\Templates			保存为模板=》
+组件路径：C:\Program Files\Adobe\Adobe Flash CS4\Common\Configuration\Components		Export SWC=》到此
