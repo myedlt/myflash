@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CourseList>	
+	<Chapter name="原燃料知识" teacher="胡先">
+		<section name="高炉冶炼过程概述（一）" url="../CH01/IView_l.htm" length=""/>	
+		<section name="高炉冶炼过程概述（二）" url="../CH02/IView_l.htm" length=""/>
+		<section name="高炉冶炼过程概述（三）" url="../CH03/IView_l.htm" length=""/>
+		<section name="铁矿石种类及评价铁矿石（一）" url="../CH04/IView_l.htm" length=""/>	
+		<section name="铁矿石种类及评价铁矿石（二）" url="../CH05/IView_l.htm" length=""/>	
+		<section name="烧结矿生产及质量评价" url="../CH06/IView_l.htm" length=""/>
+		<section name="高炉用燃料及辅助原料（一）" url="../CH07/IView_l.htm" length=""/>
+		<section name="高炉用燃料及辅助原料（二）" url="../CH08/IView_l.htm" length=""/>
+	</Chapter>
+	<Chapter name="冶炼原理" teacher="胡先">
+		<section name="碳酸盐分解" url="../CH09/IView_l.htm" length=""/>
+		<section name="铁氧化物还原（一）" url="../CH10/IView_l.htm" length=""/>
+		<section name="铁氧化物还原（二）" url="../CH11/IView_l.htm" length=""/>	
+		<section name="造渣和脱硫及生铁的形成（一）" url="../CH13/IView_l.htm" length=""/>	
+		<section name="造渣和脱硫及生铁的形成（二）" url="../CH14/IView_l.htm" length=""/>
+		<section name="燃料燃烧（一）" url="../CH15/IView_l.htm" length=""/>
+		<section name="燃料燃烧（二）" url="../CH16/IView_l.htm" length=""/>		
+	</Chapter>	
+</CourseList>
