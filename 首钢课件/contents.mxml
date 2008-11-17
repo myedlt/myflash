@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()">
+	<mx:Tree id="menuTree" dataProvider="{treeMenuData}" labelField="@name" width="100%" height="100%" itemClick="onClick(event)" fontSize="12"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.ListEvent;
+			[Bindable]
+			private var treeMenuData:XMLList;
+			
+			private function init():void
+			{
+				var loader:URLLoader=new URLLoader();
+				Alert.show(Security.sandboxType);
+				loader.load(new URLRequest("../contents.xml"));
+				loader.addEventListener(Event.COMPLETE,loadComplete);
+			}
+			private function loadComplete(evt:Event):void
+			{
+				treeMenuData=XMLList(evt.target.data).Chapter;	
+			}
+			
+			public function onClick(evt:ListEvent):void
+			{
+				var item:Object=Tree(evt.currentTarget).selectedItem;
+				if(Tree(evt.target).dataDescriptor.isBranch(item))
+				{
+					Tree(evt.target).expandItem(item,!Tree(evt.target).isItemOpen(item),true);
+				}
+				else
+				{
+					ExternalInterface.call("wait_DIV");
+					navigateToURL(new URLRequest(evt.currentTarget.selectedItem.@url),"_self");
+				}
+				//Tree(evt.currentTarget).selectedItem=null;//可以连续点击同一节点
+			}
+		]]>
+	</mx:Script>	
+</mx:Application>
