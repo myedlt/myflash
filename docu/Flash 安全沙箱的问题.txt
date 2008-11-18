@@ -14,3 +14,4 @@ Flash CS3 默认local-with-filesystem
 公共库路径：C:\Program Files\Adobe\Adobe Flash CS4\en\Configuration\Libraries			手动拷贝到此
 模板路径：C:\Program Files\Adobe\Adobe Flash CS4\en\Configuration\Templates			保存为模板=》
 组件路径：C:\Program Files\Adobe\Adobe Flash CS4\Common\Configuration\Components		Export SWC=》到此
+C:\Documents and Settings\huhj\Local Settings\Application Data\Adobe\Flash CS4\en\Configuration\Components
