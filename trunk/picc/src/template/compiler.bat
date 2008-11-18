@@ -12,7 +12,7 @@ echo.
 set filename=
 set /p filename=请输入要编译的mxml文件名（绝对路径或相对路径）:
 echo.
-mxmlc %filename%
+mxmlc %filename% -use-network=false
 echo.
 set m=
 set /p m=按任意键继续, 退出请按 1 :

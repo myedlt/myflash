@@ -21,6 +21,7 @@
 			}
 			private function init():void
 			{
+				this.isPopUp=false;//使窗口不可拖动
 				lso=SharedObject.getLocal("noteInfo","/");
 				if(lso==null)
 				{
@@ -60,7 +61,7 @@
 							noteArray.getItemAt(noteArray.getItemIndex(noteList.selectedItem)).title=txtTitle.text;
 							noteArray.getItemAt(noteArray.getItemIndex(noteList.selectedItem)).content=txtContent.text;
 							lso.flush();													
-							var alert1:Alert=Alert.show("修改成功!","提示");
+							var alert1:Alert=Alert.show("修改成功!","提示",Alert.NONMODAL);
 							PopUpManager.centerPopUp(alert1);
 							alert1.move(point.x,point.y);
 							back();
@@ -74,7 +75,7 @@
 							lso.flush();
 							Alert.yesLabel="是";
 							Alert.noLabel="否";					
-							var alert2:Alert=Alert.show("是否继续添加?","保存成功",Alert.YES|Alert.NO,this,alertHandler);
+							var alert2:Alert=Alert.show("是否继续添加?","保存成功",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler);
 							PopUpManager.centerPopUp(alert2);
 							alert2.move(point.x,point.y);
 						}				

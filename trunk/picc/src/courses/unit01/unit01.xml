@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Sections label="共同的目标"><!-- 必须以"../"开头 -->
+<Sections><!-- 路径必须以"../"开头 -->
 	<section label="学习目标" data="../courses/unit01/unit01_01.swf"/>
 	<section label="三叶草的故事" data="../courses/unit01/unit01_02.swf"/>
 	<section label="如何确定团队的目标" data="../courses/unit01/unit01_03.swf"/>
