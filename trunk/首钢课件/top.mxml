@@ -1,53 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application backgroundImage="../logo.jpg" xmlns:mx="http://www.adobe.com/2006/mxml" width="1011" height="112" xmlns="*" layout="vertical" creationComplete="initApp()">
-	<mx:HTTPService id="myXML" url="url.xml" result="resultHandler(event)" resultFormat="xml"/>
+<mx:Application backgroundImage="../logo.jpg" xmlns:mx="http://www.adobe.com/2006/mxml" width="1011" height="112" layout="vertical" creationComplete="initApp()">
+	<mx:HTTPService id="myXML" url="../contents.xml" result="resultHandler(event)" resultFormat="xml"/>
+	<mx:HBox width="900" paddingLeft="381" id="hBox"/>		
 	
-	<mx:HBox width="900" paddingLeft="381">
-		<mx:Button label="课程介绍" fontSize="12" click="clicked(0)"/>
-		<mx:Button label="学习论坛" fontSize="12" click="clicked(1)"/>
-		<mx:Button label="教师简介" fontSize="12" click="clicked(2)"/>
-		<mx:Button label="课程习题" fontSize="12" click="clicked(3)"/>
-		<mx:Button label="随堂笔记" fontSize="12" click="clicked(4)"/>
-		<mx:Button label="参考文献" fontSize="12" click="clicked(5)"/>
-	</mx:HBox>
-	<mx:HBox width="900" paddingLeft="250" height="30" paddingTop="13" horizontalAlign="center">
-		<mx:Label text="{title}" fontSize="12" color="#FF0000"/>		
-	</mx:HBox>
 	<mx:Script>
+		<![CDATA[
+			import mx.controls.Button;	
+	
 		import mx.controls.Alert;
 		import mx.rpc.events.ResultEvent;
-		private var xmlList:XMLList;
-		private var urls:Array = new Array();
-		[Bindable]
-		private var title:String;		
+		private var xmlList:XMLList;	
 		
 		public function initApp():void{
-			myXML.send();
-			Alert.show(Security.sandboxType);
-			this.title=ExternalInterface.call("returnTitle");
+			myXML.send();			
 		}
 			
 		public function resultHandler(event:ResultEvent):void{
-			xmlList=XMLList(XML(event.result).url);
+			xmlList=XMLList(event.result).top.button;
 			if(xmlList != null){
 				for each(var element:XML in xmlList){
-					var path:String = element.@path;
-					urls.push(path);
+					var btn:Button=new Button();
+					btn.label=element.@label;
+					btn.data=element.@url;
+					btn.setStyle("fontSize",12);
+					btn.addEventListener(MouseEvent.CLICK,clicked);	
+					hBox.addChild(btn);				
 				}
 			}
 		}
 		
-		public function clicked(num:int):void{
-//			Alert.show(num.toString() + "//" + urls.length, "提示信息");
-			if(urls.length > num){
-				Alert.show(urls[num], "提示信息");
-				navigateToURL(new URLRequest(urls[num].toString()),'_blank');
-			}else{
-				Alert.show("没有链接！", "提示信息");
-			}
+		public function clicked(evt:MouseEvent):void{
+
+				navigateToURL(new URLRequest(evt.target.data),'_blank');
+			
 		}
 //		public function waitDIV():void{
 //			Alert.show("已到最后一张！", "提示信息");
 //		}
+]]>
 	</mx:Script>
 </mx:Application>
