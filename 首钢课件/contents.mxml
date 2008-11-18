@@ -11,13 +11,13 @@
 			private function init():void
 			{
 				var loader:URLLoader=new URLLoader();
-				Alert.show(Security.sandboxType);
+				//Alert.show(Security.sandboxType);
 				loader.load(new URLRequest("../contents.xml"));
 				loader.addEventListener(Event.COMPLETE,loadComplete);
 			}
 			private function loadComplete(evt:Event):void
 			{
-				treeMenuData=XMLList(evt.target.data).Chapter;	
+				treeMenuData=XMLList(evt.target.data).CourseList.Chapter;	
 			}
 			
 			public function onClick(evt:ListEvent):void
@@ -29,10 +29,10 @@
 				}
 				else
 				{
-					ExternalInterface.call("wait_DIV");
+					//ExternalInterface.call("wait_DIV");
 					navigateToURL(new URLRequest(evt.currentTarget.selectedItem.@url),"_self");
 				}
-				//Tree(evt.currentTarget).selectedItem=null;//可以连续点击同一节点
+				Tree(evt.currentTarget).selectedItem=null;//可以连续点击同一节点
 			}
 		]]>
 	</mx:Script>	
