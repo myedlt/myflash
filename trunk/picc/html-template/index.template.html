@@ -101,10 +101,10 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 // -->
 function onClose()
 {
-	if (navigator.appName.indexOf("Microsoft") != -1)
-	{ 
+		if (navigator.appName.indexOf("Microsoft") != -1)
+		{ 
         window["${application}"].writeLog();
-    } 
+  	} 
     else 
     { 
         document["${application}"].writeLog();
