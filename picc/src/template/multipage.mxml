@@ -12,7 +12,10 @@
 			public var model:ArrayCollection;
 			public var currCourse:String;
 			public var currPage:int;
-			private var app:Object;//获得的外部application对象
+			private var app:Object;//获得的外部application对象			
+			public var currSectionNum:int=0;
+			public var currFrame:int;
+			public var isContinue:Boolean=false;
 			
 			public function setApp(app:Object):void
 			{
@@ -35,8 +38,7 @@
 				}	
 				tabBar.dataProvider=model;
 				tabBar.labelField="count";			
-				gotoPage(0);
-				//swfLoader.source=model[0].data;
+				gotoPage(currSectionNum);	
 			}
 			private function ioErrorHandler(evt:IOErrorEvent):void
             {
@@ -56,14 +58,13 @@
 			{
 				this.currCourse=evt.item.label;
 				this.currPage=evt.item.count;					
-				swfLoader.source=evt.item.data;
-				//app.play();
+				swfLoader.source=evt.item.data;				
 			}
 			private function unloadHandler():void
 			{
 				if(mc!=null)
 				{
-					mc.gotoAndStop(0);
+					mc.gotoAndStop(1);
 					mc=null;
 				}
 			}
@@ -72,14 +73,19 @@
 				try
 				{
 					mc=MovieClip(swfLoader.content);
+					if(isContinue)
+					{
+						mc.gotoAndStop(currFrame);
+						isContinue=false;
+					}
+					if(app!=null)
+					{
+						app.innerSwfComplete();
+					}
 				}
 				catch(e:Error)
 				{									
 					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
-				}				
-				if(app!=null)
-				{
-					app.innerSwfComplete();
 				}				
 			}			
 			//可供外部程序调用
