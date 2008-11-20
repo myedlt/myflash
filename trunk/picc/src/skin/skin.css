@@ -10,6 +10,20 @@ Application
 	background-color:#ffffff;
 }
 
+Alert 
+{
+	 color:#000000;
+	 font-size:13px;     
+     background-color:#ffffff;     
+     border-color:#cccccf;   
+     header-height:26; 
+}
+
+TitleWindow
+{
+	
+}
+
 Button
 {
 	padding-left:0;
@@ -91,18 +105,9 @@ Button
 	disabled-skin:Embed(source="skin.swf",symbol="Button_lb_upSkin");
 }
 
-LinkButton
-{
-	text-decoration:underline;	 
-	/* up-skin:Embed(source="skin.swf",symbol="btn_text_disabledSkin");
-	over-skin:Embed(source="skin.swf",symbol="btn_text_overSkin");
-	down-skin:Embed(source="skin.swf",symbol="btn_text_downSkin");
-	disabled-skin:Embed(source="skin.swf",symbol="btn_text_upSkin"); */
-} 
-
 .progressSlider
 {
-	track-skin:Embed(source="skin.swf",symbol="ProgressBar_trackSkin");	
+	/* track-skin:Embed(source="skin.swf",symbol="ProgressBar_trackSkin");	 */
 	thumb-up-skin:Embed(source="skin.swf",symbol="Btn_disabledSkin");
 	thumb-over-skin:Embed(source="skin.swf",symbol="Btn_overSkin");
 	thumb-down-skin:Embed(source="skin.swf",symbol="Btn_downSkin");
