@@ -13,16 +13,23 @@
 			private var lso:SharedObject;			
 			private var modifyFlag:Boolean;
 			[Bindable]
-			private var noteArray:ArrayCollection;			
+			private var noteArray:ArrayCollection;	
+			private var point:Point;
+			private var app:Object=null;		
 			
+			public function setApp(app:Object):void
+			{
+				this.app=app;
+			}
 			private function close():void
 			{
-				PopUpManager.removePopUp(this);				
+				PopUpManager.removePopUp(this);	
+				if(app!=null)app.isPopup=false;			
 			}
 			private function init():void
 			{
 				this.isPopUp=false;//使窗口不可拖动
-				lso=SharedObject.getLocal("noteInfo","/");
+				lso=SharedObject.getLocal("picc/noteInfo","/");
 				if(lso==null)
 				{
 					Alert.show("无法获取本地共享对象!","Error");
@@ -39,6 +46,10 @@
 						noteArray=lso.data.noteList;
 					}				
 				}
+				point==new	Point();
+				point.x=(this.width-200)/2;
+				point.y=(this.height-110)/2;
+				point=this.localToGlobal(point);					
 			}			
 			private function addNote():void
 			{
@@ -72,9 +83,7 @@
 							var formatter:DateFormatter=new DateFormatter();
 							formatter.formatString="YYYY-MM-DD  JJ:NN:SS";
 							noteArray.addItem({title:txtTitle.text,content:txtContent.text,date:formatter.format(now)});
-							lso.flush();
-							Alert.yesLabel="是";
-							Alert.noLabel="否";					
+							lso.flush();										
 							var alert2:Alert=Alert.show("是否继续添加?","保存成功",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler);
 							PopUpManager.centerPopUp(alert2);
 							alert2.move(point.x,point.y);
@@ -108,14 +117,23 @@
 			private function clearAll():void
 			{
 				if(btnClear.label=="全部清空")
-				{
-					noteArray.removeAll();
-					txtDisplay.text=null;
+				{									
+					var alert3:Alert=Alert.show("你确定要全部清空?","确认",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler1);
+					PopUpManager.centerPopUp(alert3);
+					alert3.move(point.x,point.y);
 				}
 				else
 				{
 					back();
 				}
+			}
+			private function alertHandler1(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{					
+					noteArray.removeAll();
+					txtDisplay.text=null;
+				}				
 			}	
 			private function back():void
 			{

@@ -61,7 +61,7 @@ public class SliderHighlightSkin extends Border
 	 */
 	override public function get measuredHeight():Number
 	{
-		return 5.5;
+		return 5;
 	}
 	
 	//--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ public class SliderHighlightSkin extends Border
 		
 		graphics.clear();
 		
-		drawRoundRect(7, 0.8, w, h, 0, trackColor, 0.8);//绘制圆角矩形		
+		drawRoundRect(2,0, w, h, 0, trackColor,1);//绘制圆角矩形		
 	}
 }
 
