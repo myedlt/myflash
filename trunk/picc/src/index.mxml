@@ -4,6 +4,7 @@
 	<mx:Style source="skin/skin.css"/>	
 	<mx:Script>
 		<![CDATA[
+			import component.SliderTrackSkin;
 			import component.SliderHighlightSkin;			
 			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
@@ -63,15 +64,19 @@
 			private var app:Object;
 			private var lso:SharedObject;
 			private var isContinue:Boolean;
-			private var lastCourseInfo:Object;			
-			private var noteManage:NoteManage=new NoteManage();
+			private var lastCourseInfo:Object=new Object();			
+			private var noteManage:NoteManage;
+			private var lsoInfo:Object;
+			public var isPopup:Boolean=false;
 			
 			private function appInit():void
 			{
 				Alert.okLabel="确定";
+				Alert.yesLabel="是";
+				Alert.noLabel="否";	
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);
 				//注册回调函数,让外部js调用
-				if(ExternalInterface.available)
+				/* if(ExternalInterface.available)
 				{
                 	try
 					{
@@ -79,13 +84,13 @@
 					}
 					catch(error:SecurityError)
 					{
-						Alert.show("给外部js添加回调函数时出错,可能存在安全沙箱问题!\n"+error.message,"错误提示");
+						Alert.show("给外部js添加回调函数时出错,存在安全沙箱问题!\n"+error.message,"错误提示");
 					}
            	 	}
            	 	else
            	 	{
            	 		Alert.show("External interface is not available for this container!");
-           	 	}		
+           	 	}		 */
 			}
 			
 			private function init():void
@@ -150,7 +155,7 @@
 				this.logo=content.Banners.logo.data;
 				this.menuTitle=content.Banners.menuTitle.data;
 				this.courseNameS=content.Banners.courseNameS.data;
-				lso=SharedObject.getLocal("lastCourseInfo","/");
+				lso=SharedObject.getLocal("picc/lastCourseInfo","/");				
 				if(lso==null)
 				{
 					Alert.show("无法创建或获取本地共享对象!","Error");
@@ -158,38 +163,40 @@
 				}
 				else
 				{
-					if(isContinue && (lso.data.info!=null || lso.data.info!=undefined))
-					{	
-						if(lso.data.info.isMultipage)
+					if(isContinue && lso.data.info!=null && lso.data.info!=undefined)
+					{
+						lsoInfo=lso.data.info;
+						if(lsoInfo.isMultipage)
 						{	
 							for each(var arrayItem:Object in menuItemArray1)
 							{
-								if(arrayItem.button.data.fullName==lso.data.info.currChapterName)
+								if(arrayItem.button.data.fullName==lsoInfo.currChapterName)
 								{
 									Button(menuItemArray1[arrayItem.count-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 									break;						
 								}
-							} 
+							}							 
 						}
 						else
 						{
-							Button(menuItemArray1[lso.data.info.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+							Button(menuItemArray1[lsoInfo.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 						}
 					}
 					else
 					{		
 						if(isContinue)
 						{
-							isContinue=false;
-						}
+							isContinue=false;							
+						}										
 						firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-					}					
+					}
+					lso.data.info=lastCourseInfo;	
 				}
 			}
 			
 			private function timerHandler(evt:TimerEvent):void
 			{
-				if(this.currentState=="main")
+				if(this.currentState=="main"||this.currentState=="fullscreen")
 				{
 					progressSlider.value=mc.currentFrame;
 					if(progressSlider.value==progressSlider.maximum)
@@ -203,6 +210,7 @@
 							timer.stop();
 						}
 					}
+					writeLog();
 				}
 				else
 				{
@@ -277,7 +285,7 @@
 						mc=MovieClip(evt.target.content);
 						if(isContinue)
 						{
-							mc.gotoAndStop(lso.data.info.currFrame);
+							mc.gotoAndStop(lsoInfo.currFrame);
 							isContinue=false;
 						}
 					}
@@ -304,8 +312,15 @@
 			{	
 				app=evt.target.application;				
 				app.setApp(this);
-				app.xmlUrl=this.temp;				
-				app.init();
+				app.xmlUrl=this.temp;
+				if(isContinue)
+				{	
+					app.isContinue=true;				
+					app.currSectionNum=lsoInfo.currSectionNum-1;
+					app.currFrame=lsoInfo.currFrame;
+					this.isContinue=false;
+				}				
+				app.init();				
 				this.temp=null;
 				SystemManager(evt.target).removeEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
 			}
@@ -324,12 +339,6 @@
 				this.currSectionName=app.currCourse;
 				this.currSectionNum=app.currPage;
 				this.mc=app.mc;
-				if(isContinue)
-				{
-					app.gotoPage(lso.data.info.currSectionNum-1);
-					mc.gotoAndStop(lso.data.info.currFrame);
-					isContinue=false;
-				}
 				if(timer.running==false)
 				{
 					timer.start();
@@ -454,8 +463,7 @@
 			
 			private function gotoPage(evt:ListEvent):void
 			{
-				var item:Object=ComboBox(evt.target).selectedItem;
-				//mainLoader.load(item.data);
+				var item:Object=ComboBox(evt.target).selectedItem;				
 				if(gotoComb.dataProvider==menuItemArray2)
 				{
 					app.gotoPage(ComboBox(evt.target).selectedIndex);
@@ -463,7 +471,7 @@
 				else
 				{
 					Button(item.button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-					/* mainLoader.source=item.data;Alert.show(item.data);
+					/* mainLoader.source=item.data;
 					callLater(mainLoader.load);//解决swf显示问题	 */
 				}
 				//gotoComb.selectedItem=null;		
@@ -538,28 +546,33 @@
   					return temp.substr(0,3);
   				}
   			}
-  			
+  			//Flash Player 会在共享对象会话结束时（也就是说，在 SWF 文件关闭时，在由于不再有对共享对象的任何引用而将其作为垃圾回收时，或者在调用 SharedObject.clear() 或 SharedObject.close() 时），将共享对象写入文件
   			private function writeLog():void
   			{
-  				lastCourseInfo=new Object();
   				lastCourseInfo.isMultipage=(gotoComb.dataProvider==menuItemArray2)?true:false;
   				lastCourseInfo.currChapterName=this.currChapterName;
   				lastCourseInfo.currSectionNum=this.currSectionNum;
-  				lastCourseInfo.currFrame=mc.currentFrame;
-  				lso.data.info=lastCourseInfo;
-  				lso.flush();
+  				lastCourseInfo.currFrame=mc.currentFrame;  				
   			}
   			
   			private function note():void
   			{
-  				if(!noteManage.isPopUp)
+  				if(isPopup)
+  				{
+  					PopUpManager.removePopUp(noteManage);
+  					isPopup=false; 
+  				}
+  				else
   				{
   					pause();
+  					noteManage=new NoteManage(); 
+  					noteManage.setApp(this);
   					var point:Point=new Point();								
 					point=mainLoader.localToGlobal(point);
   					noteManage.x=point.x;
-  					noteManage.y=point.y;  				
-  					PopUpManager.addPopUp(noteManage,this);  
+  					noteManage.y=point.y; 
+  					PopUpManager.addPopUp(noteManage,this);
+  					isPopup=true; 
   				}
   			}
   			
@@ -572,6 +585,7 @@
 			{//一些浏览器不支持通过 navigateToURL() 方法使用 javascript 协议。而应考虑使用 ExternalInterface API 的 call() 方法在包含该内容的 HTML 页中调用 JavaScript 方法。
 				navigateToURL(new URLRequest("javascript:window.close()"),"_self");//"window.opener=null"使关闭窗口时不弹出确认信息窗口
 			}
+			
 			private function skip():void
 			{
 				if(this.currentState=="header")
@@ -586,8 +600,8 @@
 					mc.gotoAndStop(1);
 					init();
 				}
-				
 			}
+			
 			private function headerLoadComp():void
 			{
 				mc=MovieClip(headLoader.content);
@@ -618,7 +632,7 @@
 			}
 			private function lbMouseOver1():void
 			{
-				btnPreviouse.setStyle("textDecoration","normal");
+				btnPreviouse.setStyle("textDecoration","normal");				
 			}
 			private function lbMouseOver2():void
 			{
@@ -655,19 +669,19 @@
 						<mx:Label id="navFlag" text="-&gt;" fontFamily="Courier New"/>
 						<mx:Label text="{currSectionName}" id="sectionName"/>
 					</mx:HBox>					
-					<mx:SWFLoader id="mainLoader" init="multipageHandler(event)" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" x="133" y="99" height="388" width="652" horizontalAlign="center" verticalAlign="middle"/>
+					<mx:SWFLoader id="mainLoader" init="multipageHandler(event)" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" x="133" y="99" height="389" width="652" horizontalAlign="center" verticalAlign="middle"/>
 					<mx:Button label="全屏显示" width="62" height="20" x="715" y="462.5" id="button5" click="fullscreen()" fontSize="12" fontWeight="normal"/>
 					
-					<mx:HSlider x="143" y="487" width="611" height="8.4" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}"/>
+					<mx:HSlider x="143" y="487" width="611" height="8.4" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="140" trackSkin="{component.SliderTrackSkin}"/>
 					<mx:Button x="153" y="506" width="22" id="button3" click="play()" styleName="playButton" toolTip="播放"/>
 					<mx:Button x="180" y="506" width="22" id="button2" click="pause()" styleName="pauseButton" toolTip="暂停"/>
 					<mx:Button x="207" y="506" width="22" id="button1" click="stop()" styleName="stopButton" toolTip="停止"/>
-						<mx:LinkButton x="269" y="507" label="前一页" id="btnPreviouse" click="prePage()" mouseOver="lbMouseOver1()" mouseOut="lbMouseOut1()"/>
+						<mx:LinkButton x="269" y="507" label="前一页" id="btnPreviouse" click="prePage()" mouseOver="lbMouseOver1()" mouseOut="lbMouseOut1()" alpha="0.0" textDecoration="underline"/>
 						<mx:Label x="326" y="509" text="当前页" id="label1"/>
 						<mx:Label x="365" y="510" text="{currSectionNum}" textAlign="center" id="label3"/>
 						<mx:Label x="389" y="509" text="总页数" id="label2"/>
 						<mx:Label x="430" y="510" text="{totalSectionNum}" textAlign="center" id="label4"/>
-						<mx:LinkButton x="450" y="507" label="后一页" id="btnNext" click="nextPage()" mouseOver="lbMouseOver2()" mouseOut="lbMouseOut2()"/>
+						<mx:LinkButton x="450" y="507" label="后一页" id="btnNext" click="nextPage()" mouseOver="lbMouseOver2()" mouseOut="lbMouseOut2()" alpha="0.0" textDecoration="underline"/>
 						<mx:Label x="512" y="509" text="直接跳转到" id="label5"/>
 						<mx:ComboBox x="580" y="507.5" width="49" id="gotoComb" change="gotoPage(event)" labelField="count" fontSize="10" cornerRadius="3"/>
 						<mx:Label x="632" y="509" text="页" textAlign="center" id="label6"/>
@@ -704,29 +718,28 @@
 			<mx:RemoveChild target="{columeSlider}"/>
 			<mx:RemoveChild target="{button5}"/>
 			<mx:SetProperty target="{mainLoader}" name="width" value="100%"/>
-			<mx:SetProperty target="{mainLoader}" name="x" value="0"/>
+			<mx:SetProperty target="{mainLoader}" name="x"/>
 			<mx:SetProperty target="{mainLoader}" name="height" value="100%"/>
-			<mx:SetProperty target="{mainLoader}" name="y" value="0"/>
+			<mx:SetProperty target="{mainLoader}" name="y"/>
 			<mx:SetProperty target="{mainCanvas}" name="width" value="100%"/>
-			<mx:SetProperty target="{mainCanvas}" name="height" value="100%"/>
-			<mx:SetStyle target="{mainCanvas}" name="backgroundImage"/>
+			<mx:SetProperty target="{mainCanvas}" name="height" value="100%"/>			
 			<mx:AddChild relativeTo="{mainCanvas}" position="lastChild">
-				<mx:Button label="退出全屏" right="35" top="20" height="22" click="normalState()"/>
+				<mx:Button label="退出全屏" right="35" top="20" height="22" click="normalState()" styleName="button"/>
 			</mx:AddChild>
 			<mx:SetStyle name="horizontalAlign" value="center"/>
 			<mx:SetStyle name="verticalAlign" value="middle"/>
 			<mx:SetProperty name="width" value="100%"/>
-			<mx:SetProperty name="height" value="100%"/>
-			<mx:SetStyle target="{mainCanvas}" name="horizontalCenter"/>
-			<mx:SetStyle target="{mainCanvas}" name="verticalCenter"/>
-			<mx:SetProperty name="layout" value="vertical"/>
+			<mx:SetProperty name="height" value="100%"/>			
+			<mx:SetProperty name="layout" value="absolute"/>
 			<mx:SetProperty target="{mainLoader}" name="width" value="100%"/>
-			<mx:SetProperty target="{mainLoader}" name="height" value="100%"/>
-			<mx:SetProperty target="{mainLoader}" name="x"/>
-			<mx:SetStyle target="{mainLoader}" name="horizontalCenter" value="0"/>
-			<mx:SetProperty target="{mainLoader}" name="y"/>
-			<mx:SetStyle target="{mainLoader}" name="verticalCenter" value="0"/>
-			<mx:SetStyle target="{mainLoader}" name="backgroundImage"/>
+			<mx:SetProperty target="{mainLoader}" name="height" value="100%"/>			
+			<mx:SetStyle target="{mainLoader}" name="horizontalCenter" value="0"/>			
+			<mx:SetStyle target="{mainLoader}" name="verticalCenter" value="0"/>			
+			<mx:SetStyle target="{mainCanvas}" name="backgroundImage"/>
+			<mx:SetProperty target="{mainCanvas}" name="x" value="0"/>
+			<mx:SetStyle target="{mainCanvas}" name="horizontalCenter"/>
+			<mx:SetProperty target="{mainCanvas}" name="y" value="0"/>
+			<mx:SetStyle target="{mainCanvas}" name="verticalCenter"/>
 		</mx:State>
 		<mx:State name="header">
 			<mx:AddChild position="lastChild">
