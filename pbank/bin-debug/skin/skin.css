@@ -1,0 +1,49 @@
+/* CSS file */
+global
+{
+	font-size:12;
+}
+Application
+{
+	background-color:#ffffff;
+}
+.showVideoButton
+{
+	up-skin:Embed(source="skin.swf",symbol="sp_upSkin");
+	over-skin:Embed(source="skin.swf",symbol="sp_overSkin");
+	down-skin:Embed(source="skin.swf",symbol="sp_overSkin"); 
+}
+.playButton
+{
+	up-skin:Embed(source="skin.swf",symbol="bf_upSkin");
+	over-skin:Embed(source="skin.swf",symbol="bf_overSkin");
+	down-skin:Embed(source="skin.swf",symbol="bf_overSkin"); 
+}	
+.pauseButton
+{
+	up-skin:Embed(source="skin.swf",symbol="zt_upSkin");
+	over-skin:Embed(source="skin.swf",symbol="zt_overSkin");
+	down-skin:Embed(source="skin.swf",symbol="zt_overSkin"); 
+}
+.previousButton
+{
+	up-skin:Embed(source="skin.swf",symbol="btn_pre_upskin");
+	over-skin:Embed(source="skin.swf",symbol="btn_pre_overskin");
+	down-skin:Embed(source="skin.swf",symbol="btn_pre_overskin"); 
+}
+.nextButton
+{
+	up-skin:Embed(source="skin.swf",symbol="btn_next_upskin");
+	over-skin:Embed(source="skin.swf",symbol="btn_next_overskin");
+	down-skin:Embed(source="skin.swf",symbol="btn_next_overskin"); 
+}	 
+.progressBar
+{
+	track-skin:Embed(source="skin.swf",symbol="progress_trackSkin");
+	thumb-skin:Embed(source="skin.swf",symbol="progress_thumbSkin");
+}
+.columnBar
+{
+	track-skin:Embed(source="skin.swf",symbol="snd_trackSkin");
+	thumb-skin:Embed(source="skin.swf",symbol="snd_thumbSkin");
+}
