@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()">
+	<mx:Style source="skin/skin.css"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.SliderEvent;
+			import component.SliderHighlightSkin;
+			import mx.core.UIComponent;			
+			import mx.rpc.events.FaultEvent;
+			import flash.net.navigateToURL;
+			import mx.rpc.events.ResultEvent;
+			import mx.events.ItemClickEvent;
+			import mx.controls.Alert;
+			
+			[Embed(source="skin/skin.swf",symbol="snd_btn_downSkin")]
+			[Bindable]
+			private var snd_btn_downSkin:Class;
+			[Embed(source="skin/skin.swf",symbol="snd_btn_upSkin")]
+			[Bindable]
+			private var snd_btn_upSkin:Class;
+			[Embed(source="skin/skin.swf",symbol="snd_btn_overSkin")]
+			[Bindable]
+			private var snd_btn_overSkin:Class;			
+			[Embed(source="skin/skin.swf",symbol="snd_btn_disabled")]			
+			private var snd_btn_disabledSkin:Class;				
+			
+			[Bindable]
+			private var mc:MovieClip;
+			private var timer:Timer=new Timer(10);
+			private var mainTimer:Timer=new Timer(60);
+			private var hidden:Boolean;
+			private var xml:XMLList;
+			[Bindable]
+			private var navLabelArr:Array=new Array();
+			private var navUrlArr:Array=new Array();
+			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
+			
+			private function init():void
+			{
+				content.send();
+				timer.addEventListener(TimerEvent.TIMER,moveVideo);
+				mainTimer.addEventListener(TimerEvent.TIMER,timerHandler);
+			}
+			private function resultHandler(evt:ResultEvent):void
+			{
+					xml=XMLList(evt.result);					
+					for each (var item:XML in xml.Navigator.button)
+					{	
+						navLabelArr.push(item.@label.toString());
+						navUrlArr.push(item.@url.toString());
+					}
+					this.callLater(setLinkBarData);								
+			}
+			private function faultHandler(evt:FaultEvent):void
+			{
+				Alert.show(evt.fault.message,"加载xml文件时出错或者安全沙箱");
+			}
+			private function timerHandler(evt:TimerEvent):void
+			{
+				
+			}	
+			private function setLinkBarData():void
+			{
+				linkBar.dataProvider=navLabelArr;
+			}
+			private function progressChange(evt:SliderEvent):void
+			{
+				
+				if(mainTimer.running==true)
+				{
+					if(mc!=null)
+					{
+						mc.gotoAndPlay(evt.value);
+					}
+				}
+				else
+				{
+					if(mc!=null)
+					{
+						mc.gotoAndStop(evt.value);
+					}
+				}
+			}		
+			private function moveVideo(evt:TimerEvent):void
+			{
+				if(hidden)
+				{
+					if(video.x>-video.width)
+					{
+						video.x=video.x-5;
+					}
+					else
+					{
+						timer.stop();
+						btnShowVideo.visible=true;
+					}
+				}
+				else
+				{
+					if(video.x<0)
+					{
+						video.x=video.x+5;
+					}
+					else
+					{
+						timer.stop();
+					}
+				}
+			}
+			private function hideVideo():void
+			{
+				hidden=true;
+				timer.start();
+			}
+			private function showVideo():void
+			{
+				hidden=false;
+				btnShowVideo.visible=false;
+				timer.start();
+			}
+			private function headNav(evt:ItemClickEvent):void
+			{
+				var url:String=navUrlArr[evt.index];
+				var target:String=navLabelArr[evt.index]=="退出"||evt.index==navUrlArr.length-1?"_self":"_blank";
+				navigateToURL(new URLRequest(url),target);
+			}
+			private function switchToVideo():void
+			{
+				
+			}
+			private function switchToSchema():void
+			{
+				
+			}
+			private function play():void
+			{
+				if(mainTimer.running==false)
+				{
+					mainTimer.start();
+				}
+				if(mc!=null)
+				{
+					mc.play();
+				}
+			}
+			
+			private function pause():void
+			{
+				if(mc!=null)
+				{
+					mc.stop();
+				}
+				if(mainTimer.running==true)
+				{
+					mainTimer.stop();
+				}
+			}
+			private function sliderComplete(evt:Event):void
+			{
+				 var slider:HSlider = evt.target as HSlider;
+				 var thumb:UIComponent = slider.getThumbAt(0);
+				 thumb.width = 3.5;
+				 thumb.height = 14.5;
+				 slider.invalidateDisplayList();
+			}
+			private function columeControlHandler():void
+			{
+				if(btnSound.toolTip=="关闭")
+				{
+					btnSound.toolTip="打开";
+					btnSound.setStyle("upSkin",snd_btn_disabledSkin);
+					btnSound.setStyle("overSkin",snd_btn_downSkin);
+					soundTrans.volume=0;
+					SoundMixer.soundTransform=soundTrans;
+				}
+				else
+				{
+					btnSound.toolTip="关闭";
+					btnSound.setStyle("upSkin",snd_btn_upSkin);
+					btnSound.setStyle("overSkin",snd_btn_overSkin);
+					btnSound.setStyle("downSkin",snd_btn_downSkin);
+					soundTrans.volume=columnSlider.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}			
+			private function columeChange(evt:SliderEvent):void
+			{
+				if(btnSound.toolTip=="关闭")
+				{
+					soundTrans.volume=evt.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}
+			private function formatProgressToolTip(value:int):String
+    		{
+    			value=Math.ceil(value / 12);  //flash 12frames/s  			
+    			var result:String = (value % 60).toString();
+      		    if (result.length == 1)
+      		    {
+         			result = Math.floor(value / 60).toString() + ":0" + result;
+       		 	}
+      			else
+			  	{
+       		    	result = Math.floor(value / 60).toString() + ":" + result;
+       		  	}      			      			 
+      		    return result;
+  			} 
+			private function formatColumeToolTip(value:Number):String
+  			{
+  				var temp:String=value.toString();
+  				if(temp.length==1)
+  				{
+  					return temp+".0";
+  				}
+  				else
+  				{
+  					return temp.substr(0,3);
+  				}
+  			}
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="content" url="content.xml" result="resultHandler(event)" fault="faultHandler(event)" resultFormat="xml"/>
+	<mx:Canvas width="800" height="550" horizontalCenter="0" verticalCenter="0" backgroundImage="@Embed(source='image/bg.png')">
+		<mx:SWFLoader x="0" y="85" id="mainLoader" width="800" height="392"/>
+		<mx:HSlider x="40" y="480" width="720" height="11" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressBar" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="140"/>
+		<mx:Button x="176" y="506" width="34" height="19" styleName="playButton"/>
+		<mx:Button x="224" y="506" width="34" height="19" styleName="pauseButton"/>
+		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton"/>
+		<mx:Button x="484" y="506" width="47" height="19" styleName="nextButton"/>
+		<mx:Button id="btnSound" x="613" y="507" toolTip="关闭" downSkin="{snd_btn_downSkin}" overSkin="{snd_btn_overSkin}" upSkin="{snd_btn_upSkin}" click="columeControlHandler()" width="22" height="23"/>
+		<mx:Label x="60" y="507" text="00:05" id="currTime"/>
+		<mx:Label x="119" y="507" text="01:28" id="totalTime"/>
+		<mx:Label x="106" y="507" text="/" width="13"/>
+		<mx:HSlider id="columnSlider" x="647" y="505" width="112" height="16" styleName="columnBar" creationComplete="sliderComplete(event)" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip" allowTrackClick="false"/>
+		<mx:Label x="376" y="507" text="第"/>
+		<mx:Label x="464" y="507" text="页"/>
+		<mx:Label x="445" y="507" text="8" width="19"/>
+		<mx:Label x="411" y="507" text="页/共"/>
+		<mx:Label x="393.5" y="507" text="1" width="17"/>
+		<mx:Label x="37" y="530" text="中国人民银行网络培训学院" fontSize="11"/>
+		<mx:Label x="340" y="530" text="内部资料,仅供观摩" fontSize="11"/>
+		<mx:Label x="570" y="530" text="技术支持:北京东方创远教育科技有限公司" fontSize="11"/>
+		<mx:LinkButton x="512" y="61" label="1" width="58" color="#FFFFFF" alpha="0.0"/>
+		<mx:LinkButton x="583" y="61" label="2" width="58" color="#FFFFFF" alpha="0.0"/>
+		<mx:LinkButton x="655" y="61" label="3" width="58" color="#FFFFFF" alpha="0.0"/>
+		<mx:LinkButton x="728" y="61" label="4" width="58" color="#FFFFFF" alpha="0.0"/>
+		<mx:LinkBar id="linkBar" color="#ffffff" rollOverColor="#B5D2FA" top="0" right="3" itemClick="headNav(event)"/>		
+		<mx:Button x="0" y="357" id="btnShowVideo" visible="false" styleName="showVideoButton" click="showVideo()"/>		
+		<mx:Canvas id="video" x="0" y="318" width="290" height="171" backgroundImage="@Embed(source='image/video.png')">
+			<mx:LinkButton x="58" y="128" label="视频" alpha="0.0" click="switchToVideo()"/>
+			<mx:LinkButton x="124" y="128" label="纲要" alpha="0.0" click="switchToSchema()"/>
+			<mx:LinkButton x="191" y="128" label="隐藏" alpha="0.0" click="hideVideo()"/>
+			<mx:SWFLoader width="179.5" height="111" y="15" x="55"/>
+		</mx:Canvas>
+	</mx:Canvas>	
+</mx:Application>
