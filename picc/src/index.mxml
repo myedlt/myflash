@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="header" creationComplete="appInit()">
-	<mx:Model id="content" source="content.xml"/>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="appInit()">
+	<mx:HTTPService id="httpSvr" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
 	<mx:Style source="skin/skin.css"/>	
 	<mx:Script>
 		<![CDATA[
-			import component.SliderTrackSkin;
+			import mx.rpc.events.ResultEvent;			
 			import component.SliderHighlightSkin;			
 			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
@@ -38,6 +38,10 @@
 			[Bindable]
 			private var currSectionName:String;			
 			
+			[Embed(source="skin/btnFocus.swf",symbol="Button_focusSkin")]
+			private var focusSkin:Class;
+			[Embed(source="skin/btnFocus.swf",symbol="Button_upSkin")]
+			private var upSkin:Class;
 			[Embed(source="skin/skin.swf",symbol="Button_ksh_disabledSkin")]
 			private var ksh_disabledSkin:Class;
 			[Embed(source="skin/skin.swf",symbol="Button_ksh_overSkin")]
@@ -56,11 +60,13 @@
 			[Embed(source="skin/skin.swf",symbol="Button_lb_downSkin")]
 			private var sy_overSkin:Class;			
 			
+			[Bindable]
+			private var content:XMLList;
 			private var menuItemArray1:ArrayCollection=new ArrayCollection();//单页
 			private var menuItemArray2:ArrayCollection;//多页 
 			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
 			private var timer:Timer=new Timer(60);
-			private var temp:String;
+			private var xml:String;
 			private var app:Object;
 			private var lso:SharedObject;
 			private var isContinue:Boolean;
@@ -68,9 +74,11 @@
 			private var noteManage:NoteManage;
 			private var lsoInfo:Object;
 			public var isPopup:Boolean=false;
+			private var lastBtn:Button;
 			
 			private function appInit():void
 			{
+				httpSvr.send();
 				Alert.okLabel="确定";
 				Alert.yesLabel="是";
 				Alert.noLabel="否";	
@@ -93,6 +101,12 @@
            	 	}		 */
 			}
 			
+			private function resultHandler(event:ResultEvent):void
+			{				
+				content=XMLList(event.result);				
+				this.currentState="header";					
+			}
+			
 			private function init():void
 			{
 				this.currentState="main";
@@ -109,57 +123,60 @@
 				}
 				var count:int=0;
 				var firstBtn:Button;	
-				for each(var item:Object in content.MenuItems.menuItem)
+				for each(var item:XML in content.MenuItems.menuItem)
 				{
 					var btn:Button=new Button();
 					btn.width=41;
 					btn.height=41;	
-					btn.styleName="menuButton";				
-					btn.label=item.label;	
+					btn.styleName="menuButton";							
+					btn.label=item.@label;	
 					var fullName:String;
-					if(item.fullName==null||item.fullName.length==0)
+					if(item.@fullName==null||item.@fullName.length==0)
 					{
-						fullName=item.label;
+						fullName=item.@label;
 					}
 					else
 					{
-						fullName=item.fullName;
+						fullName=item.@fullName;
 					}
-					if(item.hasOwnProperty("isMultipage")&&item.isMultipage==true)
+					if(item.hasOwnProperty("@isMultipage")&&item.@isMultipage==true)
 					{	
-						btn.data={fullName:fullName,data:item.data,xml:item.xml};
+						btn.data={fullName:fullName,data:item.@data,xml:item.@xml};						
 					}
 					else
 					{
-						btn.data={fullName:fullName,data:item.data};
+						btn.data={fullName:fullName,data:item.@data};
 					}
 					btn.addEventListener(MouseEvent.CLICK,onMenuClick);
+					//btn.addEventListener(FocusEvent.FOCUS_IN,onBtnFocusIn);
+					//btn.addEventListener(FocusEvent.FOCUS_OUT,onBtnFocusOut);
 					if(count==0)
 					{
 						firstBtn=btn;
 					}	
-					var row:int=item.row;
-					var col:int=item.col;					
+					var row:int=item.@row;
+					var col:int=item.@col;					
 					GridItem(GridRow(gridMenu.getChildAt(row-1)).getChildAt(col-1)).addChild(btn);
 					menuItemArray1.addItem({count:++count,button:btn});
 				}
-				for each(var btnItem:Object in content.EffectButton.button)
+				for each(var btnItem:XML in content.EffectButton.button)
 				{
 					var img:Image=new Image();
 					img.width=41;
 					img.height=41;
-					img.load(btnItem.swf);
-					GridItem(GridRow(gridMenu.getChildAt(btnItem.row-1)).getChildAt(btnItem.col-1)).addChild(img);	
+					img.load(btnItem.@swf);
+					GridItem(GridRow(gridMenu.getChildAt(btnItem.@row-1)).getChildAt(btnItem.@col-1)).addChild(img);	
 				}
-				this.courseNameL=content.Banners.courseNameL.data;
-				this.logo=content.Banners.logo.data;
-				this.menuTitle=content.Banners.menuTitle.data;
-				this.courseNameS=content.Banners.courseNameS.data;
+				this.courseNameL=content.Banners.courseNameL.@data;
+				this.logo=content.Banners.logo.@data;
+				this.menuTitle=content.Banners.menuTitle.@data;
+				this.courseNameS=content.Banners.courseNameS.@data;
 				lso=SharedObject.getLocal("picc/lastCourseInfo","/");				
 				if(lso==null)
 				{
 					Alert.show("无法创建或获取本地共享对象!","Error");
 					firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+					//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 				}
 				else
 				{
@@ -173,6 +190,7 @@
 								if(arrayItem.button.data.fullName==lsoInfo.currChapterName)
 								{
 									Button(menuItemArray1[arrayItem.count-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+									//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 									break;						
 								}
 							}							 
@@ -180,6 +198,7 @@
 						else
 						{
 							Button(menuItemArray1[lsoInfo.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+							//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 						}
 					}
 					else
@@ -189,6 +208,7 @@
 							isContinue=false;							
 						}										
 						firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 					}
 					lso.data.info=lastCourseInfo;	
 				}
@@ -243,7 +263,7 @@
 				currChapterName=evt.target.data.fullName;		
 				if(evt.target.data.xml!=null)
 				{
-					temp=evt.target.data.xml;
+					xml=evt.target.data.xml;
 				}
 				else
 				{
@@ -258,8 +278,24 @@
 					this.navFlag.visible=false;
 					this.sectionName.visible=false;
 				}				
-				mainLoader.load(Button(evt.target).data.data);						
+				mainLoader.load(Button(evt.target).data.data);	
+				if(lastBtn!=null)
+				{
+					lastBtn.setStyle("upSkin",upSkin);
+				}
+				Button(evt.target).setStyle("upSkin",focusSkin);
+				lastBtn=evt.target as Button;									
 			}
+			
+			/* private function onBtnFocusIn(evt:FocusEvent):void
+			{
+				Button(evt.target).setStyle("upSkin",focusSkin);	
+			} 
+			
+			private function onBtnFocusOut(evt:FocusEvent):void
+			{
+				Button(evt.target).setStyle("upSkin",upSkin);
+			}  */
 			
 			private function swfUnload():void
 			{
@@ -272,7 +308,7 @@
 			
 			private function loadComplete(evt:Event):void
 			{
-				if(temp==null)
+				if(xml==null)
 				{
 					if(gotoComb.dataProvider!=menuItemArray1)
 					{
@@ -302,7 +338,7 @@
 			
 			private function multipageHandler(evt:Event):void
 			{
-				if(temp!=null)
+				if(xml!=null)
 				{
 					evt.target.content.addEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
 				}
@@ -312,7 +348,7 @@
 			{	
 				app=evt.target.application;				
 				app.setApp(this);
-				app.xmlUrl=this.temp;
+				app.xmlUrl=this.xml;
 				if(isContinue)
 				{	
 					app.isContinue=true;				
@@ -321,7 +357,7 @@
 					this.isContinue=false;
 				}				
 				app.init();				
-				this.temp=null;
+				this.xml=null;
 				SystemManager(evt.target).removeEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
 			}
 			
@@ -578,7 +614,7 @@
   			
 			private function help():void
 			{
-				navigateToURL(new URLRequest(content.Help.data),"_blank");
+				navigateToURL(new URLRequest(content.Help.@data));//默认:"_blank"
 			}
 				
   			private function exit():void
@@ -614,7 +650,7 @@
 			private function beginStudy():void
 			{
 				this.currentState="begin";
-				headLoader.source=content.Begin.data;
+				headLoader.source=content.Begin.@data;
 				btnSkip.visible=true;
 			}
 			private function goOnStudy():void
@@ -627,7 +663,7 @@
 				 var slider:HSlider = evt.target as HSlider;
 				 var thumb:UIComponent = slider.getThumbAt(0);
 				 thumb.width = 36.3;
-				 thumb.height = 8;
+				 thumb.height = 7;
 				 slider.invalidateDisplayList();
 			}
 			private function lbMouseOver1():void
@@ -672,7 +708,7 @@
 					<mx:SWFLoader id="mainLoader" init="multipageHandler(event)" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" x="133" y="99" height="389" width="652" horizontalAlign="center" verticalAlign="middle"/>
 					<mx:Button label="全屏显示" width="62" height="20" x="715" y="462.5" id="button5" click="fullscreen()" fontSize="12" fontWeight="normal"/>
 					
-					<mx:HSlider x="143" y="487" width="611" height="8.4" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="140" trackSkin="{component.SliderTrackSkin}"/>
+					<mx:HSlider x="148" y="488" width="620" height="7" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="140"/>
 					<mx:Button x="153" y="506" width="22" id="button3" click="play()" styleName="playButton" toolTip="播放"/>
 					<mx:Button x="180" y="506" width="22" id="button2" click="pause()" styleName="pauseButton" toolTip="暂停"/>
 					<mx:Button x="207" y="506" width="22" id="button1" click="stop()" styleName="stopButton" toolTip="停止"/>
@@ -744,7 +780,7 @@
 		<mx:State name="header">
 			<mx:AddChild position="lastChild">
 				<mx:Canvas width="585" height="389" verticalCenter="0" horizontalCenter="0" id="canvas1">
-					<mx:SWFLoader source="{content.Header.data}" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true" complete="headerLoadComp()" unload="headLoaderUnload()"/>
+					<mx:SWFLoader source="{content.Header.@data}" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true" complete="headerLoadComp()" unload="headLoaderUnload()"/>
 					<mx:Button id="btnSkip" click="skip()" styleName="skipButton" right="0" bottom="0"/>
 					<mx:Button id="btnBegin" left="200" y="220" visible="false" click="beginStudy()" styleName="beginButton"/>
 					<mx:Button id="btnGoOn" right="200" y="220" visible="false" click="goOnStudy()" styleName="goOnButton"/>
