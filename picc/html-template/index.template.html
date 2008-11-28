@@ -72,6 +72,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 		"name", "${application}",
 		"allowScriptAccess","sameDomain",
 		"allowFullScreen","true",
+		"wmode","transparent",
 		"type", "application/x-shockwave-flash",
 		"pluginspage", "http://www.adobe.com/go/getflashplayer"
 	);
@@ -89,6 +90,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			"name", "${application}",
 			"allowScriptAccess","sameDomain",
 			"allowFullScreen","true",
+			//"wmode","transparent",
 			"type", "application/x-shockwave-flash",
 			"pluginspage", "http://www.adobe.com/go/getflashplayer"
 	);
@@ -120,6 +122,7 @@ function onClose()
 			<param name="bgcolor" value="${bgcolor}" />
 			<param name="allowScriptAccess" value="sameDomain" />
 			<param name="allowFullScreen" value="true" />
+			<param name="wmode" value="transparent"/>
 			<embed src="${swf}.swf" quality="high" bgcolor="${bgcolor}"
 				width="${width}" height="${height}" name="${application}" align="middle"
 				play="true"
@@ -127,6 +130,7 @@ function onClose()
 				quality="high"
 				allowScriptAccess="sameDomain"
 				allowFullScreen="true"
+				wmode="transparent"
 				type="application/x-shockwave-flash"
 				pluginspage="http://www.adobe.com/go/getflashplayer">
 			</embed>
