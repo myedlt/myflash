@@ -7,7 +7,7 @@ global
 
 Application
 {
-	background-color:#ffffff;
+	 background-color:#ffffff; 
 }
 
 Alert 
@@ -43,8 +43,8 @@ Button
 .menuButton
 {
 	up-skin:Embed(source="skin.swf", symbol="Button_disabledSkin");
-	down-skin:Embed(source="skin.swf",symbol="Button_downSkin");
-	over-skin:Embed(source="skin.swf",symbol="Button_overSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_overSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_downSkin");
 	disabled-skin:Embed(source="skin.swf",symbol="Button_upSkin");
 	font-size:14;
 } 
@@ -107,11 +107,11 @@ Button
 
 .progressSlider
 {
-	/* track-skin:Embed(source="skin.swf",symbol="ProgressBar_trackSkin");	 */
-	thumb-up-skin:Embed(source="skin.swf",symbol="Btn_disabledSkin");
-	thumb-over-skin:Embed(source="skin.swf",symbol="Btn_overSkin");
-	thumb-down-skin:Embed(source="skin.swf",symbol="Btn_downSkin");
-	thumb-disabled-skin:Embed(source="skin.swf",symbol="Btn_upSkin");
+	track-skin:Embed(source="btnFocus.swf",symbol="ProgressBar_skip_trackSkin");
+	thumb-up-skin:Embed(source="btnFocus.swf",symbol="Btn_disabledSkin");
+	thumb-over-skin:Embed(source="btnFocus.swf",symbol="Btn_downSkin");
+	thumb-down-skin:Embed(source="btnFocus.swf",symbol="Btn_overSkin");
+	thumb-disabled-skin:Embed(source="btnFocus.swf",symbol="Btn_upSkin");
 }
 .columeSlider
 {

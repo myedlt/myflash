@@ -61,7 +61,7 @@ public class SliderHighlightSkin extends Border
 	 */
 	override public function get measuredHeight():Number
 	{
-		return 5;
+		return 6;
 	}
 	
 	//--------------------------------------------------------------------------
@@ -77,11 +77,13 @@ public class SliderHighlightSkin extends Border
 	{	
 		super.updateDisplayList(w, h);
 		
-		var trackColor:Number = getStyle("themeColor");
+		//var trackColor:Number = getStyle("themeColor");
+		
+		var trackColor:Number = 0x94ACD1;
 		
 		graphics.clear();
 		
-		drawRoundRect(2,0, w, h, 0, trackColor,1);//绘制圆角矩形		
+		drawRoundRect(0,0, w, h, 3, trackColor,1);//绘制圆角矩形		
 	}
 }
 
