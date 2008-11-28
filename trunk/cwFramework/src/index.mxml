@@ -5,7 +5,7 @@
 			<mx:RemoveChild target="{swfI}"/>
 			<mx:RemoveChild target="{btnSkip}"/>
 			<mx:AddChild position="lastChild">
-				<mx:VBox height="100%" width="900" id="vbox1" horizontalAlign="center" verticalAlign="middle" y="0" horizontalCenter="-1"> 					
+				<mx:VBox height="100%" width="900" id="vbox1" horizontalAlign="center" verticalAlign="middle" y="0" horizontalCenter="0"> 					
 					<mx:Image width="100%" height="78" source="image/header.png" horizontalCenter="0" horizontalAlign="center" id="image1" scaleContent="true" autoLoad="true"/>
 					<mx:HDividedBox liveDragging="true" width="100%" height="100%" id="hdividedbox1" horizontalAlign="center" verticalAlign="middle">
         	 			<mx:Panel title="课程目录" width="25.5%" height="100%" id="panel1" horizontalAlign="center" verticalAlign="middle">
