@@ -1,0 +1,120 @@
+/* CSS file */
+global
+{
+	font-size:12px;
+	font-family:arial;			
+}
+
+Application
+{
+	 background-color:#ffffff; 
+}
+
+Alert 
+{
+	 color:#000000;
+	 font-size:13px;     
+     background-color:#ffffff;     
+     border-color:#cccccf;   
+     header-height:26; 
+}
+
+TitleWindow
+{
+	
+}
+
+Button
+{
+	padding-left:0;
+	padding-right:0;
+	font-weight:normal;	
+	text-align:center;
+}
+
+.skipButton
+{
+	up-skin:Embed(source="skin.swf",symbol="Button_skip_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_skip_downSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_skip_upSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="Button_skip_overSkin");
+}
+
+.menuButton
+{
+	up-skin:Embed(source="skin.swf", symbol="Button_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_overSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_downSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="Button_upSkin");
+	font-size:14;
+} 
+
+.button
+{	
+	up-skin:Embed(source="skin.swf",symbol="disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="overSkin");
+	over-skin:Embed(source="skin.swf",symbol="downSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="upSkin");
+}
+
+.beginButton
+{
+	up-skin:Embed(source="skin.swf",symbol="Button_ksh_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_ksh_overSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_ksh_downSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="Button_ksh_upSkin");
+}
+
+.goOnButton
+{
+	up-skin:Embed(source="skin.swf",symbol="Button_jx_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_jx_overSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_jx_downSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="Button_jx_upSkin");
+}
+
+.playButton
+{
+	up-skin:Embed(source="skin.swf",symbol="bf_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="bf_downSkin");
+	over-skin:Embed(source="skin.swf",symbol="bf_overSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="bf_upSkin");
+}
+
+.pauseButton
+{
+	up-skin:Embed(source="skin.swf",symbol="zt_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="zt_downSkin");
+	over-skin:Embed(source="skin.swf",symbol="zt_overSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="zt_upSkin");
+}
+
+.stopButton
+{
+	up-skin:Embed(source="skin.swf",symbol="tzh_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="tzh_downSkin");
+	over-skin:Embed(source="skin.swf",symbol="tzh_overSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="tzh_upSkin");
+}
+
+.soundButton
+{
+	up-skin:Embed(source="skin.swf",symbol="Button_lb_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_lb_overSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_lb_downSkin");
+	disabled-skin:Embed(source="skin.swf",symbol="Button_lb_upSkin");
+}
+
+.progressSlider
+{
+	track-skin:Embed(source="btnFocus.swf",symbol="ProgressBar_skip_trackSkin");
+	thumb-up-skin:Embed(source="btnFocus.swf",symbol="Btn_disabledSkin");
+	thumb-over-skin:Embed(source="btnFocus.swf",symbol="Btn_downSkin");
+	thumb-down-skin:Embed(source="btnFocus.swf",symbol="Btn_overSkin");
+	thumb-disabled-skin:Embed(source="btnFocus.swf",symbol="Btn_upSkin");
+}
+.columeSlider
+{
+	track-skin:Embed(source="skin.swf",symbol="trackSkin");
+	thumb-skin:Embed(source="skin.swf",symbol="barSkin"); 
+}
