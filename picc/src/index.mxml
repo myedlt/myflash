@@ -4,6 +4,7 @@
 	<mx:Style source="skin/skin.css"/>	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.sliderClasses.SliderThumb;
 			import mx.rpc.events.ResultEvent;			
 			import component.SliderHighlightSkin;			
 			import mx.core.UIComponent;
@@ -661,9 +662,10 @@
 			private function sliderComplete(evt:Event):void
 			{
 				 var slider:HSlider = evt.target as HSlider;
-				 var thumb:UIComponent = slider.getThumbAt(0);
+				 var thumb:SliderThumb = slider.getThumbAt(0);
 				 thumb.width = 36.3;
 				 thumb.height = 7;
+				 //thumb.xPosition=18;
 				 slider.invalidateDisplayList();
 			}
 			private function lbMouseOver1():void
