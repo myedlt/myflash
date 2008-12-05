@@ -1,4 +1,4 @@
-<!-- saved from url=(0014)about:internet -->
+
 <html lang="en">
 
 <!-- 
@@ -24,7 +24,7 @@ Learn more about Flex at http://flex.org
 <!--  BEGIN Browser History required section -->
 <script src="history/history.js" language="javascript"></script>
 <!--  END Browser History required section -->
-
+<script src="note/saveNote.js" language="javascript"></script>
 <style>
 body { margin: 0px; overflow:hidden }
 </style>
@@ -91,6 +91,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			"allowScriptAccess","sameDomain",
 			"allowFullScreen","true",
 			//"wmode","transparent",
+			//"allowNetworking","all",
 			"type", "application/x-shockwave-flash",
 			"pluginspage", "http://www.adobe.com/go/getflashplayer"
 	);
@@ -121,16 +122,14 @@ function onClose()
 			<param name="quality" value="high" />
 			<param name="bgcolor" value="${bgcolor}" />
 			<param name="allowScriptAccess" value="sameDomain" />
-			<param name="allowFullScreen" value="true" />
-			<param name="wmode" value="transparent"/>
+			<param name="allowFullScreen" value="true" />			
 			<embed src="${swf}.swf" quality="high" bgcolor="${bgcolor}"
 				width="${width}" height="${height}" name="${application}" align="middle"
 				play="true"
 				loop="false"
 				quality="high"
 				allowScriptAccess="sameDomain"
-				allowFullScreen="true"
-				wmode="transparent"
+				allowFullScreen="true"				
 				type="application/x-shockwave-flash"
 				pluginspage="http://www.adobe.com/go/getflashplayer">
 			</embed>

@@ -24,7 +24,11 @@
 			private function close():void
 			{
 				PopUpManager.removePopUp(this);	
-				if(app!=null)app.isPopup=false;			
+				if(app!=null)
+				{
+					app.isPopup=false;	
+					if(!parentApplication.stoped)parentApplication.mc.play();
+				}
 			}
 			private function init():void
 			{
@@ -53,7 +57,7 @@
 			}			
 			private function addNote():void
 			{
-				if(btnAdd.label=="添加笔记")
+				if(btnAdd.label=="写笔记")
 				{
 					toForm();
 				}
@@ -74,20 +78,20 @@
 							lso.flush();													
 							var alert1:Alert=Alert.show("修改成功!","提示",Alert.NONMODAL);
 							PopUpManager.centerPopUp(alert1);
-							alert1.move(point.x,point.y);
-							back();
+							alert1.move(point.x,point.y);							
 						}
 						else
 						{
 							var now:Date=new Date();
 							var formatter:DateFormatter=new DateFormatter();
-							formatter.formatString="YYYY-MM-DD  JJ:NN:SS";
+							formatter.formatString="     YYYY-MM-DD   JJ:NN:SS";
 							noteArray.addItem({title:txtTitle.text,content:txtContent.text,date:formatter.format(now)});
 							lso.flush();										
-							var alert2:Alert=Alert.show("是否继续添加?","保存成功",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler);
+							var alert2:Alert=Alert.show("保存成功!","提示",Alert.NONMODAL);
 							PopUpManager.centerPopUp(alert2);
 							alert2.move(point.x,point.y);
-						}				
+						}
+						back();				
 					}					
 				}
 			}
@@ -99,26 +103,15 @@
 				noteList.visible=false;
 				lblContent.visible=false;
 				txtDisplay.visible=false;
+				btnExport.visible=false;
 				btnAdd.label="保存";
 				btnClear.label="返回";				
-			}
-			private function alertHandler(evt:CloseEvent):void
-			{
-				if(evt.detail==Alert.NO)
-				{
-					back();
-				}
-				else
-				{
-					txtTitle.text=null;
-					txtContent.text=null;
-				}				
-			}
+			}			
 			private function clearAll():void
 			{
-				if(btnClear.label=="全部清空")
+				if(btnClear.label=="清空")
 				{									
-					var alert3:Alert=Alert.show("你确定要全部清空?","确认",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler1);
+					var alert3:Alert=Alert.show("你确定要全部清空?","确认",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler);
 					PopUpManager.centerPopUp(alert3);
 					alert3.move(point.x,point.y);
 				}
@@ -127,7 +120,7 @@
 					back();
 				}
 			}
-			private function alertHandler1(evt:CloseEvent):void
+			private function alertHandler(evt:CloseEvent):void
 			{
 				if(evt.detail==Alert.YES)
 				{					
@@ -140,13 +133,15 @@
 				noteList.visible=true;
 				lblContent.visible=true;
 				txtDisplay.visible=true;
+				btnExport.visible=true;
 				noteForm.visible=false;
-				btnAdd.label="添加笔记";
-				btnClear.label="全部清空";
+				btnAdd.label="写笔记";
+				btnClear.label="清空";
 			}		
 			public function deleteItem():void
 			{
-				noteArray.removeItemAt(noteArray.getItemIndex(noteList.selectedItem))
+				noteArray.removeItemAt(noteArray.getItemIndex(noteList.selectedItem));
+				txtDisplay.text="";
 			}
 			public function modifyItem():void
 			{
@@ -158,6 +153,15 @@
 			public function displayItem():void
 			{
 				txtDisplay.text=noteList.selectedItem.content;
+			}
+			private function exportNote():void
+			{
+				var noteStr:String="";
+				for(var i:int=0;i<noteArray.length;i++)
+				{
+					noteStr+=noteArray[i].title+"&nbsp;"+noteArray[i].date+"<br/>"+noteArray[i].content+"<br/><br/>";
+				}
+				ExternalInterface.call("saveNote",noteStr);
 			}	
 		]]>
 	</mx:Script>
@@ -167,11 +171,11 @@
 			font-size:12;
 		}
 	</mx:Style>
-	<mx:DataGrid width="100%" height="228" id="noteList" dataProvider="{noteArray}" visible="true" rowCount="7" rollOverColor="#E6EEEE" selectionColor="#E6EEEE">
+	<mx:DataGrid width="100%" height="228" id="noteList" dataProvider="{noteArray}" visible="true" rowCount="7" rollOverColor="#E6EEEE" selectionColor="#E6EEEE" itemClick="displayItem()">
 		<mx:columns>
-			<mx:DataGridColumn headerText="标题" dataField="title" width="260"/>
-			<mx:DataGridColumn headerText="日期" dataField="date" width="180"/>
-			<mx:DataGridColumn headerText="操作">
+			<mx:DataGridColumn headerText="标题" dataField="title" width="260" fontSize="14"/>
+			<mx:DataGridColumn headerText="日期" dataField="date" width="200" fontSize="14"/>
+			<mx:DataGridColumn headerText="操作" fontSize="14">
 				<mx:itemRenderer>
 					<mx:Component>
 						<mx:HBox horizontalAlign="center" horizontalGap="3">
@@ -184,14 +188,9 @@
 									private function deleteHandler():void
 									{
 										parentDocument.deleteItem();
-									}
-									private function displayHandler():void
-									{
-										parentDocument.displayItem();
-									}
+									}									
 								]]>
-							</mx:Script>
-							<mx:LinkButton label="查看" click="displayHandler()"/>
+							</mx:Script>							
 							<mx:LinkButton label="修改" click="modifyHandler()"/>
 							<mx:LinkButton label="删除" click="deleteHandler()"/>
 						</mx:HBox>	
@@ -211,8 +210,9 @@
 	<mx:Label x="3" y="230" text="内容：" textAlign="center" id="lblContent"/>
 	<mx:TextArea x="41" y="230" height="100%" width="100%" id="txtDisplay" editable="false" borderStyle="none"/>
 	<mx:StringValidator id="title_stringValidator" source="{txtTitle}" property="text" required="true" requiredFieldError="标题不能为空"/>
-	<mx:ControlBar horizontalAlign="center" verticalAlign="middle" horizontalGap="30">
-		<mx:Button id="btnAdd" label="添加笔记" click="addNote()" fontWeight="normal"/>
-		<mx:Button id="btnClear" label="全部清空" click="clearAll()" fontWeight="normal"/>
+	<mx:ControlBar verticalAlign="middle" horizontalGap="30">
+		<mx:Button id="btnAdd" label="写笔记" click="addNote()" fontWeight="normal" width="75" styleName="button"/>
+		<mx:Button id="btnClear" label="清空" click="clearAll()" fontWeight="normal" width="75" styleName="button"/>
+		<mx:Button label="导出" click="exportNote()" id="btnExport" width="75" styleName="button"/>
 	</mx:ControlBar>
 </mx:TitleWindow>

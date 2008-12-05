@@ -4,10 +4,12 @@
 	<mx:Style source="skin/skin.css"/>	
 	<mx:Script>
 		<![CDATA[
+			import flash.utils.setInterval;
+			import flash.utils.clearTimeout;
+			import flash.utils.setTimeout;
 			import mx.controls.sliderClasses.SliderThumb;
 			import mx.rpc.events.ResultEvent;			
 			import component.SliderHighlightSkin;			
-			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			import component.NoteManage;			
 			import mx.managers.SystemManager;
@@ -21,6 +23,8 @@
 			import mx.controls.Alert;			
 			
 			[Bindable]
+			private var header:String;
+			[Bindable]
 			private var logo:String;
 			[Bindable]
 			private var courseNameL:String;
@@ -29,7 +33,7 @@
 			[Bindable]
 			private var courseNameS:String;
 			[Bindable]
-			private var mc:MovieClip;
+			public var mc:MovieClip;
 			[Bindable]
 			private var currSectionNum:int;
 			[Bindable]
@@ -37,7 +41,11 @@
 			[Bindable]
 			private var currChapterName:String;
 			[Bindable]
-			private var currSectionName:String;			
+			private var currSectionName:String;		
+			[Bindable]
+			private var currentTime:String="0:00";
+			[Bindable]
+			private var totalTime:String="0:00";	
 			
 			[Embed(source="skin/btnFocus.swf",symbol="Button_focusSkin")]
 			private var focusSkin:Class;
@@ -65,8 +73,7 @@
 			private var content:XMLList;
 			private var menuItemArray1:ArrayCollection=new ArrayCollection();//单页
 			private var menuItemArray2:ArrayCollection;//多页 
-			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
-			private var timer:Timer=new Timer(60);
+			private var soundTrans:SoundTransform=SoundMixer.soundTransform;			
 			private var xml:String;
 			private var app:Object;
 			private var lso:SharedObject;
@@ -76,14 +83,15 @@
 			private var lsoInfo:Object;
 			public var isPopup:Boolean=false;
 			private var lastBtn:Button;
+			public var stoped:Boolean;	
+			private var pressing:Boolean;		
 			
 			private function appInit():void
 			{
 				httpSvr.send();
 				Alert.okLabel="确定";
 				Alert.yesLabel="是";
-				Alert.noLabel="否";	
-				timer.addEventListener(TimerEvent.TIMER,timerHandler);
+				Alert.noLabel="否";					
 				//注册回调函数,让外部js调用
 				/* if(ExternalInterface.available)
 				{
@@ -104,8 +112,9 @@
 			
 			private function resultHandler(event:ResultEvent):void
 			{				
-				content=XMLList(event.result);				
-				this.currentState="header";					
+				content=XMLList(event.result);
+				header=content.Header.@data;				
+				this.currentState="header";	
 			}
 			
 			private function init():void
@@ -215,12 +224,13 @@
 				}
 			}
 			
-			private function timerHandler(evt:TimerEvent):void
-			{
-				if(this.currentState=="main"||this.currentState=="fullscreen")
-				{
-					progressSlider.value=mc.currentFrame;
-					if(progressSlider.value==progressSlider.maximum)
+			private function enterFrameHandler(evt:Event):void
+			{									
+				progressSlider.value=mc.currentFrame;					
+				currentTime=formatProgressToolTip(mc.currentFrame);
+				if(progressSlider.value==progressSlider.maximum)
+				{//正常模式下一节课程播放完将停止播放;全屏模式下则连续播放
+					if(stage.displayState==StageDisplayState.FULL_SCREEN)
 					{
 						if(gotoComb.dataProvider==menuItemArray2 && this.currSectionNum!=this.totalSectionNum)
 						{
@@ -228,35 +238,15 @@
 						}
 						else
 						{
-							timer.stop();
-						}
+							stoped=true;
+						}							
 					}
-					writeLog();
-				}
-				else
-				{
-					if(mc.currentFrame==mc.totalFrames)
+					else
 					{
-						if(this.currentState=="header")
-						{
-							btnBegin.visible=true;
-							btnGoOn.visible=true;
-							btnSkip.visible=false;
-							timer.stop();
-						}
-						else
-						{
-							//btnSkip.label="开始学习";
-							btnSkip.setStyle("upSkin",ksh_disabledSkin);
-							btnSkip.setStyle("downSkin",ksh_overSkin);
-							btnSkip.setStyle("overSkin",ksh_downSkin);
-							btnSkip.setStyle("disabledSkin",ksh_upSkin);
-							btnSkip.setStyle("right",10);
-							btnSkip.setStyle("bottom",6);
-						}
-						
-					}
+						stoped=true;
+					}									
 				}
+				writeLog();			
 			}
 			
 			private function onMenuClick(evt:MouseEvent):void
@@ -302,7 +292,8 @@
 			{
 				if(mc!=null)
 				{
-					mc.gotoAndStop(1);
+					mc.stop();
+					mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
 					mc=null;
 				}
 			}
@@ -320,20 +311,18 @@
 					try
 					{
 						mc=MovieClip(evt.target.content);
+						totalTime=formatProgressToolTip(mc.totalFrames);
 						if(isContinue)
 						{
 							mc.gotoAndStop(lsoInfo.currFrame);
+							stoped=true;
 							isContinue=false;
 						}
 					}
 					catch(e:Error)
 					{											
 						Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
-					}			
-					if(timer.running==false)
-					{
-						timer.start();
-					}					
+					}									
 				}
 			}
 			
@@ -341,7 +330,8 @@
 			{
 				if(xml!=null)
 				{
-					evt.target.content.addEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
+					evt.target.content.addEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);					
+					addDbClickHandler(evt.target);
 				}
 			}
 			
@@ -356,6 +346,7 @@
 					app.currSectionNum=lsoInfo.currSectionNum-1;
 					app.currFrame=lsoInfo.currFrame;
 					this.isContinue=false;
+					stoped=true;
 				}				
 				app.init();				
 				this.xml=null;
@@ -376,10 +367,8 @@
 				this.currSectionName=app.currCourse;
 				this.currSectionNum=app.currPage;
 				this.mc=app.mc;
-				if(timer.running==false)
-				{
-					timer.start();
-				}
+				mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
+				totalTime=formatProgressToolTip(mc.totalFrames);				
 			}
 			
 			public function innerArrayComplete():void
@@ -391,58 +380,46 @@
 			}
 			
 			private function progressChange(evt:SliderEvent):void
-			{
-				
-				if(timer.running==true)
+			{ 				
+				if(mc!=null)
 				{
-					if(mc!=null)
-					{
-						mc.gotoAndPlay(evt.value);
-					}
-				}
-				else
-				{
-					if(mc!=null)
+					if(stoped || pressing)
 					{
 						mc.gotoAndStop(evt.value);
 					}
-				}
+					else
+					{
+						mc.gotoAndPlay(evt.value);
+					}
+				}				
 			}
 			
-			private function play():void
-			{
-				if(timer.running==false)
-				{
-					timer.start();
-				}
-				if(mc!=null)
+			public function play():void
+			{			
+				if(mc!=null && stoped)
 				{
 					mc.play();
+					stoped=false;
 				}
 			}
 			
 			private function pause():void
 			{
-				if(mc!=null)
+				if(mc!=null && !stoped)
 				{
 					mc.stop();
-				}
-				if(timer.running==true)
-				{
-					timer.stop();
-				}
+					stoped=true;
+				}				
 			}
 			
 			private function stop():void
 			{
-				if(timer.running==true)
-				{
-					timer.stop();
-				}
+				
 				progressSlider.value=progressSlider.minimum;
 				if(mc!=null)
 				{
 					mc.gotoAndStop(1);
+					stoped=true;
 				}
 			}			
 			
@@ -512,19 +489,70 @@
 					callLater(mainLoader.load);//解决swf显示问题	 */
 				}
 				//gotoComb.selectedItem=null;		
+			}			
+			
+			private function addDbClickHandler(target:Object):void
+			{
+				if(!SystemManager(target.content).hasEventListener(MouseEvent.DOUBLE_CLICK))
+				{
+					SystemManager(target.content).doubleClickEnabled=true;
+					SystemManager(target.content).addEventListener(MouseEvent.DOUBLE_CLICK,onDbClick);	
+				}				
+			}
+			
+			private function onDbClick(evt:MouseEvent):void
+			{
+				if(stage.displayState==StageDisplayState.NORMAL)
+				{
+					fullscreen();
+				}
+				else
+				{
+					stage.displayState=StageDisplayState.NORMAL;
+				}
 			}
 			
 			private function fullscreen():void
 			{
-				this.currentState="fullscreen";
-				this.stage.displayState=StageDisplayState.FULL_SCREEN;
+				currentState="fullscreen";				
+				controlBar.visible=true;						
+				stage.displayState=StageDisplayState.FULL_SCREEN;
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN,normalStateHandler);	
+				setTimeout(hideControlBarFun,3000);			
+			}			
+			
+			private function onMouseMove(evt:MouseEvent):void
+			{
+				if(evt.stageY>stage.fullScreenHeight-controlBar.height)
+				{
+					controlBar.visible=true;
+				}
+			}			
+			
+			private function hideControlBarFun():void
+			{
+				if(stage.displayState==StageDisplayState.FULL_SCREEN)
+				{
+					if(mouseY<stage.fullScreenHeight-controlBar.height)
+					{
+						hideControlBar();
+					}	
+				}	
 			}
 			
-			private function normalState():void
+			private function hideControlBar():void
 			{
-				this.stage.displayState=StageDisplayState.NORMAL;
-				this.currentState="main";
+				controlBar.visible=false;
 			}
+			
+			private function normalStateHandler(evt:FullScreenEvent):void
+			{
+				if(!evt.fullScreen)
+				{					
+					this.currentState="main";
+					stage.removeEventListener(FullScreenEvent.FULL_SCREEN,normalStateHandler);								
+				}
+			}			
 			
 			private function columeControlHandler():void
 			{
@@ -598,17 +626,18 @@
   				{
   					PopUpManager.removePopUp(noteManage);
   					isPopup=false; 
+  					if(!stoped)mc.play();
   				}
   				else
   				{
-  					pause();
-  					noteManage=new NoteManage(); 
+  					if(!stoped)mc.stop();
+  					noteManage=new NoteManage();
   					noteManage.setApp(this);
   					var point:Point=new Point();								
 					point=mainLoader.localToGlobal(point);
   					noteManage.x=point.x;
   					noteManage.y=point.y; 
-  					PopUpManager.addPopUp(noteManage,this);
+  					PopUpManager.addPopUp(noteManage,this); 
   					isPopup=true; 
   				}
   			}
@@ -627,26 +656,52 @@
 			{
 				if(this.currentState=="header")
 				{
-					mc.gotoAndStop(mc.totalFrames);
+					mc.gotoAndStop(mc.totalFrames);	
+					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);				
 					btnBegin.visible=true;
 					btnGoOn.visible=true;
 					btnSkip.visible=false;
 				}
 				else
 				{
-					mc.gotoAndStop(1);
+					mc.stop();	
+					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);				
 					init();
-				}
+				}				
 			}
 			
 			private function headerLoadComp():void
 			{
 				mc=MovieClip(headLoader.content);
-				timer.start();
+				mc.addEventListener(Event.ENTER_FRAME,headerEnterFrame);
+			}
+			private function headerEnterFrame(evt:Event):void
+			{
+				if(mc.currentFrame==mc.totalFrames)
+				{
+					if(this.currentState=="header")
+					{
+						btnBegin.visible=true;
+						btnGoOn.visible=true;
+						btnSkip.visible=false;							
+					}
+					else
+					{
+						//btnSkip.label="开始学习";
+						btnSkip.setStyle("upSkin",ksh_disabledSkin);
+						btnSkip.setStyle("downSkin",ksh_overSkin);
+						btnSkip.setStyle("overSkin",ksh_downSkin);
+						btnSkip.setStyle("disabledSkin",ksh_upSkin);
+						btnSkip.setStyle("right",10);
+						btnSkip.setStyle("bottom",6);
+					}
+					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);
+				}
 			}
 			private function headLoaderUnload():void
 			{
-				mc.gotoAndStop(1);
+				mc.stop();
+				mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);
 			}
 			private function beginStudy():void
 			{
@@ -656,15 +711,15 @@
 			}
 			private function goOnStudy():void
 			{
-				this.isContinue=true;
-				init();
+				this.isContinue=true;							
+				init();				
 			}
 			private function sliderComplete(evt:Event):void
 			{
 				 var slider:HSlider = evt.target as HSlider;
 				 var thumb:SliderThumb = slider.getThumbAt(0);
 				 thumb.width = 36.3;
-				 thumb.height = 7;
+				 thumb.height = 9;				 		 
 				 //thumb.xPosition=18;
 				 slider.invalidateDisplayList();
 			}
@@ -683,7 +738,15 @@
 			private function lbMouseOut2():void
 			{
 				btnNext.setStyle("textDecoration","underline");
+			}			
+			private function sliderValuCommit():void
+			{
+				setTimeout(function():void{fsProgressBar.value=mc.currentFrame;},83);							
 			}
+			private function showMap():void
+			{
+				Alert.show("this is a map");
+			}			
 		]]>
 	</mx:Script>	
 	
@@ -692,10 +755,10 @@
 			<mx:AddChild position="lastChild">
 				<mx:Canvas height="550" width="800" backgroundImage="@Embed(source='images/background.jpg')" horizontalCenter="0" verticalCenter="0" id="mainCanvas">
 					<mx:Image x="26" y="25" id="logoImg" source="{logo}"/>						
-					<mx:Image x="300" y="23" id="courseNameLImg" source="{courseNameL}"/>
-					<mx:Button x="627" y="37" label="笔记" width="51" height="25" id="button7" click="note()" fontWeight="normal" styleName="button" cornerRadius="3"/>
-					<mx:Button x="681" y="37" label="帮助" width="51" height="25" id="button8" click="help()" fontWeight="normal" styleName="button" cornerRadius="3"/>
-					<mx:Button x="735" y="37" label="退出" width="51" height="25" id="button9" click="exit()" fontWeight="normal" styleName="button" cornerRadius="3"/>
+					<mx:Image x="285" y="23" id="courseNameLImg" source="{courseNameL}"/>
+					<mx:Button x="615" y="37" label="笔记" width="55" height="25" id="button7" click="note()" fontWeight="normal" styleName="button" cornerRadius="3"/>
+					<mx:Button x="673" y="37" label="帮助" width="55" height="25" id="button8" click="help()" fontWeight="normal" styleName="button" cornerRadius="3"/>
+					<mx:Button x="731" y="37" label="退出" width="55" height="25" id="button9" click="exit()" fontWeight="normal" styleName="button" cornerRadius="3"/>
 					
 					<mx:Image x="8" y="81" id="menuTitleImg" source="{menuTitle}"/>				
 					<mx:Grid id="gridMenu" x="4.5" y="128" width="127" height="338" horizontalGap="1" verticalGap="1.5"/>
@@ -710,7 +773,8 @@
 					<mx:SWFLoader id="mainLoader" init="multipageHandler(event)" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" x="133" y="99" height="389" width="652" horizontalAlign="center" verticalAlign="middle"/>
 					<mx:Button label="全屏显示" width="62" height="20" x="715" y="462.5" id="button5" click="fullscreen()" fontSize="12" fontWeight="normal"/>
 					
-					<mx:HSlider x="148" y="488" width="620" height="7" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="140"/>
+					<mx:HSlider x="148" y="488" width="620" height="7" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="1" maximum="{mc.totalFrames}" value="{mc.currentFrame}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
+						change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10"/>
 					<mx:Button x="153" y="506" width="22" id="button3" click="play()" styleName="playButton" toolTip="播放"/>
 					<mx:Button x="180" y="506" width="22" id="button2" click="pause()" styleName="pauseButton" toolTip="暂停"/>
 					<mx:Button x="207" y="506" width="22" id="button1" click="stop()" styleName="stopButton" toolTip="停止"/>
@@ -726,8 +790,10 @@
 							
 						<mx:Button x="678" y="506" id="columeControl" click="columeControlHandler()" styleName="soundButton" upSkin="{sy_upSkin}" overSkin="{sy_overSkin}" downSkin="{sy_downSkin}" toolTip="关闭"/>						
 						<mx:HSlider x="703" y="504" width="62" id="columeSlider" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip" styleName="columeSlider" height="11"/>
+						<mx:Button x="554" y="37" label="认知地图" width="58" height="25" id="button0" fontWeight="normal" styleName="button" cornerRadius="3" click="showMap()"/>
 				</mx:Canvas>
 			</mx:AddChild>			
+			<mx:SetStyle name="verticalAlign" value="middle"/>
 		</mx:State>
 		<mx:State name="fullscreen" basedOn="main">	
 			<mx:RemoveChild target="{logoImg}"/>
@@ -761,9 +827,6 @@
 			<mx:SetProperty target="{mainLoader}" name="y"/>
 			<mx:SetProperty target="{mainCanvas}" name="width" value="100%"/>
 			<mx:SetProperty target="{mainCanvas}" name="height" value="100%"/>			
-			<mx:AddChild relativeTo="{mainCanvas}" position="lastChild">
-				<mx:Button label="退出全屏" right="35" top="20" height="22" click="normalState()" styleName="button"/>
-			</mx:AddChild>
 			<mx:SetStyle name="horizontalAlign" value="center"/>
 			<mx:SetStyle name="verticalAlign" value="middle"/>
 			<mx:SetProperty name="width" value="100%"/>
@@ -778,12 +841,30 @@
 			<mx:SetStyle target="{mainCanvas}" name="horizontalCenter"/>
 			<mx:SetProperty target="{mainCanvas}" name="y" value="0"/>
 			<mx:SetStyle target="{mainCanvas}" name="verticalCenter"/>
+			<mx:AddChild relativeTo="{mainCanvas}" position="lastChild">				
+				<mx:Canvas id="controlBar" height="50" bottom="0" backgroundColor="#352E2E" rollOut="hideControlBar()" color="#ffffff" left="0" right="0" backgroundAlpha="0.8">
+					<mx:Canvas horizontalCenter="0" verticalCenter="0" width="897">
+						<mx:HSlider y="4" id="fsProgressBar" allowTrackClick="true" minimum="1" maximum="{mc.totalFrames}" snapInterval="1" liveDragging="true" width="668" x="162"
+							creationComplete="sliderComplete(event)" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;"
+							buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10" value="{mc.currentFrame}" valueCommit="sliderValuCommit()"/>
+						<mx:Button y="8" width="22" x="5" toolTip="播放" click="play()" styleName="playButton"/>
+						<mx:Label text="{currentTime}" x="94" y="10"/>
+						<mx:Label text="{totalTime}" x="135" y="10"/>
+						<mx:Label text="/" width="13" x="127" y="10"/>
+						<mx:Button y="8" width="22" x="34" toolTip="暂停" click="pause()" styleName="pauseButton"/>
+						<mx:Button y="8" width="22" x="62" toolTip="停止" click="stop()" styleName="stopButton"/>
+						<mx:HSlider y="2" width="75" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip" styleName="columeSlider" x="821"/>
+					</mx:Canvas>					
+				</mx:Canvas>
+			</mx:AddChild>
+			<mx:SetEventHandler target="{mainLoader}" name="mouseMove" handlerFunction="onMouseMove"/>
+			<mx:RemoveChild target="{button0}"/>
 		</mx:State>
 		<mx:State name="header">
 			<mx:AddChild position="lastChild">
 				<mx:Canvas width="585" height="389" verticalCenter="0" horizontalCenter="0" id="canvas1">
-					<mx:SWFLoader source="{content.Header.@data}" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true" complete="headerLoadComp()" unload="headLoaderUnload()"/>
-					<mx:Button id="btnSkip" click="skip()" styleName="skipButton" right="0" bottom="0"/>
+					<mx:SWFLoader source="{header}" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="headLoader" scaleContent="true" complete="headerLoadComp()" unload="headLoaderUnload()"/>
+					<mx:Button id="btnSkip" click="skip()" styleName="skipButton" right="0" bottom="0" buttonMode="true"/>
 					<mx:Button id="btnBegin" left="200" y="220" visible="false" click="beginStudy()" styleName="beginButton"/>
 					<mx:Button id="btnGoOn" right="200" y="220" visible="false" click="goOnStudy()" styleName="goOnButton"/>
 				</mx:Canvas>
