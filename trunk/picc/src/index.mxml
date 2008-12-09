@@ -84,7 +84,8 @@
 			public var isPopup:Boolean=false;
 			private var lastBtn:Button;
 			public var stoped:Boolean;	
-			private var pressing:Boolean;		
+			private var pressing:Boolean;	
+			private var gotoLast:Boolean;	
 			
 			private function appInit():void
 			{
@@ -157,9 +158,7 @@
 					{
 						btn.data={fullName:fullName,data:item.@data};
 					}
-					btn.addEventListener(MouseEvent.CLICK,onMenuClick);
-					//btn.addEventListener(FocusEvent.FOCUS_IN,onBtnFocusIn);
-					//btn.addEventListener(FocusEvent.FOCUS_OUT,onBtnFocusOut);
+					btn.addEventListener(MouseEvent.CLICK,onMenuClick);					
 					if(count==0)
 					{
 						firstBtn=btn;
@@ -185,8 +184,7 @@
 				if(lso==null)
 				{
 					Alert.show("无法创建或获取本地共享对象!","Error");
-					firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-					//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
+					firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));					
 				}
 				else
 				{
@@ -200,7 +198,6 @@
 								if(arrayItem.button.data.fullName==lsoInfo.currChapterName)
 								{
 									Button(menuItemArray1[arrayItem.count-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-									//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 									break;						
 								}
 							}							 
@@ -208,7 +205,6 @@
 						else
 						{
 							Button(menuItemArray1[lsoInfo.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-							//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 						}
 					}
 					else
@@ -218,7 +214,6 @@
 							isContinue=false;							
 						}										
 						firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-						//firstBtn.dispatchEvent(new FocusEvent(FocusEvent.FOCUS_IN));
 					}
 					lso.data.info=lastCourseInfo;	
 				}
@@ -226,7 +221,11 @@
 			
 			private function enterFrameHandler(evt:Event):void
 			{									
-				progressSlider.value=mc.currentFrame;					
+				progressSlider.value=mc.currentFrame;	
+				if(stage.displayState==StageDisplayState.FULL_SCREEN)
+				{
+					fsProgressBar.value=mc.currentFrame;
+				}				
 				currentTime=formatProgressToolTip(mc.currentFrame);
 				if(progressSlider.value==progressSlider.maximum)
 				{//正常模式下一节课程播放完将停止播放;全屏模式下则连续播放
@@ -269,7 +268,7 @@
 					this.navFlag.visible=false;
 					this.sectionName.visible=false;
 				}				
-				mainLoader.load(Button(evt.target).data.data);	
+				mainLoader.load(Button(evt.target).data.data);				
 				if(lastBtn!=null)
 				{
 					lastBtn.setStyle("upSkin",upSkin);
@@ -311,12 +310,17 @@
 					try
 					{
 						mc=MovieClip(evt.target.content);
+						mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
 						totalTime=formatProgressToolTip(mc.totalFrames);
 						if(isContinue)
 						{
 							mc.gotoAndStop(lsoInfo.currFrame);
 							stoped=true;
 							isContinue=false;
+						}
+						else
+						{
+							stoped=false;
 						}
 					}
 					catch(e:Error)
@@ -340,13 +344,17 @@
 				app=evt.target.application;				
 				app.setApp(this);
 				app.xmlUrl=this.xml;
+				if(gotoLast)
+				{
+					app.gotoLast=true;
+					this.gotoLast=false;
+				}
 				if(isContinue)
 				{	
 					app.isContinue=true;				
 					app.currSectionNum=lsoInfo.currSectionNum-1;
 					app.currFrame=lsoInfo.currFrame;
-					this.isContinue=false;
-					stoped=true;
+					this.isContinue=false;					
 				}				
 				app.init();				
 				this.xml=null;
@@ -428,12 +436,13 @@
 				if(gotoComb.dataProvider==menuItemArray2)
 				{					
 					var result:String=app.prePage();
-					if(result=="first" && this.currChapterName!=menuItemArray1[0].button.fullName)
+					if(result=="first" && this.currChapterName!=menuItemArray1[0].button.data.fullName)
 					{
 						for(var i:int=1;i<menuItemArray1.length;i++)
 						{
-							if(this.currChapterName==menuItemArray1[i].button.fullName)
+							if(this.currChapterName==menuItemArray1[i].button.data.fullName)
 							{
+								gotoLast=true;
 								Button(menuItemArray1[i-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 								break;
 							}
@@ -450,20 +459,24 @@
 			}
 			
 			private function nextPage():void
-			{
+			{				
 				if(gotoComb.dataProvider==menuItemArray2)
 				{				
 					var result:String=app.nextPage();
-					if(result=="last" && this.currChapterName!=menuItemArray1[menuItemArray1.length-1].button.fullName)
+					if(result=="last" && this.currChapterName!=menuItemArray1[menuItemArray1.length-1].button.data.fullName)
 					{
 						for(var i:int=0;i<menuItemArray1.length-1;i++)
 						{
-							if(this.currChapterName==menuItemArray1[i].button.fullName)
-							{
+							if(this.currChapterName==menuItemArray1[i].button.data.fullName)
+							{								
 								Button(menuItemArray1[i+1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 								break;
 							}
 						}
+					}
+					else if(result!="last")
+					{						
+						tracingNext();//加入scorm 跟踪课程
 					}					
 				}
 				else
@@ -471,8 +484,36 @@
 					if(this.currSectionNum<menuItemArray1.length)
 					{
 						Button(menuItemArray1[currSectionNum].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						tracingNext();//加入scorm 跟踪课程
 					}
-				}				
+				}								
+								
+			}
+			
+			private function tracingNext():void
+			{
+				if(ExternalInterface.available)
+				{
+                	try
+					{
+						if(this.currSectionNum+1==this.totalSectionNum && this.currChapterName==menuItemArray1[menuItemArray1.length-1].button.data.fullName)
+						{
+							ExternalInterface.call("doQuit","completed");
+						}
+						else
+						{
+							ExternalInterface.call("doContinue","incomplete");
+						}
+					}
+					catch(error:SecurityError)
+					{
+						Alert.show("访问外部javascript时出错,存在安全沙箱问题!\n"+error.message,"错误提示");
+					}
+           	 	}
+           	 	else
+           	 	{
+           	 		Alert.show("访问外部javascript的ExternalInterface(外部接口)不可用,该容器不支持!");
+           	 	}
 			}
 			
 			private function gotoPage(evt:ListEvent):void
@@ -739,10 +780,6 @@
 			{
 				btnNext.setStyle("textDecoration","underline");
 			}			
-			private function sliderValuCommit():void
-			{
-				setTimeout(function():void{fsProgressBar.value=mc.currentFrame;},83);							
-			}
 			private function showMap():void
 			{
 				Alert.show("this is a map");
@@ -846,13 +883,13 @@
 					<mx:Canvas horizontalCenter="0" verticalCenter="0" width="897">
 						<mx:HSlider y="4" id="fsProgressBar" allowTrackClick="true" minimum="1" maximum="{mc.totalFrames}" snapInterval="1" liveDragging="true" width="668" x="162"
 							creationComplete="sliderComplete(event)" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;"
-							buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10" value="{mc.currentFrame}" valueCommit="sliderValuCommit()"/>
+							buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10" value="{mc.currentFrame}"/>
 						<mx:Button y="8" width="22" x="5" toolTip="播放" click="play()" styleName="playButton"/>
 						<mx:Label text="{currentTime}" x="94" y="10"/>
 						<mx:Label text="{totalTime}" x="135" y="10"/>
 						<mx:Label text="/" width="13" x="127" y="10"/>
-						<mx:Button y="8" width="22" x="34" toolTip="暂停" click="pause()" styleName="pauseButton"/>
-						<mx:Button y="8" width="22" x="62" toolTip="停止" click="stop()" styleName="stopButton"/>
+						<mx:Button y="8" width="22" x="32" toolTip="暂停" click="pause()" styleName="pauseButton"/>
+						<mx:Button y="8" width="22" x="59" toolTip="停止" click="stop()" styleName="stopButton"/>
 						<mx:HSlider y="2" width="75" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip" styleName="columeSlider" x="821"/>
 					</mx:Canvas>					
 				</mx:Canvas>
