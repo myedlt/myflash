@@ -1,30 +1,14 @@
-
-<html lang="en">
-
-<!-- 
-Smart developers always View Source. 
-
-This application was built using Adobe Flex, an open source framework
-for building rich Internet applications that get delivered via the
-Flash Player or to desktops via Adobe AIR. 
-
-Learn more about Flex at http://flex.org 
-// -->
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <!--  BEGIN Browser History required section -->
 <link rel="stylesheet" type="text/css" href="history/history.css" />
 <!--  END Browser History required section -->
-
 <title>${title}</title>
 <script src="AC_OETags.js" language="javascript"></script>
-
 <!--  BEGIN Browser History required section -->
 <script src="history/history.js" language="javascript"></script>
 <!--  END Browser History required section -->
-<script src="note/saveNote.js" language="javascript"></script>
 <style>
 body { margin: 0px; overflow:hidden }
 </style>
@@ -41,9 +25,12 @@ var requiredRevision = ${version_revision};
 // -----------------------------------------------------------------------------
 // -->
 </script>
+<script src="web/note/saveNote.js" language="javascript"></script>
+<script language=javascript src="scorm/APIWrapper.js"></script>
+<script language=javascript src="scorm/SCOFunctions.js"></script>
 </head>
 
-<body scroll="no" onbeforeunload="onClose()">
+<body scroll="no" onLoad="loadPage()">
 <script language="JavaScript" type="text/javascript">
 <!--
 // Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
@@ -101,17 +88,17 @@ if ( hasProductInstall && !hasRequestedVersion ) {
    	+ '<a href=http://www.adobe.com/go/getflash/>Get Flash</a>';
     document.write(alternateContent);  // insert non-flash content
   }
-function onClose()
+/*function onClose()
 {
-	//if (navigator.appName.indexOf("Microsoft") != -1)
-	//{ 
-   //     window["${application}"].writeLog();
-  	//} 
-   // else 
-   // { 
-   //     document["${application}"].writeLog();
-   // } 
-}  
+	if (navigator.appName.indexOf("Microsoft") != -1)
+	{ 
+        window["${application}"].writeLog();
+  	} 
+    else 
+    { 
+       document["${application}"].writeLog();
+    } 
+}*/ 
 // -->
 </script>
 <noscript>
