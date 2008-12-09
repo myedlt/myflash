@@ -13,9 +13,10 @@
 			public var currCourse:String;
 			public var currPage:int;
 			private var app:Object;//获得的外部application对象			
-			public var currSectionNum:int=0;
+			public var currSectionNum:int;
 			public var currFrame:int;
-			public var isContinue:Boolean=false;
+			public var isContinue:Boolean;
+			public var gotoLast:Boolean;
 			
 			public function setApp(app:Object):void
 			{
@@ -38,6 +39,7 @@
 				}	
 				tabBar.dataProvider=model;
 				tabBar.labelField="count";			
+				if(gotoLast)currSectionNum=model.length-1;
 				gotoPage(currSectionNum);	
 			}
 			private function ioErrorHandler(evt:IOErrorEvent):void
@@ -64,7 +66,7 @@
 			{
 				if(mc!=null)
 				{
-					mc.gotoAndStop(1);
+					mc.stop();
 					mc=null;
 				}
 			}
@@ -76,7 +78,12 @@
 					if(isContinue)
 					{
 						mc.gotoAndStop(currFrame);
+						app.stoped=true;
 						isContinue=false;
+					}
+					else
+					{
+						app.stoped=false;
 					}
 					if(app!=null)
 					{
