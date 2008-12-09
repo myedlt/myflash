@@ -46,7 +46,7 @@
 			private var navLabelArr:Array=new Array();
 			[Bindable]
 			private var rect:RoundedRectangle=new RoundedRectangle(0,2,19,80);
-			private var timer:Timer=new Timer(60);
+			
 			private var navUrlArr:Array=new Array();			
 			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
 			private var currCourseXml:XML;			
@@ -55,13 +55,14 @@
 			private var moveEffect:Move;
 			private var displaySchema:Boolean;
 			private var timeoutHandle:uint;
+			private var stoped:Boolean;	
+			private var pressing:Boolean;
 			
 			private function init():void
 			{
 				content.send();
 				moveEffect=new Move(video);
-				moveEffect.duration=1000;
-				timer.addEventListener(TimerEvent.TIMER,timerHandler);
+				moveEffect.duration=1000;				
 			}
 			private function resultHandler(evt:ResultEvent):void
 			{
@@ -113,44 +114,33 @@
 			{
 				Alert.show(evt.fault.message,"加载xml文件时出错");
 			}
-			private function timerHandler(evt:TimerEvent):void
+			private function enterFrameHandler(evt:Event):void
 			{
-				if(mc!=null)
+				progressBar.value=mc.currentFrame;
+				currentTime=formatProgressToolTip(mc.currentFrame);
+				//一节课程播放完毕后自动播放下一节
+				if(mc.currentFrame==mc.totalFrames)
 				{
-					progressBar.value=mc.currentFrame;
-					currentTime=formatProgressToolTip(mc.currentFrame);
-					//一节课程播放完毕后自动播放下一节
-					if(mc.currentFrame==mc.totalFrames)
-					{
-						nextPage();
-					} 
-				}
-				else
-				{
-					timer.stop();
-				}
+					nextPage();
+				} 				
 			}	
 			private function setLinkBarData():void
 			{
 				linkBar.dataProvider=navLabelArr;
 			}
 			private function progressChange(evt:SliderEvent):void
-			{
-				
-				if(timer.running==true)
+			{				
+				if(mc!=null)
 				{
-					if(mc!=null)
-					{
-						mc.gotoAndPlay(evt.value);
-					}
-				}
-				else
-				{
-					if(mc!=null)
+					if(stoped || pressing)
 					{
 						mc.gotoAndStop(evt.value);
 					}
-				}
+					else
+					{
+						mc.gotoAndPlay(evt.value);
+					}
+				}				
 			}		
 			private function hideVideo():void
 			{
@@ -190,28 +180,22 @@
 					}
 				}
 			}
-			private function play():void
-			{
-				if(mc!=null)
+			public function play():void
+			{			
+				if(mc!=null && stoped)
 				{
-					if(timer.running==false)
-					{
-						timer.start();
-					}				
 					mc.play();
+					stoped=false;
 				}
 			}
 			
 			private function pause():void
 			{
-				if(mc!=null)
+				if(mc!=null && !stoped)
 				{
 					mc.stop();
-					if(timer.running==true)
-					{
-						timer.stop();
-					}
-				}
+					stoped=true;
+				}				
 			}
 			private function sliderComplete(evt:Event):void
 			{
@@ -320,11 +304,9 @@
   				try
   				{
   					mc=MovieClip(evt.target.content);
-  					totalTime=formatProgressToolTip(mc.totalFrames);
-  					if(timer.running==false)
-					{
-						timer.start();
-					}	
+  					mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
+  					stoped=false;
+  					totalTime=formatProgressToolTip(mc.totalFrames);  					
   				}
   				catch(e:Error)
   				{
@@ -349,7 +331,9 @@
 	<mx:HTTPService id="content" url="content.xml" result="resultHandler(event)" fault="faultHandler(event)" resultFormat="xml"/>
 	<mx:Canvas width="800" height="550" horizontalCenter="0" verticalCenter="0" backgroundImage="@Embed(source='image/bg.png')">
 		<mx:SWFLoader x="0" y="85" id="mainLoader" width="800" height="392" complete="swfLoadComplete(event)" unload="swfUnload()" horizontalAlign="center" verticalAlign="middle"/>
-		<mx:HSlider id="progressBar" x="40" y="480" width="720" height="11" liveDragging="true" minimum="0" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="pause()" thumbRelease="play()" buttonMode="true" useHandCursor="true" styleName="progressBar" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="140"/>
+		<mx:HSlider id="progressBar" x="40" y="480" width="720" height="11" liveDragging="true" minimum="1" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
+			change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressBar" 
+			showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10"/>
 		<mx:Button x="176" y="506" width="34" height="19" styleName="playButton" click="play()"/>
 		<mx:Button x="224" y="506" width="34" height="19" styleName="pauseButton" click="pause()"/>
 		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton" click="prePage()"/>
