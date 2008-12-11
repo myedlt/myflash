@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#FFFFFF" backgroundGradientAlphas="[1.0, 1.0]" backgroundGradientColors="[#0059FD, #0059FD]" xmlns:zgflex="org.zgflex.*">
+     <mx:Script>
+        <![CDATA[
+        	import mx.events.ItemClickEvent;
+            import mx.managers.CursorManager;
+        	import mx.events.DataGridEvent;
+        	import org.zgflex.Team;
+        	import mx.events.ListEvent;
+
+        	import mx.binding.utils.BindingUtils;
+            import mx.utils.ArrayUtil;
+            import mx.collections.ArrayCollection;
+            import mx.rpc.events.ResultEvent;
+            import mx.controls.Alert;
+            import mx.rpc.events.FaultEvent;
+            
+
+            [Bindable]
+            private var selectedTeam:Team;
+            
+            [Bindable]
+            private var myTeam:Team;            
+            
+            private function faultHandler(fault:FaultEvent):void
+            {
+                CursorManager.removeBusyCursor();
+                textAreaResponse.text = "code:\n" + fault.fault.faultCode + "\n\nMessage:\n" 
+                							 + fault.fault.faultString + "\n\nDetail:\n" + fault.fault.faultDetail;
+            }
+
+            private function checkCommunicationHandler(evt:ResultEvent):void
+            {
+                textAreaResponse.text = evt.message.body.toString();
+            }
+            
+            private function updatedTeamHandler(evt:ResultEvent):void
+            {
+                textAreaResponse.text = evt.message.body.toString(); 
+                SoccerService.getTeams();
+            }            
+            
+            private function getTeamsHandler(evt:ResultEvent):void
+            {
+                this.data = new ArrayCollection( ArrayUtil.toArray(evt.result) );
+                textAreaResponse.text = 'Teams are loaded.';
+                
+            } 
+            
+            private function selectTeam(e:ListEvent):void
+            {
+            	this.selectedTeam = new Team();
+            	
+            	selectedTeam.id = e.itemRenderer.data.id;
+            	selectedTeam.title = e.itemRenderer.data.title;
+            	selectedTeam.league = e.itemRenderer.data.league;
+            }
+            
+            private function updateTeam():void
+            {
+            	this.selectedTeam.title = team_title.text;
+            	this.selectedTeam.league = team_league.text;
+            	SoccerService.updateTeam(selectedTeam);
+            } 
+            
+        ]]>
+    </mx:Script>
+
+
+	<mx:RemoteObject id="FlexAMFPHPService" source="org.zgFlex.cookbook.services.FlexAMFPHP" destination="amfphp"
+		 fault="faultHandler(event)" showBusyCursor="true">
+        <mx:method name="communicationTest" result="checkCommunicationHandler(event)" />
+        <mx:method name="checkAnotherMethod" result="checkCommunicationHandler(event)" />   		 
+	</mx:RemoteObject>
+
+
+	<mx:RemoteObject id="SoccerService" source="org.zgFlex.cookbook.services.SoccerManager" destination="amfphp"
+		 fault="faultHandler(event)" showBusyCursor="true">
+        <mx:method name="getTeams" result="getTeamsHandler(event)" fault="faultHandler(event)" />
+        <mx:method name="updateTeam" result="updatedTeamHandler(event)" fault="faultHandler(event)" />
+	</mx:RemoteObject>	
+	
+    <mx:Label x="10" y="10" text="Starting with AMFPHP" fontSize="12" fontWeight="bold" width="298"/>
+    <mx:Panel x="10" y="36" id="panelCheckConnection" title="Check connection..." width="298" height="229" layout="absolute" >
+        <mx:TextArea x="10" y="10" width="240" height="113" id="textAreaResponse"/>
+        <mx:Button x="10" y="131" label="Connect to AMFPHP" width="166" click="FlexAMFPHPService.communicationTest.send()"/>
+        <mx:Button x="10" y="161" label="Check another method" width="166" click="FlexAMFPHPService.checkAnotherMethod.send()"/>
+    </mx:Panel>
+    
+    <mx:Panel x="332" y="14" width="484" height="453" layout="absolute" title="Team panel" id="panelTeams">
+        <mx:DataGrid x="10" y="10" width="427" id="dataGridTeam" dataProvider="{data}" height="165" itemClick="selectTeam(event)">
+            <mx:columns>
+                <mx:DataGridColumn headerText="#ID" dataField="id" width="30"/>
+                <mx:DataGridColumn headerText="Team" dataField="title" width="150"/>
+                <mx:DataGridColumn headerText="League" dataField="league" width="150"/>
+            </mx:columns>
+        </mx:DataGrid>
+        <mx:Button x="10" y="183" label="Get teams" click="SoccerService.getTeams.send();"/>
+        <mx:Form x="10" y="213" width="345" height="136" cornerRadius="10" borderStyle="solid" borderThickness="1" borderColor="#FFFFFF">
+            <mx:FormHeading label="Selected team" />
+            <mx:FormItem label="#ID">
+                <mx:TextInput id="team_id" text="{selectedTeam.id}" enabled="false"/>
+            </mx:FormItem>
+            <mx:FormItem label="Title">
+                <mx:TextInput id="team_title" text="{selectedTeam.title}" />
+            </mx:FormItem>
+            <mx:FormItem label="League">
+                <mx:TextInput id="team_league" text="{selectedTeam.league}" />
+            </mx:FormItem>
+        </mx:Form>
+        <mx:Button x="30" y="357" label="Update team" id="buttonUpdate" click="updateTeam()"/>
+    </mx:Panel>
+</mx:Application>
