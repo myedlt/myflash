@@ -33,3 +33,10 @@ usage is from the command line, but can be called from .bat files.
    can likely be placed directly in a .bat file and clicked to compile
    windows users may need to replace "-cp ." with -cp "C:\full\path\to\here"
    and like was for the -main path...
+
+=======================================================
+import com.brainoff.worldkitMain;
+
+var wk:worldkitMain = new worldkitMain();
+
+worldkitMain.main(this);
