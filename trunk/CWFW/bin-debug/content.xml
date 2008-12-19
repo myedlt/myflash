@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Content>	
+	<!-- 页面头部导航区 -->	
+	<Navigator>		
+		<button label="帮助" url="navigator/help/index.html"/>	
+		<button label="退出" url="javascript:window.close();"/>		
+	</Navigator>
+	<!-- 课程列表 -->
+	<CourseList>
+		<Course name="金融危机">
+			<Lecture>
+				<name>讲师名</name>
+				<sex>男</sex>
+				<age>55</age>
+				<position>教授</position>
+				<introduction>
+					<![CDATA[
+						讲师介绍...
+					]]>
+				</introduction>
+			</Lecture>			
+			<Chapter name="经济危机给我们带来了什么?" title="第一章">
+				<section name="第一节" path="assets/courses/course01/chapter01/unit01.swf"/>												
+			</Chapter>
+			<Chapter name="第二章" path="assets/courses/course01/chapter02/introduction.swf">
+				<section name="第一节" path="assets/courses/course01/chapter02/unit01.swf"/>												
+			</Chapter>	
+			<Chapter name="测验" type="flex" path="assets/courses/course01/exercise.swf"/>		
+		</Course>		
+	</CourseList>
+	<!-- 版权信息 -->
+	<Copyright>		
+		<![CDATA[
+			技术支持:北京东方创远教育科技有限公司
+		]]>
+	</Copyright>
+</Content>

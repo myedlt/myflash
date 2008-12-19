@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:view="view.component.*" creationComplete="facade.startup(this);">
+	<!--<mx:Style source="assets/skin/default.css"/>-->
+	<mx:Script>
+		<![CDATA[					
+			private var facade:ApplicationFacade=ApplicationFacade.getInstance();			
+		]]>
+	</mx:Script>
+	
+	<view:Contents id="contents" x="11" y="53" width="230" height="470"/>
+	<view:FlashPlayer id="flashPlayer" x="247" y="95" width="677" height="355"/>
+	<view:Navigator id="navigator" x="525" y="5" height="45"/>
+	<view:CurrentPosition id="currentPosition" x="247" y="53" height="40" width="677"/>
+	<view:ControlBoard id="controlBoard" x="247" y="453" height="71" width="677"/>
+</mx:Application>
