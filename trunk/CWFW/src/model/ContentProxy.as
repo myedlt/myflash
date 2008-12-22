@@ -1,9 +1,7 @@
 package model
 {
-	import model.business.LoadXMLDelegate;
-	
-	import mx.rpc.IResponder;
-	
+	import model.business.LoadXMLDelegate;	
+	import mx.rpc.IResponder;	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -20,7 +18,7 @@ package model
 		
 		public function result(data:Object):void
 		{
-			this.data=data.result;
+			this.data=data.result;			
 			sendNotification(ApplicationFacade.LOAD_CONTENT_SUCCESSFUL,this.data);
 			trace("加载文件成功!");
 		}

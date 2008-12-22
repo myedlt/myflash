@@ -2,6 +2,8 @@ package
 {
 	import controller.ApplicationStartupCommand;
 	import controller.ModelPrepCommand;
+	import controller.NextSectionCommand;
+	import controller.PreviousSectionCommand;
 	
 	import org.puremvc.as3.patterns.facade.Facade;
 
