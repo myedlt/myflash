@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="690" height="71">
+	<mx:HSlider id="progressBar" width="640" horizontalCenter="0" y="10"/>
+	<mx:HSlider x="589" y="39" id="progressBar0" width="78"/>
+	<mx:Button x="25" y="39" toolTip="播放" id="btnPlayOrPause"/>
+	<mx:Button x="73" y="39" toolTip="停止" id="btnStop"/>
+	<mx:Button x="541" y="34" toolTip="关闭" id="btnColumn"/>
+	<mx:Button x="188" y="39" id="btnNext"/>
+	<mx:Button x="140" y="39" id="btnPre"/>
 	
 </mx:Canvas>

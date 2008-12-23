@@ -16,7 +16,7 @@ package model
 		public function CourseProxy ( data:Object = null ) 
         {
             super ( NAME, data );	
-            initialization();	//初始化课程对象	
+            initialization();	            
         }
         	
         private function initialization():void

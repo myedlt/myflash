@@ -10,7 +10,7 @@
 	
 	<view:Contents id="contents" x="9" y="53" width="230" height="470"/>
 	<view:FlashPlayer id="flashPlayer" x="244" y="95" width="690" height="355"/>
-	<view:Navigator id="navigator" x="533" y="4" height="45"/>
+	<view:Navigator id="navigator" top="0" right="3"/>
 	<view:CurrentPosition id="currentPosition" x="244" y="53" height="40" width="690"/>
 	<view:ControlBoard id="controlBoard" x="244" y="453" height="71" width="690"/>
 </mx:Application>
