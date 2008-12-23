@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
-	xmlns:view="view.component.*" creationComplete="facade.startup(this);">
+	xmlns:view="view.component.*" creationComplete="facade.init(this);">
 	<!--<mx:Style source="assets/skin/default.css"/>-->
 	<mx:Script>
 		<![CDATA[					
@@ -8,9 +8,11 @@
 		]]>
 	</mx:Script>
 	
-	<view:Contents id="contents" x="9" y="53" width="230" height="470"/>
-	<view:FlashPlayer id="flashPlayer" x="244" y="95" width="690" height="355"/>
-	<view:Navigator id="navigator" top="0" right="3"/>
-	<view:CurrentPosition id="currentPosition" x="244" y="53" height="40" width="690"/>
-	<view:ControlBoard id="controlBoard" x="244" y="453" height="71" width="690"/>
+	<mx:Canvas  width="779" height="600" horizontalCenter="0" verticalCenter="0">
+		<view:Contents id="contents" x="6" y="53" width="203" height="517"/>
+		<view:FlashPlayer id="flashPlayer" x="213" y="89" width="560" height="405"/>
+		<view:Navigator id="navigator" top="2" right="5"/>
+		<view:CurrentPosition id="currentPosition" x="213" y="53" height="34" width="560" horizontalGap="4"/>
+		<view:ControlBoard id="controlBoard" x="213" y="497" height="73" width="560"/>
+	</mx:Canvas>	
 </mx:Application>

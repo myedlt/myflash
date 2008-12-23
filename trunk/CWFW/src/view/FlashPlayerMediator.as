@@ -10,7 +10,7 @@ package view
 	{
 		public static const NAME:String = "FlashPlayerMediator";	
 		
-		public function FlashPlayerMediator(viewComponent:FlashPlayer)
+		public function FlashPlayerMediator(viewComponent:Object)
 		{
 			super(mediatorName, viewComponent);
 		}
@@ -18,7 +18,7 @@ package view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.LOAD			
+						ApplicationFacade.LOAD_SWF			
 				   ];
 		}
 				
@@ -26,10 +26,7 @@ package view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.LOAD:
-					 flashPlayer.player.load(note.getBody());
-					 break;
-				
+			 	case ApplicationFacade.LOAD_SWF : flashPlayer.player.load(note.getBody()); break;				
              }
 		}
 		

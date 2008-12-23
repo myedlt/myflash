@@ -7,11 +7,11 @@ package model
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
-	public class ContentProxy extends Proxy implements IProxy, IResponder
+	public class DataPrepareProxy extends Proxy implements IProxy, IResponder
 	{
-		public static const NAME:String = "ContentProxy";		
+		public static const NAME:String = "DataPrepareProxy";		
 		
-		public function ContentProxy(data:String = "content.xml") 
+		public function DataPrepareProxy(data:String = "content.xml") 
 		{
 			super( NAME );			
 			var delegate : LoadXMLDelegate = new LoadXMLDelegate(this,data);
@@ -28,7 +28,7 @@ package model
 		
 		public function fault(info:Object):void
 		{			
-			sendNotification(ApplicationFacade.LOAD_CONTENT_FAILED,ApplicationFacade.ERROR_LOAD_FILE);			
+			sendNotification(ApplicationFacade.LOAD_FILE_FAILED,ApplicationFacade.ERROR_LOAD_FILE);			
 		}
 	}
 }
