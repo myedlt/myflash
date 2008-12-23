@@ -4,6 +4,8 @@
 	<mx:Style source="skin/skin.css"/>	
 	<mx:Script>
 		<![CDATA[
+			import component.KnowledgeMap;
+			import mx.events.CloseEvent;
 			import flash.utils.setInterval;
 			import flash.utils.clearTimeout;
 			import flash.utils.setTimeout;
@@ -42,6 +44,7 @@
 			private var currChapterName:String;
 			[Bindable]
 			private var currSectionName:String;		
+			private var currChapterNum:int;
 			[Bindable]
 			private var currentTime:String="0:00";
 			[Bindable]
@@ -76,16 +79,19 @@
 			private var soundTrans:SoundTransform=SoundMixer.soundTransform;			
 			private var xml:String;
 			private var app:Object;
-			private var lso:SharedObject;
+			private var lso:SharedObject,so:SharedObject;
 			private var isContinue:Boolean;
 			private var lastCourseInfo:Object=new Object();			
 			private var noteManage:NoteManage;
+			private var map:KnowledgeMap;
 			private var lsoInfo:Object;
 			public var isPopup:Boolean=false;
+			public var isPopup1:Boolean=false;
 			private var lastBtn:Button;
 			public var stoped:Boolean;	
 			private var pressing:Boolean;	
-			private var gotoLast:Boolean;	
+			private var gotoLast:Boolean;
+			private var readedCourseInfo:Array=new Array();	
 			
 			private function appInit():void
 			{
@@ -180,7 +186,8 @@
 				this.logo=content.Banners.logo.@data;
 				this.menuTitle=content.Banners.menuTitle.@data;
 				this.courseNameS=content.Banners.courseNameS.@data;
-				lso=SharedObject.getLocal("picc/lastCourseInfo","/");				
+				lso=SharedObject.getLocal("picc/lastCourseInfo","/");	
+				so=SharedObject.getLocal("picc/readedCourseInfo","/");			
 				if(lso==null)
 				{
 					Alert.show("无法创建或获取本地共享对象!","Error");
@@ -215,7 +222,23 @@
 						}										
 						firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 					}
-					lso.data.info=lastCourseInfo;	
+					lso.data.info=lastCourseInfo;					
+				}
+				//记录课程状态
+				if(so==null)
+				{
+					Alert.show("无法创建或获取本地共享对象!","Error");										
+				}
+				else
+				{
+					if(so.data.readedInfo==null)
+					{
+						so.data.readedInfo=readedCourseInfo;
+					}
+					else
+					{
+						readedCourseInfo=so.data.readedInfo;						
+					}
 				}
 			}
 			
@@ -243,13 +266,30 @@
 					else
 					{
 						stoped=true;
-					}									
+						//记录课程状态					
+						for(var i:int=0;i<readedCourseInfo.length;i++)
+						{
+							if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
+							{						
+								readedCourseInfo[i].currStat=3;
+								break;											
+							}
+						}	
+					}																	
 				}
 				writeLog();			
 			}
 			
 			private function onMenuClick(evt:MouseEvent):void
 			{	
+				for each(var chap:Object in menuItemArray1)
+				{
+					if(chap.button==evt.target)
+					{					
+						currChapterNum=chap.count;
+						break;						
+					}
+				} 
 				currChapterName=evt.target.data.fullName;		
 				if(evt.target.data.xml!=null)
 				{
@@ -335,7 +375,7 @@
 				if(xml!=null)
 				{
 					evt.target.content.addEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);					
-					addDbClickHandler(evt.target);
+					//addDbClickHandler(evt.target);//双击全屏显示
 				}
 			}
 			
@@ -376,7 +416,25 @@
 				this.currSectionNum=app.currPage;
 				this.mc=app.mc;
 				mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
-				totalTime=formatProgressToolTip(mc.totalFrames);				
+				totalTime=formatProgressToolTip(mc.totalFrames);	
+				//记录课程状态
+				if(stage.displayState==StageDisplayState.NORMAL)
+				{
+					var flag:int=0;
+					for(var i:int=0;i<readedCourseInfo.length;i++)
+					{
+						if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum)
+						{						
+							flag=1;
+							break;											
+						}
+					}
+					if(flag==0)
+					{	
+						readedCourseInfo.push({currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
+						so.flush();
+					}		
+				}					
 			}
 			
 			public function innerArrayComplete():void
@@ -500,10 +558,10 @@
 						{
 							ExternalInterface.call("doQuit","completed");
 						}
-						else
+						/* else
 						{
 							ExternalInterface.call("doContinue","incomplete");
-						}
+						} */
 					}
 					catch(error:SecurityError)
 					{
@@ -555,12 +613,19 @@
 			
 			private function fullscreen():void
 			{
-				currentState="fullscreen";				
-				controlBar.visible=true;						
-				stage.displayState=StageDisplayState.FULL_SCREEN;
-				stage.addEventListener(FullScreenEvent.FULL_SCREEN,normalStateHandler);	
-				setTimeout(hideControlBarFun,3000);			
+				Alert.show("在全屏模式下，不记录学习状态。\n您要继续进入全屏模式学习吗？","",Alert.YES|Alert.NO|Alert.NONMODAL,this,onFullSrceen,null,Alert.YES);
 			}			
+			private function onFullSrceen(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{
+					currentState="fullscreen";				
+					controlBar.visible=true;						
+					stage.displayState=StageDisplayState.FULL_SCREEN;
+					stage.addEventListener(FullScreenEvent.FULL_SCREEN,normalStateHandler);	
+					setTimeout(hideControlBarFun,3000);			
+				}
+			}
 			
 			private function onMouseMove(evt:MouseEvent):void
 			{
@@ -782,7 +847,24 @@
 			}			
 			private function showMap():void
 			{
-				Alert.show("this is a map");
+				if(isPopup1)
+  				{
+  					PopUpManager.removePopUp(map);
+  					isPopup1=false; 
+  					if(!stoped)mc.play();
+  				}
+  				else
+  				{
+  					if(!stoped)mc.stop();
+  					map=new KnowledgeMap();
+  					map.setApp(this);
+  					var point:Point=new Point();								
+					point=hbox1.localToGlobal(point);
+  					map.x=point.x;
+  					map.y=point.y; 
+  					PopUpManager.addPopUp(map,this); 
+  					isPopup1=true; 
+  				}
 			}			
 		]]>
 	</mx:Script>	
