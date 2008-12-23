@@ -12,7 +12,6 @@ package view
 		public function NavigatorMediator(viewComponent:Navigator)
 		{
 			super(NAME,viewComponent);
-			
 		} 
 	}
 }

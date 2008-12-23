@@ -1,7 +1,9 @@
 package model
 {
-	import model.business.LoadXMLDelegate;	
-	import mx.rpc.IResponder;	
+	import model.utils.LoadXMLDelegate;
+	
+	import mx.rpc.IResponder;
+	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -19,14 +21,14 @@ package model
 		public function result(data:Object):void
 		{
 			this.data=data.result;			
-			sendNotification(ApplicationFacade.LOAD_CONTENT_SUCCESSFUL,this.data);
-			trace("加载文件成功!");
+			facade.registerProxy(new CourseProxy(XML(this.data).CourseList.Course));
+        	facade.registerProxy(new NavigatorProxy(XML(this.data).Navigator.button)); 
+        	sendNotification(ApplicationFacade.STARTUP);//初始化完毕,加载缺省设置			
 		}
 		
 		public function fault(info:Object):void
 		{			
-			sendNotification(ApplicationFacade.LOAD_CONTENT_FAILED,ApplicationFacade.ERROR_LOAD_FILE);
-			trace("加载文件失败!");
+			sendNotification(ApplicationFacade.LOAD_CONTENT_FAILED,ApplicationFacade.ERROR_LOAD_FILE);			
 		}
 	}
 }

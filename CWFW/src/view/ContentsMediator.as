@@ -12,7 +12,6 @@ package view
 		public function ContentsMediator(viewComponent:Contents)
 		{
 			super(NAME,viewComponent);
-			
 		} 
 	}
 }

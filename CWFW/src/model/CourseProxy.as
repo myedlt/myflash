@@ -8,17 +8,17 @@ package model
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 
-	public class CourseInfoProxy extends Proxy implements IProxy
+	public class CourseProxy extends Proxy implements IProxy
 	{
-		private var courses:Array=new Array();	
+		public var courses:Array=new Array();	
 		public static const NAME:String = "CourseInfoProxy";		
 		
-		public function CourseInfoProxy ( data:Object = null ) 
+		public function CourseProxy ( data:Object = null ) 
         {
             super ( NAME, data );	
-            initialization();		
+            initialization();	//初始化课程对象	
         }
-        //初始化课程对象	
+        	
         private function initialization():void
         { 					
 			for each(var course:XML in this.data)
