@@ -13,7 +13,7 @@ package model
 		public function NavigatorProxy ( data:Object = null ) 
         {
             super ( NAME, data );
-			initialization();	//初始化页面导航对象	
+			initialization();				
         }
         
         private function initialization():void

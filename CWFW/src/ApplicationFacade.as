@@ -14,7 +14,7 @@ package
 		public static const INITIAL:String = "initial";	
 						
 		//command
-		public static const LOAD:String = "load";	
+		public static const LOAD:String = "load";			
 		
 		//mediator
 		public static const PREVIOUS_SECTION:String="previousSection";
@@ -22,7 +22,7 @@ package
 		
 		// proxy
 		public static const LOAD_CONTENT_FAILED:String = "loadContentFailed";		
-		public static const STARTUP:String = "startup";
+		public static const DATA_READY:String = "dataReady";	
 		
 		//common messages
 		public static const ERROR_LOAD_FILE:String	= "加载数据文件失败,请确定文件是否存在!";
@@ -37,7 +37,7 @@ package
 		{
 			super.initializeController();
 			registerCommand(INITIAL,ApplicationInitializeCommand);
-			registerCommand(STARTUP,ApplicationStartupCommand);
+			registerCommand(DATA_READY,ApplicationStartupCommand);
 			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
 			registerCommand(NEXT_SECTION,NextSectionCommand);
 		}

@@ -22,8 +22,8 @@ package model
 		{
 			this.data=data.result;			
 			facade.registerProxy(new CourseProxy(XML(this.data).CourseList.Course));
-        	facade.registerProxy(new NavigatorProxy(XML(this.data).Navigator.button)); 
-        	sendNotification(ApplicationFacade.STARTUP);//初始化完毕,加载缺省设置			
+        	facade.registerProxy(new NavigatorProxy(XML(this.data).Navigator.button));
+        	sendNotification(ApplicationFacade.DATA_READY);         				
 		}
 		
 		public function fault(info:Object):void

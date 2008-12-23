@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="690" height="40" verticalAlign="middle" horizontalGap="4">
+	<mx:Spacer width="8"/>
+	<mx:Label text="当前章" id="txtChapter"/>
+	<mx:Label text="-&gt;" width="20"/>
+	<mx:Label text="当前节" id="txtSection"/>
 	
 </mx:HBox>
