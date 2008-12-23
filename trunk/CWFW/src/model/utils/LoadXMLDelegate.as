@@ -1,4 +1,4 @@
-package model.business
+package model.utils
 {
 	import mx.rpc.AsyncToken;
 	import mx.rpc.IResponder;

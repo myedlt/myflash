@@ -1,7 +1,7 @@
 package
 {
+	import controller.ApplicationInitializeCommand;
 	import controller.ApplicationStartupCommand;
-	import controller.ModelPrepCommand;
 	import controller.NextSectionCommand;
 	import controller.PreviousSectionCommand;
 	
@@ -11,16 +11,21 @@ package
 	{
 		// Notification name constants
 		// application
-		public static const STARTUP:String = "startup";
+		public static const INITIAL:String = "initial";	
+						
+		//command
+		public static const LOAD:String = "load";	
+		
+		//mediator
 		public static const PREVIOUS_SECTION:String="previousSection";
-		public static const NEXT_SECTION:String="nextSection";		
+		public static const NEXT_SECTION:String="nextSection";
 		
 		// proxy
-		public static const LOAD_CONTENT_FAILED:String = "loadContentFailed";
-		public static const LOAD_CONTENT_SUCCESSFUL:String = "loadContentSuccessful";
+		public static const LOAD_CONTENT_FAILED:String = "loadContentFailed";		
+		public static const STARTUP:String = "startup";
 		
 		//common messages
-		public static const ERROR_LOAD_FILE:String	= "加载文件失败!";
+		public static const ERROR_LOAD_FILE:String	= "加载数据文件失败,请确定文件是否存在!";
 		
 		public static function getInstance():ApplicationFacade
 		{
@@ -31,15 +36,15 @@ package
 		override protected function initializeController():void
 		{
 			super.initializeController();
+			registerCommand(INITIAL,ApplicationInitializeCommand);
 			registerCommand(STARTUP,ApplicationStartupCommand);
-			registerCommand(LOAD_CONTENT_SUCCESSFUL,ModelPrepCommand);
 			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
 			registerCommand(NEXT_SECTION,NextSectionCommand);
 		}
 		
 		public function startup(app:CWFW):void
 		{
-			sendNotification(STARTUP,app);
+			sendNotification(INITIAL,app);
 		}
 	}
 }
