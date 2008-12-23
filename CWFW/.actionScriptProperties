@@ -5,7 +5,6 @@
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
 <libraryPathEntry kind="1" linkType="1" path="libs"/>
-<libraryPathEntry kind="3" linkType="1" path="D:/我的文档/flex/pureMvc/PureMVC_AS3_2_0_4/bin/PureMVC_AS3_2_0_4.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
