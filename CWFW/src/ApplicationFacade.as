@@ -11,17 +11,17 @@ package
 	{
 		// Notification name constants
 		// application
-		public static const INITIAL:String = "initial";	
+		public static const INITIALIZE:String = "initialize";	
 						
 		//command
-		public static const LOAD:String = "load";			
+		public static const LOAD_SWF:String = "loadSWF";			
 		
 		//mediator
 		public static const PREVIOUS_SECTION:String="previousSection";
 		public static const NEXT_SECTION:String="nextSection";
 		
 		// proxy
-		public static const LOAD_CONTENT_FAILED:String = "loadContentFailed";		
+		public static const LOAD_FILE_FAILED:String = "loadFileFailed";		
 		public static const DATA_READY:String = "dataReady";	
 		
 		//common messages
@@ -36,15 +36,15 @@ package
 		override protected function initializeController():void
 		{
 			super.initializeController();
-			registerCommand(INITIAL,ApplicationInitializeCommand);
+			registerCommand(INITIALIZE,ApplicationInitializeCommand);
 			registerCommand(DATA_READY,ApplicationStartupCommand);
 			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
 			registerCommand(NEXT_SECTION,NextSectionCommand);
 		}
 		
-		public function startup(app:CWFW):void
+		public function init(app:Object):void
 		{
-			sendNotification(INITIAL,app);
+			sendNotification(INITIALIZE,app);
 		}
 	}
 }

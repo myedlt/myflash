@@ -20,14 +20,14 @@ package view
 		private var navLabelArr:Array=new Array();
 		private var navUrlArr:Array=new Array();	
 		
-		public function NavigatorMediator(viewComponent:Navigator)
+		public function NavigatorMediator(viewComponent:Object)
 		{
 			super(NAME,viewComponent);			
 			navigator.addEventListener(ItemClickEvent.ITEM_CLICK,itemClick);
 		} 
 		private function initialize():void
 		{
-			for each(var button:NavigatorVO in NavigatorProxy(facade.retrieveProxy(NavigatorProxy.NAME)).navigator)
+			for each(var button:NavigatorVO in NavigatorProxy(facade.retrieveProxy(NavigatorProxy.NAME)).getNavigator())
 			{
 				navLabelArr.push(button.label);
 				navUrlArr.push(button.url);

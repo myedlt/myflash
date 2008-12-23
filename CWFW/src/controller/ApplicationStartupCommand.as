@@ -10,14 +10,14 @@ package controller
     {
         override public function execute( note:INotification ) :void    
 		{
-			var courses:Array=(facade.retrieveProxy(CourseProxy.NAME) as CourseProxy).courses;			
+			var courses:Array=CourseProxy(facade.retrieveProxy(CourseProxy.NAME)).getCourses();			
         	var currInfo:CurrentInfoProxy=new CurrentInfoProxy();        	
         	facade.registerProxy(currInfo);
         	currInfo.setCurrentCourse(courses[0]);
         	currInfo.setCurrentLecture(courses[0].lecture);
         	currInfo.setCurrentChapter(courses[0].chapters[0]);
         	currInfo.setCurrentSection(courses[0].chapters[0].sections[0]);
-        	sendNotification(ApplicationFacade.LOAD,currInfo.getCurrentSection().path);
+        	sendNotification(ApplicationFacade.LOAD_SWF,currInfo.getCurrentSection().path);
         }
     }
 }

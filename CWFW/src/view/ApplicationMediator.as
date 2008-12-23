@@ -10,7 +10,7 @@ package view
 	{
 		public static const NAME:String = "ApplicationMediator";
 		
-		public function ApplicationMediator(viewComponent:CWFW)
+		public function ApplicationMediator(viewComponent:Object)
 		{
 			super( NAME, viewComponent );
 			facade.registerMediator( new ContentsMediator( app.contents ) );
@@ -23,7 +23,7 @@ package view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.LOAD_CONTENT_FAILED			
+						ApplicationFacade.LOAD_FILE_FAILED			
 				   ];
 		}
 		
@@ -31,10 +31,7 @@ package view
         {
             switch ( note.getName() ) 
 			{
-				case ApplicationFacade.LOAD_CONTENT_FAILED:
-					 Alert.show(note.getBody().toString());
-					 break;
-				
+				case ApplicationFacade.LOAD_FILE_FAILED : Alert.show(note.getBody().toString()); break;				
             }
         }
 		

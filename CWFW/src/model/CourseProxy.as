@@ -9,9 +9,9 @@ package model
 	import org.puremvc.as3.patterns.proxy.Proxy;
 
 	public class CourseProxy extends Proxy implements IProxy
-	{
-		public var courses:Array=new Array();	
-		public static const NAME:String = "CourseInfoProxy";		
+	{			
+		public static const NAME:String = "CourseProxy";	
+		private var courses:Array=new Array();	
 		
 		public function CourseProxy ( data:Object = null ) 
         {
@@ -114,6 +114,11 @@ package model
 				}
 				courses.push(cou);					
 			}
+        }
+        
+        public function getCourses():Array
+        {
+        	return this.courses;
         }        
 	}
 }

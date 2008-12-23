@@ -10,8 +10,7 @@ package model
 	
 	public class CurrentInfoProxy extends Proxy implements IProxy
 	{
-		public static const NAME:String = "CurrentInfoProxy";
-				
+		public static const NAME:String = "CurrentInfoProxy";				
 		private var currentCourse:CourseVO;
 		private var currentChapter:ChapterVO;
 		private var currentSection:SectionVO;
