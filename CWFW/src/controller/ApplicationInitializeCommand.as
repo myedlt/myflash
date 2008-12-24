@@ -10,9 +10,9 @@ package controller
 	public class ApplicationInitializeCommand extends SimpleCommand
 	{
 		override public function execute( note:INotification ) :void    
-		{        	
-        	facade.registerMediator( new ApplicationMediator( note.getBody() ) ); 
-        	facade.registerProxy(new DataPrepareProxy());
+		{     
+			facade.registerProxy(new DataPrepareProxy());   	
+        	facade.registerMediator( new ApplicationMediator( note.getBody() ) );         	
         }
 	}
 }

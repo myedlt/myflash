@@ -1,10 +1,9 @@
 package view
 {
+	import mx.controls.SWFLoader;	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
-	import org.puremvc.as3.patterns.mediator.Mediator;
-	
-	import view.component.FlashPlayer;
+	import org.puremvc.as3.patterns.mediator.Mediator;	
 
 	public class FlashPlayerMediator extends Mediator implements IMediator
 	{
@@ -26,13 +25,13 @@ package view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.LOAD_SWF : flashPlayer.player.load(note.getBody()); break;				
+			 	case ApplicationFacade.LOAD_SWF : player.load(note.getBody()); break;				
              }
 		}
 		
-		protected function get flashPlayer():FlashPlayer
+		protected function get player():SWFLoader
 		{
-            return viewComponent as FlashPlayer;
+            return viewComponent.player as SWFLoader;
         }	
 	}
 }

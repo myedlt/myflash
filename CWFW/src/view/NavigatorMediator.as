@@ -6,13 +6,12 @@ package view
 	import model.NavigatorProxy;
 	import model.vo.NavigatorVO;
 	
+	import mx.controls.LinkBar;
 	import mx.events.ItemClickEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
-	
-	import view.component.Navigator;
 
 	public class NavigatorMediator extends Mediator implements IMediator
 	{
@@ -23,7 +22,7 @@ package view
 		public function NavigatorMediator(viewComponent:Object)
 		{
 			super(NAME,viewComponent);			
-			navigator.addEventListener(ItemClickEvent.ITEM_CLICK,itemClick);
+			linkBar.addEventListener(ItemClickEvent.ITEM_CLICK,itemClick);
 		} 
 		private function initialize():void
 		{
@@ -32,7 +31,7 @@ package view
 				navLabelArr.push(button.label);
 				navUrlArr.push(button.url);
 			}
-			navigator.dataProvider=navLabelArr;
+			linkBar.dataProvider=navLabelArr;
 		}
 		
 		private function itemClick(evt:ItemClickEvent):void
@@ -53,14 +52,13 @@ package view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.DATA_READY : initialize(); break;
-				
+			 	case ApplicationFacade.DATA_READY : initialize(); break;				
              }
 		} 
 		
-		protected function get navigator():Navigator
+		protected function get linkBar():LinkBar
 		{
-            return viewComponent as Navigator;
+            return viewComponent.linkBar as LinkBar;
         }	
 	}
 }
