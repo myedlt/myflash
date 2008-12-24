@@ -16,12 +16,12 @@ Alert
 	 font-size:13px;     
      background-color:#ffffff;     
      border-color:#cccccf;   
-     header-height:26; 
+     header-height:22; 
 }
 
 TitleWindow
 {
-	border-color:#94Aac0;
+	
 }
 
 Button

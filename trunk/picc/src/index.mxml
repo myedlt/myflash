@@ -314,7 +314,20 @@
 					lastBtn.setStyle("upSkin",upSkin);
 				}
 				Button(evt.target).setStyle("upSkin",focusSkin);
-				lastBtn=evt.target as Button;									
+				lastBtn=evt.target as Button;	
+				
+				if(isPopup1)
+  				{
+  					PopUpManager.removePopUp(map);
+  					isPopup1=false; 
+  					if(!stoped)mc.play();
+  				}
+  				if(isPopup)
+  				{
+  					PopUpManager.removePopUp(noteManage);
+  					isPopup=false; 
+  					if(!stoped)mc.play();
+  				}								
 			}
 			
 			/* private function onBtnFocusIn(evt:FocusEvent):void
@@ -728,6 +741,11 @@
   			
   			private function note():void
   			{
+  				if(isPopup1)
+  				{
+  					PopUpManager.removePopUp(map);
+  					isPopup1=false;   					
+  				}  				
   				if(isPopup)
   				{
   					PopUpManager.removePopUp(noteManage);
@@ -740,8 +758,8 @@
   					noteManage=new NoteManage();
   					noteManage.setApp(this);
   					var point:Point=new Point();								
-					point=mainLoader.localToGlobal(point);
-  					noteManage.x=point.x;
+					point=hbox1.localToGlobal(point);
+  					noteManage.x=point.x-1;
   					noteManage.y=point.y; 
   					PopUpManager.addPopUp(noteManage,this); 
   					isPopup=true; 
@@ -846,7 +864,12 @@
 				btnNext.setStyle("textDecoration","underline");
 			}			
 			private function showMap():void
-			{
+			{				
+  				if(isPopup)
+  				{
+  					PopUpManager.removePopUp(noteManage);
+  					isPopup=false;   					
+  				}	
 				if(isPopup1)
   				{
   					PopUpManager.removePopUp(map);
@@ -860,7 +883,7 @@
   					map.setApp(this);
   					var point:Point=new Point();								
 					point=hbox1.localToGlobal(point);
-  					map.x=point.x;
+  					map.x=point.x-1;
   					map.y=point.y; 
   					PopUpManager.addPopUp(map,this); 
   					isPopup1=true; 

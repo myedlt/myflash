@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" title="笔记管理" layout="absolute" width="654" height="388" showCloseButton="true" close="close()" creationComplete="init()" horizontalAlign="center" verticalAlign="middle" borderAlpha="1" fontWeight="normal" cornerRadius="0">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" title="笔记管理" layout="absolute" width="654" height="466" showCloseButton="true" close="close()" creationComplete="init()" horizontalAlign="center" verticalAlign="middle" borderAlpha="1" fontWeight="normal" cornerRadius="0" borderColor="#94ACD1">
 	<mx:Script>
 		<![CDATA[
 			import mx.events.ValidationResultEvent;
@@ -111,7 +111,7 @@
 			{
 				if(btnClear.label=="清空")
 				{									
-					var alert3:Alert=Alert.show("你确定要全部清空?","确认",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler);
+					var alert3:Alert=Alert.show("你确定要全部清空?","提示",Alert.YES|Alert.NO|Alert.NONMODAL,this,alertHandler);
 					PopUpManager.centerPopUp(alert3);
 					alert3.move(point.x,point.y);
 				}
