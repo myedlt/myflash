@@ -21,7 +21,8 @@ package view
 		{
 			return [
 						ApplicationFacade.CHAPTER_CHANGE,
-						ApplicationFacade.SECTION_CHANGE		
+						ApplicationFacade.SECTION_CHANGE,
+						ApplicationFacade.SINGLE_CHAPTER		
 				   ];
 		}
 				
@@ -29,19 +30,40 @@ package view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.CHAPTER_CHANGE : txtChapter.text=note.getBody().toString(); break;
-			 	case ApplicationFacade.SECTION_CHANGE : txtSection.text=note.getBody().toString(); break;				
+			 	case ApplicationFacade.CHAPTER_CHANGE:
+				 	txtChapter.text=note.getBody().toString();
+					break;
+			 	case ApplicationFacade.SECTION_CHANGE:
+				 	if(arrowFlag.visible==false)
+				 	{
+				 		arrowFlag.visible=true;
+				 	}
+				 	txtSection.text=note.getBody().toString(); 
+				 	break;
+			 	case ApplicationFacade.SINGLE_CHAPTER:
+				 	txtChapter.text=note.getBody().toString();
+				 	txtSection.text=null;
+				 	if(arrowFlag.visible==true)
+				 	{
+				 		arrowFlag.visible=false;
+				 	}
+				 	break;			 					
              }
 		}
 		
-		protected function get txtChapter():Label
+		public function get txtChapter():Label
 		{
             return viewComponent.txtChapter as Label;
         }	
         
-        protected function get txtSection():Label
+        public function get txtSection():Label
 		{
             return viewComponent.txtSection as Label;
+        }
+        
+        public function get arrowFlag():Label
+		{
+            return viewComponent.arrowFlag as Label;
         }	
 	}
 }

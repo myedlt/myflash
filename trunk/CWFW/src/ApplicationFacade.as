@@ -2,6 +2,7 @@ package
 {
 	import controller.ApplicationInitializeCommand;
 	import controller.ApplicationStartupCommand;
+	import controller.ContentsItemClickCommand;
 	import controller.NextSectionCommand;
 	import controller.PreviousSectionCommand;
 	
@@ -22,6 +23,7 @@ package
 		public static const PREVIOUS_SECTION:String="previousSection";
 		public static const NEXT_SECTION:String="nextSection";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";
+		public static const SINGLE_CHAPTER:String="singleChapter";
 		
 		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";		
@@ -43,6 +45,7 @@ package
 			registerCommand(DATA_READY,ApplicationStartupCommand);
 			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
 			registerCommand(NEXT_SECTION,NextSectionCommand);
+			registerCommand(CONTENTS_ITEM_CLICK,ContentsItemClickCommand);
 		}
 		
 		public function init(app:Object):void

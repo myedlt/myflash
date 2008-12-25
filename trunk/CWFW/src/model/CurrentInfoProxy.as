@@ -2,9 +2,7 @@ package model
 {	
 	import model.vo.ChapterVO;
 	import model.vo.CourseVO;
-	import model.vo.LectureVO;
-	import model.vo.SectionVO;
-	
+	import model.vo.SectionVO;	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -13,8 +11,7 @@ package model
 		public static const NAME:String = "CurrentInfoProxy";				
 		private var currentCourse:CourseVO;
 		private var currentChapter:ChapterVO;
-		private var currentSection:SectionVO;
-		private var currentLecture:LectureVO;
+		private var currentSection:SectionVO;		
 		
 		public function CurrentInfoProxy() 
 		{
@@ -34,12 +31,7 @@ package model
         public function getCurrentSection():SectionVO
         {
         	return currentSection;
-        }
-        
-        public function getCurrentLecture():LectureVO
-        {
-        	return currentLecture;
-        }
+        }       
         
         public function setCurrentCourse(course:CourseVO):void
         {
@@ -54,11 +46,6 @@ package model
         public function setCurrentSection(section:SectionVO):void
         {
         	this.currentSection=section;
-        } 
-        
-        public function setCurrentLecture(lecture:LectureVO):void
-        {
-        	this.currentLecture=lecture;
-        }    	
+        }        	
 	}
 }

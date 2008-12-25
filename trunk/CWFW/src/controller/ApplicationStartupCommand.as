@@ -13,8 +13,7 @@ package controller
 			var courses:Array=CourseProxy(facade.retrieveProxy(CourseProxy.NAME)).getCourses();			
         	var currInfo:CurrentInfoProxy=new CurrentInfoProxy();        	
         	facade.registerProxy(currInfo);
-        	currInfo.setCurrentCourse(courses[0]);
-        	currInfo.setCurrentLecture(courses[0].lecture);
+        	currInfo.setCurrentCourse(courses[0]);        	
         	currInfo.setCurrentChapter(courses[0].chapters[0]);
         	currInfo.setCurrentSection(courses[0].chapters[0].sections[0]);
         	sendNotification(ApplicationFacade.LOAD_SWF,currInfo.getCurrentSection().path);
