@@ -18,6 +18,8 @@ package controller
         	currInfo.setCurrentChapter(courses[0].chapters[0]);
         	currInfo.setCurrentSection(courses[0].chapters[0].sections[0]);
         	sendNotification(ApplicationFacade.LOAD_SWF,currInfo.getCurrentSection().path);
+        	sendNotification(ApplicationFacade.CHAPTER_CHANGE,currInfo.getCurrentChapter().name);
+        	sendNotification(ApplicationFacade.SECTION_CHANGE,currInfo.getCurrentSection().name);
         }
     }
 }
