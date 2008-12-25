@@ -25,20 +25,12 @@ package view
 			linkBar.addEventListener(ItemClickEvent.ITEM_CLICK,itemClick);
 		} 
 		private function initialize():void
-		{
-			/* for each(var button:NavigatorVO in NavigatorProxy(facade.retrieveProxy(NavigatorProxy.NAME)).getNavigator())
-			{
-				navLabelArr.push(button.label);
-				navUrlArr.push(button.url);
-			} 
-			linkBar.dataProvider=navLabelArr;*/
+		{			
 			linkBar.dataProvider=NavigatorProxy(facade.retrieveProxy(NavigatorProxy.NAME)).getNavigator();
 		}
 		
 		private function itemClick(evt:ItemClickEvent):void
-		{
-			//var url:String=navUrlArr[evt.index];
-			//var target:String=navLabelArr[evt.index]=="退出"||evt.index==navUrlArr.length-1?"_self":"_blank";
+		{			
 			var url:String=NavigatorVO(evt.item).url;
 			var target:String=evt.label=="退出"||evt.index==linkBar.dataProvider.length-1?"_self":"_blank";
 			navigateToURL(new URLRequest(url),target);

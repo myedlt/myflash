@@ -2,7 +2,8 @@ package view
 {
 	import model.CourseProxy;	
 	import mx.controls.Tree;
-	import mx.events.ListEvent;	
+	import mx.events.ListEvent;
+	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;	
@@ -33,12 +34,11 @@ package view
 		}
 		
 		private function itemClick(evt:ListEvent):void
-		{
-			var selectedItem:Object=Tree(evt.target).selectedItem;
-			if(!treeContents.dataDescriptor.isBranch(selectedItem))
-			{
-				sendNotification(ApplicationFacade.CONTENTS_ITEM_CLICK,selectedItem);
-				trace("itemClick:"+selectedItem.toXMLString());
+		{			
+			if(!treeContents.dataDescriptor.isBranch(evt.target.selectedItem))
+			{							
+				sendNotification(ApplicationFacade.CONTENTS_ITEM_CLICK,evt.target.selectedItem);				
+				trace("itemClick:"+evt.target.selectedItem.toXMLString());
 			}			
 		}
 		
@@ -57,7 +57,7 @@ package view
              }
 		} 
 		
-		protected function get treeContents():Tree
+		public function get treeContents():Tree
 		{
             return viewComponent.treeContents as Tree;
         }	 

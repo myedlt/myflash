@@ -1,5 +1,6 @@
 package view
 {
+	import flash.events.Event;	
 	import mx.controls.SWFLoader;	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -12,6 +13,12 @@ package view
 		public function FlashPlayerMediator(viewComponent:Object)
 		{
 			super(mediatorName, viewComponent);
+			player.addEventListener(Event.UNLOAD,swfUnload);
+		}
+		
+		private function swfUnload(evt:Event):void
+		{
+			trace("unload");
 		}
 		
 		override public function listNotificationInterests():Array
