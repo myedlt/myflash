@@ -21,7 +21,7 @@ package view
 		{
 			treeContents.labelField="@name";
 			treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;
-			treeContents.callLater(expandAllNode);//展开所有节点			
+			treeContents.callLater(expandAllNode);//初始展开所有节点			
 		}
 		
 		public function expandAllNode():void
