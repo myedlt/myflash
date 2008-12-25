@@ -256,12 +256,13 @@
 					{
 						if(gotoComb.dataProvider==menuItemArray2 && this.currSectionNum!=this.totalSectionNum)
 						{
-							btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+							btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));							
 						}
 						else
 						{
 							stoped=true;
-						}							
+						}
+						mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);//播放头进入新帧时调度。如果播放头不移动，或者只有一帧，则会继续以帧频调度此事件。								
 					}
 					else
 					{
@@ -275,9 +276,9 @@
 								break;											
 							}
 						}	
-					}																	
+					}																			
 				}
-				writeLog();			
+				writeLog();	
 			}
 			
 			private function onMenuClick(evt:MouseEvent):void
