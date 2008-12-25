@@ -14,7 +14,9 @@ package
 		public static const INITIALIZE:String = "initialize";	
 						
 		//command
-		public static const LOAD_SWF:String = "loadSWF";			
+		public static const LOAD_SWF:String = "loadSWF";
+		public static const CHAPTER_CHANGE:String = "chapterChange";
+		public static const SECTION_CHANGE:String = "sectionChange";			
 		
 		//mediator
 		public static const PREVIOUS_SECTION:String="previousSection";
