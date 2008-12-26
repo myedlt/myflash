@@ -25,7 +25,7 @@ package controller
 					if(index!=currChapter.sections.length-1)
 					{
 						currInfo.setCurrentSection(currChapter.sections[index+1]);//把下一节作为当前节
-						sendNotification(ApplicationFacade.LOAD_SWF,currChapter.sections[index+1].path);//发送加载下一节的swf通知
+						sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[index+1].path);//发送加载下一节的swf通知
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[index+1].name);//发送"当前位置"中的节名改变通知
 					}
 					else
@@ -56,14 +56,14 @@ package controller
 					if(currChapter.sections!=null && currChapter.sections.length>0)
 					{//如果该章有节 则把第一节作为当前节并加载swf、改变"当前位置"
 						currInfo.setCurrentSection(currChapter.sections[0]);
-						sendNotification(ApplicationFacade.LOAD_SWF,currChapter.sections[0].path);
+						sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[0].path);
 						sendNotification(ApplicationFacade.CHAPTER_CHANGE,currChapter.name);
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[0].name);
 					}
 					else
 					{//如果该章没有节 即是一个单独的章 则把当前节置空，加载章的swf 并在“当前位置”中只显示章名
 						currInfo.setCurrentSection(null);
-						sendNotification(ApplicationFacade.LOAD_SWF,currChapter.path);
+						sendNotification(ApplicationFacade.SWF_LOAD,currChapter.path);
 						sendNotification(ApplicationFacade.SINGLE_CHAPTER,currChapter.name);
 					}							
 				}

@@ -1,30 +1,37 @@
 package view
-{
+{	
 	import flash.events.Event;	
-	import mx.controls.SWFLoader;	
+	import mx.controls.SWFLoader;
+	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;	
 
 	public class FlashPlayerMediator extends Mediator implements IMediator
 	{
-		public static const NAME:String = "FlashPlayerMediator";	
+		public static const NAME:String = "FlashPlayerMediator";		
 		
 		public function FlashPlayerMediator(viewComponent:Object)
 		{
 			super(mediatorName, viewComponent);
-			player.addEventListener(Event.UNLOAD,swfUnload);
+			player.addEventListener(Event.COMPLETE,loadComplete);
+			player.addEventListener(Event.UNLOAD,swfUnload);			
 		}
+		
+		private function loadComplete(evt:Event):void
+		{			
+			sendNotification(ApplicationFacade.SWF_LOAD_COMPLETE,evt.target);
+		}		
 		
 		private function swfUnload(evt:Event):void
 		{
-			trace("unload");
-		}
+			sendNotification(ApplicationFacade.SWF_UNLOAD);
+		}		
 		
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.LOAD_SWF			
+						ApplicationFacade.SWF_LOAD						
 				   ];
 		}
 				
@@ -32,7 +39,7 @@ package view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.LOAD_SWF : player.load(note.getBody()); break;				
+			 	case ApplicationFacade.SWF_LOAD : player.load(note.getBody()); break;			 		
              }
 		}
 		

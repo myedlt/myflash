@@ -25,7 +25,7 @@ package controller
 					if(index!=0)
 					{
 						currInfo.setCurrentSection(currChapter.sections[index-1]);
-						sendNotification(ApplicationFacade.LOAD_SWF,currChapter.sections[index-1].path);
+						sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[index-1].path);
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[index-1].name);
 					}
 					else
@@ -56,14 +56,14 @@ package controller
 					if(currChapter.sections!=null && currChapter.sections.length>0)
 					{
 						currInfo.setCurrentSection(currChapter.sections[currChapter.sections.length-1]);
-						sendNotification(ApplicationFacade.LOAD_SWF,currChapter.sections[currChapter.sections.length-1].path);
+						sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[currChapter.sections.length-1].path);
 						sendNotification(ApplicationFacade.CHAPTER_CHANGE,currChapter.name);
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[currChapter.sections.length-1].name);
 					}
 					else
 					{
 						currInfo.setCurrentSection(null);
-						sendNotification(ApplicationFacade.LOAD_SWF,currChapter.path);
+						sendNotification(ApplicationFacade.SWF_LOAD,currChapter.path);
 						sendNotification(ApplicationFacade.SINGLE_CHAPTER,currChapter.name);
 					}							
 				}
