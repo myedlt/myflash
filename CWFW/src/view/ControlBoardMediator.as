@@ -4,8 +4,10 @@ package view
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.media.SoundMixer;
-	import flash.media.SoundTransform;	
+	import flash.media.SoundTransform;
+	
 	import mx.controls.SWFLoader;
+	import mx.events.SliderEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -28,13 +30,23 @@ package view
 			controlBoard.sldCtrlColumn.dataTipFormatFunction=formatColumeToolTip;
 			controlBoard.sldCtrlProgress.dataTipFormatFunction=formatProgressToolTip;
 			controlBoard.sldCtrlProgress.minimum=1;
-			//添加事件(监听器)
+			//添加事件(监听器)			
 			controlBoard.btnStop.addEventListener(MouseEvent.CLICK,stop);
 			controlBoard.btnPrevSection.addEventListener(MouseEvent.CLICK,prevSection);
 			controlBoard.btnNextSection.addEventListener(MouseEvent.CLICK,nextSection);
 			controlBoard.btnPlayOrPause.addEventListener(MouseEvent.CLICK,playOrPause);	
-			controlBoard.btnColumnOpenOrClose.addEventListener(MouseEvent.CLICK,openOrClose);	
+			controlBoard.btnColumnOpenOrClose.addEventListener(MouseEvent.CLICK,openOrClose);
+			controlBoard.sldCtrlColumn.addEventListener(SliderEvent.CHANGE,columeChange);	
 		}		
+		
+		private function columeChange(evt:SliderEvent):void
+		{
+			if(controlBoard.btnColumnOpenOrClose.toolTip=="关闭")
+			{
+				soundTrans.volume=evt.value;
+				SoundMixer.soundTransform=soundTrans;
+			}
+		}
 		
 		private function stop(evt:MouseEvent):void
 		{

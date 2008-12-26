@@ -1,10 +1,11 @@
 package controller
 {
-	import ascb.util.ArrayUtilities;	
 	import model.CurrentInfoProxy;
 	import model.vo.ChapterVO;
 	import model.vo.CourseVO;
 	import model.vo.SectionVO;	
+	import mx.utils.ObjectUtil;
+	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 
@@ -19,7 +20,16 @@ package controller
 					
 			if(currSection!=null)
 			{//当前播放的课程为某一章的一节
-				var index:int=ArrayUtilities.findMatchIndex(currChapter.sections,currSection);
+				//var index:int=ArrayUtilities.findMatchIndex(currChapter.sections,currSection);
+				//var index:int=ArrayUtil.getItemIndex(currSection,currChapter.sections);
+				var index:int=-1;
+				for(var i:int=0;i<currChapter.sections.length;i++)
+				{
+					if(ObjectUtil.compare(currChapter.sections[i],currSection,0)==0)
+					{
+						index=i; break;
+					}
+				}				
 				if(index!=-1)
 				{
 					if(index!=currChapter.sections.length-1)
@@ -46,7 +56,16 @@ package controller
 		
 		private function traverseNextChapter(currCourse:CourseVO,currChapter:ChapterVO,currInfo:CurrentInfoProxy):void
 		{
-			var i:int=ArrayUtilities.findMatchIndex(currCourse.chapters,currChapter);
+			//var i:int=ArrayUtilities.findMatchIndex(currCourse.chapters,currChapter);
+			//var i:int=ArrayUtil.getItemIndex(currChapter,currCourse.chapters);
+			var i:int=-1;
+			for(var k:int=0;k<currCourse.chapters.length;k++)
+			{
+				if(ObjectUtil.compare(currCourse.chapters[k],currChapter,0)==0)
+				{
+					i=k; break;
+				}
+			}			
 			if(i!=-1)
 			{
 				if(i!=currCourse.chapters.length-1)
