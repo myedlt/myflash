@@ -3,11 +3,11 @@ package model
 	import model.utils.XmlResource;	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
-
+	//对课程数据模型代理
 	public class CourseProxy extends Proxy implements IProxy
 	{			
 		public static const NAME:String = "CourseProxy";	
-		private var courses:Array=new Array();	
+		private var courses:Array=new Array();	//课件的所有课程
 		
 		public function CourseProxy ( data:Object = null ) 
         {

@@ -3,7 +3,6 @@ package view
 	import flash.events.MouseEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
-	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import view.component.ControlBoard;
@@ -15,8 +14,22 @@ package view
 		public function ControlBoardMediator(viewComponent:Object)
 		{
 			super(NAME,viewComponent);	
+			controlBoard.btnPrevSection.addEventListener(MouseEvent.CLICK,prevSection);
+			controlBoard.btnNextSection.addEventListener(MouseEvent.CLICK,nextSection);
 			controlBoard.btnPlayOrPause.addEventListener(MouseEvent.CLICK,playOrPause);	
 			controlBoard.btnColumnOpenOrClose.addEventListener(MouseEvent.CLICK,openOrClose);	
+		}
+		
+		private function prevSection(evt:MouseEvent):void
+		{
+			sendNotification(ApplicationFacade.PREVIOUS_SECTION);
+			trace("prevSection");
+		}
+		
+		private function nextSection(evt:MouseEvent):void
+		{
+			sendNotification(ApplicationFacade.NEXT_SECTION);
+			trace("nextSection");
 		}		
 		//播放或暂停
 		private function playOrPause(evt:MouseEvent):void

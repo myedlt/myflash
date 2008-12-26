@@ -4,11 +4,11 @@ package model.utils
 	import model.vo.CourseVO;
 	import model.vo.LectureVO;
 	import model.vo.SectionVO;
-	
+	//xml->object 一门课程包括讲师和章,章中包括节
 	public class XmlResource
 	{
 		static public function parseSection(section:XML):SectionVO
-		{
+		{//节:
 			var sec:SectionVO=new SectionVO();
 			sec.name=section.@name;
 			sec.path=section.@path;
@@ -28,7 +28,7 @@ package model.utils
 		}
 		
 		static public function parseChapter(chapter:XML):ChapterVO
-		{
+		{//章:
 			var cha:ChapterVO=new ChapterVO();
 			cha.name=chapter.@name;			
 			if(chapter.hasOwnProperty("@title"))
@@ -52,7 +52,7 @@ package model.utils
 		}
 		
 		static public function parseCourse(course:XML):CourseVO
-		{
+		{//课程:
 			var cou:CourseVO=new CourseVO();			
 			var chapters:Array=new Array();
 			for each(var chapter:XML in course.Chapter)
@@ -84,7 +84,7 @@ package model.utils
 		}
 		
 		static public function parseLecture(lecture:XMLList):LectureVO
-		{
+		{//讲师:
 			var lec:LectureVO=new LectureVO();
 			if(lecture.name!=undefined)
 			{
