@@ -35,7 +35,7 @@ package controller
 					currInfo.setCurrentSection(XmlResource.parseSection(selectedItem));
 				} 				
 			}
-			sendNotification(ApplicationFacade.LOAD_SWF,selectedItem.@path);				
+			sendNotification(ApplicationFacade.SWF_LOAD,selectedItem.@path);				
 		}
 	}
 }

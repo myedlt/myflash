@@ -15,7 +15,7 @@ package
 		public static const INITIALIZE:String = "initialize";	
 						
 		//command
-		public static const LOAD_SWF:String = "loadSWF";
+		public static const SWF_LOAD:String = "swfLoad";
 		public static const CHAPTER_CHANGE:String = "chapterChange";
 		public static const SECTION_CHANGE:String = "sectionChange";			
 		public static const SINGLE_CHAPTER:String="singleChapter";
@@ -24,7 +24,8 @@ package
 		public static const PREVIOUS_SECTION:String="previousSection";
 		public static const NEXT_SECTION:String="nextSection";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";
-		
+		public static const SWF_LOAD_COMPLETE:String="swfLoadComplete";
+		public static const SWF_UNLOAD:String="swfUnload";		
 		
 		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";		
