@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="560" height="73">
-	<mx:HSlider id="sldCtrlProgress" width="538" horizontalCenter="0" y="10"/>
-	<mx:HSlider x="477" y="41" id="sldCtrlColumn" width="70" maximum="1" minimum="0" value="0.6"/>
+	<mx:HSlider id="sldCtrlProgress" width="538" horizontalCenter="0" y="10" liveDragging="true"/>
+	<mx:HSlider x="477" y="41" id="sldCtrlColumn" width="70" maximum="1" minimum="0" value="0.6" liveDragging="true"/>
 	<mx:Button x="10" y="41" id="btnPlayOrPause"/>
 	<mx:Button x="58" y="41" toolTip="停止" id="btnStop"/>
 	<mx:Button x="428" y="36" id="btnColumnOpenOrClose"/>

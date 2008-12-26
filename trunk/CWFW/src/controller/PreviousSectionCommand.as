@@ -1,10 +1,12 @@
 package controller
 {
-	import ascb.util.ArrayUtilities;	
 	import model.CurrentInfoProxy;
 	import model.vo.ChapterVO;
 	import model.vo.CourseVO;
-	import model.vo.SectionVO;	
+	import model.vo.SectionVO;
+	
+	import mx.utils.ObjectUtil;
+	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 
@@ -19,7 +21,15 @@ package controller
 					
 			if(currSection!=null)
 			{
-				var index:int=ArrayUtilities.findMatchIndex(currChapter.sections,currSection);
+				//var index:int=ArrayUtilities.findMatchIndex(currChapter.sections,currSection);
+				var index:int=-1;
+				for(var i:int=0;i<currChapter.sections.length;i++)
+				{
+					if(ObjectUtil.compare(currChapter.sections[i],currSection,0)==0)
+					{
+						index=i; break;
+					}
+				}		
 				if(index!=-1)
 				{
 					if(index!=0)
@@ -46,7 +56,15 @@ package controller
 		
 		private function traversePrevChapter(currCourse:CourseVO,currChapter:ChapterVO,currInfo:CurrentInfoProxy):void
 		{
-			var i:int=ArrayUtilities.findMatchIndex(currCourse.chapters,currChapter);
+			//var i:int=ArrayUtilities.findMatchIndex(currCourse.chapters,currChapter);
+			var i:int=-1;
+			for(var k:int=0;k<currCourse.chapters.length;k++)
+			{
+				if(ObjectUtil.compare(currCourse.chapters[k],currChapter,0)==0)
+				{
+					i=k; break;
+				}
+			}	
 			if(i!=-1)
 			{
 				if(i!=0)

@@ -1,10 +1,14 @@
 package controller
 {
 	import model.CurrentInfoProxy;
-	import model.utils.XmlResource;	
-	import mx.controls.Tree;	
+	import model.utils.XmlResource;
+	
+	import mx.controls.Tree;
+	import mx.utils.ObjectUtil;
+	
 	import org.puremvc.as3.interfaces.INotification;
-	import org.puremvc.as3.patterns.command.SimpleCommand;	
+	import org.puremvc.as3.patterns.command.SimpleCommand;
+	
 	import view.ContentsMediator;
 	import view.CurrentPositionMediator;
 
@@ -23,13 +27,13 @@ package controller
 				currInfo.setCurrentSection(null);
 			}
 			else
-			{
-				if(treeContents.getParentItem(selectedItem).@name!=CurrentPositionMediator(facade.retrieveMediator(CurrentPositionMediator.NAME)).txtChapter.text)
+			{	
+				if(ObjectUtil.compare(XmlResource.parseChapter(treeContents.getParentItem(selectedItem)),currInfo.getCurrentChapter(),0)!=0)
 				{
 					sendNotification(ApplicationFacade.CHAPTER_CHANGE,treeContents.getParentItem(selectedItem).@name);
 					currInfo.setCurrentChapter(XmlResource.parseChapter(treeContents.getParentItem(selectedItem)));
 				}  
-				if(selectedItem.@name!=CurrentPositionMediator(facade.retrieveMediator(CurrentPositionMediator.NAME)).txtSection.text)
+				if(ObjectUtil.compare(XmlResource.parseSection(selectedItem),currInfo.getCurrentSection(),0)!=0)
 				{
 					sendNotification(ApplicationFacade.SECTION_CHANGE,selectedItem.@name);
 					currInfo.setCurrentSection(XmlResource.parseSection(selectedItem));
