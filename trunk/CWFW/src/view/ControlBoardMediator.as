@@ -20,6 +20,8 @@ package view
 		public static const NAME:String = "ControlBoardMediator";	
 		private var soundTrans:SoundTransform=SoundMixer.soundTransform;
 		private var mc:MovieClip;
+		private var stoped:Boolean;	
+		private var pressing:Boolean;
 		
 		public function ControlBoardMediator(viewComponent:Object)
 		{
@@ -36,8 +38,38 @@ package view
 			controlBoard.btnNextSection.addEventListener(MouseEvent.CLICK,nextSection);
 			controlBoard.btnPlayOrPause.addEventListener(MouseEvent.CLICK,playOrPause);	
 			controlBoard.btnColumnOpenOrClose.addEventListener(MouseEvent.CLICK,openOrClose);
-			controlBoard.sldCtrlColumn.addEventListener(SliderEvent.CHANGE,columeChange);	
+			controlBoard.sldCtrlColumn.addEventListener(SliderEvent.CHANGE,columeChange);
+			controlBoard.sldCtrlProgress.addEventListener(SliderEvent.CHANGE,progressChange);
+			controlBoard.sldCtrlProgress.addEventListener(SliderEvent.THUMB_PRESS,thumbPress);
+			controlBoard.sldCtrlProgress.addEventListener(SliderEvent.THUMB_RELEASE,thumbRelease);	
 		}		
+		
+		private function progressChange(evt:SliderEvent):void
+		{ 				
+			if(mc!=null)
+			{
+				if(stoped || pressing)
+				{
+					mc.gotoAndStop(evt.value);
+				}
+				else
+				{
+					mc.gotoAndPlay(evt.value);
+				}
+			}				
+		}
+		
+		private function thumbPress(evt:SliderEvent):void
+		{
+			mc.stop();
+			pressing=true;
+		}
+		
+		private function thumbRelease(evt:SliderEvent):void
+		{
+			if(!stoped)mc.play();
+			pressing=false;
+		}
 		
 		private function columeChange(evt:SliderEvent):void
 		{
@@ -50,7 +82,11 @@ package view
 		
 		private function stop(evt:MouseEvent):void
 		{
-			mc.gotoAndStop(1);
+			if(mc!=null)
+			{
+				mc.gotoAndStop(1);
+				stoped=true;
+			}
 			pauseState();
 		}
 		
@@ -69,12 +105,20 @@ package view
 			if(controlBoard.btnPlayOrPause.toolTip=="播放")
 			{
 				playState();
-				mc.play();
+				if(mc!=null && stoped)
+				{
+					mc.play();
+					stoped=false;
+				}
 			}
 			else
 			{
 				pauseState();
-				mc.stop();
+				if(mc!=null && !stoped)
+				{
+					mc.stop();
+					stoped=true;
+				}	
 			}
 		}
 		//音量关闭或打开
