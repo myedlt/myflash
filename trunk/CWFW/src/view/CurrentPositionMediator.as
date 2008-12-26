@@ -7,7 +7,7 @@ package view
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import view.component.CurrentPosition;
-
+	//页面"当前位置"/"面包屑'的"中介器"
 	public class CurrentPositionMediator extends Mediator implements IMediator
 	{
 		public static const NAME:String = "CurrentPositionMediator";	

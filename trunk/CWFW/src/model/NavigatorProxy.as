@@ -4,7 +4,7 @@ package model
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
-
+	//对导航数据模型代理
 	public class NavigatorProxy extends Proxy implements IProxy
 	{		
 		public static const NAME:String = "NavigatorProxy";

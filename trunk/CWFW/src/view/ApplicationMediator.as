@@ -5,7 +5,7 @@ package view
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
-
+	//主"中介器" 对页面各个子"中介器"进行初始化和出错处理
 	public class ApplicationMediator extends Mediator implements IMediator
 	{
 		public static const NAME:String = "ApplicationMediator";

@@ -18,12 +18,13 @@ package
 		public static const LOAD_SWF:String = "loadSWF";
 		public static const CHAPTER_CHANGE:String = "chapterChange";
 		public static const SECTION_CHANGE:String = "sectionChange";			
+		public static const SINGLE_CHAPTER:String="singleChapter";
 		
 		//mediator
 		public static const PREVIOUS_SECTION:String="previousSection";
 		public static const NEXT_SECTION:String="nextSection";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";
-		public static const SINGLE_CHAPTER:String="singleChapter";
+		
 		
 		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";		

@@ -5,7 +5,7 @@ package model
 	import model.vo.SectionVO;	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
-	
+	//保存课程的当前信息
 	public class CurrentInfoProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = "CurrentInfoProxy";				

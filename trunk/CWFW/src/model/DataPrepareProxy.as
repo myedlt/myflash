@@ -6,7 +6,7 @@ package model
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
-	
+	//数据初始化(加载xml数据文件),为facade注册代理.数据初始化完毕发送DATA_READY通知
 	public class DataPrepareProxy extends Proxy implements IProxy, IResponder
 	{
 		public static const NAME:String = "DataPrepareProxy";		
