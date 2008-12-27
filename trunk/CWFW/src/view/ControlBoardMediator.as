@@ -5,6 +5,7 @@ package view
 	import flash.events.MouseEvent;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
+	import flash.utils.setTimeout;
 	
 	import mx.controls.SWFLoader;
 	import mx.events.SliderEvent;
@@ -20,8 +21,8 @@ package view
 		public static const NAME:String = "ControlBoardMediator";	
 		private var soundTrans:SoundTransform=SoundMixer.soundTransform;
 		private var mc:MovieClip;
-		private var stoped:Boolean;	
-		private var pressing:Boolean;
+		private var stoped:Boolean;	//记录当前播放状态是否停止
+		private var pressing:Boolean;//进度条拖拽按钮是否按下
 		
 		public function ControlBoardMediator(viewComponent:Object)
 		{
@@ -92,12 +93,18 @@ package view
 		
 		private function prevSection(evt:MouseEvent):void
 		{
-			sendNotification(ApplicationFacade.PREVIOUS_SECTION);			
+			sendNotification(ApplicationFacade.PREVIOUS_SECTION);	
+			//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+			controlBoard.btnPrevSection.removeEventListener(MouseEvent.CLICK,prevSection);
+			setTimeout(function():void{controlBoard.btnPrevSection.addEventListener(MouseEvent.CLICK,prevSection);},200);			
 		}
 		
 		private function nextSection(evt:MouseEvent):void
 		{
-			sendNotification(ApplicationFacade.NEXT_SECTION);			
+			sendNotification(ApplicationFacade.NEXT_SECTION);
+			//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+			controlBoard.btnNextSection.removeEventListener(MouseEvent.CLICK,nextSection);
+			setTimeout(function():void{controlBoard.btnNextSection.addEventListener(MouseEvent.CLICK,nextSection);},200);	
 		}		
 		//播放或暂停
 		private function playOrPause(evt:MouseEvent):void
@@ -163,6 +170,7 @@ package view
 			if(controlBoard.btnPlayOrPause.toolTip=="播放")
 			{
 				playState();
+				stoped=false;
 			}			
 		}
 		
@@ -174,7 +182,15 @@ package view
 		
 		private function enterFrame(evt:Event):void
 		{
-			controlBoard.sldCtrlProgress.value=evt.target.currentFrame;
+			if(evt.target.currentFrame!=evt.target.totalFrames)
+			{
+				controlBoard.sldCtrlProgress.value=evt.target.currentFrame;
+			}
+			else
+			{
+				pauseState();
+				stoped=true;
+			}
 		}		
 		
 		private function openState():void
