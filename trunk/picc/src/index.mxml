@@ -240,6 +240,9 @@
 						readedCourseInfo=so.data.readedInfo;						
 					}
 				}
+				
+				btnNext.addEventListener(MouseEvent.CLICK,nextPage);
+				btnPreviouse.addEventListener(MouseEvent.CLICK,prePage);
 			}
 			
 			private function enterFrameHandler(evt:Event):void
@@ -261,8 +264,8 @@
 						else
 						{
 							stoped=true;
-						}
-						mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);//播放头进入新帧时调度。如果播放头不移动，或者只有一帧，则会继续以帧频调度此事件。								
+						}	
+						mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);//播放头进入新帧时调度。如果播放头不移动，或者只有一帧，则会继续以帧频调度此事件。													
 					}
 					else
 					{
@@ -276,7 +279,7 @@
 								break;											
 							}
 						}	
-					}																			
+					}																								
 				}
 				writeLog();	
 			}
@@ -346,7 +349,10 @@
 				if(mc!=null)
 				{
 					mc.stop();
-					mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
+					if(mc.hasEventListener(Event.ENTER_FRAME))
+					{
+						mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
+					}
 					mc=null;
 				}
 			}
@@ -407,7 +413,7 @@
 				{	
 					app.isContinue=true;				
 					app.currSectionNum=lsoInfo.currSectionNum-1;
-					app.currFrame=lsoInfo.currFrame;
+					app.currFrame=lsoInfo.currFrame;					
 					this.isContinue=false;					
 				}				
 				app.init();				
@@ -430,7 +436,7 @@
 				this.currSectionNum=app.currPage;
 				this.mc=app.mc;
 				mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
-				totalTime=formatProgressToolTip(mc.totalFrames);	
+				totalTime=formatProgressToolTip(mc.totalFrames);
 				//记录课程状态
 				if(stage.displayState==StageDisplayState.NORMAL)
 				{
@@ -503,7 +509,7 @@
 				}
 			}			
 			
-			private function prePage():void
+			private function prePage(evt:MouseEvent):void
 			{
 				if(gotoComb.dataProvider==menuItemArray2)
 				{					
@@ -527,10 +533,13 @@
 					{
 						Button(menuItemArray1[currSectionNum-2].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 					}
-				}				
+				}
+				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+				btnPreviouse.removeEventListener(MouseEvent.CLICK,prePage);
+				setTimeout(function():void{btnPreviouse.addEventListener(MouseEvent.CLICK,prePage);},200);				
 			}
 			
-			private function nextPage():void
+			private function nextPage(evt:MouseEvent):void
 			{				
 				if(gotoComb.dataProvider==menuItemArray2)
 				{				
@@ -559,7 +568,9 @@
 						tracingNext();//加入scorm 跟踪课程
 					}
 				}								
-								
+				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+				btnNext.removeEventListener(MouseEvent.CLICK,nextPage);
+				setTimeout(function():void{btnNext.addEventListener(MouseEvent.CLICK,nextPage);},200);					
 			}
 			
 			private function tracingNext():void
@@ -634,10 +645,10 @@
 				if(evt.detail==Alert.YES)
 				{
 					currentState="fullscreen";				
-					controlBar.visible=true;						
+					controlBar.visible=true;									
 					stage.displayState=StageDisplayState.FULL_SCREEN;
 					stage.addEventListener(FullScreenEvent.FULL_SCREEN,normalStateHandler);	
-					setTimeout(hideControlBarFun,3000);			
+					setTimeout(hideControlBarFun,3000);							
 				}
 			}
 			
@@ -781,18 +792,20 @@
 			{
 				if(this.currentState=="header")
 				{
-					mc.gotoAndStop(mc.totalFrames);	
-					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);				
+					mc.gotoAndStop(mc.totalFrames);									
 					btnBegin.visible=true;
 					btnGoOn.visible=true;
 					btnSkip.visible=false;
 				}
 				else
 				{
-					mc.stop();	
-					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);				
+					mc.stop();									
 					init();
-				}				
+				}	
+				if(mc.hasEventListener(Event.ENTER_FRAME))
+				{
+					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);
+				}			
 			}
 			
 			private function headerLoadComp():void
@@ -826,7 +839,10 @@
 			private function headLoaderUnload():void
 			{
 				mc.stop();
-				mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);
+				if(mc.hasEventListener(Event.ENTER_FRAME))
+				{
+					mc.removeEventListener(Event.ENTER_FRAME,headerEnterFrame);
+				}
 			}
 			private function beginStudy():void
 			{
@@ -916,17 +932,17 @@
 					<mx:SWFLoader id="mainLoader" init="multipageHandler(event)" complete="loadComplete(event)" unload="swfUnload()" scaleContent="true" autoLoad="false" x="133" y="99" height="389" width="652" horizontalAlign="center" verticalAlign="middle"/>
 					<mx:Button label="全屏显示" width="62" height="20" x="715" y="462.5" id="button5" click="fullscreen()" fontSize="12" fontWeight="normal"/>
 					
-					<mx:HSlider x="148" y="488" width="620" height="7" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="1" maximum="{mc.totalFrames}" value="{mc.currentFrame}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
-						change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10"/>
+					<mx:HSlider x="148" y="488" width="620" height="7" id="progressSlider" creationComplete="sliderComplete(event)" liveDragging="true" minimum="1" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
+						change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10" maximum="{mc.totalFrames}" value="{mc.currentFrame}"/>
 					<mx:Button x="153" y="506" width="22" id="button3" click="play()" styleName="playButton" toolTip="播放"/>
 					<mx:Button x="180" y="506" width="22" id="button2" click="pause()" styleName="pauseButton" toolTip="暂停"/>
 					<mx:Button x="207" y="506" width="22" id="button1" click="stop()" styleName="stopButton" toolTip="停止"/>
-						<mx:LinkButton x="269" y="507" label="前一页" id="btnPreviouse" click="prePage()" mouseOver="lbMouseOver1()" mouseOut="lbMouseOut1()" alpha="0.0" textDecoration="underline"/>
+						<mx:LinkButton x="269" y="507" label="前一页" id="btnPreviouse" mouseOver="lbMouseOver1()" mouseOut="lbMouseOut1()" alpha="0.0" textDecoration="underline"/>
 						<mx:Label x="326" y="509" text="当前页" id="label1"/>
 						<mx:Label x="365" y="510" text="{currSectionNum}" textAlign="center" id="label3"/>
 						<mx:Label x="389" y="509" text="总页数" id="label2"/>
 						<mx:Label x="430" y="510" text="{totalSectionNum}" textAlign="center" id="label4"/>
-						<mx:LinkButton x="450" y="507" label="后一页" id="btnNext" click="nextPage()" mouseOver="lbMouseOver2()" mouseOut="lbMouseOut2()" alpha="0.0" textDecoration="underline"/>
+						<mx:LinkButton x="450" y="507" label="后一页" id="btnNext" mouseOver="lbMouseOver2()" mouseOut="lbMouseOut2()" alpha="0.0" textDecoration="underline"/>
 						<mx:Label x="512" y="509" text="直接跳转到" id="label5"/>
 						<mx:ComboBox x="580" y="507.5" width="49" id="gotoComb" change="gotoPage(event)" labelField="count" fontSize="10" cornerRadius="3"/>
 						<mx:Label x="632" y="509" text="页" textAlign="center" id="label6"/>
@@ -987,9 +1003,9 @@
 			<mx:AddChild relativeTo="{mainCanvas}" position="lastChild">				
 				<mx:Canvas id="controlBar" height="50" bottom="0" backgroundColor="#352E2E" rollOut="hideControlBar()" color="#ffffff" left="0" right="0" backgroundAlpha="0.8">
 					<mx:Canvas horizontalCenter="0" verticalCenter="0" width="897">
-						<mx:HSlider y="4" id="fsProgressBar" allowTrackClick="true" minimum="1" maximum="{mc.totalFrames}" snapInterval="1" liveDragging="true" width="668" x="162"
+						<mx:HSlider y="4" id="fsProgressBar" allowTrackClick="true" minimum="1" snapInterval="1" liveDragging="true" width="668" x="162"
 							creationComplete="sliderComplete(event)" dataTipFormatFunction="formatProgressToolTip" change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;"
-							buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10" value="{mc.currentFrame}"/>
+							buttonMode="true" useHandCursor="true" styleName="progressSlider" showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10" maximum="{mc.totalFrames}" value="{mc.currentFrame}"/>
 						<mx:Button y="8" width="22" x="5" toolTip="播放" click="play()" styleName="playButton"/>
 						<mx:Label text="{currentTime}" x="94" y="10"/>
 						<mx:Label text="{totalTime}" x="135" y="10"/>
