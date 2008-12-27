@@ -108,7 +108,10 @@
 					}
 					mainLoader.source=xml.Index.@header;
 					videoLoader.source=xml.Index.@video;	
-					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏						
+					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏	
+					
+					btnNext.addEventListener(MouseEvent.CLICK,nextPage);
+					btnPrev.addEventListener(MouseEvent.CLICK,prePage);					
 			}
 			private function faultHandler(evt:FaultEvent):void
 			{
@@ -116,12 +119,13 @@
 			}
 			private function enterFrameHandler(evt:Event):void
 			{
-				progressBar.value=mc.currentFrame;
-				currentTime=formatProgressToolTip(mc.currentFrame);
+				progressBar.value=evt.target.currentFrame;
+				currentTime=formatProgressToolTip(evt.target.currentFrame);
 				//一节课程播放完毕后自动播放下一节
-				if(mc.currentFrame==mc.totalFrames)
+				if(evt.target.currentFrame==evt.target.totalFrames)
 				{
-					nextPage();
+					btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+					evt.target.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
 				} 				
 			}	
 			private function setLinkBarData():void
@@ -281,7 +285,7 @@
   					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏	
   				} 										
   			}
-  			private function prePage():void
+  			private function prePage(evt:MouseEvent):void
   			{
   				if(currIndex!=0)
   				{
@@ -289,15 +293,21 @@
   					currentPage=currIndex+1;
   					mainLoader.source=currCourseArr[currIndex].@path;
   				}
+  				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+				btnPrev.removeEventListener(MouseEvent.CLICK,prePage);
+				setTimeout(function():void{btnPrev.addEventListener(MouseEvent.CLICK,prePage);},200);
   			}
-  			private function nextPage():void
+  			private function nextPage(evt:MouseEvent):void
   			{
   				if(currIndex!=currCourseArr.length-1)
   				{
   					currIndex=currIndex+1;
   					currentPage=currIndex+1;
   					mainLoader.source=currCourseArr[currIndex].@path;
-  				}  				
+  				}  
+  				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+				btnNext.removeEventListener(MouseEvent.CLICK,nextPage);
+				setTimeout(function():void{btnNext.addEventListener(MouseEvent.CLICK,nextPage);},200);					
   			}
   			private function swfLoadComplete(evt:Event):void
   			{
@@ -306,7 +316,8 @@
   					mc=MovieClip(evt.target.content);
   					mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
   					stoped=false;
-  					totalTime=formatProgressToolTip(mc.totalFrames);  					
+  					totalTime=formatProgressToolTip(mc.totalFrames);  	
+  					progressBar.maximum=mc.totalFrames;				
   				}
   				catch(e:Error)
   				{
@@ -321,7 +332,11 @@
   			private function swfUnload():void
 			{
 				if(mc!=null)
-				{
+				{					
+					if(mc.hasEventListener(Event.ENTER_FRAME))
+					{
+						mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
+					}
 					mc.stop();					
 					mc=null;
 				}
@@ -331,13 +346,13 @@
 	<mx:HTTPService id="content" url="content.xml" result="resultHandler(event)" fault="faultHandler(event)" resultFormat="xml"/>
 	<mx:Canvas width="800" height="550" horizontalCenter="0" verticalCenter="0" backgroundImage="@Embed(source='image/bg.png')">
 		<mx:SWFLoader x="0" y="85" id="mainLoader" width="800" height="392" complete="swfLoadComplete(event)" unload="swfUnload()" horizontalAlign="center" verticalAlign="middle"/>
-		<mx:HSlider id="progressBar" x="40" y="480" width="720" height="11" liveDragging="true" minimum="1" maximum="{mc.totalFrames}" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
+		<mx:HSlider id="progressBar" x="40" y="480" width="720" height="11" liveDragging="true" minimum="1" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
 			change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressBar" 
 			showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10"/>
 		<mx:Button x="176" y="506" width="34" height="19" styleName="playButton" click="play()"/>
 		<mx:Button x="224" y="506" width="34" height="19" styleName="pauseButton" click="pause()"/>
-		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton" click="prePage()"/>
-		<mx:Button x="484" y="506" width="47" height="19" styleName="nextButton" click="nextPage()"/>
+		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton" id="btnPrev"/>
+		<mx:Button x="484" y="506" width="47" height="19" styleName="nextButton" id="btnNext"/>
 		<mx:Button id="btnSound" x="613" y="507" buttonMode="true" toolTip="关闭" downSkin="{snd_btn_onSkin}" overSkin="{snd_btn_onSkin}" upSkin="{snd_btn_onSkin}" click="columeControlHandler()" width="24" height="24"/>
 		<mx:Label x="60" y="507" text="{currentTime}"/>
 		<mx:Label x="119" y="507" text="{totalTime}"/>
