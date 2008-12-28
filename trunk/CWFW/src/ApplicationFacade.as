@@ -25,7 +25,13 @@ package
 		public static const NEXT_SECTION:String="nextSection";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";
 		public static const SWF_LOAD_COMPLETE:String="swfLoadComplete";
-		public static const SWF_UNLOAD:String="swfUnload";		
+		public static const SWF_UNLOAD:String="swfUnload";
+		public static const ENTER_FRAME:String="enterFrame";
+		public static const GOTO_AND_PLAY:String="gotoAndPlay";
+		public static const GOTO_AND_STOP:String="gotoAndStop";	
+		public static const PLAY:String="play";	
+		public static const PAUSE:String="pause";	
+		public static const STOP:String="stop";		
 		
 		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";		
