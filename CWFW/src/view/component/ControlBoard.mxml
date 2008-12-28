@@ -1,12 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="560" height="73">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="560" height="73" creationComplete="init()">
 	<mx:HSlider id="sldCtrlProgress" width="538" horizontalCenter="0" y="10" liveDragging="true" buttonMode="true" 
-		showTrackHighlight="true" slideDuration="10" snapInterval="1"/>
-	<mx:HSlider x="477" y="41" id="sldCtrlColumn" width="70" maximum="1" minimum="0" value="0.6" liveDragging="true"/>
-	<mx:Button x="10" y="41" id="btnPlayOrPause"/>
+		showTrackHighlight="true" slideDuration="10" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"/>
+	<mx:HSlider x="477" y="35" id="sldCtrlColumn" width="70" maximum="1" minimum="0" value="0.6" liveDragging="true"
+		dataTipFormatFunction="formatColumeToolTip" change="columeChange(event)"/>
+	<mx:Button x="10" y="41" id="btnPlayOrPause" click="playOrPause()"/>
 	<mx:Button x="58" y="41" toolTip="停止" id="btnStop"/>
-	<mx:Button x="428" y="36" id="btnColumnOpenOrClose"/>
+	<mx:Button x="428" y="36" id="btnColumnOpenOrClose" click="openOrClose()"/>
 	<mx:Button x="173" y="41" id="btnNextSection"/>
 	<mx:Button x="125" y="41" id="btnPrevSection"/>
-	
+	<mx:Script>
+		<![CDATA[
+			import flash.media.SoundMixer;
+			import flash.media.SoundTransform;
+			import mx.events.SliderEvent;
+			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
+			
+			private function init():void
+			{
+				pauseState();//播放开关处于暂停状态
+				openState();//音量开关处于打开状态
+			}
+			//播放或暂停
+			private function playOrPause():void
+			{
+				if(btnPlayOrPause.toolTip=="播放")
+				{
+					playState();
+					btnPlayOrPause.dispatchEvent(new MouseEvent("play"));
+				}
+				else
+				{
+					pauseState();
+					btnPlayOrPause.dispatchEvent(new MouseEvent("pause"));	
+				}
+			}
+			//音量关闭或打开
+			private function openOrClose():void
+			{
+				if(btnColumnOpenOrClose.toolTip=="关闭")
+				{
+					closeState();
+					soundTrans.volume=0;
+					SoundMixer.soundTransform=soundTrans;
+				}
+				else
+				{
+					openState();
+					soundTrans.volume=sldCtrlColumn.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}			
+			
+			private function columeChange(evt:SliderEvent):void
+			{
+				if(btnColumnOpenOrClose.toolTip=="关闭")
+				{
+					soundTrans.volume=evt.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}
+			
+			public function playState():void
+			{
+				btnPlayOrPause.toolTip="暂停";
+			}
+			
+			public function pauseState():void
+			{
+				btnPlayOrPause.toolTip="播放";
+			}
+			
+			private function openState():void
+			{
+				btnColumnOpenOrClose.toolTip="关闭";
+			}
+			
+			private function closeState():void
+			{
+				btnColumnOpenOrClose.toolTip="打开";
+			}
+			//进度条 播放时间提示格式化
+			private function formatProgressToolTip(value:int):String
+	    	{
+	    		value=Math.ceil(value / 12);  //flash 12frames/s  			
+	    		var result:String = (value % 60).toString();
+	      	    if (result.length == 1)
+	      	    {
+	         		result = Math.floor(value / 60).toString() + ":0" + result;
+	       	 	}
+	      		else
+			  	{
+	       	    	result = Math.floor(value / 60).toString() + ":" + result;
+	       	  	}      			      			 
+	      	    return result;
+	  		} 
+	  		//音量控制条 音量大小提示格式化	
+	  		private function formatColumeToolTip(value:Number):String
+	  		{
+	  			var temp:String=value.toString();
+	  			if(temp.length==1)
+	  			{
+	  				return temp+".0";
+	  			}
+	  			else
+	  			{
+	  				return temp.substr(0,3);
+	  			}
+	  		}
+		]]>
+	</mx:Script>
 </mx:Canvas>
