@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Content>	
-	<!-- 页面头部导航区 -->	
+	<!--页面头部导航区 
+		"label"属性是按钮在页面的显示名称,"url"是点击按钮后跳转的页面路径;
+		"退出"按钮的显示名如果不叫"退出",那么其位置一定要位于最后即Navigator标签的最后一个元素;
+	-->	
 	<Navigator>		
 		<button label="帮助" url="navigator/help/index.html"/>	
 		<button label="退出" url="javascript:window.close();"/>		
-	</Navigator>
-	<!-- 课程列表 -->
+	</Navigator>	
+	<!--课程列表	
+		CourseList标签下可有多个Course(课程)；
+		Course标签下有0或1个Lecture(讲师)和多个Chapter（章）；Course标签的属性有：name、title、startSWF（开篇动画）、endSWF（结束动画）。
+		Chapter标签下有1个或多个Section（节）；Chapter标签的属性有：name（必填）、title、path(章介绍动画或单章动画[没有子节点的章]路径)、type（"flash"/"flex"默认为"flash"）、xml(type为"flex"[模板]时对应的xml文件)。
+		Section标签的属性有:name（必填）、title、path(必填)、type（"flash"/"flex"默认为"flash"）、xml(type为"flex"[模板]时对应的xml文件)。
+		Lecture标签没有属性,只有子节点:name、sex、age、position、introduction。其值以标签对形式出现，如：<name>讲师名</name>
+	-->
 	<CourseList>
 		<Course name="金融危机">
 			<Lecture>

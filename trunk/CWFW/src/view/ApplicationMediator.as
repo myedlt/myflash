@@ -15,7 +15,7 @@ package view
 			super( NAME, viewComponent );
 			facade.registerMediator( new ContentsMediator( app.contents ) );
 			facade.registerMediator( new ControlBoardMediator( app.controlBoard ) );
-			facade.registerMediator( new FlashPlayerMediator( app.flashPlayer ) );
+			facade.registerMediator( new SwfPlayerMediator( app.swfPlayer ) );
 			facade.registerMediator( new CurrentPositionMediator( app.currentPosition ) );
 			facade.registerMediator( new NavigatorMediator( app.navigator ) );
 		}

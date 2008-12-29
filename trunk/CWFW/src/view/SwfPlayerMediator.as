@@ -9,12 +9,12 @@ package view
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;	
 
-	public class FlashPlayerMediator extends Mediator implements IMediator
+	public class SwfPlayerMediator extends Mediator implements IMediator
 	{
 		public static const NAME:String = "FlashPlayerMediator";		
 		private var mc:MovieClip;
 		
-		public function FlashPlayerMediator(viewComponent:Object)
+		public function SwfPlayerMediator(viewComponent:Object)
 		{
 			super(mediatorName, viewComponent);
 			player.addEventListener(Event.COMPLETE,loadComplete);
