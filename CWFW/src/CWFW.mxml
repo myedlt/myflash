@@ -9,7 +9,7 @@
 	
 	<mx:Canvas  width="779" height="600" horizontalCenter="0" verticalCenter="0">
 		<view:Contents id="contents" x="6" y="89" width="203" height="405"/>
-		<view:FlashPlayer id="flashPlayer" x="213" y="89" width="560" height="405"/>
+		<view:SwfPlayer id="swfPlayer" x="213" y="89" width="560" height="405"/>
 		<view:Navigator id="navigator" top="2" right="5"/>
 		<view:CurrentPosition id="currentPosition" x="213" y="53" height="34" width="560" horizontalGap="4"/>
 		<view:ControlBoard id="controlBoard" x="213" y="497" height="73" width="560"/>
