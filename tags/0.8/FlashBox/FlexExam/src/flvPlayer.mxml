@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical">
+    <mx:Script>
+    <![CDATA[ 
+    
+    /** Cato Paus Skrede
+        UmbrellaCorp DA **/
+    
+    [Bindable]
+    private var movie:String;
+    
+    private function setSource():void{
+        //movie = "http://stage.orchestra.it/x.flv"; // some dud dancing 16 min sample.
+        movie = "http://58.211.2.168/v2blog/2007/03/31/1175351546716-converted.flv";
+    
+        // the url of the FLV ver. 1.1 do contains the metaData for totalTime FLV ver 1.0 do's NOT.
+        /* if you type the url into VideoDisplay.source and use autoplay it starts to play in design mode
+           that's realy annoying.*/
+    }
+
+    private function formatPositionToolTip(value:int):String{
+        
+        //  do only handle minuts.
+        
+        var result:String = (value % 60).toString();
+        if (result.length == 1){
+            result = Math.floor(value / 60).toString() + ":0" + result;
+        } else {
+            result = Math.floor(value / 60).toString() + ":" + result;
+        }
+        return result;
+    }
+
+    
+
+  ]]> 
+  </mx:Script>
+<mx:Panel layout="absolute" width="400" height="400" headerHeight="0" cornerRadius="2" borderStyle="solid" borderThickness="0" borderThicknessBottom="0" borderThicknessLeft="0" borderThicknessRight="0" borderThicknessTop="0" backgroundColor="#000000">
+  <mx:VideoDisplay id="videoDisplay" source="{movie}" width="380" height="310" left="10" top="10" /> 
+  <mx:ProgressBar id="loadProgress" label="" mode="event" barColor="#00ff00" minimum="0" maximum="100" y="336" height="20" source="{videoDisplay}" trackHeight="10" trackColors="[#00ff00, #e6eeee]" left="10" right="10" /> 
+  <mx:HSlider id="position" height="5" dataTipFormatFunction="formatPositionToolTip" thumbPress="videoDisplay.pause()" slideDuration="0" thumbRelease="videoDisplay.play()" change="videoDisplay.playheadTime = position.value" value="{videoDisplay.playheadTime}" minimum="0" maximum="{videoDisplay.totalTime}" left="4" right="4" bottom="62" /> 
+  <mx:Button label="Play" click="videoDisplay.play();" cornerRadius="0" bottom="10" x="10" /> 
+  <mx:Button label="Pause" click="videoDisplay.pause();" cornerRadius="0" bottom="10" left="69" /> 
+  <mx:Button label="Stop" click="videoDisplay.stop();" cornerRadius="0" left="138" bottom="10" /> 
+  <mx:HSlider id="volume" snapInterval="0.01" value="0.5" maximum="1.0" change="videoDisplay.volume = volume.value;" liveDragging="true" height="20" left="236" bottom="20" width="154" /> 
+  <mx:Label styleName="playheadTimeLabel" text="{formatPositionToolTip(videoDisplay.playheadTime)} - {formatPositionToolTip(videoDisplay.totalTime)}" color="#ffffff" left="5" top="0" /> 
+  </mx:Panel>
+  <mx:Button click="setSource()" label="Get FLV" /> 
+</mx:Application>

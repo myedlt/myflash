@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical">
+    <mx:Script>
+    <![CDATA[    
+    import flash.display.MovieClip;
+    import mx.controls.Alert;	
+    
+    private var mc:MovieClip;  
+   
+    private function loadComplete():void
+    {
+    	mc=MovieClip(swfLoader.content);
+    }    
+    private function pause():void
+    {
+    	mc.stop();
+    }
+    private function play():void
+    {
+    	mc.play();
+    }
+    private function goto(currentFrame:int):void
+    {
+    	mc.gotoAndPlay(currentFrame);
+    }   
+    
+    /** Cato Paus Skrede
+        UmbrellaCorp DA **/  
+    private function formatPositionToolTip(value:int):String
+    {//  do only handle minuts.
+        var result:String = (value % 60).toString();
+        if (result.length == 1)
+        {
+            result = Math.floor(value / 60).toString() + ":0" + result;
+        }
+        else
+		{
+            result = Math.floor(value / 60).toString() + ":" + result;
+        }
+        return result;
+    }    
+
+  ]]> 
+  </mx:Script>
+	<mx:Panel layout="absolute" width="400" height="400" headerHeight="0" cornerRadius="2" borderStyle="solid" borderThickness="0" borderThicknessBottom="0" borderThicknessLeft="0" borderThicknessRight="0" borderThicknessTop="0" backgroundColor="#000000">
+ 		 <mx:SWFLoader id="swfLoader" source="course/c01.swf" width="380" height="310" left="10" top="10" autoLoad="true" creationComplete="loadComplete()"/> 
+ 		 <mx:ProgressBar id="loadProgress" label="" mode="event" barColor="#00ff00" minimum="0" maximum="100" y="336" height="20" source="{swfLoader}" trackHeight="10" trackColors="[#00ff00, #e6eeee]" left="10" right="10" /> 
+ 		 <mx:HSlider id="position" height="5" dataTipFormatFunction="formatPositionToolTip" thumbPress="" slideDuration="0" thumbRelease="" change="" value="{swfLoader.bytesLoaded}" minimum="0" maximum="{swfLoader.bytesTotal}" left="4" right="4" bottom="62" /> 
+ 		 <mx:Button label="RePlay" click="goto(0)" cornerRadius="0" bottom="10" x="10" /> 
+ 		 <mx:Button label="Play" click="play()" cornerRadius="0" bottom="10" x="100" />
+  		 <mx:Button label="Pause" click="pause()" cornerRadius="0" bottom="10" left="169.5" />  		
+ 		 <mx:HSlider id="volume" snapInterval="0.01" value="0.5" maximum="1.0" change="" liveDragging="true" height="20" left="243" bottom="16" width="147" /> 
+  </mx:Panel>  
+</mx:Application>

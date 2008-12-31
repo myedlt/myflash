@@ -1,0 +1,20 @@
+/* CSS file */
+
+.MyButton
+{
+	disabledSkin: Embed(source="flex.swf", symbol="Button_disabledSkin");
+	downSkin: Embed(source="flex.swf", symbol="Button_downSkin");
+	overSkin: Embed(source="flex.swf", symbol="Button_overSkin");
+	upSkin: Embed(source="flex.swf", symbol="Button_upSkin");	
+}
+
+Slider
+{
+	thumbDisabledSkin: Embed(source="flex.swf", symbol="Slider_thumbSkin");
+	thumbDownSkin: Embed(source="flex.swf", symbol="Slider_thumbSkin");
+	thumbOverSkin: Embed(source="flex.swf", symbol="Slider_thumbSkin");
+	thumbUpSkin: Embed(source="flex.swf", symbol="Slider_thumbSkin");
+	trackHighlightSkin: Embed(source="flex.swf", symbol="Slider_trackHighlightSkin");
+	trackSkin: Embed(source="flex.swf", symbol="Slider_trackSkin");
+	thumbOffset: 8;
+}

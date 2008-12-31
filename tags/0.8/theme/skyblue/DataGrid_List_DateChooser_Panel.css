@@ -1,0 +1,41 @@
+DataGrid
+{
+	headerColors: #F7FAFC, #D6DEEA;
+	borderColor: #9EB6CE;
+	alternatingItemColors: #FFFFFF, #EAF2FB;
+	selectionColor: #FBA33C;
+	rollOverColor: #FFD75A;
+	leading: 2;
+	textRollOverColor: #000000;
+	textSelectedColor: #FFFFFF;
+	verticalGridLines: true;
+	horizontalGridLines: false;
+}
+List
+{
+	rollOverColor: #FFD75A;
+	selectionColor: #FBA33C;
+	borderColor: #9EB6CE;
+	textRollOverColor: #000000;
+	textSelectedColor: #FFFFFF;
+}
+DateChooser
+{
+	borderColor: #9EB6CE;
+	headerColors: #D6DEEA, #F7FAFC;
+}
+Panel { 
+	backgroundAlpha: 1;
+	highlightAlphas: 0.4, 0.25;
+	headerColors: #E6EBF7, #ABC8E7;
+	footerColors: #E6EBF7, #ABC8E7;
+	borderColor: #ABC8E7;
+	borderAlpha: 1;
+	borderThicknessRight: 3;
+	borderThicknessLeft: 3;
+	borderThicknessTop: 1;
+	borderThicknessBottom: 3;
+	shadowDistance: 1;
+	cornerRadius: 4;
+	backgroundColor: #FFFFFF;
+}

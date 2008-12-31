@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="index.mxml" version="3">
+<compiler additionalCompilerArguments="-locale en_US -keep-generated-actionscript" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="D:/xampp/htdocs/flex" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compilerSourcePath/>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path=""/>
+<libraryPathEntry kind="1" linkType="1" path="libs"/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="indexXP.mxml"/>
+<application path="introduce.mxml"/>
+<application path="MyModule.mxml"/>
+<application path="SkinDemoApp.mxml"/>
+<application path="indexST.mxml"/>
+<application path="sandbox.mxml"/>
+<application path="styleManager.mxml"/>
+<application path="index.mxml"/>
+</applications>
+<modules>
+<module destPath="MyModule.swf" optimize="false" sourcePath="src/MyModule.mxml"/>
+</modules>
+<buildCSSFiles>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/main.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-darkroom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/skin-main.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinDarkroom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Main/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Windows/winskin.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/OSX/OSX.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/edlt/SkinEDLT.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/DarkRoom/SkinDarkRoom.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/SkinMain.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/Yahoo/SkinYahoo.css"/>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/flex/SkinFlex.css"/>
+</buildCSSFiles>
+</actionScriptProperties>

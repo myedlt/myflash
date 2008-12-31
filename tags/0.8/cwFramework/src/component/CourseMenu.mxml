@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="215" height="489" title="课程目录" showCloseButton="true" cornerRadius="8" fontSize="12" close="close()" backgroundAlpha="1.0" headerHeight="25" borderThicknessLeft="5" borderThicknessRight="5" borderThicknessTop="0" borderThicknessBottom="5">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			private function close():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>	
+</mx:TitleWindow>

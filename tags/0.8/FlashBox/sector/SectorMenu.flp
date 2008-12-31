@@ -1,0 +1,23 @@
+﻿<flash_project name="SectorMenu" version="1">
+    <project_folder name="com" expanded="false">
+        <project_folder name="kingnare" expanded="false">
+            <project_folder name="containers" expanded="false">
+                <project_file path="./com/kingnare/containers/SectorCreator.as" filetype="as" />
+                <project_file path="./com/kingnare/containers/SectorMenu.as" filetype="as" />
+            </project_folder>
+            <project_folder name="events" expanded="false">
+                <project_file path="./com/kingnare/events/FlashDynamicEvent.as" filetype="as" />
+            </project_folder>
+            <project_folder name="utils" expanded="false">
+                <project_file path="./com/kingnare/utils/Filters.as" filetype="as" />
+            </project_folder>
+        </project_folder>
+        <project_folder name="hires" expanded="false">
+            <project_folder name="utils" expanded="false">
+                <project_file path="./com/hires/utils/Stats.as" filetype="as" />
+            </project_folder>
+        </project_folder>
+    </project_folder>
+    <project_file path="./PieMenu.fla" filetype="fla" profile="" />
+    <project_file path="./PieMenu.as" filetype="as" />
+</flash_project>

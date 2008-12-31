@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="containers.boxes.*">
+
+	<ns1:MyComboBox x="43.85" y="64.15" isOk="flase">
+		
+	</ns1:MyComboBox>
+	<mx:Button x="416" y="248" label="Button"/>
+	
+</mx:Application>

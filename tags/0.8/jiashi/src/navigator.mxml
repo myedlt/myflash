@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	initialize="http.send()" width="183" height="436" cornerRadius="2" borderStyle="none" alpha="0.7" name="navigatorContainer">
+
+	<mx:Script>
+		<![CDATA[
+		
+			import mx.rpc.events.ResultEvent;
+			//import mx.controls.Alert;						
+			
+			[Bindable]
+			public var treeData:XMLList;
+			[Bindable]
+			public var introduce:XMLList;
+			[Bindable]
+			public var courseItem:XMLList;
+			
+			private function resultHandler(event:ResultEvent):void
+			{				
+				introduce=XMLList(XML(event.result).Introduce);
+				treeData=XMLList(XML(event.result).CourseList.Chapter);							
+			}			                 
+            
+            public function treeChanged(event:Event):void 
+            {             
+                courseItem=XMLList(Tree(event.target).selectedItem);
+				var path:String = courseItem.@path;
+				Application.application.mainSwfLoader.load(path);
+            }
+            
+            public function close():void 
+            {   
+            	this.visible = false;      
+            }
+		]]>
+	</mx:Script>		
+	<mx:HTTPService id="http" url="content.xml" result="resultHandler(event)" resultFormat="xml"/>
+	<mx:Tree id="contentTree" width="161" height="397" labelField="@name" dataProvider="{treeData}" change="treeChanged(event)" x="10" y="29"/>
+	<mx:Button x="126" y="5" label="关闭" width="47" click="close()" id="buttonClose" name="buttonClose"/>
+	<mx:Label x="10" y="7" text="课程目录" width="63" id="contentTitle"/>
+</mx:Application>

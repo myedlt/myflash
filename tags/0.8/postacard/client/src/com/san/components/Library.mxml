@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="com.san.components.*"
+	xmlns:lc="com.san.components.library_classes.*"
+	xmlns:movable="com.san.components.movable.*" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	width="200" height="300" 
+	clipContent="true"
+>
+		
+	<mx:Script>
+		<![CDATA[
+			import com.san.forms.SearchFlickrForm;
+			import mx.core.UIComponent;
+			import com.san.components.movable.MovableText;
+			import com.san.components.library_classes.DragDataTypes;
+			import com.san.components.movable.MovableStar;
+			import com.san.components.movable.MovableRectangle;
+			import com.san.components.movable.MovableElipse;
+			import com.san.components.movable.MovableShape;
+			import com.san.components.library_classes.PhotoRenderer;
+			import com.san.components.library_classes.PhotoRenderer;
+			import com.san.managers.LibraryManager;
+			import mx.managers.DragManager;
+			import mx.core.DragSource;
+			
+			
+			
+			
+			
+			private function beginBaseDrag( event:MouseEvent ):void
+			{
+				var dragInitiator:PhotoRenderer = event.currentTarget as PhotoRenderer;
+				
+				var dragSource:DragSource = new DragSource();				
+					dragSource.addData( dragInitiator.data, DragDataTypes.BACKGROUND );
+				
+				var dragProxy:PhotoRenderer = new PhotoRenderer();
+					dragProxy.data = dragInitiator.data;
+				
+				var p:Point = dragInitiator.globalToLocal( new Point( event.stageX, event.stageY ) );
+
+				var diW:Number = dragInitiator.width;
+				var diH:Number = dragInitiator.height;				
+				var offsetX:Number = ( p.x - ( diW/2 ) )*-1;
+				var offsetY:Number = ( p.y - ( diH/2 ) )*-1;
+				
+				DragManager.doDrag( dragInitiator, dragSource, event, dragProxy, offsetX, offsetY );
+			}
+			
+			
+			private function beginPhotoDrag( event:MouseEvent ):void
+			{
+				var dragInitiator:PhotoRenderer = event.currentTarget as PhotoRenderer;
+				
+				var dragSource:DragSource = new DragSource();				
+					dragSource.addData( dragInitiator.data, DragDataTypes.PHOTO );
+				
+				var dragProxy:PhotoRenderer = new PhotoRenderer();
+					dragProxy.data = dragInitiator.data;
+				
+				var p:Point = dragInitiator.globalToLocal( new Point( event.stageX, event.stageY ) );
+
+				var diW:Number = dragInitiator.width;
+				var diH:Number = dragInitiator.height;				
+				var offsetX:Number = ( p.x - ( diW/2 ) )*-1;
+				var offsetY:Number = ( p.y - ( diH/2 ) )*-1;
+				
+				DragManager.doDrag( dragInitiator, dragSource, event, dragProxy, offsetX, offsetY );
+			}
+			
+			
+			private function beginStickerDrag( event:MouseEvent, shape:String ):void
+			{
+				var dragInitiator:UIComponent = event.currentTarget as UIComponent;
+				
+				var dragSource:DragSource = new DragSource();				
+				dragSource.addData( shape, DragDataTypes.STICKER );
+				
+				var dragProxy:UIComponent;
+				
+				switch( shape )
+				{
+					case MovableElipse.MOVABLE_ELIPSE:
+						dragProxy = new MovableElipse();
+						break;
+					case MovableRectangle.MOVABLE_RECTANGLE:
+						dragProxy = new MovableRectangle();
+						break;
+					case MovableStar.MOVABLE_STAR:
+						dragProxy = new MovableStar();
+						break;
+					case MovableText.MOVABLE_TEXT:
+						dragProxy = new MovableText();
+						break;
+				}
+				
+				dragProxy.width = dragInitiator.width;
+				dragProxy.height = dragInitiator.height;
+				
+				var p:Point = dragInitiator.globalToLocal( new Point( event.stageX, event.stageY ) );
+
+				var diW:Number = dragInitiator.width;
+				var diH:Number = dragInitiator.height;
+				
+				var offsetX:Number = ( p.x - ( diW/2 ) )*-1;
+				var offsetY:Number = ( p.y - ( diH/2 ) )*-1;
+				
+				DragManager.doDrag( dragInitiator, dragSource, event, dragProxy, offsetX, offsetY );
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	<degrafa:Surface>
+		<degrafa:GeometryGroup>
+			<degrafa:strokes>
+				<degrafa:SolidStroke id="bgStroke" color="#9B9B9B" weight="2" />
+			</degrafa:strokes>
+			<degrafa:fills>
+				<degrafa:LinearGradientFill id="bgFill" angle="90" >
+					<degrafa:GradientStop color="#D0D0D0" ratio="0" />
+					<degrafa:GradientStop color="#D0D0D0" ratio="1" />
+				</degrafa:LinearGradientFill>
+			</degrafa:fills>
+			
+			
+			<degrafa:RoundedRectangleComplex width="{width}" height="{height}" bottomRightRadius="10" fill="{bgFill}" stroke="{bgStroke}"/>
+			
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+	
+	
+	
+	
+	
+	<mx:Accordion left="10" right="10" top="10" bottom="10" >
+		
+		<mx:Canvas label="Base" width="100%" height="100%" horizontalScrollPolicy="off" icon="@Embed(source='../../../icons/photo.png')">
+			
+			<mx:VBox width="100%" height="100%" horizontalAlign="center" paddingTop="15" verticalGap="15" horizontalScrollPolicy="off" >
+			
+				<mx:Button label="Search Flickr" width="130" height="35" toolTip="find more photos by searching Flickr" click="{SearchFlickrForm.show()}"  icon="@Embed(source='../../../icons/ni0104-24.png')"/>
+				
+				<mx:Repeater id="baseRepeater" dataProvider="{LibraryManager.manager.photos}">
+					<lc:PhotoRenderer data="{baseRepeater.currentItem}" mouseMove="beginBaseDrag(event)" highlightMO="true" />
+				</mx:Repeater>
+			</mx:VBox>			
+		</mx:Canvas>
+		
+		
+		<mx:Canvas label="Stickers" width="100%" height="100%" horizontalScrollPolicy="off" icon="@Embed(source='../../../icons/shape_handles.png')">
+
+			<mx:VBox width="100%" height="100%" horizontalAlign="center" paddingTop="30" verticalGap="25" horizontalScrollPolicy="off" >
+				<movable:MovableText width="75" height="75" mouseMove="{beginStickerDrag(event,MovableText.MOVABLE_TEXT)}" toolTip="text" borderColor="#D0D0D0" borderStyle="solid" borderThickness="1" />
+
+				<movable:MovableElipse width="75" height="75" mouseMove="{beginStickerDrag(event,MovableElipse.MOVABLE_ELIPSE)}" toolTip="elipse" />
+						
+				<movable:MovableRectangle width="75" height="75" mouseMove="{beginStickerDrag(event,MovableRectangle.MOVABLE_RECTANGLE)}" toolTip="rectangle" />
+	
+				<movable:MovableStar width="75" height="75" mouseMove="{beginStickerDrag(event,MovableStar.MOVABLE_STAR)}" toolTip="star" />
+				
+			</mx:VBox>	
+		</mx:Canvas>
+		
+		
+		<mx:Canvas label="Photos" width="100%" height="100%" horizontalScrollPolicy="off" icon="@Embed(source='../../../icons/picture.png')">
+		
+			<mx:VBox width="100%" height="100%" horizontalAlign="center" paddingTop="15" verticalGap="15" horizontalScrollPolicy="off" >
+				
+				<mx:Button label="Search Flickr" toolTip="find more photos by searching Flickr" width="130" height="35" click="{SearchFlickrForm.show()}"  icon="@Embed(source='../../../icons/ni0104-24.png')"/>
+				
+				<mx:Repeater id="photoRepeater" dataProvider="{LibraryManager.manager.photos}">
+					<lc:PhotoRenderer data="{photoRepeater.currentItem}" mouseMove="beginPhotoDrag(event)" highlightMO="true" />
+				</mx:Repeater>
+			</mx:VBox>			
+		</mx:Canvas>
+		
+	
+	</mx:Accordion>
+	
+</mx:Canvas>

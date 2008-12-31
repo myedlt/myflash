@@ -1,0 +1,120 @@
+此文档包含Adobe® Flex® 3 SDK的发布说明和安装说明。
+           • 关于Flex 3 SDK
+           • 新特性
+           • 安装说明
+           • 兼容性问题
+           • 已知问题
+           • Flex Builder 3发行说明
+           • Flex 3文档
+
+关于Flex 3 SDK
+
+      Flex 3 SDK包括Flex框架（也称为Flex类库）、Flex命令行编译器、Flex调试器、ASDoc实用工具和调试器版本的Flash Player。使用Flex SDK可以开发、编译和部署Flex应用程序，这些应用程序将连接到XML和SOAP Web服务，或者连接到各种服务器技术，比如使用诸如BlazeDS之类的服务器技术的PHP、ColdFusion、Java和.NET。
+
+新特性
+
+       本节将列出Flex 3 SDK的一些主要新特性和更改。有关新特性的更多信息，请访问 Flex开发人员中心。
+
+       Adobe® AIR™的本机支持——Flex 3增加了对Adobe AIR的支持，后者允许开发人员在HTML、AJAX、Flash和Flex中使用现有Web技术构建RIA并将其部署到桌面系统中。Flex 3引入了一些新组件，并将Adobe AIR开发工具囊括到SDK和Flex Builder中。
+
+       持久性框架缓存——在对Adobe平台组件利用新的Flash Player缓存时，可使Flex 3应用程序的大小减少到50K。
+ 
+       Advanced DataGrid组件——Advanced DataGrid是一个新组件，通常用于将请求的特性添加到DataGrid中，比如对分层数据的支持和基本透视表功能。只可与Flex Builder Professional一起使用。
+
+       OLAP DataGrid组件——An OLAP（在线分析处理）网格数据允许以紧凑格式聚合数据，并用由行和列组成的二维网格显示这些数据聚合。只可与Flex Builder Professional一起使用。
+
+       Enhanced Constraints布局机制——Enhanced Constraints构建在已有的基于约束的布局机制之上，允许使用兄妹关系约束（在Flex 2中只可以定义父子约束）创建复杂的、可重新调整大小的布局。
+
+        Flex Charting包增强——Flex 3通过许多增强改进了Charting包。坐标系统现在只可以支持几个轴，DateTimeAxis允许执行工作周过滤。新的面向数据的图形API允许绘制数据坐标，用图表呈现适当屏幕位置上的一切内容。对于现有所有图表，还有一些新格式选项和新添加的交互功能。只可与Flex Builder Professional一起使用。
+
+        Flex Component Kit for Flash CS3——Flex Component Kit for Flash CS3提供了用于创建可无缝集成到Flex应用程序中的Flash内容的完整工作流。Flash用户现在可以使用熟悉的Flash时间轴模型开发组件，然后通过使用少许简单的模式使Flex开发人员能够引入这些组件，而无需添加额外代码。Flex Component Kit for Flash CS3可从Adobe 网站获得。
+
+        Flex Ajax Bridge库——Flex 3现在包括Flex Ajax Bridge (FABridge)、一个可插入Flex应用程序的小型代码库、一个Flex组件或一个空SWF文件（可以导出该文件实现浏览器中的脚本编写）。使用 FABridge可以使ActionScript类可用于JavaScript，无需编写任何额外编码。在插入库之后，就可以使用JavaScript实现用ActionScript实现的任何操作。
+
+         Flex转向开源——Adobe Flex现在是开源的，包含用于框架、编译器、调试器以及更多可在Mozilla Public License下使用的工具的源代码。更多信息请访问 http://opensource.adobe.com/flex。
+
+安装说明
+
+         Flex SDK安装是以ZIP文件形式提供的，其中包含Flex框架、Adobe AIR框架和命令行工具，比如mxmlc命令行实用工具、Adobe AIR命令行实用工具、ASDoc实用工具、Flex命令行调试器和调试器版本的Flash Player。
+
+卸载当前的Flash Player
+
+         应该让Flex SDK与最新版本的调试Flash Player一起使用，因此，在安装Flex SDK之前，应该卸载当前的Flash Player。
+
+基于Windows插件的浏览器
+          运行从此 技术说明 获得的适当卸载工具。
+
+Macintosh
+          运行从此 技术说明 获得的适当卸载工具。
+
+Linux
+
+手动移除（对于已通过Install脚本安装了插件的用户）：
+
+        • 删除libflashplayer.so二进制文件和目录
+           /home/<user>/.mozilla/plugins/中的flashplayer.xpt文件
+
+RPM移除：
+
+       1. 在根目录下输入以下命令：
+           # rpm -e flash-plugin
+       2. 单击回车键并按照提示进行操作。
+
+安装Flex SDK
+
+        1. 从 Adobe网站 下载Flex SDK ZIP文件。
+        2. 创建用于包含Flex SDK的目录。
+        3. 将Flex SDK ZIP文件解压缩至此目录中。Flex SDK包含以下目录：
+                o  /ant — 包含Flex Ant Tasks。
+                o  /asdoc — 包含ASDoc工具的帮助文件，该工具根据MXML和ActionScript源代码创
+                   建HTML文档。
+                o  /bin — 包含mxmlc、compc、asdoc和fdb实用工具。bin目录也包含jvm.config文件，
+                   该文件指定了可修改的Java设置（如果需要的话）。 
+                o  /frameworks — 包含已编译的框架类、配置文件和框架源代码。
+                o  /lib — 包含供实用工具使用的JAR文件。
+                o  /runtimes — 包含air目录中AIR运行库的安装程序，以及player目录中调试版
+                    Flash Player 9的安装程序。 
+                o  /samples — 包含示例应用程序。 
+                o   /templates — 包含用于Flash Player检测和浏览器集成的HTML模板，在air文件夹
+                   中，还有一个示例Adobe AIR application.xml文件。
+         4. 确保计算机上已安装Java Runtime Environment（JRE)，并且系统路径中已经定义了java_home/bin目录。要求使用JRE 1.4、1.5或1.6。对于1.4，则需要JRE 1.4.2_06或更高的版本。
+         5. 从install_root/runtimes/player/platform目录安装适当的调试Flash Player。
+         6. （可选）完成Flash Player安装之后，重新启动计算机，确保激活已更新的Flash Player浏览器。
+         7. 查看浏览器示例，继续后面的操作。要运行浏览器示例，必须先运行install_root/samples/explorer /build.bat（Windows）或install_root/samples/explorer/build.sh（UNIX和Mac OS X）文件对其进行编译。有关Flex编译器的更多信息，请参阅《Building and Deploying Flex Applications》手册中的"Using the Flex Compilers"一章。
+
+
+兼容性问题
+
+向后兼容性编译器参数——有许多Flex SDK后向兼容性更改，其中包括可以使用新兼容性参数-compatibility-version将行为返回给Flex 2.0.1。要获得完整的细节描述，请参阅 Flex 3: Backwards Compatibility。
+
+-compatibility-version参数不支持的向后兼容性问题——一些向后兼容性问题可能会影响在Flex 2.0.1中构建的应用程序。这些问题涉及以下组件的行为和配置设置：
+           • flashType——flashType已过时
+           • ComboBox ItemRenderer——paddingLeft配置方式的更改
+           • DataGrid——DataGrid行为兼容性问题包括verticalScrollBar、rowCount、
+              lockedRowCount、verticalSeperatorSkin和headerStyle。
+           • 列表——选择对应于null项的基于列表的组件。
+           • 按钮——使用自定义selectedUpSkin、selectedDownSkin和selectedOverSkin的按钮无法
+             正确调整大小。
+           • UITextField——过去受到保护的UITextField现在是类型IUITextField。
+           • TileList——在使用pageDown键滚动项的时候，TileList具有不同的行为。 
+           • keep-as3-metadata——已从flex-config.xml中移除keep-as3-metadata。 
+           • 语言环境——语言环境现在包含在frameworks.swc中，在指定语言环境时将引发其他相关
+             问题。
+关于这些兼容性问题的详细信息，请参阅 Changes Not Supported By The Backwards Compatibility Flag，它是 Flex 3: Backwards Compatibility 文档中的一节。
+
+ 
+
+已知问题
+         本节包含选定的已知问题。有关Flex Builder问题及其状态的完整列表，请参阅 公共bug库。公共bug库允许搜索已知问题、关于它们的评论并添加新bug。
+
+提示：可以使用Filters自定义您的搜索。
+• http://bugs.adobe.com/jira/browse/SDK-14289——深层链接无法与SSL一起使用
+• http://bugs.adobe.com/jira/browse/SDK-14440——无法打开已关闭的窗口。
+• http://bugs.adobe.com/jira/browse/SDK-12150——即使在application.xml中设置visible=false，WindowedApplication也仍然可见
+• http://bugs.adobe.com/jira/browse/SDK-873——启动Module中的PopUps可能会造成运行时错误（RTE）。
+• http://bugs.adobe.com/jira/browse/SDK-14298——在与Window组件中的容器一起使用creationPolicy=”queued”时，会导致异常
+• http://bugs.adobe.com/jira/browse/SDK-12787——在使用历史管理器时，无法存储第一个历史。
+• http://bugs.adobe.com/jira/browse/SDK-12694——无法在WindowedApplication中使用PrintDataGrid，除非明确指定宽度和高度。
+• http://bugs.adobe.com/jira/browse/SDK-10970——尝试使用SWFLoader加载远程swf时会在AIR中造成安全错误。
+• http://bugs.adobe.com/jira/browse/SDK-9421—— 分析器UI中缺少后向引用。在某些情况下，分析器可能不显示任何针对闲散对象的后向引用。这种情况多数发生于非堆(non-heap)对象，比如ABC解码期间创建的String。要研究没有后向引用的闲散对象，请参阅配置追踪文件，该文件必须通过Launch Dialog激活。
+• http://bugs.adobe.com/jira/browse/SDK-14615——将Window或WindowedApplication的可见属性设置为false后，hideEffect仍不起作用。
