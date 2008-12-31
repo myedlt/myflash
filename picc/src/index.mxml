@@ -195,7 +195,7 @@
 				}
 				else
 				{
-					if(isContinue && lso.data.info!=null && lso.data.info!=undefined)
+					if(isContinue && lso.data.info!=undefined)
 					{
 						lsoInfo=lso.data.info;
 						if(lsoInfo.isMultipage)
@@ -211,7 +211,14 @@
 						}
 						else
 						{
-							Button(menuItemArray1[lsoInfo.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+							if(lsoInfo.currSectionNum==undefined)
+							{
+								firstBtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+							}
+							else
+							{
+								Button(menuItemArray1[lsoInfo.currSectionNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+							}							
 						}
 					}
 					else
