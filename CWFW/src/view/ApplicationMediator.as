@@ -13,11 +13,12 @@ package view
 		public function ApplicationMediator(viewComponent:Object)
 		{
 			super( NAME, viewComponent );
-			facade.registerMediator( new ContentsMediator( app.contents ) );
-			facade.registerMediator( new ControlBoardMediator( app.controlBoard ) );
-			facade.registerMediator( new SwfPlayerMediator( app.swfPlayer ) );
-			facade.registerMediator( new CurrentPositionMediator( app.currentPosition ) );
+			
 			facade.registerMediator( new NavigatorMediator( app.navigator ) );
+			facade.registerMediator( new ContentsMediator( app.contents ) );
+			facade.registerMediator( new CurrentPositionMediator( app.currentPosition ) );			
+			facade.registerMediator( new ModuleLoaderMediator( app.moduleLoader ) );
+			facade.registerMediator( new ControlBoardMediator( app.controlBoard ) );
 		}
 		
 		override public function listNotificationInterests():Array

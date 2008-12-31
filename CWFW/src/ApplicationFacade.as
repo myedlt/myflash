@@ -16,6 +16,8 @@ package
 						
 		//command
 		public static const SWF_LOAD:String = "swfLoad";
+		public static const FLV_LOAD:String = "flvLoad";
+		public static const IMAGE_LOAD:String = "imageLoad";
 		public static const CHAPTER_CHANGE:String = "chapterChange";
 		public static const SECTION_CHANGE:String = "sectionChange";			
 		public static const SINGLE_CHAPTER:String="singleChapter";
@@ -25,8 +27,10 @@ package
 		public static const NEXT_SECTION:String="nextSection";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";
 		public static const SWF_LOAD_COMPLETE:String="swfLoadComplete";
+		public static const FLV_LOAD_COMPLETE:String="flvLoadComplete";
 		public static const SWF_UNLOAD:String="swfUnload";
 		public static const ENTER_FRAME:String="enterFrame";
+		public static const PLAYHEAD_UPDATE:String="playheadUpdate";
 		public static const GOTO_AND_PLAY:String="gotoAndPlay";
 		public static const GOTO_AND_STOP:String="gotoAndStop";	
 		public static const PLAY:String="play";	
