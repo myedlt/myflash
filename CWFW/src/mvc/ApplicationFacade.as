@@ -1,10 +1,10 @@
-package
+package mvc
 {
-	import controller.ApplicationInitializeCommand;
-	import controller.ApplicationStartupCommand;
-	import controller.ContentsItemClickCommand;
-	import controller.NextSectionCommand;
-	import controller.PreviousSectionCommand;
+	import mvc.controller.ApplicationInitializeCommand;
+	import mvc.controller.ApplicationStartupCommand;
+	import mvc.controller.ContentsItemClickCommand;
+	import mvc.controller.NextSectionCommand;
+	import mvc.controller.PreviousSectionCommand;
 	
 	import org.puremvc.as3.patterns.facade.Facade;
 
@@ -18,6 +18,7 @@ package
 		public static const SWF_LOAD:String = "swfLoad";
 		public static const FLV_LOAD:String = "flvLoad";
 		public static const IMAGE_LOAD:String = "imageLoad";
+		public static const MODULE_LOAD:String = "moduleLoad";
 		public static const CHAPTER_CHANGE:String = "chapterChange";
 		public static const SECTION_CHANGE:String = "sectionChange";			
 		public static const SINGLE_CHAPTER:String="singleChapter";

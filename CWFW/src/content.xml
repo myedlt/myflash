@@ -11,8 +11,8 @@
 	<!--课程列表	
 		CourseList标签下可有多个Course(课程)；
 		Course标签下有0或1个Lecture(讲师)和多个Chapter（章）；Course标签的属性有：name、title、startSWF（开篇动画）、endSWF（结束动画）。
-		Chapter标签下有1个或多个Section（节）；Chapter标签的属性有：name（必填）、title、path(章介绍动画或单章动画[没有子节点的章]路径)、type（"flash"/"flex"默认为"flash"）、xml(type为"flex"[模板]时对应的xml文件)。
-		Section标签的属性有:name（必填）、title、path(必填)、type（"flash"/"flex"默认为"flash"）、xml(type为"flex"[模板]时对应的xml文件)。
+		Chapter标签下有1个或多个Section（节）；Chapter标签的属性有：name（必填）、title、path(单章动画[没有子节点的章]路径)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(type为"flex"/"image"[模板]时对应的xml文件)。
+		Section标签的属性有:name（必填）、title、path(必填)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(type为"flex"/"image"[模板]时对应的xml文件)。
 		Lecture标签没有属性,只有子节点:name、sex、age、position、introduction。其值以标签对形式出现，如：<name>讲师名</name>
 	-->
 	<CourseList>
