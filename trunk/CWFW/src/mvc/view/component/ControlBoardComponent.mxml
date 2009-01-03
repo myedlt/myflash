@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" horizontalAlign="center" verticalAlign="middle" horizontalGap="10">
+	<mx:Spacer width="10"/>
+	<mx:Button id="btnPrevSection"/>
+	<mx:Button x="93" y="41" id="btnNextSection"/>
+	<mx:Spacer width="70%"/>
+	<mx:Button id="btnColumnOpenOrClose" click="openOrClose()"/>
+	<mx:HSlider id="sldCtrlColumn" width="70" maximum="1" minimum="0" value="0.6" liveDragging="true"
+		dataTipFormatFunction="formatColumeToolTip" change="columeChange(event)"/>
+	<mx:Script>
+		<![CDATA[
+			import flash.media.SoundMixer;
+			import flash.media.SoundTransform;
+			import mx.events.SliderEvent;
+			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
+			
+			private function init():void
+			{				
+				openState();//音量开关处于打开状态
+			}
+			
+			//音量关闭或打开
+			private function openOrClose():void
+			{
+				if(btnColumnOpenOrClose.toolTip=="关闭")
+				{
+					closeState();
+					soundTrans.volume=0;
+					SoundMixer.soundTransform=soundTrans;
+				}
+				else
+				{
+					openState();
+					soundTrans.volume=sldCtrlColumn.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}			
+			
+			private function columeChange(evt:SliderEvent):void
+			{
+				if(btnColumnOpenOrClose.toolTip=="关闭")
+				{
+					soundTrans.volume=evt.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}			
+			
+			private function openState():void
+			{
+				btnColumnOpenOrClose.toolTip="关闭";
+			}
+			
+			private function closeState():void
+			{
+				btnColumnOpenOrClose.toolTip="打开";
+			}
+			
+	  		//音量控制条 音量大小提示格式化	
+	  		private function formatColumeToolTip(value:Number):String
+	  		{
+	  			var temp:String=value.toString();
+	  			if(temp.length==1)
+	  			{
+	  				return temp+".0";
+	  			}
+	  			else
+	  			{
+	  				return temp.substr(0,3);
+	  			}
+	  		}
+		]]>
+	</mx:Script>
+</mx:HBox>
