@@ -11,6 +11,10 @@
 <applications>
 <application path="CWFW.mxml"/>
 </applications>
-<modules/>
+<modules>
+<module application="src/CWFW.mxml" destPath="module/SwfPlayerModule.swf" optimize="true" sourcePath="src/module/SwfPlayerModule.mxml"/>
+<module application="src/CWFW.mxml" destPath="module/FlvPlayerModule.swf" optimize="true" sourcePath="src/module/FlvPlayerModule.mxml"/>
+<module application="src/CWFW.mxml" destPath="module/ImagePlayerModule.swf" optimize="true" sourcePath="src/module/ImagePlayerModule.mxml"/>
+</modules>
 <buildCSSFiles/>
 </actionScriptProperties>
