@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Content>	
+	<!--页面头部导航区 
+		"label"属性是按钮在页面的显示名称,"url"是点击按钮后跳转的页面路径;
+		"退出"按钮的显示名如果不叫"退出",那么其位置一定要位于最后即Navigator标签的最后一个元素;
+	-->	
+	<Navigator>		
+		<button label="帮助" url="navigator/help/index.html"/>	
+		<button label="退出" url="javascript:window.close();"/>		
+	</Navigator>	
+	<!--课程列表	
+		CourseList标签下可有多个Course(课程)；
+		Course标签下有0或1个Lecture(讲师)和多个Chapter（章,Course下最少有一个章节点）；Course标签的属性有：name、title、startSWF（开篇动画即片头）。
+		Chapter标签下有0个或多个Section（节）,当Chapter无子节点时为单章动画；Chapter标签的属性有：name（必填）、title、path(单章动画路径)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(对应的xml配置文件)。
+		Section标签的属性有:name（必填）、title、path、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(对应的xml配置文件)。
+		Lecture标签没有属性,只有子节点:name、sex、age、position、introduction。其值以标签对形式出现，如：<name>讲师名</name>
+	-->
+	<CourseList>
+		<Course name="金融危机">
+			<Lecture>
+				<name>讲师名</name>
+				<sex>男</sex>
+				<age>55</age>
+				<position>教授</position>
+				<introduction>
+					<![CDATA[
+						讲师介绍...
+					]]>
+				</introduction>
+			</Lecture>			
+			<Chapter name="经济危机给我们带来了什么" title="第一章">
+				<section name="第一节" type="flash" xml="assets/courses/course01/chapter01/unit01.xml"/>	
+				<section name="第二节" xml="assets/courses/course01/chapter01/unit02.xml"/>											
+			</Chapter>
+			<Chapter name="第二章">
+				<section name="第一节" xml="assets/courses/course01/chapter02/unit01.xml"/>												
+			</Chapter>	
+			<Chapter name="测验" type="flex" xml="assets/courses/course01/exercise.xml"/>		
+		</Course>		
+	</CourseList>
+	<!-- 版权信息 -->
+	<Copyright>		
+		<![CDATA[
+			技术支持:北京东方创远教育科技有限公司
+		]]>
+	</Copyright>
+</Content>
