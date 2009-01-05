@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Sections><!-- 路径必须以"../"开头 -->	
+	<section label="如何成为优秀的中层领导者" data="../../courses/unit05/Unit05_03_01.swf"/>
+	<section label="成为受欢迎的中层领导者" data="../../courses/unit05/unit05_03_02.swf"/>
+	<section label="中层领导的三个角色" data="../../courses/unit05/unit05_03_03.swf"/>
+	<section label="中层领导的五项基本技能" data="../../courses/unit05/unit05_03_04.swf"/>
+	<section label="成功转换角色" data="../../courses/unit05/unit05_03_05.swf"/>
+	<section label="知识小结" data="../../courses/unit05/unit05_03_06.swf"/>
+	<section label="测试题" data="../../courses/unit05/unit05_03_07.swf"/>	
+</Sections>
