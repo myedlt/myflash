@@ -45,7 +45,7 @@ try{
    
 	// 释放PHP的数据库连接，即此处清空后Oracle OCI8驱动客户端会重用连接
 	$dbh=null;
-}catch(PDOException$e){
+}catch(PDOException $e){
 	//显示数据库操作错误信息
 	die("Error!: ".$e->getMessage()."<br/>");
 }
