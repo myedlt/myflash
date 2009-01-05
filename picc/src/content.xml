@@ -15,7 +15,7 @@
 		<menuItem label="架构" fullName="架构" row="2" col="1" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
 		<menuItem label="文化" fullName="文化" row="2" col="2" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
 		<menuItem label="制度" fullName="制度" row="3" col="3" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
-		<menuItem label="领导" fullName="领导" row="4" col="2" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
+		<menuItem label="领导" fullName="恰当的领导" row="4" col="2" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit05/unit05.xml"/>
 		<menuItem label="支持" fullName="支持" row="5" col="1" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
 		<menuItem label="环境" fullName="环境" row="5" col="3" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
 		<menuItem label="管理" fullName="管理" row="6" col="3" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
