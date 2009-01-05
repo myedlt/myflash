@@ -950,8 +950,8 @@
 						<mx:Label x="389" y="509" text="总页数" id="label2"/>
 						<mx:Label x="430" y="510" text="{totalSectionNum}" textAlign="center" id="label4"/>
 						<mx:LinkButton x="450" y="507" label="后一页" id="btnNext" mouseOver="lbMouseOver2()" mouseOut="lbMouseOut2()" alpha="0.0" textDecoration="underline"/>
-						<mx:Label x="512" y="509" text="直接跳转到" id="label5"/>
-						<mx:ComboBox x="580" y="507.5" width="49" id="gotoComb" change="gotoPage(event)" labelField="count" fontSize="10" cornerRadius="3"/>
+						<mx:Label x="509" y="509" text="直接跳转到" id="label5"/>
+						<mx:ComboBox x="577" y="507.5" width="53" id="gotoComb" change="gotoPage(event)" labelField="count" fontSize="10" cornerRadius="3"/>
 						<mx:Label x="632" y="509" text="页" textAlign="center" id="label6"/>
 							
 						<mx:Button x="678" y="506" id="columeControl" click="columeControlHandler()" styleName="soundButton" upSkin="{sy_upSkin}" overSkin="{sy_overSkin}" downSkin="{sy_downSkin}" toolTip="关闭"/>						
