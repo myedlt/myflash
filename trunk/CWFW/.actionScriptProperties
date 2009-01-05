@@ -10,6 +10,7 @@
 </compiler>
 <applications>
 <application path="CWFW.mxml"/>
+<application path="testModule.mxml"/>
 </applications>
 <modules>
 <module application="src/CWFW.mxml" destPath="module/SwfPlayerModule.swf" optimize="true" sourcePath="src/module/SwfPlayerModule.mxml"/>
