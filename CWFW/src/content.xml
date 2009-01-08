@@ -28,17 +28,17 @@
 					]]>
 				</introduction>
 			</Lecture>			
-			<Chapter name="第一章" title="NO.1">
-				<section name="第一节" type="flash" path="assets/courses/course01/chapter01/unit01.swf"/>	
-				<section name="第二节" type="image" path="assets/courses/course01/chapter01/unit02.xml"/>	
-				<section name="第三节" type="image" path="assets/courses/course01/chapter01/unit03.xml"/>													
+			<Chapter name="第一章 课件框架测试" title="Chapter 1">
+				<section name="第一节 Flash" type="flash" path="assets/courses/course01/chapter01/unit01.swf"/>
+				<section name="第二节 Flash" type="flash" path="assets/courses/course01/chapter01/unit02.swf"/>	
+				<section name="第三节 图片" type="image" path="assets/courses/course01/chapter01/unit03.xml"/>	
+				<section name="第四节 相册" type="image" path="assets/courses/course01/chapter01/unit04.xml"/>													
 			</Chapter>
-			<Chapter name="第二章">
-				<section name="第一节" type="flv" path="assets/courses/course01/chapter02/001.flv"/>	
-				<section name="第二节" type="flv" path="assets/courses/course01/chapter02/002.flv"/>
-				<section name="第三节" type="flv" path="assets/courses/course01/chapter02/003.flv"/>															
+			<Chapter name="第二章 视频课程">
+				<section name="第一节" type="flv" path="assets/courses/course01/chapter02/001.flv"/>				
+				<section name="第二节" type="flv" path="assets/courses/course01/chapter02/002.flv"/>															
 			</Chapter>	
-			<Chapter name="测试题" type="flex" path="assets/courses/course01/exercise.swf"/>		
+			<Chapter name="测试题(flex)" type="flex" path="assets/courses/course01/exercise.swf"/>		
 		</Course>		
 	</CourseList>
 	<!-- 版权信息 -->

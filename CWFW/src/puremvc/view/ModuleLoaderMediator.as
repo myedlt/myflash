@@ -4,14 +4,17 @@ package puremvc.view
 	import module.ImagePlayerModule;
 	import module.SwfPlayerModule;
 	
+	import mx.events.FlexEvent;
 	import mx.events.ModuleEvent;
 	import mx.modules.ModuleLoader;
+	import mx.modules.ModuleManager;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
-	import puremvc.ApplicationFacade;	
+	import puremvc.ApplicationFacade;
+	import puremvc.controller.ModuleLocatorCommand;	
 
 	public class ModuleLoaderMediator extends Mediator implements IMediator
 	{
@@ -22,15 +25,30 @@ package puremvc.view
 		public function ModuleLoaderMediator(viewComponent:Object)
 		{
 			super(mediatorName, viewComponent);
-			moduleLoader.addEventListener(ModuleEvent.READY,ready);			
+			moduleLoader.addEventListener(ModuleEvent.READY,ready);	
+			//moduleLoader.addEventListener(ModuleEvent.UNLOAD,unload);				
 		}
 		
 		public function loadModule(data:Object):void
 		{
+			doUnload();//解决跨模块串音问题
+			//moduleLoader.unloadModule();
 			contentUrl=data.contentUrl;
 			contentType=data.contentType;
 			moduleLoader.url=data.moduleUrl;
 			//moduleLoader.loadModule();
+		}
+		
+		public function doUnload():void
+		{
+			if(ModuleManager.getModule(ModuleLocatorCommand.SwfPlayerModule).loaded)
+			{
+				SwfPlayerModule(moduleLoader.child).swfUnload(null);
+			}
+			if(ModuleManager.getModule(ModuleLocatorCommand.FlvPlayerModule).loaded)
+			{
+				FlvPlayerModule(moduleLoader.child).stop(null);
+			}
 		}
 		
 		public function ready(evt:ModuleEvent):void
@@ -43,6 +61,11 @@ package puremvc.view
         		case "flv":loadFlv(contentUrl);break;
         	}      
 		}
+		
+		/* public function unload(evt:ModuleEvent):void
+		{
+			trace("unload");
+		} */
 		
 		public function loadSwf(obj:Object):void
 		{

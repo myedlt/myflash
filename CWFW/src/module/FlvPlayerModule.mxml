@@ -34,12 +34,12 @@
 				videoDisplay.play();							
 			}
 			
-			private function pause(evt:MouseEvent):void
+			public function pause(evt:MouseEvent):void
 			{
 				videoDisplay.pause();							
 			}
 			
-			private function stop(evt:MouseEvent):void
+			public function stop(evt:MouseEvent):void
 			{				
 				progressBoard.sldCtrlProgress.value=progressBoard.sldCtrlProgress.minimum;
 				videoDisplay.stop();

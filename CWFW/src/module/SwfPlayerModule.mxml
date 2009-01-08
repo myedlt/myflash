@@ -4,11 +4,11 @@
 	<view:ProgressBoardComponent id="progressBoard" x="0" horizontalAlign="center" verticalAlign="middle" width="100%" height="10%" bottom="0"/>	
 	<mx:Script>
 		<![CDATA[
-			import mx.core.Application;
 			import mx.events.SliderEvent;
 			private var mc:MovieClip;
 			private var stoped:Boolean=true;	//记录当前播放状态是否停止
 			private var pressing:Boolean;//进度条拖拽按钮是否按下
+			public var type:String;
 			
 			public function init():void
 			{
@@ -25,6 +25,7 @@
 			
 			public function load(url:String,type:String=null):void
 			{
+				this.type=type;
 				if(type=="flex")
 				{
 					if (contains(progressBoard))                
@@ -130,8 +131,8 @@
 				}				
 			}		
 			
-			private function swfUnload(evt:Event):void
-			{				
+			public function swfUnload(evt:Event):void
+			{
 				if(mc!=null)
 				{
 					mc.stop();
