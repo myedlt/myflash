@@ -1,9 +1,9 @@
-package mvc.view
+package puremvc.view
 {
 	import module.SwfPlayerModule;
 	
-	import mvc.ApplicationFacade;
-	import mvc.business.CurrentInfo;
+	import puremvc.ApplicationFacade;
+	import puremvc.business.CurrentInfo;
 	
 	import mx.events.ModuleEvent;
 	import mx.modules.ModuleLoader;

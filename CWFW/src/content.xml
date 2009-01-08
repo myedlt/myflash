@@ -10,9 +10,9 @@
 	</Navigator>	
 	<!--课程列表	
 		CourseList标签下可有多个Course(课程)；
-		Course标签下有0或1个Lecture(讲师)和多个Chapter（章）；Course标签的属性有：name、title、startSWF（开篇动画）、endSWF（结束动画）。
-		Chapter标签下有1个或多个Section（节）；Chapter标签的属性有：name（必填）、title、path(单章动画[没有子节点的章]路径)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(type为"flex"/"image"[模板]时对应的xml文件)。
-		Section标签的属性有:name（必填）、title、path(必填)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(type为"flex"/"image"[模板]时对应的xml文件)。
+		Course标签下有0或1个Lecture(讲师)和多个Chapter（章,Course下最少有一个章节点）；Course标签的属性有：name、title、startSWF（开篇动画即片头）。
+		Chapter标签下有0个或多个Section（节）,当Chapter无子节点时为单章动画；Chapter标签的属性有：name（必填）、title、path(单章动画路径)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(对应的xml配置文件)。
+		Section标签的属性有:name（必填）、title、path、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(对应的xml配置文件)。
 		Lecture标签没有属性,只有子节点:name、sex、age、position、introduction。其值以标签对形式出现，如：<name>讲师名</name>
 	-->
 	<CourseList>
@@ -29,13 +29,13 @@
 				</introduction>
 			</Lecture>			
 			<Chapter name="经济危机给我们带来了什么" title="第一章">
-				<section name="第一节" path="assets/courses/course01/chapter01/unit01.swf"/>	
-				<section name="第二节" path="assets/courses/course01/chapter01/unit02.swf"/>											
+				<section name="第一节" type="flash" xml="assets/courses/course01/chapter01/unit01.xml"/>	
+				<section name="第二节" xml="assets/courses/course01/chapter01/unit02.xml"/>											
 			</Chapter>
-			<Chapter name="第二章" path="assets/courses/course01/chapter02/introduction.swf">
-				<section name="第一节" path="assets/courses/course01/chapter02/unit01.swf"/>												
+			<Chapter name="第二章">
+				<section name="第一节" xml="assets/courses/course01/chapter02/unit01.xml"/>												
 			</Chapter>	
-			<Chapter name="测验" type="flex" path="assets/courses/course01/exercise.swf"/>		
+			<Chapter name="测验" type="flex" xml="assets/courses/course01/exercise.xml"/>		
 		</Course>		
 	</CourseList>
 	<!-- 版权信息 -->

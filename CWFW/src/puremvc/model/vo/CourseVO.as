@@ -1,6 +1,6 @@
-package mvc.model.vo
+package puremvc.model.vo
 {
-	import mvc.model.vo.LectureVO;
+	import puremvc.model.vo.LectureVO;
 	
 	public class CourseVO
 	{		

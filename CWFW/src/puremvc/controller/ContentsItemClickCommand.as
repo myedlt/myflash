@@ -1,9 +1,9 @@
-package mvc.controller
+package puremvc.controller
 {
-	import mvc.ApplicationFacade;
-	import mvc.business.CurrentInfo;
-	import mvc.business.XmlResource;
-	import mvc.view.ContentsMediator;
+	import puremvc.ApplicationFacade;
+	import puremvc.business.CurrentInfo;
+	import puremvc.business.XmlResource;
+	import puremvc.view.ContentsMediator;
 	
 	import mx.controls.Tree;
 	import mx.utils.ObjectUtil;

@@ -1,7 +1,7 @@
-package mvc.view
+package puremvc.view
 {
-	import mvc.ApplicationFacade;
-	import mvc.model.CourseProxy;	
+	import puremvc.ApplicationFacade;
+	import puremvc.model.CourseProxy;	
 	import mx.controls.Tree;
 	import mx.events.ListEvent;
 	
@@ -46,7 +46,7 @@ package mvc.view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.DATA_READY			
+						ApplicationFacade.STARTUP			
 				   ];
 		} 
 				
@@ -54,7 +54,7 @@ package mvc.view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.DATA_READY : initialize(); break;				
+			 	case ApplicationFacade.STARTUP : initialize(); break;				
              }
 		} 
 		

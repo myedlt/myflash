@@ -1,4 +1,4 @@
-package mvc.view
+package puremvc.view
 {
 	import mx.controls.Label;
 	
@@ -6,8 +6,8 @@ package mvc.view
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
-	import mvc.ApplicationFacade;
-	import mvc.view.component.CurrentPositionComponent;
+	import puremvc.ApplicationFacade;
+	import puremvc.view.component.CurrentPositionComponent;
 	//页面"当前位置"/"面包屑'的"中介器"
 	public class CurrentPositionMediator extends Mediator implements IMediator
 	{

@@ -1,6 +1,6 @@
-package mvc.model
+package puremvc.model
 {
-	import mvc.model.vo.NavigatorVO;
+	import puremvc.model.vo.NavigatorVO;
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
@@ -13,11 +13,15 @@ package mvc.model
 		public function NavigatorProxy ( data:Object = null ) 
         {
             super ( NAME, data );
-			initialization();				
+			parseNavigator();				
         }
         
-        private function initialization():void
+        private function parseNavigator():void
         {
+        	if(data==null)
+        	{
+        		data=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData()).Navigator.button;
+        	}
         	for each(var button:XML in this.data)
 			{
 				navigator.push(new NavigatorVO(button.@label,button.@url));

@@ -1,4 +1,4 @@
-package mvc.view
+package puremvc.view
 {
 	import flash.events.MouseEvent;
 	
@@ -8,7 +8,7 @@ package mvc.view
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
-	import mvc.view.component.ProgressBoardComponent;
+	import puremvc.view.component.ProgressBoardComponent;
 	
 	public class ProgressBoardMediator extends Mediator implements IMediator 
 	{

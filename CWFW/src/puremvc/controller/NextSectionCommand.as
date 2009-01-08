@@ -1,10 +1,10 @@
-package mvc.controller
+package puremvc.controller
 {
-	import mvc.ApplicationFacade;
-	import mvc.business.CurrentInfo;
-	import mvc.model.vo.ChapterVO;
-	import mvc.model.vo.CourseVO;
-	import mvc.model.vo.SectionVO;
+	import puremvc.ApplicationFacade;
+	import puremvc.business.CurrentInfo;
+	import puremvc.model.vo.ChapterVO;
+	import puremvc.model.vo.CourseVO;
+	import puremvc.model.vo.SectionVO;
 	
 	import mx.utils.ObjectUtil;
 	

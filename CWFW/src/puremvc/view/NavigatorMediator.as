@@ -1,11 +1,11 @@
-package mvc.view
+package puremvc.view
 {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
-	import mvc.ApplicationFacade;
-	import mvc.model.NavigatorProxy;
-	import mvc.model.vo.NavigatorVO;
+	import puremvc.ApplicationFacade;
+	import puremvc.model.NavigatorProxy;
+	import puremvc.model.vo.NavigatorVO;
 	
 	import mx.controls.LinkBar;
 	import mx.events.ItemClickEvent;
@@ -40,7 +40,7 @@ package mvc.view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.DATA_READY			
+						ApplicationFacade.STARTUP			
 				   ];
 		}
 				
@@ -48,7 +48,7 @@ package mvc.view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.DATA_READY : initialize(); break;				
+			 	case ApplicationFacade.STARTUP : initialize(); break;				
              }
 		} 
 		

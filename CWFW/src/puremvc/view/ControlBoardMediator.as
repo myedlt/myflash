@@ -1,4 +1,4 @@
-package mvc.view
+package puremvc.view
 {	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
@@ -6,8 +6,8 @@ package mvc.view
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
-	import mvc.ApplicationFacade;
-	import mvc.view.component.ControlBoardComponent;
+	import puremvc.ApplicationFacade;
+	import puremvc.view.component.ControlBoardComponent;
 
 	public class ControlBoardMediator extends Mediator implements IMediator
 	{

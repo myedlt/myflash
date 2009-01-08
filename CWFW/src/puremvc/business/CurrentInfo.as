@@ -1,8 +1,8 @@
-package mvc.business
+package puremvc.business
 {	
-	import mvc.model.vo.ChapterVO;
-	import mvc.model.vo.CourseVO;
-	import mvc.model.vo.SectionVO;	
+	import puremvc.model.vo.ChapterVO;
+	import puremvc.model.vo.CourseVO;
+	import puremvc.model.vo.SectionVO;	
 	
 	//singleton 保存课程的当前信息
 	public class CurrentInfo 
