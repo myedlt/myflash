@@ -103,7 +103,7 @@ package puremvc.business
 			if(course.hasOwnProperty("@endSWF"))
 			{
 				cou.endSWF=course.@endSWF;
-			}	
+			}				
 			if(course.Lecture!=undefined)
 			{	
 				cou.lecture=parseLecture(course.Lecture);

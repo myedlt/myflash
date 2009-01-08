@@ -20,13 +20,13 @@ package puremvc.controller
 			var treeContents:Tree=ContentsMediator(facade.retrieveMediator(ContentsMediator.NAME)).treeContents;					
 			
 			if(treeContents.getParentItem(selectedItem)==null)
-			{
+			{//单章
 				sendNotification(ApplicationFacade.SINGLE_CHAPTER,selectedItem.@name);
 				currInfo.setCurrentChapter(XmlResource.parseChapter(selectedItem));
 				currInfo.setCurrentSection(null);
 			}
 			else
-			{	
+			{//节	
 				if(ObjectUtil.compare(XmlResource.parseChapter(treeContents.getParentItem(selectedItem)),currInfo.getCurrentChapter(),0)!=0)
 				{
 					sendNotification(ApplicationFacade.CHAPTER_CHANGE,treeContents.getParentItem(selectedItem).@name);
@@ -38,7 +38,8 @@ package puremvc.controller
 					currInfo.setCurrentSection(XmlResource.parseSection(selectedItem));
 				} 				
 			}
-			sendNotification(ApplicationFacade.SWF_LOAD,selectedItem.@path);				
+			//sendNotification(ApplicationFacade.SWF_LOAD,selectedItem.@path);	
+			new ModuleLocatorCommand().locate(selectedItem.hasOwnProperty("@type")?selectedItem.@type:"flash",selectedItem.@path);			
 		}
 	}
 }

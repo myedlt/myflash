@@ -4,6 +4,7 @@
 	<view:ProgressBoardComponent id="progressBoard" x="0" horizontalAlign="center" verticalAlign="middle" width="100%" height="10%" bottom="0"/>	
 	<mx:Script>
 		<![CDATA[
+			import mx.core.Application;
 			import mx.events.SliderEvent;
 			private var mc:MovieClip;
 			private var stoped:Boolean=true;	//记录当前播放状态是否停止
@@ -14,47 +15,66 @@
 				progressBoard.btnPlayOrPause.addEventListener("play",play);	
 				progressBoard.btnPlayOrPause.addEventListener("pause",pause);
 				progressBoard.btnStop.addEventListener(MouseEvent.CLICK,stop);
+				progressBoard.sldCtrlProgress.snapInterval=1;
+				progressBoard.sldCtrlProgress.buttonMode=true;				
+				progressBoard.sldCtrlProgress.dataTipFormatFunction=formatProgressToolTip;				
 				progressBoard.sldCtrlProgress.addEventListener(SliderEvent.CHANGE,progressChange);
 				progressBoard.sldCtrlProgress.addEventListener(SliderEvent.THUMB_PRESS,thumbPress);
-				progressBoard.sldCtrlProgress.addEventListener(SliderEvent.THUMB_RELEASE,thumbRelease);
+				progressBoard.sldCtrlProgress.addEventListener(SliderEvent.THUMB_RELEASE,thumbRelease);							
 			}
 			
-			private function play(evt:MouseEvent):void
+			public function load(url:String,type:String=null):void
 			{
-				if(stoped)
+				if(type=="flex")
 				{
-					//sendNotification(ApplicationFacade.PLAY);
+					if (contains(progressBoard))                
+			 		removeChild(progressBoard); 
+				}
+				else
+				{
+					if (!contains(progressBoard))                
+			 		addChild(progressBoard); 
+				}				
+				swfLoader.load(url);
+			}
+			
+			public function play(evt:MouseEvent):void
+			{			
+				if(mc!=null && stoped)
+				{
+					mc.play();
 					stoped=false;
 				}
 			}
 			
 			private function pause(evt:MouseEvent):void
 			{
-				if(!stoped)
+				if(mc!=null && !stoped)
 				{
-					//sendNotification(ApplicationFacade.PAUSE);
+					mc.stop();
 					stoped=true;
-				}	
-			}				
-			
-			private function stop(evt:MouseEvent):void
-			{
-				//sendNotification(ApplicationFacade.STOP);
-				if(stoped==false)
-				{
-					stoped=true;
-					progressBoard.pauseState();
-				}			
+				}				
 			}
 			
-			private function progressUpdate(value:uint):void
-			{
-				if(progressBoard.sldCtrlProgress.value!=progressBoard.sldCtrlProgress.maximum)
+			private function stop(evt:MouseEvent):void
+			{				
+				progressBoard.sldCtrlProgress.value=progressBoard.sldCtrlProgress.minimum;
+				if(mc!=null)
 				{
-					progressBoard.sldCtrlProgress.value=value;
+					mc.gotoAndStop(1);
+					if(stoped==false)
+					{
+						stoped=true;
+						progressBoard.pauseState();
+					}	
 				}
-				else
-				{
+			}			
+			
+			private function progressUpdate(evt:Event):void
+			{
+				progressBoard.sldCtrlProgress.value=mc.currentFrame;
+				if(progressBoard.sldCtrlProgress.value==progressBoard.sldCtrlProgress.maximum)
+				{					
 					if(stoped==false)
 					{
 						progressBoard.pauseState();
@@ -65,25 +85,28 @@
 			
 			private function progressChange(evt:SliderEvent):void
 			{ 			
-				if(stoped || pressing)
+				if(mc!=null)
 				{
-					//sendNotification(ApplicationFacade.GOTO_AND_STOP,evt.value);
-				}
-				else
-				{
-					//sendNotification(ApplicationFacade.GOTO_AND_PLAY,evt.value);
-				}
+					if(stoped || pressing)
+					{
+						mc.gotoAndStop(evt.value);
+					}
+					else
+					{
+						mc.gotoAndPlay(evt.value);
+					}
+				}	
 			}
 			
 			private function thumbPress(evt:SliderEvent):void
 			{
-				//sendNotification(ApplicationFacade.PAUSE);
+				mc.stop();
 				pressing=true;
 			}
 			
 			private function thumbRelease(evt:SliderEvent):void
 			{
-				//if(!stoped)sendNotification(ApplicationFacade.PLAY);
+				if(!stoped)mc.play();
 				pressing=false;
 			}	
 			
@@ -91,30 +114,47 @@
 			{
 				try
 				{
-					mc=MovieClip(swfLoader.content);				
-					mc.addEventListener(Event.ENTER_FRAME,enterFrame);									
+					mc=MovieClip(swfLoader.content);	
+					progressBoard.sldCtrlProgress.maximum=mc.totalFrames;			
+					mc.addEventListener(Event.ENTER_FRAME,progressUpdate);					
+					if(stoped==true)
+					{
+						progressBoard.playState();
+						stoped=false;
+					}									
 				}
 				catch(e:Error)
 				{		
 					mc=null;									
 					trace("SWF文件转换成MovieClip对象时出错,可能与flash发布版本有关.");				
-				}			
-				//sendNotification(ApplicationFacade.SWF_LOAD_COMPLETE,mc.totalFrames);
+				}				
 			}		
 			
 			private function swfUnload(evt:Event):void
-			{
+			{				
 				if(mc!=null)
 				{
 					mc.stop();
-					mc.removeEventListener(Event.ENTER_FRAME,enterFrame);
+					mc.removeEventListener(Event.ENTER_FRAME,progressUpdate);
+					mc=null;
 				}
-			}		
+			}
 			
-			private function enterFrame(evt:Event):void
-			{
-				//sendNotification(ApplicationFacade.ENTER_FRAME,evt.target.currentFrame);
-			}	
+			//进度条 播放时间提示格式化
+			public function formatProgressToolTip(value:int):String
+	    	{
+	    		value=Math.ceil(value / 12);  //flash 12frames/s  			
+	    		var result:String = (value % 60).toString();
+	      	    if (result.length == 1)
+	      	    {
+	         		result = Math.floor(value / 60).toString() + ":0" + result;
+	       	 	}
+	      		else
+			  	{
+	       	    	result = Math.floor(value / 60).toString() + ":" + result;
+	       	  	}      			      			 
+	      	    return result;
+	  		} 				
 		]]>
 	</mx:Script>
 </mx:Module>
