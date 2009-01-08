@@ -8,9 +8,9 @@ package puremvc.controller
 	
 	public class ModuleLocatorCommand extends SimpleCommand
 	{
-		private var SwfPlayerModule:String="module/SwfPlayerModule.swf";
-		private var ImagePlayerModule:String="module/ImagePlayerModule.swf";
-		private var FlvPlayerModule:String="module/FlvPlayerModule.swf";
+		public static var SwfPlayerModule:String="module/SwfPlayerModule.swf";
+		public static var ImagePlayerModule:String="module/ImagePlayerModule.swf";
+		public static var FlvPlayerModule:String="module/FlvPlayerModule.swf";
 		
 		public function locate(type:String,path:String):void
 		{			
