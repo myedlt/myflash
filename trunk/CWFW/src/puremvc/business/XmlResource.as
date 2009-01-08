@@ -1,17 +1,23 @@
-package mvc.business
+package puremvc.business
 {
-	import mvc.model.vo.ChapterVO;
-	import mvc.model.vo.CourseVO;
-	import mvc.model.vo.LectureVO;
-	import mvc.model.vo.SectionVO;
+	import puremvc.model.vo.ChapterVO;
+	import puremvc.model.vo.CourseVO;
+	import puremvc.model.vo.LectureVO;
+	import puremvc.model.vo.SectionVO;
 	//xml->object 一门课程包括讲师和章,章中包括节
 	public class XmlResource
 	{
 		static public function parseSection(section:XML):SectionVO
 		{//节:
 			var sec:SectionVO=new SectionVO();
-			sec.name=section.@name;
-			sec.path=section.@path;
+			if(section.hasOwnProperty("@name"))
+			{
+				sec.name=section.@name;
+			}
+			if(section.hasOwnProperty("@path"))
+			{
+				sec.path=section.@path;
+			}			
 			if(section.hasOwnProperty("@type"))
 			{
 				sec.type=section.@type;
@@ -33,9 +39,11 @@ package mvc.business
 		
 		static public function parseChapter(chapter:XML):ChapterVO
 		{//章:
-			var cha:ChapterVO=new ChapterVO();
-			cha.name=chapter.@name;			
-			
+			var cha:ChapterVO=new ChapterVO();					
+			if(chapter.hasOwnProperty("@name"))
+			{
+				cha.name=chapter.@name;	
+			}
 			if(chapter.hasOwnProperty("@title"))
 			{
 				cha.title=chapter.@title;

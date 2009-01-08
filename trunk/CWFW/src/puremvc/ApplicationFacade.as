@@ -1,20 +1,23 @@
-package mvc
+package puremvc
 {
-	import mvc.controller.ApplicationInitializeCommand;
-	import mvc.controller.ApplicationStartupCommand;
-	import mvc.controller.ContentsItemClickCommand;
-	import mvc.controller.NextSectionCommand;
-	import mvc.controller.PreviousSectionCommand;
-	
 	import org.puremvc.as3.patterns.facade.Facade;
+	
+	import puremvc.controller.ApplicationInitializeCommand;
+	import puremvc.controller.ApplicationStartupCommand;
+	import puremvc.controller.ContentsItemClickCommand;
+	import puremvc.controller.DataPrepCommand;
+	import puremvc.controller.NextSectionCommand;
+	import puremvc.controller.PreviousSectionCommand;
 
 	public class ApplicationFacade extends Facade
 	{
+		public var app:Object;
 		// Notification name constants
 		// application
 		public static const INITIALIZE:String = "initialize";	
 						
 		//command
+		public static const STARTUP:String="startup";
 		public static const SWF_LOAD:String = "swfLoad";
 		public static const FLV_LOAD:String = "flvLoad";
 		public static const IMAGE_LOAD:String = "imageLoad";
@@ -39,8 +42,8 @@ package mvc
 		public static const STOP:String="stop";		
 		
 		// proxy
-		public static const LOAD_FILE_FAILED:String = "loadFileFailed";		
-		public static const DATA_READY:String = "dataReady";	
+		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
+		public static const DATA_PREPARE:String = "dataPrepare";	
 		
 		//common messages
 		public static const ERROR_LOAD_FILE:String	= "加载文件失败!";
@@ -54,16 +57,21 @@ package mvc
 		override protected function initializeController():void
 		{
 			super.initializeController();
-			registerCommand(INITIALIZE,ApplicationInitializeCommand);
-			registerCommand(DATA_READY,ApplicationStartupCommand);
+			
+			registerCommand(DATA_PREPARE,DataPrepCommand);	
+			registerCommand(INITIALIZE,ApplicationInitializeCommand);			
+			registerCommand(STARTUP,ApplicationStartupCommand);
+			
 			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
 			registerCommand(NEXT_SECTION,NextSectionCommand);
 			registerCommand(CONTENTS_ITEM_CLICK,ContentsItemClickCommand);
 		}
 		
-		public function init(app:Object):void
+		public function startup(app:Object):void
 		{
-			sendNotification(INITIALIZE,app);
+			this.app=app;
+			sendNotification(DATA_PREPARE);
+			//sendNotification(INITIALIZE);
 		}
 	}
 }

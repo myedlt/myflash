@@ -1,6 +1,6 @@
-package mvc.view
+package puremvc.view
 {
-	import mvc.ApplicationFacade;
+	import puremvc.ApplicationFacade;
 	
 	import mx.controls.Alert;
 	
@@ -14,7 +14,7 @@ package mvc.view
 		
 		public function ApplicationMediator(viewComponent:Object)
 		{
-			super( NAME, viewComponent );
+			super( NAME, viewComponent );			
 			
 			facade.registerMediator( new NavigatorMediator( app.navigator ) );
 			facade.registerMediator( new ContentsMediator( app.contents ) );

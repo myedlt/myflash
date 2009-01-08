@@ -1,12 +1,12 @@
-package mvc.controller
+package puremvc.controller
 {	
 	import module.SwfPlayerModule;
 	
-	import mvc.ApplicationFacade;
-	import mvc.business.CurrentInfo;
-	import mvc.model.CourseProxy;
-	import mvc.view.ModuleLoaderMediator;
-	import mvc.view.SwfPlayerMediator;
+	import puremvc.ApplicationFacade;
+	import puremvc.business.CurrentInfo;
+	import puremvc.model.CourseProxy;
+	import puremvc.view.ModuleLoaderMediator;
+	import puremvc.view.SwfPlayerMediator;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;	

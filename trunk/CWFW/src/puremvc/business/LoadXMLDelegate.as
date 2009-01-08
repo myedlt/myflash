@@ -1,4 +1,4 @@
-package mvc.business
+package puremvc.business
 {
 	import mx.rpc.AsyncToken;
 	import mx.rpc.IResponder;

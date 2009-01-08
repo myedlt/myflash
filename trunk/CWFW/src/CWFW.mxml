@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"	xmlns:view="mvc.view.component.*" creationComplete="facade.init(this);">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"	xmlns:view="puremvc.view.component.*" creationComplete="facade.startup(this);">
 	<!--<mx:Style source="assets/skin/default.css"/>-->
 	<mx:Script>
 		<![CDATA[
-			import mvc.ApplicationFacade;					
+			import puremvc.ApplicationFacade;					
 			private var facade:ApplicationFacade=ApplicationFacade.getInstance();			
 		]]>
 	</mx:Script>

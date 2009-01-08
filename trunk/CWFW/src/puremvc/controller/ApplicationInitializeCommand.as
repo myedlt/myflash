@@ -1,18 +1,13 @@
-package mvc.controller
-{
-	import mvc.model.DataPrepareProxy;
+package puremvc.controller
+{	
+	import org.puremvc.as3.patterns.command.MacroCommand;
 	
-	import org.puremvc.as3.interfaces.INotification;
-	import org.puremvc.as3.patterns.command.SimpleCommand;
-	
-	import mvc.view.ApplicationMediator;	
-	
-	public class ApplicationInitializeCommand extends SimpleCommand
+	public class ApplicationInitializeCommand extends MacroCommand
 	{
-		override public function execute( note:INotification ) :void    
-		{			 	
-        	facade.registerMediator( new ApplicationMediator( note.getBody() ) );  
-        	facade.registerProxy(new DataPrepareProxy());         	
-        }
+		override protected function initializeMacroCommand() :void
+        {
+            addSubCommand( ViewPrepCommand );
+            addSubCommand( ModelPrepCommand );            
+        }		
 	}
 }

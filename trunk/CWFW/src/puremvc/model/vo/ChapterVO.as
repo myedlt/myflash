@@ -1,4 +1,4 @@
-package mvc.model.vo
+package puremvc.model.vo
 {
 	public class ChapterVO
 	{
