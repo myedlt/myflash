@@ -1,31 +1,31 @@
 package puremvc.business
-{
-	import mx.rpc.AsyncToken;
-	import mx.rpc.IResponder;
-	import mx.rpc.http.HTTPService;
-
+{	
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;	
+	
 	public class LoadXMLDelegate
-	{
-		private var responder : IResponder;
-		private var service : HTTPService;
-		
-		public function LoadXMLDelegate( responder : IResponder, url:String) 
-		{
-			// constructor will store a reference to the service we're going to call
-			this.service = new HTTPService();
-			this.service.resultFormat = 'xml';
-			this.service.url = url;
+	{	
+		public var loader:URLLoader;
+		private var request:URLRequest
 			
-			// and store a reference to the proxy that created this delegate
-			this.responder = responder;
+		public function LoadXMLDelegate(url:String) 
+		{				
+			request=new URLRequest(url);	
+			loader=new URLLoader();	
+			//loader.addEventListener(Event.COMPLETE,loadComplete);
+			//loader.addEventListener(IOErrorEvent.IO_ERROR,ioError);				
 		}
-
-		public function load() : void 
+		
+		public function load():void
 		{
-			// call the service
-			var token:AsyncToken = service.send();
-			// notify this responder when the service call completes
-			token.addResponder( this.responder );
-		}
+			try 
+			{
+                loader.load(request);
+            }
+            catch (error:SecurityError)
+            {
+                trace("A SecurityError has occurred.");
+            }
+		}		
 	}
 }

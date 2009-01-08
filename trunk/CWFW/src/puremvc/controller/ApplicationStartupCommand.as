@@ -1,15 +1,11 @@
 package puremvc.controller
-{	
-	import module.SwfPlayerModule;
+{
+	import org.puremvc.as3.interfaces.INotification;
+	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.business.CurrentInfo;
-	import puremvc.model.CourseProxy;
-	import puremvc.view.ModuleLoaderMediator;
-	import puremvc.view.SwfPlayerMediator;
-	
-	import org.puremvc.as3.interfaces.INotification;
-	import org.puremvc.as3.patterns.command.SimpleCommand;	
+	import puremvc.model.CourseProxy;	
 	    
     public class ApplicationStartupCommand extends SimpleCommand
     {
@@ -35,22 +31,7 @@ package puremvc.controller
         		sendNotification(ApplicationFacade.SECTION_CHANGE,currInfo.getCurrentSection().name);     		
         	}        	
         	sendNotification(ApplicationFacade.CHAPTER_CHANGE,currInfo.getCurrentChapter().name); 
-        	switch(type)
-        	{
-        		case "flash":
-        			sendNotification(ApplicationFacade.MODULE_LOAD,"module/SwfPlayerModule.swf");
-        			
-        			break;
-        		case "flex":
-        		case "image":
-        			sendNotification(ApplicationFacade.MODULE_LOAD,"module/ImagePlayerModule.swf");
-        			
-        			break;
-        		case "flv":
-        			sendNotification(ApplicationFacade.MODULE_LOAD,"module/FlvPlayerModule.swf");
-        			
-        			break;
-        	}        	       	
+        	new ModuleLocatorCommand().locate(type,path);  	       	
         }
     }
 }

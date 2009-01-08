@@ -29,17 +29,7 @@ package puremvc
 		//mediator
 		public static const PREVIOUS_SECTION:String="previousSection";
 		public static const NEXT_SECTION:String="nextSection";
-		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";
-		public static const SWF_LOAD_COMPLETE:String="swfLoadComplete";
-		public static const FLV_LOAD_COMPLETE:String="flvLoadComplete";
-		public static const SWF_UNLOAD:String="swfUnload";
-		public static const ENTER_FRAME:String="enterFrame";
-		public static const PLAYHEAD_UPDATE:String="playheadUpdate";
-		public static const GOTO_AND_PLAY:String="gotoAndPlay";
-		public static const GOTO_AND_STOP:String="gotoAndStop";	
-		public static const PLAY:String="play";	
-		public static const PAUSE:String="pause";	
-		public static const STOP:String="stop";		
+		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";				
 		
 		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
@@ -70,8 +60,7 @@ package puremvc
 		public function startup(app:Object):void
 		{
 			this.app=app;
-			sendNotification(DATA_PREPARE);
-			//sendNotification(INITIALIZE);
+			sendNotification(DATA_PREPARE);			
 		}
 	}
 }

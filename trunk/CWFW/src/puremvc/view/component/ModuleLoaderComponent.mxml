@@ -3,14 +3,31 @@
 	<mx:Script>
 		<![CDATA[
 		    import mx.events.ModuleEvent;
+			private var standin:DisplayObject;
 			
 			public function init():void
 			{				
 				//addEventListener(ModuleEvent.PROGRESS,onProgress);//ProgressBar mode属性 默认值为 ProgressBarMode.EVENT 即事件模式 该模式下使用source属性	度量有进度事件的控件			
 				addEventListener(ModuleEvent.READY, onReady);
-				addEventListener(ModuleEvent.ERROR, onError);							
+				addEventListener(ModuleEvent.ERROR, onError);
+				addEventListener("urlChanged", onUrlChanged);	
+				standin = canvas;        
+				removeChild(standin);        						
 			}			   
-			  
+			
+			 public function onUrlChanged(event:Event):void 
+			 {        
+			 	if (url == null) 
+			 	{            
+			 		if (contains(standin))                
+			 		removeChild(standin);        
+			 	}
+				else 
+				{            
+					if (!contains(standin))                
+					addChild(standin);        
+				}								
+			}  
 			/* public function onProgress(event:Event):void 
 			{        
 				progress.label="LOADING %3%%";	//label默认值	"LOADING %3%%"	      
@@ -18,14 +35,15 @@
 			  
 			public function onReady(event:Event):void 
 			{ 			    
-				removeChild(canvas);    
+				 if (contains(standin))            
+				 removeChild(standin);  
 			}    
 			  
 			public function onError(event:Event):void 
 			{  
-				progress.indeterminate=true;//不可见外观默认为false      
+				progress.indeterminate=true;//不可见外 观默认为false      
 				progress.label="Error loading module " + url;        
-			}			
+			}					
 		]]>
 	</mx:Script>
 	<mx:Canvas id="canvas" width="100%" height="100%">    

@@ -1,13 +1,14 @@
 package puremvc.view
 {
-	import puremvc.ApplicationFacade;
-	import puremvc.model.CourseProxy;	
 	import mx.controls.Tree;
 	import mx.events.ListEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
-	import org.puremvc.as3.patterns.mediator.Mediator;	
+	import org.puremvc.as3.patterns.mediator.Mediator;
+	
+	import puremvc.ApplicationFacade;
+	import puremvc.model.CourseProxy;
 	//课程目录的"中介器"
 	public class ContentsMediator extends Mediator implements IMediator
 	{
@@ -22,7 +23,7 @@ package puremvc.view
 		private function initialize():void
 		{
 			treeContents.labelField="@name";
-			treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;
+			treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
 			treeContents.callLater(expandAllNode);//初始展开所有节点			
 		}
 		
@@ -39,7 +40,7 @@ package puremvc.view
 			if(!treeContents.dataDescriptor.isBranch(evt.target.selectedItem))
 			{							
 				sendNotification(ApplicationFacade.CONTENTS_ITEM_CLICK,evt.target.selectedItem);				
-				trace("itemClick:"+evt.target.selectedItem.toXMLString());
+				//trace("itemClick:"+evt.target.selectedItem.toXMLString());
 			}			
 		}
 		
