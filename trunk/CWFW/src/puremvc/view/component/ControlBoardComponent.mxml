@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" horizontalAlign="center" verticalAlign="middle" horizontalGap="10">
 	<mx:Spacer width="10"/>
-	<mx:Button id="btnPrevSection"/>
-	<mx:Button x="93" y="41" id="btnNextSection"/>
+	<mx:Button id="btnPrevSection" label="&lt;&lt;"/>
+	<mx:Button x="93" y="41" id="btnNextSection" label="&gt;&gt;"/>
 	<mx:Spacer width="70%"/>
 	<mx:Button id="btnColumnOpenOrClose" click="openOrClose()"/>
 	<mx:HSlider id="sldCtrlColumn" width="70" maximum="1" minimum="0" value="0.6" liveDragging="true"
@@ -17,6 +17,7 @@
 			private function init():void
 			{				
 				openState();//音量开关处于打开状态
+				sldCtrlColumn.getThumbAt(0).buttonMode=true;//当鼠标移到音量控制条的滑块上时指针为手型
 			}
 			
 			//音量关闭或打开
