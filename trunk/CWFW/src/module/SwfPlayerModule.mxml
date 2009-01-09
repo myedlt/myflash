@@ -118,11 +118,8 @@
 					mc=MovieClip(swfLoader.content);	
 					progressBoard.sldCtrlProgress.maximum=mc.totalFrames;			
 					mc.addEventListener(Event.ENTER_FRAME,progressUpdate);					
-					if(stoped==true)
-					{
-						progressBoard.playState();
-						stoped=false;
-					}									
+					progressBoard.playState();
+					stoped=false;
 				}
 				catch(e:Error)
 				{		

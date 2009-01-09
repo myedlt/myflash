@@ -23,7 +23,7 @@
 			//音量关闭或打开
 			private function openOrClose():void
 			{
-				if(btnColumnOpenOrClose.toolTip=="关闭")
+				if(btnColumnOpenOrClose.toolTip=="静音")
 				{
 					closeState();
 					soundTrans.volume=0;
@@ -39,7 +39,7 @@
 			
 			private function columeChange(evt:SliderEvent):void
 			{
-				if(btnColumnOpenOrClose.toolTip=="关闭")
+				if(btnColumnOpenOrClose.toolTip=="静音")
 				{
 					soundTrans.volume=evt.value;
 					SoundMixer.soundTransform=soundTrans;
@@ -48,12 +48,12 @@
 			
 			private function openState():void
 			{
-				btnColumnOpenOrClose.toolTip="关闭";
+				btnColumnOpenOrClose.toolTip="静音";
 			}
 			
 			private function closeState():void
 			{
-				btnColumnOpenOrClose.toolTip="打开";
+				btnColumnOpenOrClose.toolTip="打开音量";
 			}
 			
 	  		//音量控制条 音量大小提示格式化	
