@@ -5,7 +5,7 @@
 		"退出"按钮的显示名如果不叫"退出",那么其位置一定要位于最后即Navigator标签的最后一个元素;
 	-->	
 	<Navigator>		
-		<button label="帮助" url="navigator/help/index.html"/>	
+		<button label="帮助" url="http://www.baidu.com"/>	
 		<button label="退出" url="javascript:window.close();"/>		
 	</Navigator>	
 	<!--课程列表	
@@ -38,7 +38,7 @@
 				<section name="第一节" type="flv" path="assets/courses/course01/chapter02/001.flv"/>				
 				<section name="第二节" type="flv" path="assets/courses/course01/chapter02/002.flv"/>															
 			</Chapter>	
-			<Chapter name="测试题(flex)" type="flex" path="assets/courses/course01/exercise.swf"/>		
+			<Chapter name="测试题[flex]" type="flex" path="assets/courses/course01/exercise.swf"/>		
 		</Course>		
 	</CourseList>
 	<!-- 版权信息 -->
