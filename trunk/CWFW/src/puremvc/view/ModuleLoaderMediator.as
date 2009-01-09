@@ -14,7 +14,7 @@ package puremvc.view
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.controller.ModuleLocatorCommand;	
+	import puremvc.business.ModuleLocator;	
 
 	public class ModuleLoaderMediator extends Mediator implements IMediator
 	{
@@ -41,11 +41,11 @@ package puremvc.view
 		
 		public function doUnload():void
 		{
-			if(ModuleManager.getModule(ModuleLocatorCommand.SwfPlayerModule).loaded)
+			if(ModuleManager.getModule(ModuleLocator.SwfPlayerModule).loaded)
 			{
 				SwfPlayerModule(moduleLoader.child).swfUnload(null);
 			}
-			if(ModuleManager.getModule(ModuleLocatorCommand.FlvPlayerModule).loaded)
+			if(ModuleManager.getModule(ModuleLocator.FlvPlayerModule).loaded)
 			{
 				FlvPlayerModule(moduleLoader.child).stop(null);
 			}

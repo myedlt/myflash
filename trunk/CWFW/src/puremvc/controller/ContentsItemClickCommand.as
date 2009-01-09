@@ -1,15 +1,16 @@
 package puremvc.controller
 {
-	import puremvc.ApplicationFacade;
-	import puremvc.business.CurrentInfo;
-	import puremvc.business.XmlResource;
-	import puremvc.view.ContentsMediator;
-	
 	import mx.controls.Tree;
 	import mx.utils.ObjectUtil;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
+	
+	import puremvc.ApplicationFacade;
+	import puremvc.business.CurrentInfo;
+	import puremvc.business.ModuleLocator;
+	import puremvc.business.XmlResource;
+	import puremvc.view.ContentsMediator;
 
 	public class ContentsItemClickCommand extends SimpleCommand
 	{
@@ -39,7 +40,8 @@ package puremvc.controller
 				} 				
 			}
 			//sendNotification(ApplicationFacade.SWF_LOAD,selectedItem.@path);	
-			new ModuleLocatorCommand().locate(selectedItem.hasOwnProperty("@type")?selectedItem.@type:"flash",selectedItem.@path);			
+			var noteData:Object=ModuleLocator.locate(selectedItem.hasOwnProperty("@type")?selectedItem.@type:"flash",selectedItem.@path);  
+        	sendNotification(noteData.noteType,noteData.noteBody); 
 		}
 	}
 }

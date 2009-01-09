@@ -1,15 +1,16 @@
 package puremvc.controller
 {
-	import puremvc.ApplicationFacade;
-	import puremvc.business.CurrentInfo;
-	import puremvc.model.vo.ChapterVO;
-	import puremvc.model.vo.CourseVO;
-	import puremvc.model.vo.SectionVO;
-	
 	import mx.utils.ObjectUtil;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
+	
+	import puremvc.ApplicationFacade;
+	import puremvc.business.CurrentInfo;
+	import puremvc.business.ModuleLocator;
+	import puremvc.model.vo.ChapterVO;
+	import puremvc.model.vo.CourseVO;
+	import puremvc.model.vo.SectionVO;
 
 	public class PreviousSectionCommand extends SimpleCommand
 	{
@@ -37,7 +38,8 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(currChapter.sections[index-1]);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[index-1].path);
-						new ModuleLocatorCommand().locate(currChapter.sections[index-1].type,currChapter.sections[index-1].path);
+						var noteData1:Object=ModuleLocator.locate(currChapter.sections[index-1].type,currChapter.sections[index-1].path);  
+        				sendNotification(noteData1.noteType,noteData1.noteBody); 
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[index-1].name);
 					}
 					else
@@ -77,7 +79,8 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(currChapter.sections[currChapter.sections.length-1]);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[currChapter.sections.length-1].path);
-						new ModuleLocatorCommand().locate(currChapter.sections[currChapter.sections.length-1].type,currChapter.sections[currChapter.sections.length-1].path);
+						var noteData2:Object=ModuleLocator.locate(currChapter.sections[currChapter.sections.length-1].type,currChapter.sections[currChapter.sections.length-1].path);  
+        				sendNotification(noteData2.noteType,noteData2.noteBody);
 						sendNotification(ApplicationFacade.CHAPTER_CHANGE,currChapter.name);
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[currChapter.sections.length-1].name);
 					}
@@ -85,7 +88,8 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(null);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.path);
-						new ModuleLocatorCommand().locate(currChapter.type,currChapter.path);
+						var noteData3:Object=ModuleLocator.locate(currChapter.type,currChapter.path);  
+        				sendNotification(noteData3.noteType,noteData3.noteBody);
 						sendNotification(ApplicationFacade.SINGLE_CHAPTER,currChapter.name);
 					}							
 				}

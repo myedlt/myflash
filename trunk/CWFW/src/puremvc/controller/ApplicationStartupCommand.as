@@ -5,6 +5,7 @@ package puremvc.controller
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.business.CurrentInfo;
+	import puremvc.business.ModuleLocator;
 	import puremvc.model.CourseProxy;	
 	    
     public class ApplicationStartupCommand extends SimpleCommand
@@ -31,7 +32,8 @@ package puremvc.controller
         		sendNotification(ApplicationFacade.SECTION_CHANGE,currInfo.getCurrentSection().name);     		
         	}        	
         	sendNotification(ApplicationFacade.CHAPTER_CHANGE,currInfo.getCurrentChapter().name); 
-        	new ModuleLocatorCommand().locate(type,path);  	       	
+        	var noteData:Object=ModuleLocator.locate(type,path);  
+        	sendNotification(noteData.noteType,noteData.noteBody);       	
         }
     }
 }
