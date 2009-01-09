@@ -7,6 +7,7 @@ package puremvc.controller
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.business.CurrentInfo;
+	import puremvc.business.ModuleLocator;
 	import puremvc.model.vo.ChapterVO;
 	import puremvc.model.vo.CourseVO;
 	import puremvc.model.vo.SectionVO;
@@ -38,7 +39,8 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(currChapter.sections[index+1]);//把下一节作为当前节
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[index+1].path);//发送加载下一节的swf通知
-						new ModuleLocatorCommand().locate(currChapter.sections[index+1].type,currChapter.sections[index+1].path); 
+						var noteData1:Object=ModuleLocator.locate(currChapter.sections[index+1].type,currChapter.sections[index+1].path);  
+        				sendNotification(noteData1.noteType,noteData1.noteBody); 
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[index+1].name);//发送"当前位置"中的节名改变通知
 					}
 					else
@@ -79,7 +81,8 @@ package puremvc.controller
 					{//如果该章有节 则把第一节作为当前节并加载swf、改变"当前位置"
 						currInfo.setCurrentSection(currChapter.sections[0]);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[0].path);
-						new ModuleLocatorCommand().locate(currChapter.sections[0].type,currChapter.sections[0].path);
+						var noteData2:Object=ModuleLocator.locate(currChapter.sections[0].type,currChapter.sections[0].path);  
+        				sendNotification(noteData2.noteType,noteData2.noteBody); 
 						sendNotification(ApplicationFacade.CHAPTER_CHANGE,currChapter.name);
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[0].name);
 					}
@@ -87,7 +90,8 @@ package puremvc.controller
 					{//如果该章没有节 即是一个单独的章 则把当前节置空，加载章的swf 并在“当前位置”中只显示章名
 						currInfo.setCurrentSection(null);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.path);
-						new ModuleLocatorCommand().locate(currChapter.type,currChapter.path);
+						var noteData3:Object=ModuleLocator.locate(currChapter.type,currChapter.path);  
+        				sendNotification(noteData3.noteType,noteData3.noteBody); 
 						sendNotification(ApplicationFacade.SINGLE_CHAPTER,currChapter.name);
 					}							
 				}
