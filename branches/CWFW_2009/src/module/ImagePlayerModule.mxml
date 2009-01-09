@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%">
+	<mx:Image id="image" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" verticalAlign="middle" horizontalAlign="center" scaleContent="true" autoLoad="true"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import puremvc.business.LoadXMLDelegate;
+			private var images:XMLList;
+			private var index:int;
+			
+			public function load(url:String):void
+			{
+				var delegate : LoadXMLDelegate = new LoadXMLDelegate(url);
+				delegate.loader.addEventListener(Event.COMPLETE,result);
+				delegate.loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
+				delegate.load();
+				boxImgCtrl.visible=true;
+			}			
+			
+			public function result(evt:Event):void
+			{
+				try 
+				{
+	            	images = XML(evt.target.data).Image;	            	
+	            	if(images.length()==1)
+	            	{
+	            		boxImgCtrl.visible=false;
+	            		image.source=images.toString();
+	            	}
+	            	else
+	            	{
+	            		index=0;
+	            		image.source=images[index].toString();
+	            	}
+	            }
+	            catch (e:TypeError) 
+	            {
+	            	trace("Could not parse the XML file.");
+	            }				         				
+			}
+			
+			public function fault(evt:IOErrorEvent):void
+			{		
+				Alert.show("加载文件失败!\n"+evt.text);			
+			}
+			
+			public function next():void
+			{				
+				if(index<images.length()-1)
+				{
+					index++;
+					image.source=images[index].toString();
+				}
+			}
+			
+			public function previous():void
+			{
+				if(index>0)
+				{
+					index--;
+					image.source=images[index].toString();
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox id="boxImgCtrl" width="100" horizontalAlign="center" verticalAlign="middle" right="0" height="30" top="0">
+		<mx:Button label="&lt;" id="btnPre" click="previous()"/>
+		<mx:Button label="&gt;" id="btnNext" click="next()"/>
+	</mx:HBox>
+</mx:Module>
