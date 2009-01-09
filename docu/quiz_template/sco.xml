@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-
-
-<sco include_question_cnt="false" indexTooltip="true" pageComplete="false" styleName="compactPlayer8 (800x600)" completion="None" transition="fade" tranDirection="right" transitionTime="1" exitButton="true" audioButton="true" pageNumbering="false" saturationPercent="100" persIndex="false" loadCourseLogo="true" indexHeader="0xCCCCCC" indexTopicColor="0x000000" indexLinkOverColor="0x333333" indexLinkColor="0x000000" titleFieldColor="0x000000" headerColor="0xCCCCCC" footerColor="0xCCCCCC" glossaryHeader="0xCCCCCC" glossaryColor="0xCCCCCC" backgroundColor="0xFFFFFF" indexColor="0xCCCCCC" buttonTextColor="0x333333" buttonColor="0x333333" xmlns="www.rapidintake.com/xmlgrammars/fc/sco" title="Review Quiz" tracking="none" narration="true" glossary="true">
-	<topics isthisused="true">
-		<page file="swfs/quiz.swf" isTocEntry="true" loadPercentage="0" id="quiz-1" pType="quiz" title="Start the Quiz"></page>
-	</topics>
-</sco>
