@@ -1,0 +1,13 @@
+﻿<flash_project name="CWFW-Flash" version="1">
+    <project_folder name="src" expanded="false">
+        <project_folder name="info" expanded="true">
+            <project_folder name="osmatrix" expanded="true">
+                <project_folder name="uicomponent" expanded="true">
+                    <project_file path="./src/info/osmatrix/uicomponent/UIChapter.as" filetype="as" />
+                </project_folder>
+                <project_file path="./src/info/osmatrix/CWFW.as" filetype="as" />
+            </project_folder>
+        </project_folder>
+    </project_folder>
+    <project_file path="./CWFW.fla" filetype="fla" profile="" />
+</flash_project>
