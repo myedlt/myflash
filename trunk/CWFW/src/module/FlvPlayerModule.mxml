@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" xmlns:view="puremvc.view.component.*" creationComplete="init()">
 	<mx:VideoDisplay id="videoDisplay" width="100%" height="90%" x="0" y="0" ready="loadComplete(event)" playheadUpdate="progressUpdate(event)"
-		 complete="playComplete(event)" playheadUpdateInterval="10" autoPlay="true"/>
+		 complete="playComplete(event)" bufferTime="0.5" playheadUpdateInterval="10" autoPlay="true"/>
 	<view:ProgressBoardComponent id="progressBoard" x="0" bottom="0" width="100%" height="10%"/>
 	<mx:Script>
 		<![CDATA[
