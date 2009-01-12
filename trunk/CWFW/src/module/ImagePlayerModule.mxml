@@ -4,7 +4,7 @@
 	<mx:Script>
 		<![CDATA[
 			import mx.controls.Alert;
-			import puremvc.business.LoadXMLDelegate;
+			import puremvc.model.utils.LoadXMLDelegate;
 			private var images:XMLList;
 			private var index:int;
 			

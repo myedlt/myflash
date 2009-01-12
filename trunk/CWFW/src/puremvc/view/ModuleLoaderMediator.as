@@ -14,7 +14,7 @@ package puremvc.view
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.business.ModuleLocator;	
+	import puremvc.model.utils.ModuleLocator;	
 
 	public class ModuleLoaderMediator extends Mediator implements IMediator
 	{

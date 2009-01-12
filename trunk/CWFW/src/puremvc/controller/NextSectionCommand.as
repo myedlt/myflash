@@ -6,8 +6,8 @@ package puremvc.controller
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.business.CurrentInfo;
-	import puremvc.business.ModuleLocator;
+	import puremvc.model.utils.CurrentInfo;
+	import puremvc.model.utils.ModuleLocator;
 	import puremvc.model.vo.ChapterVO;
 	import puremvc.model.vo.CourseVO;
 	import puremvc.model.vo.SectionVO;
