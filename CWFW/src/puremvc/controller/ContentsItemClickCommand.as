@@ -7,9 +7,9 @@ package puremvc.controller
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.business.CurrentInfo;
-	import puremvc.business.ModuleLocator;
-	import puremvc.business.XmlResource;
+	import puremvc.model.utils.CurrentInfo;
+	import puremvc.model.utils.ModuleLocator;
+	import puremvc.model.utils.XmlResource;
 	import puremvc.view.ContentsMediator;
 
 	public class ContentsItemClickCommand extends SimpleCommand

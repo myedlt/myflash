@@ -7,7 +7,7 @@ package puremvc.model
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.business.LoadXMLDelegate;
+	import puremvc.model.utils.LoadXMLDelegate;
 	//数据初始化(加载xml数据文件),数据加载完毕发送INITIALIZE通知
 	public class DataProxy extends Proxy implements IProxy
 	{

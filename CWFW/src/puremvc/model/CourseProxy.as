@@ -3,7 +3,7 @@ package puremvc.model
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
-	import puremvc.business.XmlResource;
+	import puremvc.model.utils.XmlResource;
 	//对课程数据模型代理
 	public class CourseProxy extends Proxy implements IProxy
 	{			
