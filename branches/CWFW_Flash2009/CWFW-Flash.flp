@@ -1,5 +1,5 @@
 ﻿<flash_project name="CWFW-Flash" version="1">
-    <project_folder name="src" expanded="false">
+    <project_folder name="src" expanded="true">
         <project_folder name="info" expanded="true">
             <project_folder name="osmatrix" expanded="true">
                 <project_folder name="uicomponent" expanded="true">
