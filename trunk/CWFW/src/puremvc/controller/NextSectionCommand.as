@@ -1,6 +1,6 @@
 package puremvc.controller
 {
-	import mx.utils.ObjectUtil;
+	//import mx.utils.ObjectUtil;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
@@ -28,7 +28,8 @@ package puremvc.controller
 				var index:int=-1;
 				for(var i:int=0;i<currChapter.sections.length;i++)
 				{
-					if(ObjectUtil.compare(currChapter.sections[i],currSection,0)==0)
+					//if(ObjectUtil.compare(currChapter.sections[i],currSection,0)==0)
+					if(currChapter.sections[i].id==currSection.id)
 					{
 						index=i; break;
 					}
@@ -66,7 +67,8 @@ package puremvc.controller
 			var i:int=-1;
 			for(var k:int=0;k<currCourse.chapters.length;k++)
 			{
-				if(ObjectUtil.compare(currCourse.chapters[k],currChapter,0)==0)
+				//if(ObjectUtil.compare(currCourse.chapters[k],currChapter,0)==0)
+				if(currCourse.chapters[k].id==currChapter.id)
 				{
 					i=k; break;
 				}

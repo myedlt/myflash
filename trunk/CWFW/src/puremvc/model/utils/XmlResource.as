@@ -9,7 +9,11 @@ package puremvc.model.utils
 	{
 		static public function parseSection(section:XML):SectionVO
 		{//节:
-			var sec:SectionVO=new SectionVO();
+			var sec:SectionVO=new SectionVO();			
+			if(section.hasOwnProperty("@id"))
+			{
+				sec.id=section.@id;
+			}
 			if(section.hasOwnProperty("@name"))
 			{
 				sec.name=section.@name;
@@ -39,7 +43,11 @@ package puremvc.model.utils
 		
 		static public function parseChapter(chapter:XML):ChapterVO
 		{//章:
-			var cha:ChapterVO=new ChapterVO();					
+			var cha:ChapterVO=new ChapterVO();	
+			if(chapter.hasOwnProperty("@id"))
+			{
+				cha.id=chapter.@id;
+			}				
 			if(chapter.hasOwnProperty("@name"))
 			{
 				cha.name=chapter.@name;	
@@ -88,6 +96,10 @@ package puremvc.model.utils
 				chapters.push(parseChapter(chapter));
 			}
 			cou.chapters=chapters;
+			if(course.hasOwnProperty("@id"))
+			{
+				cou.id=course.@id;
+			}	
 			if(course.hasOwnProperty("@name"))
 			{
 				cou.name=course.@name;
@@ -114,10 +126,14 @@ package puremvc.model.utils
 		static public function parseLecture(lecture:XMLList):LectureVO
 		{//讲师:
 			var lec:LectureVO=new LectureVO();
+			if(lecture.id!=undefined)
+			{
+				lec.id=lecture.id;
+			}
 			if(lecture.name!=undefined)
 			{
 				lec.name=lecture.name;
-			}
+			}				
 			if(lecture.sex!=undefined)
 			{
 				lec.sex=lecture.sex;
