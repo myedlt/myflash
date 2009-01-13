@@ -2,6 +2,7 @@ package puremvc.model.vo
 {
 	public class NavigatorVO
 	{
+		public var id:String;
 		public var label:String;
 		public var url:String;		
 		

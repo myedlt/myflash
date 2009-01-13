@@ -18,6 +18,7 @@ package puremvc
 						
 		//command
 		public static const STARTUP:String="startup";
+		public static const TREE_INIT:String="treeInit";
 		public static const SWF_LOAD:String = "swfLoad";
 		public static const FLV_LOAD:String = "flvLoad";
 		public static const IMAGE_LOAD:String = "imageLoad";

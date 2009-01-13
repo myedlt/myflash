@@ -1,5 +1,6 @@
 package puremvc.view
 {
+	import mx.collections.ArrayCollection;
 	import mx.controls.Tree;
 	import mx.events.ListEvent;
 	
@@ -8,7 +9,8 @@ package puremvc.view
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.model.CourseProxy;
+	import puremvc.model.utils.CurrentInfo;
+	import puremvc.model.vo.ChapterVO;
 	//课程目录的"中介器"
 	public class ContentsMediator extends Mediator implements IMediator
 	{
@@ -22,14 +24,20 @@ package puremvc.view
 		
 		private function initialize():void
 		{
-			treeContents.labelField="@name";
-			treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
+			//treeContents.labelField="@name";
+			//treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;	
+			treeContents.labelField="name";				
+			var chapterList:Array = CurrentInfo.getInstance().getCurrentCourse().chapters;			
+        	for each(var chapter:ChapterVO in chapterList)
+			{        					
+				treeDataProvider.addItem({name:chapter.name,children:chapter.sections,vo:chapter});				
+        	}									
 			treeContents.callLater(expandAllNode);//初始展开所有节点			
 		}
 		
 		public function expandAllNode():void
 		{
-			for each(var item:XML in treeContents.dataProvider)
+			for each(var item:Object in treeContents.dataProvider)
 			{					
 				treeContents.expandChildrenOf(item,true);
 			}
@@ -47,7 +55,7 @@ package puremvc.view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.STARTUP			
+						ApplicationFacade.TREE_INIT			
 				   ];
 		} 
 				
@@ -55,13 +63,18 @@ package puremvc.view
 		{
 			 switch ( note.getName() ) 
 			 {
-			 	case ApplicationFacade.STARTUP : initialize(); break;				
+			 	case ApplicationFacade.TREE_INIT : initialize(); break;				
              }
 		} 
 		
 		public function get treeContents():Tree
 		{
             return viewComponent.treeContents as Tree;
-        }	 
+        }	
+        
+        public function get treeDataProvider():ArrayCollection
+		{
+            return viewComponent.treeDataProvider as ArrayCollection;
+        }	  
 	}
 }
