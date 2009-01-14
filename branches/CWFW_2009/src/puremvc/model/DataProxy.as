@@ -27,7 +27,7 @@ package puremvc.model
 			try 
 			{
             	this.data = new XML(evt.target.data);
-            	sendNotification(ApplicationFacade.INITIALIZE);
+            	sendNotification(ApplicationFacade.STARTUP);
             }
             catch (e:TypeError) 
             {

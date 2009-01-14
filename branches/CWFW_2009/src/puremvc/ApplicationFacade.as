@@ -2,19 +2,14 @@ package puremvc
 {
 	import org.puremvc.as3.patterns.facade.Facade;
 	
-	import puremvc.controller.ApplicationInitializeCommand;
-	import puremvc.controller.ApplicationStartupCommand;
-	import puremvc.controller.ContentsItemClickCommand;
-	import puremvc.controller.DataPrepCommand;
-	import puremvc.controller.NextSectionCommand;
-	import puremvc.controller.PreviousSectionCommand;
+	import puremvc.controller.*;
 
 	public class ApplicationFacade extends Facade
 	{
 		public var app:Object;
 		// Notification name constants
 		// application
-		public static const INITIALIZE:String = "initialize";	
+		public static const INIT:String = "initialize";	
 						
 		//command
 		public static const STARTUP:String="startup";
@@ -44,23 +39,28 @@ package puremvc
 			return instance as ApplicationFacade;
 		}
 		
+		// 注册Command，建立Command与 Notification之间的映射 
 		override protected function initializeController():void
 		{
 			super.initializeController();
 			
-			registerCommand(DATA_PREPARE,DataPrepCommand);	
-			registerCommand(INITIALIZE,ApplicationInitializeCommand);			
-			registerCommand(STARTUP,ApplicationStartupCommand);
+			// Proxy和Mediator对象创建，并加载xml文件，加载完成后发STARTUP消息
+			registerCommand(INIT,AppInitCommand);
+			// 对象数据初始化		
+			registerCommand(STARTUP,AppStartupCommand);
 			
+			// UI交互命令
 			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
 			registerCommand(NEXT_SECTION,NextSectionCommand);
 			registerCommand(CONTENTS_ITEM_CLICK,ContentsItemClickCommand);
 		}
 		
-		public function startup(app:Object):void
-		{
-			this.app=app;
-			sendNotification(DATA_PREPARE);			
-		}
+		//启动 PureMVC，在应用程序中调用此方法，并传递应用程序本身的引用 
+	   	public function startup( viewComponent:Object ) : void  
+	   	{   
+	   		this.app = viewComponent;
+			sendNotification( INIT, app ); 
+	   	} 
+		
 	}
 }
