@@ -11,12 +11,13 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="CWFW.mxml"/>
+<application path="Main.mxml"/>
+<application path="index.mxml"/>
 </applications>
 <modules>
-<module application="src/CWFW.mxml" destPath="module/SwfPlayerModule.swf" optimize="true" sourcePath="src/module/SwfPlayerModule.mxml"/>
-<module application="src/CWFW.mxml" destPath="module/FlvPlayerModule.swf" optimize="true" sourcePath="src/module/FlvPlayerModule.mxml"/>
-<module application="src/CWFW.mxml" destPath="module/ImagePlayerModule.swf" optimize="true" sourcePath="src/module/ImagePlayerModule.mxml"/>
+<module application="src/Main.mxml" destPath="module/SwfPlayerModule.swf" optimize="false" sourcePath="src/module/SwfPlayerModule.mxml"/>
+<module application="src/Main.mxml" destPath="module/FlvPlayerModule.swf" optimize="false" sourcePath="src/module/FlvPlayerModule.mxml"/>
+<module application="src/Main.mxml" destPath="module/ImagePlayerModule.swf" optimize="false" sourcePath="src/module/ImagePlayerModule.mxml"/>
 </modules>
 <buildCSSFiles/>
 </actionScriptProperties>

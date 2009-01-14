@@ -1,5 +1,6 @@
 package puremvc.view
 {
+	import mx.collections.*;
 	import mx.controls.Tree;
 	import mx.events.ListEvent;
 	
@@ -22,9 +23,26 @@ package puremvc.view
 		
 		private function initialize():void
 		{
-			treeContents.labelField="@name";
-			treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
-			treeContents.callLater(expandAllNode);//初始展开所有节点			
+			treeContents.labelField="name";
+			//treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
+			//treeContents.callLater(expandAllNode);//初始展开所有节点	
+			var chapterlist:XMLList = facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;
+			var itemchapter:XML;
+        	for each(itemchapter in chapterlist) {
+        		var children:ArrayCollection = new ArrayCollection();
+				var itemsection:XML;
+				var sectionlist:XMLList = itemchapter.sections;
+					children.addItem({"name":"测试","type":"ceshi"});
+					children.addItem({"name":"测试","type":"ceshi"});
+				for each(itemsection in sectionlist) {
+					//children.addItem({"name":itemsection.@name.toString(),"type":itemsection.@type.toString()});
+					children.addItem({"name":"测试","type":"ceshi"});
+				}
+        		
+				treeDataProvider.addItem(
+					{	"name":itemchapter.@name.toString(),"children":children });
+				
+        	}					
 		}
 		
 		public function expandAllNode():void
@@ -62,6 +80,13 @@ package puremvc.view
 		public function get treeContents():Tree
 		{
             return viewComponent.treeContents as Tree;
+            
+        }	 
+        
+		public function get treeDataProvider():Object
+		{
+            return viewComponent.dpcourse as Object;
+            
         }	 
 	}
 }

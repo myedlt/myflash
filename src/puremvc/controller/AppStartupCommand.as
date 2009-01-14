@@ -5,12 +5,17 @@ package puremvc.controller
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.business.CurrentInfo;
-	import puremvc.model.CourseProxy;	
+	import puremvc.model.*;	
+	import puremvc.view.*;
 	    
-    public class ApplicationStartupCommand extends SimpleCommand
+    public class AppStartupCommand extends SimpleCommand
     {
         override public function execute( note:INotification ) :void    
 		{
+			facade.registerProxy(new CourseProxy());
+        	facade.registerProxy(new NavigatorProxy());   
+			facade.registerMediator( new AppMediator(ApplicationFacade.getInstance().app) );
+						
 			var courses:Array=CourseProxy(facade.retrieveProxy(CourseProxy.NAME)).getCourses();			
         	var currInfo:CurrentInfo=CurrentInfo.getInstance();         	
         	currInfo.setCurrentCourse(courses[0]);        	
@@ -31,7 +36,6 @@ package puremvc.controller
         		sendNotification(ApplicationFacade.SECTION_CHANGE,currInfo.getCurrentSection().name);     		
         	}        	
         	sendNotification(ApplicationFacade.CHAPTER_CHANGE,currInfo.getCurrentChapter().name); 
-        	new ModuleLocatorCommand().locate(type,path);  	       	
         }
     }
 }
