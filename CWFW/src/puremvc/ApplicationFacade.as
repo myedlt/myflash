@@ -5,9 +5,7 @@ package puremvc
 	import puremvc.controller.ApplicationInitializeCommand;
 	import puremvc.controller.ApplicationStartupCommand;
 	import puremvc.controller.ContentsItemClickCommand;
-	import puremvc.controller.DataPrepCommand;
-	import puremvc.controller.NextSectionCommand;
-	import puremvc.controller.PreviousSectionCommand;
+	import puremvc.controller.DataPrepCommand;	
 
 	public class ApplicationFacade extends Facade
 	{
@@ -18,18 +16,11 @@ package puremvc
 						
 		//command
 		public static const STARTUP:String="startup";
-		public static const TREE_INIT:String="treeInit";
-		public static const SWF_LOAD:String = "swfLoad";
-		public static const FLV_LOAD:String = "flvLoad";
-		public static const IMAGE_LOAD:String = "imageLoad";
-		public static const MODULE_LOAD:String = "moduleLoad";
-		public static const CHAPTER_CHANGE:String = "chapterChange";
-		public static const SECTION_CHANGE:String = "sectionChange";			
-		public static const SINGLE_CHAPTER:String="singleChapter";
+		public static const INIT_COMPLETE:String="initComplete";		
+		public static const MODULE_LOAD:String = "moduleLoad";		
+		public static const DISPLAY:String="display";
 		
-		//mediator
-		public static const PREVIOUS_SECTION:String="previousSection";
-		public static const NEXT_SECTION:String="nextSection";
+		//mediator		
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";				
 		
 		// proxy
@@ -51,10 +42,8 @@ package puremvc
 			
 			registerCommand(DATA_PREPARE,DataPrepCommand);	
 			registerCommand(INITIALIZE,ApplicationInitializeCommand);			
-			registerCommand(STARTUP,ApplicationStartupCommand);
+			registerCommand(STARTUP,ApplicationStartupCommand);			
 			
-			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
-			registerCommand(NEXT_SECTION,NextSectionCommand);
 			registerCommand(CONTENTS_ITEM_CLICK,ContentsItemClickCommand);
 		}
 		

@@ -1,53 +1,51 @@
 package puremvc.controller
 {
 	import mx.controls.Tree;
-	//import mx.utils.ObjectUtil;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.model.utils.CurrentInfo;
-	import puremvc.model.utils.ModuleLocator;
-	import puremvc.model.utils.XmlResource;
+	import puremvc.model.vo.ChapterVO;
 	import puremvc.model.vo.SectionVO;
-	import puremvc.view.ContentsMediator;
+	import puremvc.view.ApplicationMediator;
 
 	public class ContentsItemClickCommand extends SimpleCommand
 	{
 		override public function execute(note:INotification):void
 		{
 			var selectedItem:Object=note.getBody();
-			var path:String;
+			var type:String;
 			var currInfo:CurrentInfo=CurrentInfo.getInstance();	
-			var treeContents:Tree=ContentsMediator(facade.retrieveMediator(ContentsMediator.NAME)).treeContents;					
+			var treeContents:Tree=ApplicationMediator(facade.retrieveMediator(ApplicationMediator.NAME)).app.treeContents;					
 			
-			if(treeContents.getParentItem(selectedItem)==null)
-			{//单章
-				path=selectedItem.vo.path;
-				sendNotification(ApplicationFacade.SINGLE_CHAPTER,selectedItem.name);
-				currInfo.setCurrentChapter(selectedItem.vo);
-				currInfo.setCurrentSection(null);				
+			if(selectedItem is SectionVO)
+			{
+				if(currInfo.getSection()==null || selectedItem.id!=currInfo.getSection().id)				
+				{
+					type="section";
+					currInfo.setSection(selectedItem as SectionVO);		
+				}							
+			}
+			else if(selectedItem.vo is ChapterVO)
+			{
+				if(selectedItem.vo.id!=currInfo.getChapter().id)
+				{
+					type="chapter";
+					currInfo.setChapter(selectedItem.vo);
+				}															
 			}
 			else
-			{//节	
-				path=selectedItem.path;
-				//if(ObjectUtil.compare(treeContents.getParentItem(selectedItem).vo,currInfo.getCurrentChapter(),0)!=0)
-				if(treeContents.getParentItem(selectedItem).vo.id!=currInfo.getCurrentChapter().id)
+			{
+				if(selectedItem.vo.id!=currInfo.getCourse().id)
 				{
-					sendNotification(ApplicationFacade.CHAPTER_CHANGE,treeContents.getParentItem(selectedItem).name);
-					currInfo.setCurrentChapter(treeContents.getParentItem(selectedItem).vo);
-				}  
-				//if(ObjectUtil.compare(selectedItem,currInfo.getCurrentSection(),0)!=0)
-				if(currInfo.getCurrentSection()==null||selectedItem.id!=currInfo.getCurrentSection().id)
-				{
-					sendNotification(ApplicationFacade.SECTION_CHANGE,selectedItem.name);
-					currInfo.setCurrentSection(selectedItem as SectionVO);
-				} 				
+					type="course";
+					currInfo.setCourse(selectedItem.vo);
+				}				
 			}
-			//sendNotification(ApplicationFacade.SWF_LOAD,selectedItem.@path);	
-			var noteData:Object=ModuleLocator.locate(selectedItem.hasOwnProperty("type")?selectedItem.type:"flash",path);  
-        	sendNotification(noteData.noteType,noteData.noteBody); 
+			//trace("点击了:"+type);//type等于null说明已点击过
+			if(type!=null)sendNotification(ApplicationFacade.DISPLAY,type);			
 		}
 	}
 }
