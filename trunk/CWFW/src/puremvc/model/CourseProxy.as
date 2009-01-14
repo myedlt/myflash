@@ -20,7 +20,16 @@ package puremvc.model
         {
         	if(this.data==null)
         	{
-        		this.data=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData()).CourseList.Course;
+        		var temp:XML=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData())
+        		//单个课程标签为CourseList;多课程为CourseList.Course 不区分大小写
+        		if(temp.CourseList==undefined)
+        		{
+        			this.data=temp.courselist.course==undefined?temp.courselist:temp.courselist.course;
+        		}
+        		else
+        		{
+        			this.data=temp.CourseList.Course==undefined?temp.CourseList:temp.CourseList.Course;
+        		}        		
         	}
         	for each(var course:XML in this.data)
 			{								

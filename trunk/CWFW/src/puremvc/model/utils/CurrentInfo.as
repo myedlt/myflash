@@ -7,9 +7,9 @@ package puremvc.model.utils
 	//singleton 保存课程的当前信息
 	public class CurrentInfo 
 	{					
-		private var currentCourse:CourseVO;
-		private var currentChapter:ChapterVO;
-		private var currentSection:SectionVO;		
+		private var course:CourseVO;
+		private var chapter:ChapterVO;
+		private var section:SectionVO;		
 		private static var instance:CurrentInfo=null;
 				
 		public static function getInstance():CurrentInfo
@@ -18,34 +18,34 @@ package puremvc.model.utils
 			return instance;
 		}	
 		
-		public function getCurrentCourse():CourseVO
+		public function getCourse():CourseVO
         {
-        	return currentCourse;
+        	return course;
         }
         
-        public function getCurrentChapter():ChapterVO
+        public function getChapter():ChapterVO
         {
-        	return currentChapter;
+        	return chapter;
         }
         
-        public function getCurrentSection():SectionVO
+        public function getSection():SectionVO
         {
-        	return currentSection;
+        	return section;
         }       
         
-        public function setCurrentCourse(course:CourseVO):void
+        public function setCourse(course:CourseVO):void
         {
-        	this.currentCourse=course;
+        	this.course=course;
         }
         
-        public function setCurrentChapter(chapter:ChapterVO):void
+        public function setChapter(chapter:ChapterVO):void
         {
-        	this.currentChapter=chapter;
+        	this.chapter=chapter;
         }
         
-        public function setCurrentSection(section:SectionVO):void
+        public function setSection(section:SectionVO):void
         {
-        	this.currentSection=section;
+        	this.section=section;
         }        	
 	}
 }

@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
-	
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:view="puremvc.view.component.*" creationComplete="facade.startup(this)" currentState="editor">
+	<mx:states>
+		<mx:State name="editor">			
+			<mx:AddChild position="lastChild">
+				<mx:Canvas width="100%" height="100%" horizontalCenter="0" verticalCenter="0" id="canvas">
+					<mx:Tree id="treeContents" width="203" height="405" alternatingItemColors="[#DFDFDF,#EEEEEE]" 
+						dataProvider="{treeDataProvider}" showRoot="true" x="10" y="90"/>
+					<mx:Panel height="480" width="566" paddingTop="0" paddingLeft="0" paddingRight="0" paddingBottom="0" 
+						x="221" y="55" headerHeight="0" borderThicknessTop="0" 
+						borderThicknessRight="0" borderThicknessLeft="0" borderThicknessBottom="0" verticalGap="0" cornerRadius="0">			
+				        <mx:HBox borderStyle="solid" width="100%" paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5">
+				            <mx:Button id="searchButton" label="添加课程"
+				                click="myViewStack.selectedChild=course;"/>
+				            <mx:Button id="cInfoButton" label="添加章"
+				                click="myViewStack.selectedChild=chapter;"/>
+				            <mx:Button id="aInfoButton" label="添加节"
+				                click="myViewStack.selectedChild=section;"/>
+				        </mx:HBox>				       
+				        <mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="100%">
+				            <mx:Canvas id="course" width="100%" height="100%">
+				                <view:CourseFormComponent/>
+				            </mx:Canvas>				
+				            <mx:Canvas id="chapter" width="100%" height="100%">
+				                <view:ChapterFormComponent/>
+				            </mx:Canvas>				
+				            <mx:Canvas id="section" width="100%" height="100%">
+				                <view:SectionFormComponent/>
+				            </mx:Canvas>
+				        </mx:ViewStack>	
+				        <mx:ControlBar height="42" horizontalAlign="center" verticalAlign="middle">
+				        	<mx:Button label="保存"/>
+				        	<mx:Button label="删除"/>
+				        	<mx:Button label="重置"/>
+				        </mx:ControlBar>				        		
+				    </mx:Panel>				    
+				</mx:Canvas>
+			</mx:AddChild>			
+			<mx:SetStyle name="horizontalAlign" value="center"/>
+			<mx:SetStyle name="verticalAlign" value="middle"/>
+			<mx:SetProperty name="width" value="799"/>
+			<mx:SetProperty name="height" value="600"/>
+		</mx:State>
+		<mx:State name="index"/>
+	</mx:states>
+	<mx:ArrayCollection id="treeDataProvider"/>
+	<mx:Script>
+		<![CDATA[
+			import puremvc.ApplicationFacade;
+			private var facade:ApplicationFacade=ApplicationFacade.getInstance();
+		]]>
+	</mx:Script>	
 </mx:WindowedApplication>
