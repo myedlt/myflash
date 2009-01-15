@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()">
+	<mx:Style source="skin/skin.css"/>
+	<mx:Script>
+		<![CDATA[
+			import flash.utils.clearTimeout;
+			import mx.controls.LinkButton;
+			import mx.graphics.RoundedRectangle;
+			import flash.utils.setTimeout;
+			import mx.effects.Move;
+			import mx.events.SliderEvent;
+			import component.SliderHighlightSkin;
+			import mx.core.UIComponent;			
+			import mx.rpc.events.FaultEvent;
+			import flash.net.navigateToURL;
+			import mx.rpc.events.ResultEvent;
+			import mx.events.ItemClickEvent;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			[Embed(source="skin/skin.swf",symbol="snd_btn_offSkin")]
+			private var snd_btn_offSkin:Class;
+			[Embed(source="skin/skin.swf",symbol="snd_btn_onSkin")]
+			[Bindable]
+			private var snd_btn_onSkin:Class;			
+			
+			[Bindable]
+			private var ownerStr:String;
+			[Bindable]
+			private var noticeStr:String;
+			[Bindable]
+			private var techSurportStr:String;
+			[Bindable]
+			private var currentTime:String="0:00";
+			[Bindable]
+			private var totalTime:String="0:00";
+			[Bindable]
+			private var currentPage:int;
+			[Bindable]
+			private var totalPage:int;
+			[Bindable]
+			private var mc:MovieClip;
+			[Bindable]
+			private var xml:XMLList;
+			[Bindable]
+			private var navLabelArr:Array=new Array();
+			[Bindable]
+			private var rect:RoundedRectangle=new RoundedRectangle(0,2,19,80);
+			
+			private var navUrlArr:Array=new Array();			
+			private var soundTrans:SoundTransform=SoundMixer.soundTransform;
+			private var currCourseXml:XML;			
+			private var currCourseArr:Array;			
+			private var currIndex:int;
+			private var moveEffect:Move;
+			private var displaySchema:Boolean;
+			private var timeoutHandle:uint;
+			private var stoped:Boolean;	
+			private var pressing:Boolean;
+			private var headPlaying:Boolean;
+			
+			private function init():void
+			{
+				content.send();
+				moveEffect=new Move(video);
+				moveEffect.duration=1000;				
+			}
+			private function resultHandler(evt:ResultEvent):void
+			{
+					xml=XMLList(evt.result);//获得xml文件内容
+					//初始化版权声明信息	
+					ownerStr=xml.Copyright.owner;
+					noticeStr=xml.Copyright.notice;
+					techSurportStr=xml.Copyright.techSurport;				
+					//初始化页面头部导航区
+					for each (var button:XML in xml.Navigator.button)
+					{	
+						navLabelArr.push(button.@label.toString());
+						navUrlArr.push(button.@url.toString());
+					}
+					callLater(setLinkBarData);
+					//初始化课程导航区
+					for(var i:int=1;i<=xml.CourseList.Course.length();i++)
+					{
+						var btn:LinkButton=new LinkButton();
+						btn.width=83;
+						btn.height=40;
+						btn.label=i.toString();
+						var courseXml:XML=xml.CourseList.Course[i-1];
+						var courseArr:Array=new Array();
+						for each(var chapter:XML in courseXml.Chapter)
+						{
+							if(chapter.hasOwnProperty("@path"))
+							{
+								courseArr.push(chapter);
+							}
+							else
+							{	
+								for each (var section:XML in chapter.section)
+								{	
+									courseArr.push(section);
+								}
+							}
+						}
+						btn.data={courseXml:courseXml,courseArray:courseArr};
+						btn.styleName="switchButton";
+						btn.addEventListener(MouseEvent.CLICK,changeCourse);
+						courseNavBox.addChild(btn);						
+					}
+					mainLoader.source=xml.Index.@header;//初始播放片头
+					headPlaying=true;
+					videoLoader.source=xml.Index.@video;	
+					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏	
+					
+					btnNext.addEventListener(MouseEvent.CLICK,nextPage);
+					btnPrev.addEventListener(MouseEvent.CLICK,prePage);					
+			}
+			private function faultHandler(evt:FaultEvent):void
+			{
+				Alert.show(evt.fault.message,"加载xml文件时出错");
+			}
+			private function enterFrameHandler(evt:Event):void
+			{
+				progressBar.value=evt.target.currentFrame;
+				currentTime=formatProgressToolTip(evt.target.currentFrame);trace(mc.currentFrame+" "+progressBar.maximum);
+				//一节课程播放完毕后自动播放下一节
+				if(progressBar.value==progressBar.maximum)
+				{
+					evt.target.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
+					if(!headPlaying)btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));					
+				} 				
+			}	
+			private function setLinkBarData():void
+			{
+				linkBar.dataProvider=navLabelArr;
+			}
+			private function progressChange(evt:SliderEvent):void
+			{				
+				if(mc!=null)
+				{
+					if(stoped || pressing)
+					{
+						mc.gotoAndStop(evt.value);
+					}
+					else
+					{
+						mc.gotoAndPlay(evt.value);
+					}
+				}				
+			}		
+			private function hideVideo():void
+			{
+				moveEffect.xTo=-video.width;
+				moveEffect.play();
+				setTimeout(function():void{btnShowVideo.visible=true;},1000);
+			}
+			private function showVideo():void
+			{
+				btnShowVideo.visible=false;
+				moveEffect.xTo=0;
+				moveEffect.play();
+			}
+			private function headNav(evt:ItemClickEvent):void
+			{
+				var url:String=navUrlArr[evt.index];
+				var target:String=navLabelArr[evt.index]=="退出"||evt.index==navUrlArr.length-1?"_self":"_blank";
+				navigateToURL(new URLRequest(url),target);
+			}
+			private function switchToVideo():void
+			{
+				videoLoader.source=currCourseXml.@video;	
+				if(displaySchema)
+				{
+					displaySchema=false;
+				}
+			}
+			private function switchToSchema():void
+			{
+				var parent:XML=XML(currCourseArr[currIndex]).parent();
+				if(parent.hasOwnProperty("@schema"))
+				{
+					videoLoader.source=parent.@schema;	
+					if(!displaySchema)
+					{
+						displaySchema=true;
+					}
+				}
+			}
+			public function play():void
+			{			
+				if(mc!=null && stoped)
+				{
+					mc.play();
+					stoped=false;
+				}
+			}
+			
+			private function pause():void
+			{
+				if(mc!=null && !stoped)
+				{
+					mc.stop();
+					stoped=true;
+				}				
+			}
+			private function sliderComplete(evt:Event):void
+			{
+				 var slider:HSlider = evt.target as HSlider;
+				 var thumb:UIComponent = slider.getThumbAt(0);
+				 thumb.width = 4;
+				 thumb.height = 14;
+				 thumb.buttonMode=true;
+				 slider.invalidateDisplayList();
+			}
+			private function columeControlHandler():void
+			{
+				if(btnSound.toolTip=="关闭")
+				{
+					btnSound.toolTip="打开";
+					btnSound.setStyle("upSkin",snd_btn_offSkin);
+					btnSound.setStyle("overSkin",snd_btn_offSkin);
+					btnSound.setStyle("downSkin",snd_btn_offSkin);
+					soundTrans.volume=0;
+					SoundMixer.soundTransform=soundTrans;
+				}
+				else
+				{
+					btnSound.toolTip="关闭";
+					btnSound.setStyle("upSkin",snd_btn_onSkin);
+					btnSound.setStyle("overSkin",snd_btn_onSkin);
+					btnSound.setStyle("downSkin",snd_btn_onSkin);
+					soundTrans.volume=columnSlider.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}			
+			private function columeChange(evt:SliderEvent):void
+			{
+				if(btnSound.toolTip=="关闭")
+				{
+					soundTrans.volume=evt.value;
+					SoundMixer.soundTransform=soundTrans;
+				}
+			}
+			private function formatProgressToolTip(value:int):String
+    		{
+    			value=Math.ceil(value / 12);  //flash 12frames/s  			
+    			var result:String = (value % 60).toString();
+      		    if (result.length == 1)
+      		    {
+         			result = Math.floor(value / 60).toString() + ":0" + result;
+       		 	}
+      			else
+			  	{
+       		    	result = Math.floor(value / 60).toString() + ":" + result;
+       		  	}      			      			 
+      		    return result;
+  			} 
+			private function formatColumeToolTip(value:Number):String
+  			{
+  				var temp:String=value.toString();
+  				if(temp.length==1)
+  				{
+  					return temp+".0";
+  				}
+  				else
+  				{
+  					return temp.substr(0,3);
+  				}
+  			}
+  			private function changeCourse(evt:MouseEvent):void
+  			{
+  				if(headPlaying)headPlaying=false;
+  				currCourseXml=evt.target.data.courseXml;
+  				currCourseArr=evt.target.data.courseArray;
+  				currentPage=1;
+  				totalPage=currCourseArr.length;
+  				currIndex=0;//从课程的第一个视频开始播放
+  				mainLoader.source=currCourseArr[currIndex].@path;
+  				switchToVideo();   
+  				if(btnShowVideo.visible)
+  				{
+  					showVideo();
+  					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏	
+  				}
+  				else
+  				{
+  					clearTimeout(timeoutHandle);
+  					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏	
+  				} 										
+  			}
+  			private function prePage(evt:MouseEvent):void
+  			{
+  				if(currIndex!=0)
+  				{
+  					currIndex=currIndex-1;
+  					currentPage=currIndex+1;
+  					mainLoader.source=currCourseArr[currIndex].@path;
+  				}
+  				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+				btnPrev.removeEventListener(MouseEvent.CLICK,prePage);
+				setTimeout(function():void{btnPrev.addEventListener(MouseEvent.CLICK,prePage);},200);
+  			}
+  			private function nextPage(evt:MouseEvent):void
+  			{
+  				if(currIndex!=currCourseArr.length-1)
+  				{
+  					currIndex=currIndex+1;
+  					currentPage=currIndex+1;
+  					mainLoader.source=currCourseArr[currIndex].@path;
+  				}  
+  				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
+				btnNext.removeEventListener(MouseEvent.CLICK,nextPage);
+				setTimeout(function():void{btnNext.addEventListener(MouseEvent.CLICK,nextPage);},200);					
+  			}
+  			private function swfLoadComplete(evt:Event):void
+  			{
+				progressBar.value=0;
+  				try
+  				{
+  					mc=MovieClip(evt.target.content);
+  					mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
+  					stoped=false;
+  					totalTime=formatProgressToolTip(mc.totalFrames);  	
+  					progressBar.maximum=mc.totalFrames;				
+  				}
+  				catch(e:Error)
+  				{
+  					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
+  				}
+  				if(displaySchema)
+  				{
+  					switchToSchema();
+  				}
+  			}
+  			//停止上一个swf 解决音频继续播放问题
+  			private function swfUnload():void
+			{
+				if(mc!=null)
+				{					
+					if(mc.hasEventListener(Event.ENTER_FRAME))
+					{
+						mc.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
+					}
+					mc.stop();					
+					mc=null;
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="content" url="content.xml" result="resultHandler(event)" fault="faultHandler(event)" resultFormat="xml"/>
+	<mx:Canvas width="800" height="550" horizontalCenter="0" verticalCenter="0" backgroundImage="@Embed(source='image/bg.png')">
+		<mx:SWFLoader x="0" y="85" id="mainLoader" width="800" height="392" complete="swfLoadComplete(event)" unload="swfUnload()" horizontalAlign="center" verticalAlign="middle"/>
+		<mx:HSlider id="progressBar" x="40" y="480" width="720" height="11" liveDragging="true" minimum="1" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
+			change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressBar" 
+			showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10"/>
+		<mx:Button x="176" y="506" width="34" height="19" styleName="playButton" click="play()"/>
+		<mx:Button x="224" y="506" width="34" height="19" styleName="pauseButton" click="pause()"/>
+		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton" id="btnPrev"/>
+		<mx:Button x="484" y="506" width="47" height="19" styleName="nextButton" id="btnNext"/>
+		<mx:Button id="btnSound" x="613" y="507" buttonMode="true" toolTip="关闭" downSkin="{snd_btn_onSkin}" overSkin="{snd_btn_onSkin}" upSkin="{snd_btn_onSkin}" click="columeControlHandler()" width="24" height="24"/>
+		<mx:Label x="60" y="507" text="{currentTime}"/>
+		<mx:Label x="119" y="507" text="{totalTime}"/>
+		<mx:Label x="106" y="507" text="/" width="13"/>
+		<mx:HSlider id="columnSlider" x="647" y="505" width="112" height="16" styleName="columnBar" creationComplete="sliderComplete(event)" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip" allowTrackClick="false"/>
+		<mx:Label x="375" y="507" text="第" width="18"/>
+		<mx:Label x="467" y="507" text="页" width="19"/>
+		<mx:Label x="445" y="507" text="{totalPage}" width="22"/>
+		<mx:Label x="411" y="507" text="页/共"/>
+		<mx:Label x="392.5" y="507" text="{currentPage}" width="21"/>
+		<mx:Label x="37" y="530" text="{ownerStr}" fontSize="11"/>
+		<mx:Label x="340" y="530" text="{noticeStr}" fontSize="11"/>
+		<mx:Label x="570" y="530" text="{techSurportStr}" fontSize="11"/>
+		<mx:LinkBar id="linkBar" color="#ffffff" rollOverColor="#B5D2FA" top="0" right="3" itemClick="headNav(event)"/>		
+		<mx:Button x="0" y="357" id="btnShowVideo" visible="false" hideEffect="{dissolveOut}" showEffect="{dissolveIn}" styleName="showVideoButton" click="showVideo()"/>
+		<mx:Canvas id="video" x="0" y="318" width="290" height="171" backgroundImage="@Embed(source='image/video.png')">
+			<mx:LinkButton x="58" y="128" label="视频" alpha="0.0" click="switchToVideo()"/>
+			<mx:LinkButton x="124" y="128" label="纲要" alpha="0.0" click="switchToSchema()"/>
+			<mx:LinkButton x="191" y="128" label="隐藏" alpha="0.0" click="hideVideo()"/>
+			<mx:SWFLoader width="184" height="111" y="15" x="53" id="videoLoader" horizontalAlign="center" verticalAlign="middle" scaleContent="true" autoLoad="true"/>
+		</mx:Canvas>
+		<mx:HBox x="345" y="51" width="455" height="40" horizontalAlign="left" verticalAlign="middle" horizontalGap="0" id="courseNavBox" verticalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
+			<mx:Spacer width="100%"/>
+		</mx:HBox>
+	</mx:Canvas>	
+	<mx:Dissolve id="dissolveOut" alphaFrom="1.0" alphaTo="0.0" targetArea="{rect}" color="#2d546c"/>
+    <mx:Dissolve id="dissolveIn" alphaFrom="0.0" alphaTo="1.0" targetArea="{rect}" color="#2d546c"/>
+
+</mx:Application>
