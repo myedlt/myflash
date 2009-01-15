@@ -8,26 +8,8 @@
 			<section id="3" name="同步测试" type="synchronizing" length="3分18秒" swf="course/course03/ps48.swf"
 					 mp3="course/course03/青花瓷.mp3" xml="course/course03/control.xml"/>	
 			<section id="4" name="组织结构及工作流程" length="2分18秒" type="flash" path="course/Unit02_01.swf"/>		
-			<section id="5" name="小结" length="18秒" type="flash" path="course/c10.swf"/>		
-		</Chapter>
-		<Chapter id="6" name="制度指南" type="chapter" hasFlash="false">
-			<section id="7" name="学习目标" length="18秒" type="flash" path="course/c11.swf"/>
-			<section id="8" name="电话使用方法(多页模板)" length="10分18秒" type="template" hasFlash="true" isMultipage="true" path="page-template/multipage/multipage.swf"/>
-			<section id="9" name="上下班打卡" length="3分18秒" type="flash" path="course/c17.swf"/>
-			<section id="10" name="门禁制度" length="1分10秒" type="flash" path="course/c18.swf"/>
-			<section id="11" name="着装制度" length="2分55秒" type="flash" path="course/c19.swf"/>
-			<section id="12" name="禁烟制度" length="3分01秒" type="flash" path="course/c22.swf"/>
-			<section id="13" name="办公用品领用制度" length="1分26秒" type="flash" path="course/c23.swf"/>
-			<section id="14" name="领门卡" length="3分18秒" type="flash" path="course/c24.swf"/>
-			<section id="15" name="拍标准照" length="3分58秒" type="flash" path="course/c25.swf"/>
-			<section id="16" name="薪金周期" length="3分18秒" type="flash" path="course/c26.swf"/>
-			<section id="17" name="请休假制度" length="1分18秒" type="flash" path="course/c27.swf"/>
-			<section id="18" name="财务制度和流程" length="4分18秒" type="flash" path="course/c28.swf"/>
-			<section id="19" name="培训管理办法及流程" length="1分18秒" type="flash" path="course/c32.swf"/>
-			<section id="20" name="出差制度" length="1分22秒" type="flash" path="course/c39.swf"/>
-			<section id="21" name="安保制度" length="1分38秒" type="flash" path="course/c40.swf"/>
-			<section id="22" name="小结" length="18秒" type="flash" path="course/c45.swf"/>	
-		</Chapter>
-		<Chapter id="23" name="综合测验" type="chapter" hasFlash="true" path="course/c86.swf"/>
+			<section id="5" name="小结" length="18秒" type="flash" path="course/c01.swf"/>		
+		</Chapter>		
+		<Chapter id="23" name="综合测验" type="chapter" hasFlash="true" path="course/c02.swf"/>
 	</CourseList>
 </Content>
