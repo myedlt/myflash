@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Skins>
-	<skin name="系统默认" path="css/default/defaultSkin.swf"/>		
-	<skin name="OSX" path="css/OSX/OSX.swf"/>
-	<skin name="Yahoo" path="css/Yahoo/SkinYahoo.swf"/>
-	<skin name="Darkroom" path="css/DarkRoom/SkinDarkRoom.swf"/>
-</Skins>
