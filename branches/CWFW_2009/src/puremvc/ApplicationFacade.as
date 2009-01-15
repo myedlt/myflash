@@ -8,20 +8,18 @@ package puremvc
 	{
 		public var app:Object;
 		// Notification name constants
-		// application
-		public static const INIT:String = "initialize";	
 						
-		//command
+		//command - 系统启动消息组
+		public static const INIT:String = "initialize";	
 		public static const STARTUP:String="startup";
-		public static const SWF_LOAD:String = "swfLoad";
-		public static const FLV_LOAD:String = "flvLoad";
-		public static const IMAGE_LOAD:String = "imageLoad";
-		public static const MODULE_LOAD:String = "moduleLoad";
+
+		//command - 用户交互消息组
 		public static const CHAPTER_CHANGE:String = "chapterChange";
 		public static const SECTION_CHANGE:String = "sectionChange";			
 		public static const SINGLE_CHAPTER:String="singleChapter";
 		
 		//mediator
+		public static const INITUI:String="initui";
 		public static const PREVIOUS_SECTION:String="previousSection";
 		public static const NEXT_SECTION:String="nextSection";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";				
