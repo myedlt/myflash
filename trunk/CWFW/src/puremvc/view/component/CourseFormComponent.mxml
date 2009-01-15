@@ -1,4 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
-	
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+	<mx:FormHeading label="课程信息" x="159.5" y="10"/>
+	<mx:FormItem label="课程ID" x="66.5" y="38">
+		<mx:TextInput id="cid"/>
+	</mx:FormItem>
+	<mx:FormItem label="课程名称" x="56.5" y="70">
+		<mx:TextInput id="cname"/>
+	</mx:FormItem>
+	<mx:FormItem label="课程标题" x="56.5" y="102">
+		<mx:TextInput id="title"/>
+	</mx:FormItem>
+	<mx:FormItem label="开始动画" direction="horizontal" x="56.5" y="134">
+		<mx:TextInput id="startSWF" width="160"/>
+		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='startSWF'"/>
+	</mx:FormItem>
+	<mx:FormItem label="结束动画" direction="horizontal" x="56.5" y="166">
+		<mx:TextInput id="endSWF" width="160"/>
+		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='endSWF'"/>
+	</mx:FormItem>	
+	<mx:Script>
+		<![CDATA[			
+			private var file:File=File.applicationDirectory;
+			private var temp:String;
+			
+			public function init():void
+			{
+				file.addEventListener(Event.SELECT,onSelect);
+			}
+			public function onSelect(evt:Event):void
+			{
+				//trace("选择了:"+evt.target.nativePath);
+				if(temp=="startSWF")
+				{
+					startSWF.text=evt.target.nativePath;
+				}
+				if(temp=="endSWF")
+				{
+					endSWF.text=evt.target.nativePath;
+				}
+			}
+			public function reset():void
+			{
+				this.cid.text=null;
+				this.cname.text=null;				
+				this.title.text=null;
+				this.startSWF.text=null;
+				this.endSWF.text=null;
+			}
+		]]>
+	</mx:Script>
 </mx:Canvas>

@@ -1,4 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
-	
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+	<mx:FormHeading label="课程节信息" x="141" y="10"/>
+	<mx:FormItem label="节ID" x="69.5" y="38">
+		<mx:TextInput id="sid"/>
+	</mx:FormItem>
+	<mx:FormItem label="节名称" x="60.5" y="68">
+		<mx:TextInput id="sname"/>
+	</mx:FormItem>
+	<mx:FormItem label="节标题" x="60.5" y="98">
+		<mx:TextInput id="title"/>
+	</mx:FormItem>
+	<mx:FormItem label="文件类型" x="50.5" y="128">
+		<mx:ComboBox id="type">
+			<mx:dataProvider>
+				<mx:Object label="Flash" data="flash"/>
+				<mx:Object label="Flex" data="flex"/>
+				<mx:Object label="图片" data="image"/>
+				<mx:Object label="Flv" data="flv"/>
+			</mx:dataProvider>
+		</mx:ComboBox>
+	</mx:FormItem>
+	<mx:FormItem label="文件路径" direction="horizontal" x="50.5" y="158">
+		<mx:TextInput id="path" width="185"/>
+		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
+	</mx:FormItem>	
+	<mx:FormItem label="配置文件" direction="horizontal" y="188" x="50.5">
+		<mx:TextInput id="xml" width="185"/>
+		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
+	</mx:FormItem>	
+	<mx:Script>
+		<![CDATA[	
+			private var file:File=File.applicationDirectory;		
+			private var temp:String;
+			
+			public function init():void
+			{
+				file.addEventListener(Event.SELECT,onSelect);
+			}
+			public function onSelect(evt:Event):void
+			{
+				//trace("选择了:"+evt.target.nativePath);
+				if(temp=="path")
+				{
+					path.text=evt.target.nativePath;
+				}
+				if(temp=="xml")
+				{
+					xml.text=evt.target.nativePath;
+				}
+			}
+			public function reset():void
+			{
+				this.sid.text=null;
+				this.sname.text=null;
+				this.type.selectedIndex=0;
+				this.path.text=null;
+				this.title.text=null;
+				this.xml.text=null;
+			}
+		]]>
+	</mx:Script>
 </mx:Canvas>
