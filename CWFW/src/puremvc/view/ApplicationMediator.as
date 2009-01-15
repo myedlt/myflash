@@ -1,9 +1,13 @@
 package puremvc.view
 {
+	import flash.events.MouseEvent;
+	
 	import mx.collections.ArrayCollection;
-	import mx.controls.Tree;
-	import mx.events.ListEvent;
+	import mx.containers.Canvas;
+	import mx.containers.ViewStack;
 	import mx.controls.Alert;
+	import mx.events.IndexChangedEvent;
+	import mx.events.ListEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -22,6 +26,10 @@ package puremvc.view
 		{
 			super( NAME, viewComponent );		
 			app.treeContents.addEventListener(ListEvent.ITEM_CLICK,itemClick);
+			app.myViewStack.addEventListener(IndexChangedEvent.CHANGE,onChange);
+			app.btnDelete.addEventListener(MouseEvent.CLICK,deleteHandler);
+			app.btnReset.addEventListener(MouseEvent.CLICK,resetHandler);
+			app.btnSave.addEventListener(MouseEvent.CLICK,saveHandler);
 		}
 		
 		private function initialize():void
@@ -40,6 +48,26 @@ package puremvc.view
 				app.treeDataProvider.addItem({name:course.name,children:chapterList,vo:course});				
         	}        									
 			//treeContents.callLater(expandAllNode);//初始展开所有节点			
+		}
+		
+		public function onChange(evt:IndexChangedEvent):void
+		{
+			Object(Canvas(ViewStack(evt.target).getChildAt(evt.oldIndex)).getChildAt(0)).reset();
+		}
+		
+		public function deleteHandler(evt:MouseEvent):void
+		{
+			
+		}
+		
+		public function resetHandler(evt:MouseEvent):void
+		{
+			Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
+		}
+		
+		public function saveHandler(evt:MouseEvent):void
+		{
+			
 		}
 		
 		public function expandAllNode():void
