@@ -38,9 +38,9 @@ package puremvc.view
             }
         }
 		
-		public function get app():CWFW
+		public function get app():index
 		{
-            return viewComponent as CWFW;
+            return viewComponent as index;
         }
 	}
 }
