@@ -1,0 +1,350 @@
+/*
+    Copyright (c) 2007 Yahoo! Inc.  All rights reserved. 
+    The copyrights embodied in the content of this file are licensed under the BSD (revised) open source license
+*/
+/*
+//------------------------------
+//  global
+//------------------------------
+*/
+global
+{
+   color: #4d4d4d;
+   fontFamily: Arial;
+   fontSize: 12px;
+	themeColor: #99CDFF;
+}
+
+/*
+//------------------------------
+//  AccordionHeader
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  Application
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  Button
+//------------------------------
+*/
+Button
+{
+	disabledSkin: Embed(source="EDLT.swf", symbol="Button_disabledSkin",
+                                  scaleGridTop="26",
+                                  scaleGridBottom="64",
+                                  scaleGridLeft="30",
+                                  scaleGridRight="106");
+	downSkin: Embed(source="EDLT.swf", symbol="Button_downSkin");
+	overSkin: Embed(source="EDLT.swf", symbol="Button_overSkin");
+	upSkin: Embed(source="EDLT.swf", symbol="Button_upSkin");
+	paddingTop: 2;
+}
+
+/*
+//------------------------------
+//  primaryButton
+//------------------------------
+*/
+
+
+/* 
+//------------------------------ 
+//  ButtonBar 
+//------------------------------ 
+*/ 
+
+ButtonBar 
+{ 
+	buttonStyleName: "buttonBarButton"; 
+	firstButtonStyleName: "firstButtonBarButton"; 
+	lastButtonStyleName: "lastButtonBarButton";
+}
+
+ToggleButtonBar 
+{ 
+	buttonStyleName: "buttonBarButton"; 
+	firstButtonStyleName: "firstButtonBarButton"; 
+	lastButtonStyleName: "lastButtonBarButton";
+}
+
+/* 
+//------------------------------ 
+//  ButtonBarButtons 
+//------------------------------ 
+*/ 
+
+
+
+
+
+/*
+//------------------------------
+//  CheckBox
+//------------------------------
+*/
+	
+
+/*
+//------------------------------
+//  ColorPicker
+//------------------------------
+*/
+	
+
+/*
+//------------------------------
+//  ComboBox
+//------------------------------
+*/
+
+	
+.myComboBoxDropDowns {
+   cornerRadius: 4;
+}
+
+/*
+//------------------------------
+//  CursorManager
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  DataGrid
+//------------------------------
+*/
+DataGrid
+{
+
+	columnDropIndicatorSkin: Embed(source="EDLT.swf", symbol="DataGrid_columnDropIndicatorSkin");
+	columnResizeSkin: Embed(source="EDLT.swf", symbol="DataGrid_columnResizeSkin");
+	headerSeparatorSkin: Embed(source="EDLT.swf", symbol="DataGrid_headerSeparatorSkin");
+	sortArrowSkin: Embed(source="EDLT.swf", symbol="DataGrid_sortArrowSkin");
+	stretchCursor: Embed(source="EDLT.swf",symbol="DataGrid_stretchCursor");
+}
+
+/*
+//------------------------------
+//  DateChooser
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  DateField
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  DividedBox
+//------------------------------
+*/
+DividedBox
+{
+	dividerSkin: Embed(source="EDLT.swf",symbol="DividedBox_dividerSkin");
+	horizontalCursor: Embed(source="EDLT.swf",symbol="DividedBox_horizontalCursor");
+	verticalCursor: Embed(source="EDLT.swf",symbol="DividedBox_verticalCursor");
+}
+
+/*
+//------------------------------
+//  DragManager
+//------------------------------
+*/
+DragManager
+{
+	copyCursor: Embed(source="EDLT.swf",symbol="DragManager_copyCursor");
+
+	defaultDragImageSkin: Embed(source="EDLT.swf", symbol="DragManager_defaultDragImageSkin");
+
+	linkCursor: Embed(source="EDLT.swf",symbol="DragManager_linkCursor");
+	moveCursor: Embed(source="EDLT.swf",symbol="DragManager_moveCursor");
+	rejectCursor: Embed(source="EDLT.swf",symbol="DragManager_rejectCursor");
+}
+
+/*
+//------------------------------
+//  FormItem
+//------------------------------
+*/
+FormItem
+{
+	indicatorSkin: Embed(source="EDLT.swf",symbol="FormItem_indicatorSkin");  
+}
+
+/*
+//------------------------------
+//  Image
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  LinkButton
+//------------------------------
+*/
+	
+
+/*
+//------------------------------
+//  Loader
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  Menu
+//------------------------------
+*/
+Menu
+{
+	branchIcon: Embed(source="EDLT.swf",symbol="Menu_branchIcon");
+	branchDisabledIcon: Embed(source="EDLT.swf",symbol="Menu_branchDisabledIcon");
+	checkIcon: Embed(source="EDLT.swf",symbol="Menu_checkIcon");
+	checkDisabledIcon: Embed(source="EDLT.swf",symbol="Menu_checkDisabledIcon");
+	radioIcon: Embed(source="EDLT.swf",symbol="Menu_radioIcon");
+	radioDisabledIcon: Embed(source="EDLT.swf",symbol="Menu_radioDisabledIcon");
+	separatorSkin: Embed(source="EDLT.swf",symbol="Menu_separatorSkin");
+}
+
+/*
+//------------------------------
+//  MenuBar
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  NumericStepper
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  Panel
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  Panel ControlBar
+//------------------------------
+*/
+ControlBar
+{
+	borderSkin: Embed(source="EDLT.swf", symbol="Panel_controlBarBackgroundSkin");
+}
+
+/*
+//------------------------------
+//  PopUpButton
+//------------------------------
+*/
+
+
+
+/*
+//------------------------------
+//  ProgressBar
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  RadioButton
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  HorizontalScrollBar
+//------------------------------
+*/
+
+
+
+/*
+//------------------------------
+//  VerticalScrollBar
+//------------------------------
+*/
+
+
+/*
+//------------------------------
+//  Slider
+//------------------------------
+*/
+
+
+
+
+/*
+//------------------------------
+//  Tab
+//------------------------------
+*/
+TabBar
+{
+	firstButtonStyleName: "tabStyle";
+	tabStyleName: "tabStyle";
+	lastButtonStyleName: "tabStyle";
+}
+
+
+
+/*
+//------------------------------
+//  TabNavigator
+//------------------------------
+*/
+TabNavigator
+{
+	borderColor: #a3a3a3;
+}
+
+/*
+//------------------------------
+//  ToolTip
+//------------------------------
+*/
+ToolTip
+{
+
+	borderSkin: Embed(source="EDLT.swf", symbol="ToolTip_borderSkin");
+
+}
+
+/*
+//------------------------------
+//  Tree
+//------------------------------
+*/
+Tree
+{
+	defaultLeafIcon: Embed(source="EDLT.swf",symbol="Tree_defaultLeafIcon");
+	disclosureClosedIcon: Embed(source="EDLT.swf",symbol="Tree_disclosureClosedIcon");
+	disclosureOpenIcon: Embed(source="EDLT.swf",symbol="Tree_disclosureOpenIcon");
+	folderClosedIcon: Embed(source="EDLT.swf",symbol="Tree_folderClosedIcon");
+	folderOpenIcon: Embed(source="EDLT.swf",symbol="Tree_folderOpenIcon");
+}
+
+
