@@ -27,7 +27,7 @@ package puremvc.view
 			
 			// 目录树
 			//viewComponent.initContent(CourseVO);
-			refreshTree();
+			//refreshTree();
 			
 			// 控制面板
 			viewComponent.btnPrevSection.addEventListener(MouseEvent.CLICK,prevSection);
@@ -39,6 +39,7 @@ package puremvc.view
 		{
 			return [
 						ApplicationFacade.LOAD_FILE_FAILED,	
+						ApplicationFacade.INITUI
 				   ];
 		}
 		
@@ -46,13 +47,39 @@ package puremvc.view
         {
             switch ( note.getName() ) 
 			{
-				case ApplicationFacade.LOAD_FILE_FAILED : Alert.show(note.getBody().toString()); break;				
+				case ApplicationFacade.LOAD_FILE_FAILED : 
+					Alert.show(note.getBody().toString()); 
+					break;
+				case ApplicationFacade.INITUI :
+							
             }
         }
         
         private function handleEvent():void
         {
         	
+        }
+        public function initUI():void{
+        	var courses:Array=CourseProxy(facade.retrieveProxy(CourseProxy.NAME)).getCourses();			
+        	var currInfo:CurrentInfo=CurrentInfo.getInstance();         	
+        	currInfo.setCurrentCourse(courses[0]);        	
+        	currInfo.setCurrentChapter(courses[0].chapters[0]);
+        	var type:String;
+        	var path:String;
+        	if(courses[0].chapters[0].sections==null)
+        	{
+        		type=courses[0].chapters[0].type;
+        		path=courses[0].chapters[0].path;
+        		currInfo.setCurrentSection(null);        		
+        	}
+        	else
+        	{
+        		type=courses[0].chapters[0].sections[0].type;
+        		path=courses[0].chapters[0].sections[0].path;
+        		currInfo.setCurrentSection(courses[0].chapters[0].sections[0]);   
+        		sendNotification(ApplicationFacade.SECTION_CHANGE,currInfo.getCurrentSection().name);     		
+        	}        	
+        	sendNotification(ApplicationFacade.CHAPTER_CHANGE,currInfo.getCurrentChapter().name);
         }
         
 		public function refreshTree():void

@@ -16,7 +16,7 @@ package puremvc.controller
 			 * 
 			 */
 			facade.registerProxy(new DataProxy("content.xml"));
-
+			facade.registerMediator( new AppMediator(ApplicationFacade.getInstance().app) );
         }
 	}
 }
