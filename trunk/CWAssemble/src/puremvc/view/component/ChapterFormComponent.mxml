@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="课程章信息" x="153" y="10"/>
 	<mx:FormItem label="章ID" x="80" y="35">
 		<mx:TextInput id="cid"/>
 	</mx:FormItem>
-	<mx:FormItem label="章名称" x="71" y="65">
+	<mx:FormItem label="章名称" x="71" y="65" required="true">
 		<mx:TextInput id="cname"/>
 	</mx:FormItem>
 	<mx:FormItem label="章标题" x="71" y="95">
 		<mx:TextInput id="title"/>
 	</mx:FormItem>
-	<mx:HRule width="275" height="1" x="62.5" y="129"/>
-	<mx:FormItem label="文件类型" x="62.5" y="140">
+	<mx:FormItem label="章类型" x="71" y="127" direction="horizontal">
+		<mx:RadioButtonGroup id="chapterType" change="onChapterTypeChange(event)"/>
+		<mx:RadioButton id="hasChild" label="有节点" groupName="chapterType" selected="true"/>
+		<mx:RadioButton id="noChild" label="无节点" groupName="chapterType"/>
+	</mx:FormItem>
+	<mx:HRule id="hRule" width="275" height="1" x="55.5" y="159"/>
+	<mx:FormItem id="itemType" label="文件类型" x="55.5" y="170">
 		<mx:ComboBox id="type">
 			<mx:dataProvider>
 				<mx:Object label="Flash" data="flash"/>
@@ -21,22 +26,24 @@
 			</mx:dataProvider>
 		</mx:ComboBox>
 	</mx:FormItem>
-	<mx:FormItem label="文件路径" direction="horizontal" x="62.5" y="170">
+	<mx:FormItem id="itemPath" label="文件路径" direction="horizontal" x="55.5" y="200">
 		<mx:TextInput id="path" width="160"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
 	</mx:FormItem>	
-	<mx:FormItem label="配置文件" direction="horizontal" x="62.5" y="200">
+	<mx:FormItem id="itemXML" label="配置文件" direction="horizontal" x="55.5" y="230">
 		<mx:TextInput id="xml" width="160"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
 	</mx:FormItem>	
 	<mx:Script>
-		<![CDATA[	
+		<![CDATA[
+			import mx.events.ItemClickEvent;	
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
 			
 			public function init():void
 			{
 				file.addEventListener(Event.SELECT,onSelect);
+				hideItem();
 			}
 			public function onSelect(evt:Event):void
 			{
@@ -54,10 +61,65 @@
 				this.cid.text=null;
 				this.cname.text=null;
 				this.type.selectedIndex=0;
+				this.chapterType.selection=hasChild;
+				this.chapterType.dispatchEvent(new Event(Event.CHANGE));//解决程序内改变选项无法触发change事件问题
 				this.path.text=null;
 				this.title.text=null;
 				this.xml.text=null;
 			}
+			public function setter(data:Object):void
+			{
+				this.cid.text=data.id;
+				this.cname.text=data.name;
+				if(data.path==null)
+				{
+					this.chapterType.selection=hasChild;
+				}
+				else
+				{
+					this.chapterType.selection=noChild;
+				}				
+				this.chapterType.dispatchEvent(new Event(Event.CHANGE));
+				
+				if(this.chapterType.selection==noChild)
+				{
+					switch(data.type)
+					{
+						case "flash" : this.type.selectedIndex=0; break;
+						case "flex"  : this.type.selectedIndex=1; break;
+						case "image" : this.type.selectedIndex=2; break;
+						case "flv"   : this.type.selectedIndex=3; break;
+					}				
+					this.path.text=data.path;
+					this.title.text=data.title;
+					this.xml.text=data.xml;
+				}				
+			}
+			public function onChapterTypeChange(evt:Event):void
+			{
+				if(chapterType.selection==noChild)
+				{
+					displayItem();
+				}
+				else
+				{
+					hideItem();
+				}
+			}
+			public function displayItem():void
+			{
+				if(!contains(hRule))addChild(hRule);
+				if(!contains(itemType))addChild(itemType);
+				if(!contains(itemPath))addChild(itemPath);
+				if(!contains(itemXML))addChild(itemXML);
+			}
+			public function hideItem():void
+			{
+				if(contains(hRule))removeChild(hRule);
+				if(contains(itemType))removeChild(itemType);
+				if(contains(itemPath))removeChild(itemPath);
+				if(contains(itemXML))removeChild(itemXML);
+			}
 		]]>
-	</mx:Script>
+	</mx:Script>	
 </mx:Canvas>

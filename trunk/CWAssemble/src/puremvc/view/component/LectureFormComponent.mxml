@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="讲师信息" y="10" horizontalCenter="-16" textAlign="center"/>
 	<mx:FormItem label="讲师ID" x="47.5" y="38">
 		<mx:TextInput id="lid" width="79"/>
@@ -9,8 +9,8 @@
 	</mx:FormItem>
 	<mx:FormItem label="性别" x="60.5" y="68" direction="horizontal">		
 		<mx:RadioButtonGroup id="sex"/>
-		<mx:RadioButton label="男" value="男" groupName="sex" selected="true"/>
-		<mx:RadioButton label="女" value="女" groupName="sex"/>			
+		<mx:RadioButton id="male" label="男" value="男" groupName="sex" selected="true"/>
+		<mx:RadioButton id="female" label="女" value="女" groupName="sex"/>			
 	</mx:FormItem>
 	<mx:FormItem label="年龄" x="201.5" y="68">
 		<mx:TextInput id="age" width="110"/>
@@ -40,11 +40,22 @@
 			public function reset():void
 			{
 				this.lid.text=null;
-				this.lname.text=null;							
+				this.lname.text=null;	
+				this.sex.selection=	male;					
 				this.age.text=null;
 				this.photo.text=null;
 				this.position.text=null;
 				this.introduction.text=null;
+			}
+			public function setter(data:Object):void
+			{
+				this.lid.text=data.id;
+				this.lname.text=data.name;
+				this.sex.selection=data.sex=="男"?male:female;
+				this.age.text=data.age;			
+				this.photo.text=data.photo;				
+				this.position.text=data.position;
+				this.introduction.text=data.introduction;
 			}		
 		]]>
 	</mx:Script>

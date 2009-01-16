@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="课程节信息" x="141" y="10"/>
 	<mx:FormItem label="节ID" x="69.5" y="38">
 		<mx:TextInput id="sid"/>
 	</mx:FormItem>
-	<mx:FormItem label="节名称" x="60.5" y="68">
+	<mx:FormItem label="节名称" x="60.5" y="68" required="true">
 		<mx:TextInput id="sname"/>
 	</mx:FormItem>
 	<mx:FormItem label="节标题" x="60.5" y="98">
@@ -20,7 +20,7 @@
 			</mx:dataProvider>
 		</mx:ComboBox>
 	</mx:FormItem>
-	<mx:FormItem label="文件路径" direction="horizontal" x="50.5" y="158">
+	<mx:FormItem label="文件路径" direction="horizontal" x="50.5" y="158" required="true">
 		<mx:TextInput id="path" width="185"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
 	</mx:FormItem>	
@@ -57,6 +57,21 @@
 				this.path.text=null;
 				this.title.text=null;
 				this.xml.text=null;
+			}
+			public function setter(data:Object):void
+			{
+				this.sid.text=data.id;
+				this.sname.text=data.name;
+				switch(data.type)
+				{
+					case "flash" : this.type.selectedIndex=0;break;
+					case "flex"  : this.type.selectedIndex=1;break;
+					case "image" : this.type.selectedIndex=2;break;
+					case "flv"   : this.type.selectedIndex=3;break;
+				}				
+				this.path.text=data.path;
+				this.title.text=data.title;
+				this.xml.text=data.xml;
 			}
 		]]>
 	</mx:Script>
