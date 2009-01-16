@@ -8,8 +8,7 @@
 	import puremvc.controller.DataPrepCommand;	
 
 	public class ApplicationFacade extends Facade
-	{
-		public var app:Object;
+	{		
 		// Notification name constants
 		// application
 		public static const INITIALIZE:String = "initialize";	
@@ -24,7 +23,6 @@
 		
 		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
-		public static const DATA_PREPARE:String = "dataPrepare";	
 		
 		//common messages
 		public static const ERROR_LOAD_FILE:String	= "加载文件失败!";
@@ -37,19 +35,15 @@
 		
 		override protected function initializeController():void
 		{
-			super.initializeController();
-			
-			registerCommand(DATA_PREPARE,DataPrepCommand);	
+			super.initializeController();			
 			registerCommand(INITIALIZE,ApplicationInitializeCommand);			
 			registerCommand(STARTUP,ApplicationStartupCommand);			
-			
 			registerCommand(CONTENTS_ITEM_CLICK,ContentsItemClickCommand);
 		}
 		
 		public function startup(app:Object):void
-		{
-			this.app=app;
-			sendNotification(DATA_PREPARE);			
+		{			
+			sendNotification(INITIALIZE,app);			
 		}
 	}
 }

@@ -22,30 +22,31 @@ package puremvc.controller
 			
 			if(selectedItem is SectionVO)
 			{
-				if(currInfo.getSection()==null || selectedItem.id!=currInfo.getSection().id)				
-				{
+//				if(currInfo.getSection()==null || selectedItem.id!=currInfo.getSection().id)				
+//				{
 					type="section";
 					currInfo.setSection(selectedItem as SectionVO);		
-				}							
+//				}							
 			}
 			else if(selectedItem.vo is ChapterVO)
 			{
-				if(selectedItem.vo.id!=currInfo.getChapter().id)
-				{
+//				if(selectedItem.vo.id!=currInfo.getChapter().id)
+//				{
 					type="chapter";
 					currInfo.setChapter(selectedItem.vo);
-				}															
+//				}															
 			}
 			else
 			{
-				if(selectedItem.vo.id!=currInfo.getCourse().id)
-				{
+//				if(selectedItem.vo.id!=currInfo.getCourse().id)
+//				{
 					type="course";
 					currInfo.setCourse(selectedItem.vo);
-				}				
+//				}				
 			}
 			//trace("点击了:"+type);//type等于null说明已点击过
-			if(type!=null)sendNotification(ApplicationFacade.DISPLAY,type);			
+			//if(type!=null)
+			sendNotification(ApplicationFacade.DISPLAY,type);			
 		}
 	}
 }

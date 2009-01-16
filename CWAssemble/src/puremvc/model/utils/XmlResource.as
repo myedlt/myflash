@@ -56,10 +56,10 @@ package puremvc.model.utils
 			{
 				cha.title=chapter.@title;
 			}				
-			if(chapter.section!=undefined)
+			if(chapter.section!=undefined||chapter.Section!=undefined)
 			{
 				var sections:Array=new Array();
-				for each(var section:XML in chapter.section)
+				for each(var section:XML in chapter.section==undefined?chapter.Section:chapter.section)
 				{						
 					sections.push(parseSection(section));
 				}
@@ -90,12 +90,15 @@ package puremvc.model.utils
 		static public function parseCourse(course:XML):CourseVO
 		{//课程:
 			var cou:CourseVO=new CourseVO();			
-			var chapters:Array=new Array();
-			for each(var chapter:XML in course.Chapter)
-			{								
-				chapters.push(parseChapter(chapter));
-			}
-			cou.chapters=chapters;
+			if(course.Chapter!=undefined||course.chapter!=undefined)
+			{
+				var chapters:Array=new Array();
+				for each(var chapter:XML in course.Chapter==undefined?course.chapter:course.Chapter)
+				{								
+					chapters.push(parseChapter(chapter));
+				}
+				cou.chapters=chapters;
+			}			
 			if(course.hasOwnProperty("@id"))
 			{
 				cou.id=course.@id;
@@ -116,9 +119,9 @@ package puremvc.model.utils
 			{
 				cou.endSWF=course.@endSWF;
 			}				
-			if(course.Lecture!=undefined)
+			if(course.Lecture!=undefined||course.lecture!=undefined)
 			{	
-				cou.lecture=parseLecture(course.Lecture);
+				cou.lecture=parseLecture(course.Lecture==undefined?course.lecture:course.Lecture);
 			}
 			return cou;
 		}

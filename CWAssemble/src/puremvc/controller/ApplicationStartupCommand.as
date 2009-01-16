@@ -11,8 +11,10 @@ package puremvc.controller
     {
         override public function execute( note:INotification ) :void    
 		{
+			var csProxy:CourseProxy=new CourseProxy();
+			facade.registerProxy(csProxy);        	
 			var courseIndex:int=note.getBody()==null?0:note.getBody()as int;
-			var courses:Array=CourseProxy(facade.retrieveProxy(CourseProxy.NAME)).getCourses();			
+			var courses:Array=csProxy.getCourses();			
         	var currInfo:CurrentInfo=CurrentInfo.getInstance();         	
         	currInfo.setCourse(courses[courseIndex]);        	
         	currInfo.setChapter(courses[courseIndex].chapters[0]);

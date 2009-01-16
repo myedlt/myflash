@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="课程信息" x="159.5" y="10"/>
 	<mx:FormItem label="课程ID" x="66.5" y="38">
 		<mx:TextInput id="cid"/>
 	</mx:FormItem>
-	<mx:FormItem label="课程名称" x="56.5" y="70">
+	<mx:FormItem label="课程名称" x="56.5" y="70" required="true">
 		<mx:TextInput id="cname"/>
 	</mx:FormItem>
 	<mx:FormItem label="课程标题" x="56.5" y="102">
@@ -46,6 +46,14 @@
 				this.title.text=null;
 				this.startSWF.text=null;
 				this.endSWF.text=null;
+			}
+			public function setter(data:Object):void
+			{
+				this.cid.text=data.id;
+				this.cname.text=data.name;
+				this.title.text=data.title;			
+				this.startSWF.text=data.startSWF;				
+				this.endSWF.text=data.endSWF;
 			}
 		]]>
 	</mx:Script>
