@@ -5,7 +5,6 @@
 	import puremvc.controller.ApplicationInitializeCommand;
 	import puremvc.controller.ApplicationStartupCommand;
 	import puremvc.controller.ContentsItemClickCommand;
-	import puremvc.controller.DataPrepCommand;	
 
 	public class ApplicationFacade extends Facade
 	{		
