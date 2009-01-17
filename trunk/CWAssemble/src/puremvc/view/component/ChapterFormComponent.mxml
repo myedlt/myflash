@@ -62,7 +62,8 @@
 				this.cname.text=null;
 				this.type.selectedIndex=0;
 				this.chapterType.selection=hasChild;
-				this.chapterType.dispatchEvent(new Event(Event.CHANGE));//解决程序内改变选项无法触发change事件问题
+				//this.chapterType.dispatchEvent(new Event(Event.CHANGE));//解决程序内改变选项无法触发change事件问题
+				hideItem();
 				this.path.text=null;
 				this.title.text=null;
 				this.xml.text=null;
@@ -81,8 +82,8 @@
 				}				
 				this.chapterType.dispatchEvent(new Event(Event.CHANGE));
 				
-				if(this.chapterType.selection==noChild)
-				{
+//				if(this.chapterType.selection==noChild)
+//				{
 					switch(data.type)
 					{
 						case "flash" : this.type.selectedIndex=0; break;
@@ -93,7 +94,7 @@
 					this.path.text=data.path;
 					this.title.text=data.title;
 					this.xml.text=data.xml;
-				}				
+//				}				
 			}
 			public function onChapterTypeChange(evt:Event):void
 			{
