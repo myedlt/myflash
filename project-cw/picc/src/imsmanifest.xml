@@ -24,17 +24,10 @@
       <dependency identifierref="RS_THIS" />
       <dependency identifierref="RS_HISTORY" />
       <dependency identifierref="RS_SCRIPT" />
-      <dependency identifierref="RS_COURSES_UNIT01" />
-      <dependency identifierref="RS_FLASHES" />
-      <dependency identifierref="RS_FLASHES_BUTTONS" />
-      <dependency identifierref="RS_FLASHES_TEMPLATE" />
-      <dependency identifierref="RS_WEB_HELP" />
-      <dependency identifierref="RS_WEB_HELP_IMAGES" />
       <dependency identifierref="RS_WEB_NOTE" />
     </resource>
     <resource identifier="RS_THIS" adlcp:scormtype="asset" type="webcontent" xml:base="">
-      <file href="AC_OETags.js" />
-      <file href="content.xml" />
+      <file href="AC_OETags.js" />      
       <file href="index.swf" />
       <file href="playerProductInstall.swf" />
     </resource>
@@ -47,51 +40,7 @@
       <file href="SCOFunctions.js" />
       <file href="APIWrapper.js" />
     </resource>
-    <resource identifier="RS_COURSES_UNIT01" type="webcontent" adlcp:scormtype="asset" xml:base="courses/unit01">
-      <file href="unit01_01.swf" />
-      <file href="unit01_02.swf" />
-      <file href="unit01_03.swf" />
-      <file href="unit01_04.swf" />
-      <file href="unit01_05.swf" />
-      <file href="unit01_06.swf" />
-      <file href="unit01_07.swf" />
-      <file href="unit01.xml" />
-    </resource>
-    <resource identifier="RS_FLASHES" type="webcontent" adlcp:scormtype="asset" xml:base="flashes">
-      <file href="begin.swf" />
-      <file href="courseNameL.swf" />
-      <file href="courseNameS.swf" />
-      <file href="header.swf" />
-      <file href="logo.swf" />
-      <file href="menuTitle.swf" />
-    </resource>
-    <resource identifier="RS_FLASHES_BUTTONS" type="webcontent" adlcp:scormtype="asset" xml:base="flashes/buttons">
-      <file href="1.swf" />
-      <file href="2.swf" />
-      <file href="3.swf" />
-      <file href="4.swf" />
-      <file href="5.swf" />
-      <file href="6.swf" />
-      <file href="7.swf" />
-      <file href="8.swf" />
-      <file href="9.swf" />
-      <file href="10.swf" />
-    </resource>
-    <resource identifier="RS_FLASHES_TEMPLATE" type="webcontent" adlcp:scormtype="asset" xml:base="flashes/template">
-      <file href="multipage.swf" />
-    </resource>
-    <resource identifier="RS_WEB_HELP" type="webcontent" adlcp:scormtype="asset" xml:base="web/help">
-      <file href="help.html" />
-    </resource>
-    <resource identifier="RS_WEB_HELP_IMAGES" type="webcontent" adlcp:scormtype="asset" xml:base="web/help/images">
-      <file href="bangzhu_01.jpg" />
-      <file href="bangzhu_02.jpg" />
-      <file href="bangzhu_04.gif" />
-      <file href="bj.gif" />
-      <file href="help.jpg" />
-    </resource>
     <resource identifier="RS_WEB_NOTE" type="webcontent" adlcp:scormtype="asset" xml:base="web/note">
-      <file href="saveNote.html" />
       <file href="saveNote.js" />
     </resource>
   </resources>
