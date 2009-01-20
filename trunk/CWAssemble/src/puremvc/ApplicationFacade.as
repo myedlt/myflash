@@ -8,22 +8,12 @@
 
 	public class ApplicationFacade extends Facade
 	{		
-		// Notification name constants
-		// application
 		public static const INITIALIZE:String = "initialize";	
-						
-		//command
 		public static const STARTUP:String="startup";
 		public static const INIT_COMPLETE:String="initComplete";			
 		public static const DISPLAY:String="display";
-		
-		//mediator		
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";				
-		
-		// proxy
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
-		
-		//common messages
 		public static const ERROR_LOAD_FILE:String	= "加载文件失败!";
 		
 		public static function getInstance():ApplicationFacade

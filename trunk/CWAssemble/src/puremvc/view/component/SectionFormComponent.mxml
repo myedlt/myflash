@@ -28,8 +28,17 @@
 		<mx:TextInput id="xml" width="185"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
 	</mx:FormItem>	
+	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
+	<mx:Style>
+		.errorTip
+		{
+			font-size:12;
+		}
+	</mx:Style>
 	<mx:Script>
-		<![CDATA[	
+		<![CDATA[
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;	
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
 			
@@ -72,6 +81,18 @@
 				this.path.text=data.path;
 				this.title.text=data.title;
 				this.xml.text=data.xml;
+			}
+			public function validate():Boolean
+			{
+				stringValidator.listener=sname;				
+				var nameVR:ValidationResultEvent=stringValidator.validate(sname.text);
+				stringValidator.listener=path;
+				var pathVR:ValidationResultEvent=stringValidator.validate(path.text);
+				if(nameVR.type==ValidationResultEvent.VALID && pathVR.type==ValidationResultEvent.VALID){
+					return true;
+				}else{
+					return false;
+				}
 			}
 		]]>
 	</mx:Script>
