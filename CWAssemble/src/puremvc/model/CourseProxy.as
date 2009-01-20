@@ -20,7 +20,7 @@ package puremvc.model
         {
         	if(this.data==null)
         	{
-        		var temp:XML=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData())
+        		var temp:XML=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData());
         		//单个课程标签为CourseList;多课程为CourseList.Course 不区分大小写
         		if(temp.CourseList==undefined)
         		{

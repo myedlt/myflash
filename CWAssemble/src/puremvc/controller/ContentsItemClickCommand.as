@@ -7,45 +7,46 @@ package puremvc.controller
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.model.utils.CurrentInfo;
-	import puremvc.model.vo.ChapterVO;
-	import puremvc.model.vo.SectionVO;
-	import puremvc.view.ApplicationMediator;
+	import puremvc.model.utils.XmlResource;
 
 	public class ContentsItemClickCommand extends SimpleCommand
 	{
 		override public function execute(note:INotification):void
 		{
-			var selectedItem:Object=note.getBody();
+			//var selectedItem:Object=note.getBody();
 			var type:String;
+			var selectedItem:XML=note.getBody() as XML;
 			var currInfo:CurrentInfo=CurrentInfo.getInstance();	
-			var treeContents:Tree=ApplicationMediator(facade.retrieveMediator(ApplicationMediator.NAME)).app.treeContents;					
-			
-			if(selectedItem is SectionVO)
+			if(selectedItem.name().toString().toLowerCase()=="section")
 			{
-//				if(currInfo.getSection()==null || selectedItem.id!=currInfo.getSection().id)				
-//				{
-					type="section";
-					currInfo.setSection(selectedItem as SectionVO);		
-//				}							
+				type="section";
+				currInfo.setSection(XmlResource.parseSection(selectedItem));		
 			}
-			else if(selectedItem.vo is ChapterVO)
+			else if(selectedItem.name().toString().toLowerCase()=="chapter")
 			{
-//				if(selectedItem.vo.id!=currInfo.getChapter().id)
-//				{
-					type="chapter";
-					currInfo.setChapter(selectedItem.vo);
-//				}															
+				type="chapter";
+				currInfo.setChapter(XmlResource.parseChapter(selectedItem));
 			}
 			else
 			{
-//				if(selectedItem.vo.id!=currInfo.getCourse().id)
-//				{
-					type="course";
-					currInfo.setCourse(selectedItem.vo);
-//				}				
+				type="course";
+				currInfo.setCourse(XmlResource.parseCourse(selectedItem));
 			}
-			//trace("点击了:"+type);//type等于null说明已点击过
-			//if(type!=null)
+			/*if(selectedItem is SectionVO)
+			{
+				type="section";
+				currInfo.setSection(selectedItem as SectionVO);		
+			}
+			else if(selectedItem.vo is ChapterVO)
+			{
+				type="chapter";
+				currInfo.setChapter(selectedItem.vo);
+			}
+			else
+			{
+				type="course";
+				currInfo.setCourse(selectedItem.vo);
+			} */
 			sendNotification(ApplicationFacade.DISPLAY,type);			
 		}
 	}
