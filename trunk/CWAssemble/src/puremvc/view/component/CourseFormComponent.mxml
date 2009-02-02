@@ -18,8 +18,10 @@
 		<mx:TextInput id="endSWF" width="160"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='endSWF'"/>
 	</mx:FormItem>	
+	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
 	<mx:Script>
-		<![CDATA[			
+		<![CDATA[	
+			import mx.events.ValidationResultEvent;				
 			private var file:File=File.applicationDirectory;
 			private var temp:String;
 			
@@ -47,13 +49,23 @@
 				this.startSWF.text=null;
 				this.endSWF.text=null;
 			}
-			public function setter(data:Object):void
+			public function setter(data:XML):void
 			{
-				this.cid.text=data.id;
-				this.cname.text=data.name;
-				this.title.text=data.title;			
-				this.startSWF.text=data.startSWF;				
-				this.endSWF.text=data.endSWF;
+				if(data.hasOwnProperty("@id"))this.cid.text=data.@id;
+				if(data.hasOwnProperty("@name"))this.cname.text=data.@name;
+				if(data.hasOwnProperty("@title"))this.title.text=data.@title;			
+				if(data.hasOwnProperty("@startSWF"))this.startSWF.text=data.@startSWF;				
+				if(data.hasOwnProperty("@endSWF"))this.endSWF.text=data.@endSWF;
+			}
+			public function validate():Boolean
+			{
+				stringValidator.listener=cname;				
+				var nameVR:ValidationResultEvent=stringValidator.validate(cname.text);				
+				if(nameVR.type==ValidationResultEvent.VALID){
+					return true;
+				}else{
+					return false;
+				}
 			}
 		]]>
 	</mx:Script>

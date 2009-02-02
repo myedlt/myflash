@@ -19,10 +19,13 @@
 	<mx:FormItem id="itemType" label="文件类型" x="55.5" y="170">
 		<mx:ComboBox id="type">
 			<mx:dataProvider>
-				<mx:Object label="Flash" data="flash"/>
-				<mx:Object label="Flex" data="flex"/>
-				<mx:Object label="图片" data="image"/>
-				<mx:Object label="Flv" data="flv"/>
+				<mx:Array>
+					<mx:Object label="Flash" data="flash"/>
+					<mx:Object label="Flex" data="flex"/>
+					<mx:Object label="Image" data="image"/>
+					<mx:Object label="Album" data="album"/>
+					<mx:Object label="Flv" data="flv"/>
+				</mx:Array>
 			</mx:dataProvider>
 		</mx:ComboBox>
 	</mx:FormItem>
@@ -33,10 +36,11 @@
 	<mx:FormItem id="itemXML" label="配置文件" direction="horizontal" x="55.5" y="230">
 		<mx:TextInput id="xml" width="160"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
-	</mx:FormItem>	
+	</mx:FormItem>
+	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
 	<mx:Script>
 		<![CDATA[
-			import mx.events.ItemClickEvent;	
+			import mx.events.ValidationResultEvent;		
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
 			
@@ -62,39 +66,38 @@
 				this.cname.text=null;
 				this.type.selectedIndex=0;
 				this.chapterType.selection=hasChild;
-				//this.chapterType.dispatchEvent(new Event(Event.CHANGE));//解决程序内改变选项无法触发change事件问题
 				hideItem();
 				this.path.text=null;
 				this.title.text=null;
 				this.xml.text=null;
 			}
-			public function setter(data:Object):void
+			public function setter(data:XML):void
 			{
-				this.cid.text=data.id;
-				this.cname.text=data.name;
-				if(data.path==null)
+				if(data.hasOwnProperty("@id"))this.cid.text=data.@id;
+				if(data.hasOwnProperty("@name"))this.cname.text=data.@name;
+				if(data.elements().length()!=0)
 				{
+					hideItem();
 					this.chapterType.selection=hasChild;
 				}
 				else
 				{
+					displayItem();
 					this.chapterType.selection=noChild;
+					if(data.hasOwnProperty("@type")){
+						switch(data.@type.toString())
+						{
+							case "flash" : this.type.selectedIndex=0;break;
+							case "flex"  : this.type.selectedIndex=1;break;
+							case "image" : this.type.selectedIndex=2;break;
+							case "album" : this.type.selectedIndex=3;break;
+							case "flv"   : this.type.selectedIndex=4;break;
+						}	
+					}			
+					if(data.hasOwnProperty("@path"))this.path.text=data.@path;
+					if(data.hasOwnProperty("@title"))this.title.text=data.@title;
+					if(data.hasOwnProperty("@xml"))this.xml.text=data.@xml;
 				}				
-				this.chapterType.dispatchEvent(new Event(Event.CHANGE));
-				
-//				if(this.chapterType.selection==noChild)
-//				{
-					switch(data.type)
-					{
-						case "flash" : this.type.selectedIndex=0; break;
-						case "flex"  : this.type.selectedIndex=1; break;
-						case "image" : this.type.selectedIndex=2; break;
-						case "flv"   : this.type.selectedIndex=3; break;
-					}				
-					this.path.text=data.path;
-					this.title.text=data.title;
-					this.xml.text=data.xml;
-//				}				
 			}
 			public function onChapterTypeChange(evt:Event):void
 			{
@@ -120,6 +123,16 @@
 				if(contains(itemType))removeChild(itemType);
 				if(contains(itemPath))removeChild(itemPath);
 				if(contains(itemXML))removeChild(itemXML);
+			}
+			public function validate():Boolean
+			{
+				stringValidator.listener=cname;				
+				var nameVR:ValidationResultEvent=stringValidator.validate(cname.text);				
+				if(nameVR.type==ValidationResultEvent.VALID){
+					return true;
+				}else{
+					return false;
+				}
 			}
 		]]>
 	</mx:Script>	

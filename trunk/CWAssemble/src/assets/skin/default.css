@@ -1,5 +1,10 @@
 /* CSS file */
 global
 {
-	font-size:12px;			
+	font-size:12;			
 }
+
+.errorTip
+{
+	font-size:12;
+}  
