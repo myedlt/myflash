@@ -30,6 +30,7 @@ package puremvc.model.utils
         			}
         			break;        		
         		case "image":
+        		case "album":
         			if(ModuleManager.getModule(ImagePlayerModule).loaded)
         			{
         				notification.noteType=ApplicationFacade.IMAGE_LOAD;

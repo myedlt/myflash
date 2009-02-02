@@ -1,3 +1,4 @@
+
 package puremvc.view
 {
 	import mx.collections.ArrayCollection;
