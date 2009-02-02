@@ -13,7 +13,7 @@ package puremvc.model
 	{
 		public static const NAME:String = "DataProxy";		
 		
-		public function DataProxy(data:String = "content.xml") 
+		public function DataProxy(data:String) 
 		{
 			super( NAME );			
 			var delegate : LoadXMLDelegate = new LoadXMLDelegate(data);
@@ -31,13 +31,13 @@ package puremvc.model
             }
             catch (e:TypeError) 
             {
-            	trace("Could not parse the XML file.");
+            	sendNotification(ApplicationFacade.ERROR,ApplicationFacade.PARSE_XML_FAILED);
             }				         				
 		}
 		
 		public function fault(evt:IOErrorEvent):void
 		{		
-			sendNotification(ApplicationFacade.LOAD_FILE_FAILED,ApplicationFacade.ERROR_LOAD_FILE);			
+			sendNotification(ApplicationFacade.ERROR,ApplicationFacade.LOAD_FILE_FAILED);			
 		}
 	}
 }

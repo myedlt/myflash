@@ -26,7 +26,7 @@ package puremvc.view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.LOAD_FILE_FAILED			
+						ApplicationFacade.ERROR			
 				   ];
 		}
 		
@@ -34,7 +34,7 @@ package puremvc.view
         {
             switch ( note.getName() ) 
 			{
-				case ApplicationFacade.LOAD_FILE_FAILED : Alert.show(note.getBody().toString()); break;				
+				case ApplicationFacade.ERROR : Alert.show(note.getBody().toString(),"Error"); break;				
             }
         }
 		

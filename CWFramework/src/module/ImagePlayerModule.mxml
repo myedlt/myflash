@@ -10,11 +10,15 @@
 			
 			public function load(url:String):void
 			{
-				var delegate : LoadXMLDelegate = new LoadXMLDelegate(url);
-				delegate.loader.addEventListener(Event.COMPLETE,result);
-				delegate.loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
-				delegate.load();
-				boxImgCtrl.visible=true;
+				if(url.lastIndexOf(".xml")!=-1){
+					var delegate : LoadXMLDelegate = new LoadXMLDelegate(url);
+					delegate.loader.addEventListener(Event.COMPLETE,result);
+					delegate.loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
+					delegate.load();
+				}else{
+					if(boxImgCtrl.visible==true)boxImgCtrl.visible=false;
+					image.source=url;
+				}
 			}			
 			
 			public function result(evt:Event):void
@@ -24,11 +28,12 @@
 	            	images = XML(evt.target.data).Image;	            	
 	            	if(images.length()==1)
 	            	{
-	            		boxImgCtrl.visible=false;
+	            		if(boxImgCtrl.visible==true)boxImgCtrl.visible=false;
 	            		image.source=images.toString();
 	            	}
 	            	else
 	            	{
+	            		if(boxImgCtrl.visible==false)boxImgCtrl.visible=true;
 	            		index=0;
 	            		image.source=images[index].toString();
 	            	}
