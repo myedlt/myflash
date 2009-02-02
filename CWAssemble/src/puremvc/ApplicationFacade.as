@@ -10,11 +10,12 @@
 	{		
 		public static const INITIALIZE:String = "initialize";	
 		public static const STARTUP:String="startup";
-		public static const INIT_COMPLETE:String="initComplete";			
+		public static const START_COMPLETE:String="startComplete";			
 		public static const DISPLAY:String="display";
 		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";				
-		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
-		public static const ERROR_LOAD_FILE:String	= "加载文件失败!";
+		public static const ERROR:String="error";	
+		public static const LOAD_FILE_FAILED:String = "加载xml文件失败";	
+		public static const PARSE_XML_FAILED:String = "解析xml文件失败";				
 		
 		public static function getInstance():ApplicationFacade
 		{

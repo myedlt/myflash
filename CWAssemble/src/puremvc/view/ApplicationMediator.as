@@ -3,6 +3,7 @@ package puremvc.view
 	import flash.events.MouseEvent;
 	
 	import mx.controls.Alert;
+	import mx.controls.Button;
 	import mx.events.ListEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -10,7 +11,7 @@ package puremvc.view
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.model.CourseProxy;
+	import puremvc.model.DataProxy;
 	import puremvc.model.utils.CurrentInfo;
 	
 	public class ApplicationMediator extends Mediator implements IMediator
@@ -24,47 +25,39 @@ package puremvc.view
 			app.treeContents.addEventListener(ListEvent.ITEM_CLICK,itemClick);			
 			app.btnDelete.addEventListener(MouseEvent.CLICK,deleteHandler);
 			app.btnReset.addEventListener(MouseEvent.CLICK,resetHandler);
-			app.btnSave.addEventListener(MouseEvent.CLICK,saveHandler);
-			app.btnAddCourse.addEventListener(MouseEvent.CLICK,addCourse);
+			app.btnSave.addEventListener(MouseEvent.CLICK,saveHandler);			
 			app.btnAddChapter.addEventListener(MouseEvent.CLICK,addChapter);
-			app.btnAddSection.addEventListener(MouseEvent.CLICK,addSection);
-			//app.btnAddLecture.addEventListener(MouseEvent.CLICK,addLecture);
+			app.btnAddSection.addEventListener(MouseEvent.CLICK,addSection);			
 		}
 		
 		private function initialize():void
 		{
 			app.treeContents.labelField="@name";
-			var courseData:XMLList=facade.retrieveProxy(CourseProxy.NAME).getData() as XMLList;
-			if(XML(courseData.parent()).name().toString().toLowerCase()=="courselist"){//多课程结构
-				app.treeDataProvider.source=courseData;
-				displayCurrInfo("course");//初始显示第一个课程信息
+			var courseList:XMLList=DataProxy(facade.retrieveProxy(DataProxy.NAME)).getCourseList();
+			if(courseList.length()>1){//多课程结构
+				app.treeDataProvider.source=courseList;
+				
+				var btnAddCourse:Button=new Button();
+				btnAddCourse.id="btnAddCourse";
+				btnAddCourse.label="添加课程";
+				btnAddCourse.addEventListener(MouseEvent.CLICK,addCourse);
+				app.boxNav.addChildAt(btnAddCourse,0);
 			}else{//单课程结构
-				app.treeDataProvider.source=courseData.Chapter!=undefined?courseData.Chapter:courseData.chapter;
-				app.boxNav.removeChild(app.btnAddCourse);
- 				displayCurrInfo("chapter");
+				app.treeDataProvider.source=courseList.Chapter!=undefined?courseList.Chapter:courseList.chapter;
+				
+				var btnCourseInfo:Button=new Button();
+				btnCourseInfo.id="btnCourseInfo";
+				btnCourseInfo.label="课程信息";
+				btnCourseInfo.addEventListener(MouseEvent.CLICK,courseInfo);
+				app.boxNav.addChildAt(btnCourseInfo,0);
+ 				
  				app.treeContents.callLater(expandAllNode);//初始展开所有节点
-			}				
-			 /* var single:Boolean;
-			app.treeContents.labelField="name";				
-			var courseList:Array = CourseProxy(facade.retrieveProxy(CourseProxy.NAME)).getCourses();			
-        	for each(var course:CourseVO in courseList)
-			{
-				var chapterList:ArrayCollection=new ArrayCollection();
-				for each(var chapter:ChapterVO in course.chapters)
-				{        					
-					chapterList.addItem({name:chapter.name,children:chapter.sections,vo:chapter});				
-	        	}
-	        	if(course.name==null)
-	        	{//单课程xml
-	        		app.treeDataProvider=chapterList;
-	        		single=true;
-	        		break;
-	        	}
-	        	else
-	        	{//多课程xml
-	        		app.treeDataProvider.addItem({name:course.name,children:chapterList,vo:course});
-	        	}								
-        	} */  
+			}
+			displayCurrInfo("course");//初始显示课程信息				
+		}
+		
+		public function courseInfo(event:MouseEvent):void{
+			displayCurrInfo("course");
 		}
 		
 		public function addCourse(evt:MouseEvent):void
@@ -83,13 +76,7 @@ package puremvc.view
 		{
 			app.sectionForm.reset();
 			app.myViewStack.selectedChild=app.sectionCanvas;
-		}
-		
-		/* public function addLecture(evt:MouseEvent):void
-		{
-			app.lectureForm.reset();
-			app.myViewStack.selectedChild=app.lectureCanvas;
-		} */
+		}		
 		
 		public function deleteHandler(evt:MouseEvent):void
 		{
@@ -105,7 +92,7 @@ package puremvc.view
 		{
 			var valid:Boolean=Object(app.myViewStack.selectedChild.getChildAt(0)).validate();
 			if(valid){
-				trace("noError");
+				
 			}
 		}
 		
@@ -129,14 +116,17 @@ package puremvc.view
 			{
 				case "course":
 					app.myViewStack.selectedChild=app.courseCanvas;
+					Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getCourse());
 					break;
 				case "chapter":
 					app.myViewStack.selectedChild=app.chapterCanvas;
+					Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getChapter());
 					break;
 				case "section":
 					app.myViewStack.selectedChild=app.sectionCanvas;
+					Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getSection());
 					break;
 			}
@@ -145,8 +135,8 @@ package puremvc.view
 		override public function listNotificationInterests():Array
 		{
 			return [
-						ApplicationFacade.LOAD_FILE_FAILED,
-						ApplicationFacade.INIT_COMPLETE,
+						ApplicationFacade.ERROR,
+						ApplicationFacade.START_COMPLETE,
 						ApplicationFacade.DISPLAY		
 				   ];
 		}
@@ -155,8 +145,8 @@ package puremvc.view
         {
             switch ( note.getName() ) 
 			{
-				case ApplicationFacade.LOAD_FILE_FAILED : Alert.show(note.getBody().toString()); break;	
-				case ApplicationFacade.INIT_COMPLETE : initialize(); break;	
+				case ApplicationFacade.ERROR : Alert.show(note.getBody().toString(),"Error"); break;	
+				case ApplicationFacade.START_COMPLETE : initialize(); break;	
 				case ApplicationFacade.DISPLAY : displayCurrInfo(note.getBody().toString()); break;			
             }
         }

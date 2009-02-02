@@ -1,15 +1,11 @@
 package puremvc.model.utils
-{	
-	import puremvc.model.vo.ChapterVO;
-	import puremvc.model.vo.CourseVO;
-	import puremvc.model.vo.SectionVO;	
-	
+{		
 	//singleton 保存课程的当前信息
 	public class CurrentInfo 
 	{					
-		private var course:CourseVO;
-		private var chapter:ChapterVO;
-		private var section:SectionVO;		
+		private var course:XML;
+		private var chapter:XML;
+		private var section:XML;		
 		private static var instance:CurrentInfo=null;
 				
 		public static function getInstance():CurrentInfo
@@ -18,32 +14,32 @@ package puremvc.model.utils
 			return instance;
 		}	
 		
-		public function getCourse():CourseVO
+		public function getCourse():XML
         {
         	return course;
         }
         
-        public function getChapter():ChapterVO
+        public function getChapter():XML
         {
         	return chapter;
         }
         
-        public function getSection():SectionVO
+        public function getSection():XML
         {
         	return section;
         }       
         
-        public function setCourse(course:CourseVO):void
+        public function setCourse(course:XML):void
         {
         	this.course=course;
         }
         
-        public function setChapter(chapter:ChapterVO):void
+        public function setChapter(chapter:XML):void
         {
         	this.chapter=chapter;
         }
         
-        public function setSection(section:SectionVO):void
+        public function setSection(section:XML):void
         {
         	this.section=section;
         }        	

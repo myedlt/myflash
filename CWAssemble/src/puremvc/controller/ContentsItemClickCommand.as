@@ -7,46 +7,29 @@ package puremvc.controller
 	
 	import puremvc.ApplicationFacade;
 	import puremvc.model.utils.CurrentInfo;
-	import puremvc.model.utils.XmlResource;
 
 	public class ContentsItemClickCommand extends SimpleCommand
 	{
 		override public function execute(note:INotification):void
-		{
-			//var selectedItem:Object=note.getBody();
-			var type:String;
+		{						
 			var selectedItem:XML=note.getBody() as XML;
 			var currInfo:CurrentInfo=CurrentInfo.getInstance();	
+			var type:String;
 			if(selectedItem.name().toString().toLowerCase()=="section")
 			{
 				type="section";
-				currInfo.setSection(XmlResource.parseSection(selectedItem));		
+				currInfo.setSection(selectedItem);		
 			}
 			else if(selectedItem.name().toString().toLowerCase()=="chapter")
 			{
 				type="chapter";
-				currInfo.setChapter(XmlResource.parseChapter(selectedItem));
+				currInfo.setChapter(selectedItem);
 			}
 			else
 			{
 				type="course";
-				currInfo.setCourse(XmlResource.parseCourse(selectedItem));
-			}
-			/*if(selectedItem is SectionVO)
-			{
-				type="section";
-				currInfo.setSection(selectedItem as SectionVO);		
-			}
-			else if(selectedItem.vo is ChapterVO)
-			{
-				type="chapter";
-				currInfo.setChapter(selectedItem.vo);
-			}
-			else
-			{
-				type="course";
-				currInfo.setCourse(selectedItem.vo);
-			} */
+				currInfo.setCourse(selectedItem);
+			}			
 			sendNotification(ApplicationFacade.DISPLAY,type);			
 		}
 	}
