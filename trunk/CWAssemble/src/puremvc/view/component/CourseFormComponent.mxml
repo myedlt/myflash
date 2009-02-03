@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="课程信息" x="159.5" y="10"/>
-	<mx:FormItem label="课程ID" x="66.5" y="38">
-		<mx:TextInput id="cid"/>
-	</mx:FormItem>
-	<mx:FormItem label="课程名称" x="56.5" y="70" required="true">
+	<mx:FormItem label="课程名称" x="55.5" y="38" required="true">
 		<mx:TextInput id="cname"/>
 	</mx:FormItem>
-	<mx:FormItem label="课程标题" x="56.5" y="102">
+	<mx:FormItem label="课程标题" x="55.5" y="70">
 		<mx:TextInput id="title"/>
 	</mx:FormItem>
-	<mx:FormItem label="开始动画" direction="horizontal" x="56.5" y="134">
+	<mx:FormItem label="开始动画" direction="horizontal" x="55.5" y="102">
 		<mx:TextInput id="startSWF" width="160"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='startSWF'"/>
 	</mx:FormItem>
-	<mx:FormItem label="结束动画" direction="horizontal" x="56.5" y="166">
+	<mx:FormItem label="结束动画" direction="horizontal" x="55.5" y="134">
 		<mx:TextInput id="endSWF" width="160"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='endSWF'"/>
 	</mx:FormItem>	
 	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
+	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[	
 			import mx.events.ValidationResultEvent;				
 			private var file:File=File.applicationDirectory;
 			private var temp:String;
+			private var cid:String;
+			public var flag:String;
 			
 			public function init():void
 			{
@@ -43,7 +43,6 @@
 			}
 			public function reset():void
 			{
-				this.cid.text=null;
 				this.cname.text=null;				
 				this.title.text=null;
 				this.startSWF.text=null;
@@ -51,11 +50,25 @@
 			}
 			public function setter(data:XML):void
 			{
-				if(data.hasOwnProperty("@id"))this.cid.text=data.@id;
+				this.cid=data.@id;
 				if(data.hasOwnProperty("@name"))this.cname.text=data.@name;
 				if(data.hasOwnProperty("@title"))this.title.text=data.@title;			
 				if(data.hasOwnProperty("@startSWF"))this.startSWF.text=data.@startSWF;				
 				if(data.hasOwnProperty("@endSWF"))this.endSWF.text=data.@endSWF;
+			}
+			public function getter():XML
+			{
+				var xml:XML=<course/>;
+				if(flag=="edit"){
+					xml.@id=this.cid;
+				}else if(flag=="add"){
+					xml.@id=formatter.format(new Date());
+				}				
+				xml.@name=cname.text;
+				xml.@title=title.text;
+				xml.@startSWF=startSWF.text;
+				xml.@endSWF=endSWF.text;
+				return xml;
 			}
 			public function validate():Boolean
 			{

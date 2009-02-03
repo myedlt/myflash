@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="课程节信息" x="141" y="10"/>
-	<mx:FormItem label="节ID" x="69.5" y="38">
-		<mx:TextInput id="sid"/>
-	</mx:FormItem>
-	<mx:FormItem label="节名称" x="60.5" y="68" required="true">
+	<mx:FormItem label="节名称" x="53" y="38" required="true">
 		<mx:TextInput id="sname"/>
 	</mx:FormItem>
-	<mx:FormItem label="节标题" x="60.5" y="98">
+	<mx:FormItem label="节标题" x="53" y="68">
 		<mx:TextInput id="title"/>
 	</mx:FormItem>
-	<mx:FormItem label="文件类型" x="50.5" y="128">
+	<mx:FormItem label="文件类型" x="43" y="98">
 		<mx:ComboBox id="type">
 			<mx:dataProvider>
 				<mx:Object label="Flash" data="flash"/>
@@ -21,20 +18,23 @@
 			</mx:dataProvider>
 		</mx:ComboBox>
 	</mx:FormItem>
-	<mx:FormItem label="文件路径" direction="horizontal" x="50.5" y="158" required="true">
+	<mx:FormItem label="文件路径" direction="horizontal" x="43" y="128" required="true">
 		<mx:TextInput id="path" width="185"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
 	</mx:FormItem>	
-	<mx:FormItem label="配置文件" direction="horizontal" y="188" x="50.5">
+	<mx:FormItem label="配置文件" direction="horizontal" y="158" x="43">
 		<mx:TextInput id="xml" width="185"/>
 		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
 	</mx:FormItem>	
 	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
+	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[
 			import mx.events.ValidationResultEvent;	
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
+			private var sid:String;
+			public var flag:String;
 			
 			public function init():void
 			{
@@ -53,8 +53,7 @@
 				}
 			}
 			public function reset():void
-			{
-				this.sid.text=null;
+			{				
 				this.sname.text=null;
 				this.type.selectedIndex=0;
 				this.path.text=null;
@@ -63,7 +62,7 @@
 			}
 			public function setter(data:XML):void
 			{
-				if(data.hasOwnProperty("@id"))this.sid.text=data.@id;
+				this.sid=data.@id;
 				if(data.hasOwnProperty("@name"))this.sname.text=data.@name;
 				if(data.hasOwnProperty("@type")){
 					switch(data.@type.toString())
@@ -78,6 +77,29 @@
 				if(data.hasOwnProperty("@path"))this.path.text=data.@path;
 				if(data.hasOwnProperty("@title"))this.title.text=data.@title;
 				if(data.hasOwnProperty("@xml"))this.xml.text=data.@xml;
+			}
+			public function getter():XML
+			{
+				var xml:XML=<section/>;
+				if(flag=="edit"){
+					xml.@id=this.sid;
+				}else if(flag=="add"){
+					xml.@id=formatter.format(new Date());
+				}				
+				xml.@name=sname.text;
+				xml.@type=type.selectedItem.data;
+				xml.@path=path.text;
+				xml.@title=title.text;
+				xml.@xml=this.xml.text;
+				
+//				var xmlStr:String="<section id=\""+sid.text
+//				+"\" name=\""+sname.text
+//				+"\" type=\""+type.selectedItem.data
+//				+"\" path=\""+path.text
+//				+"\" title=\""+title.text
+//				+"\" xml=\""+xml.text
+//				+"\"/>";				
+				return xml;
 			}
 			public function validate():Boolean
 			{
