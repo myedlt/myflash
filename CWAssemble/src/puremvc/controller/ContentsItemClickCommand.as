@@ -18,12 +18,14 @@ package puremvc.controller
 			if(selectedItem.name().toString().toLowerCase()=="section")
 			{
 				type="section";
-				currInfo.setSection(selectedItem);		
+				currInfo.setSection(selectedItem);
+				if(currInfo.getChapter()==null||currInfo.getChapter().@id!=selectedItem.parent().@id)currInfo.setChapter(selectedItem.parent());		
 			}
 			else if(selectedItem.name().toString().toLowerCase()=="chapter")
 			{
 				type="chapter";
 				currInfo.setChapter(selectedItem);
+				if(currInfo.getCourse().@id!=selectedItem.parent().@id)currInfo.setCourse(selectedItem.parent());
 			}
 			else
 			{

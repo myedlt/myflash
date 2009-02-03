@@ -3,7 +3,6 @@ package puremvc.view
 	import flash.events.MouseEvent;
 	
 	import mx.controls.Alert;
-	import mx.controls.Button;
 	import mx.events.ListEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -17,6 +16,7 @@ package puremvc.view
 	public class ApplicationMediator extends Mediator implements IMediator
 	{
 		public static const NAME:String = "ApplicationMediator";
+		private var currInfo:CurrentInfo = CurrentInfo.getInstance();
 		
 		public function ApplicationMediator(viewComponent:Object)
 		{
@@ -26,6 +26,7 @@ package puremvc.view
 			app.btnDelete.addEventListener(MouseEvent.CLICK,deleteHandler);
 			app.btnReset.addEventListener(MouseEvent.CLICK,resetHandler);
 			app.btnSave.addEventListener(MouseEvent.CLICK,saveHandler);			
+			app.btnAddCourse.addEventListener(MouseEvent.CLICK,addCourse);
 			app.btnAddChapter.addEventListener(MouseEvent.CLICK,addChapter);
 			app.btnAddSection.addEventListener(MouseEvent.CLICK,addSection);			
 		}
@@ -34,25 +35,8 @@ package puremvc.view
 		{
 			app.treeContents.labelField="@name";
 			var courseList:XMLList=DataProxy(facade.retrieveProxy(DataProxy.NAME)).getCourseList();
-			if(courseList.length()>1){//多课程结构
-				app.treeDataProvider.source=courseList;
-				
-				var btnAddCourse:Button=new Button();
-				btnAddCourse.id="btnAddCourse";
-				btnAddCourse.label="添加课程";
-				btnAddCourse.addEventListener(MouseEvent.CLICK,addCourse);
-				app.boxNav.addChildAt(btnAddCourse,0);
-			}else{//单课程结构
-				app.treeDataProvider.source=courseList.Chapter!=undefined?courseList.Chapter:courseList.chapter;
-				
-				var btnCourseInfo:Button=new Button();
-				btnCourseInfo.id="btnCourseInfo";
-				btnCourseInfo.label="课程信息";
-				btnCourseInfo.addEventListener(MouseEvent.CLICK,courseInfo);
-				app.boxNav.addChildAt(btnCourseInfo,0);
- 				
- 				app.treeContents.callLater(expandAllNode);//初始展开所有节点
-			}
+			app.treeDataProvider.source=courseList;
+			app.treeContents.callLater(expandAllNode);//初始展开所有节点			
 			displayCurrInfo("course");//初始显示课程信息				
 		}
 		
@@ -62,20 +46,23 @@ package puremvc.view
 		
 		public function addCourse(evt:MouseEvent):void
 		{
-			app.courseForm.reset();
 			app.myViewStack.selectedChild=app.courseCanvas;
+			app.courseForm.reset();
+			app.courseForm.flag="add";
 		}
 		
 		public function addChapter(evt:MouseEvent):void
-		{
-			app.chapterForm.reset();
+		{			
 			app.myViewStack.selectedChild=app.chapterCanvas;
+			app.chapterForm.reset();
+			app.chapterForm.flag="add";
 		}
 		
 		public function addSection(evt:MouseEvent):void
-		{
-			app.sectionForm.reset();
+		{			
 			app.myViewStack.selectedChild=app.sectionCanvas;
+			app.sectionForm.reset();
+			app.sectionForm.flag="add";
 		}		
 		
 		public function deleteHandler(evt:MouseEvent):void
@@ -90,12 +77,35 @@ package puremvc.view
 		
 		public function saveHandler(evt:MouseEvent):void
 		{
-			var valid:Boolean=Object(app.myViewStack.selectedChild.getChildAt(0)).validate();
-			if(valid){
-				
+			var selectedItem:Object=app.myViewStack.selectedChild.getChildAt(0);
+			var index:int;
+			if(selectedItem.validate()){
+				switch(selectedItem.id)
+				{
+					case "courseForm":break;
+					case "chapterForm":break;
+					case "sectionForm":
+						var temp:XML=selectedItem.getter();
+						app.treeDataProvider.source.(@id==currInfo.getChapter().@id).replace(index,temp);
+						break;
+				}
 			}
 		}
-		
+		public function getIndex(item:XML):int{
+			if(item.name().toString().toLowerCase()=="section")
+			{
+						
+			}
+			else if(item.name().toString().toLowerCase()=="chapter")
+			{
+				
+			}
+			else
+			{
+				
+			}	
+			return null;
+		}
 		public function expandAllNode():void
 		{
 			for each(var item:Object in app.treeDataProvider)
@@ -110,26 +120,26 @@ package puremvc.view
 		}
 		
 		public function displayCurrInfo(type:String):void
-		{
-			var currInfo:CurrentInfo=CurrentInfo.getInstance();
+		{			
 			switch(type)
 			{
 				case "course":
 					app.myViewStack.selectedChild=app.courseCanvas;
-					Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
+					app.courseForm.reset();
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getCourse());
 					break;
 				case "chapter":
 					app.myViewStack.selectedChild=app.chapterCanvas;
-					Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
+					app.chapterForm.reset();
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getChapter());
 					break;
 				case "section":
 					app.myViewStack.selectedChild=app.sectionCanvas;
-					Object(app.myViewStack.selectedChild.getChildAt(0)).reset();
+					app.sectionForm.reset();
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getSection());
 					break;
 			}
+			Object(app.myViewStack.selectedChild.getChildAt(0)).flag="edit";
 		}
 		
 		override public function listNotificationInterests():Array
