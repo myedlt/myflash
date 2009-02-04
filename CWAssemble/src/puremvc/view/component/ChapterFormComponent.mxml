@@ -1,48 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
-	<mx:FormHeading label="课程章信息" x="153" y="10"/>
-	<mx:FormItem label="章名称" x="71" y="38" required="true">
-		<mx:TextInput id="cname"/>
-	</mx:FormItem>
-	<mx:FormItem label="章标题" x="71" y="68">
-		<mx:TextInput id="title"/>
-	</mx:FormItem>
-	<mx:FormItem label="章类型" x="71" y="100" direction="horizontal">
-		<mx:RadioButtonGroup id="chapterType" change="onChapterTypeChange(event)"/>
-		<mx:RadioButton id="hasChild" label="有节点" groupName="chapterType" selected="true"/>
-		<mx:RadioButton id="noChild" label="无节点" groupName="chapterType"/>
-	</mx:FormItem>
-	<mx:HRule id="hRule" width="275" height="1" x="55.5" y="132"/>
-	<mx:FormItem id="itemType" label="文件类型" x="55.5" y="143">
-		<mx:ComboBox id="type">
-			<mx:dataProvider>
-				<mx:Array>
-					<mx:Object label="Flash" data="flash"/>
-					<mx:Object label="Flex" data="flex"/>
-					<mx:Object label="Image" data="image"/>
-					<mx:Object label="Album" data="album"/>
-					<mx:Object label="Flv" data="flv"/>
-				</mx:Array>
-			</mx:dataProvider>
-		</mx:ComboBox>
-	</mx:FormItem>
-	<mx:FormItem id="itemPath" label="文件路径" direction="horizontal" x="55.5" y="173">
-		<mx:TextInput id="path" width="160"/>
-		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
-	</mx:FormItem>	
-	<mx:FormItem id="itemXML" label="配置文件" direction="horizontal" x="55.5" y="203">
-		<mx:TextInput id="xml" width="160"/>
-		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
-	</mx:FormItem>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="310" creationComplete="init()" borderStyle="solid">
+	<mx:FormHeading label="章信息" x="163" y="10"/>
+	<mx:Canvas id="addPanel" width="390" height="82" y="26" x="4">
+		<mx:FormItem label="所在课程" x="62.5" y="10">
+			<mx:ComboBox id="inCourse" dataProvider="{courses}" labelField="@name"/>
+		</mx:FormItem>
+		<mx:FormItem label="位置" x="85.5" y="42" direction="horizontal" horizontalGap="1">
+			<mx:ComboBox id="inPosition" dataProvider="{inCourse.selectedItem.chapter}" labelField="@name"/>
+			<mx:Label text="之后"/>
+		</mx:FormItem>
+		<mx:CheckBox id="firstPosition" x="308.5" y="42" label="居首" change="onChange()"/>
+		<mx:HRule id="hRule0" width="300" height="1" x="57.5" y="75"/>
+	</mx:Canvas>
+	<mx:Canvas id="editPanel" height="200" width="390" y="107" x="4">
+		<mx:FormItem label="章名称" x="77" y="6" required="true">
+			<mx:TextInput id="cname"/>
+		</mx:FormItem>
+		<mx:FormItem label="章标题" x="77" y="36">
+			<mx:TextInput id="title"/>
+		</mx:FormItem>
+		<mx:FormItem label="章类型" x="77" y="68" direction="horizontal">
+			<mx:RadioButtonGroup id="chapterType" change="onChapterTypeChange(event)"/>
+			<mx:RadioButton id="hasChild" label="有节点" groupName="chapterType" selected="true"/>
+			<mx:RadioButton id="noChild" label="无节点" groupName="chapterType"/>
+		</mx:FormItem>
+		<mx:HRule id="hRule" width="275" height="1" x="61.5" y="99"/>
+		<mx:FormItem id="itemType" label="文件类型" x="61.5" y="109">
+			<mx:ComboBox id="type">
+				<mx:dataProvider>
+					<mx:Array>
+						<mx:Object label="Flash" data="flash"/>
+						<mx:Object label="Flex" data="flex"/>
+						<mx:Object label="Image" data="image"/>
+						<mx:Object label="Album" data="album"/>
+						<mx:Object label="Flv" data="flv"/>
+					</mx:Array>
+				</mx:dataProvider>
+			</mx:ComboBox>
+		</mx:FormItem>
+		<mx:FormItem id="itemPath" label="文件路径" direction="horizontal" x="61.5" y="139">
+			<mx:TextInput id="path" width="160"/>
+			<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
+		</mx:FormItem>	
+		<mx:FormItem id="itemXML" label="配置文件" direction="horizontal" x="61.5" y="169">
+			<mx:TextInput id="xml" width="160"/>
+			<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
+		</mx:FormItem>
+	</mx:Canvas>
 	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
 	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[
+			import puremvc.model.utils.CurrentInfo;
 			import mx.events.ValidationResultEvent;		
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
 			private var cid:String;
-			public var flag:String;
+			public var state:String;
+			[Bindable]
+			public var courses:XMLList;
 			
 			public function init():void
 			{
@@ -60,6 +76,14 @@
 					xml.text=evt.target.nativePath;
 				}
 			}
+			public function onChange():void
+			{
+				if(this.firstPosition.selected){
+					this.inPosition.enabled=false;
+				}else{
+					this.inPosition.enabled=true;
+				}
+			}
 			public function reset():void
 			{
 				this.cname.text=null;
@@ -74,6 +98,7 @@
 			{
 				this.cid=data.@id;
 				if(data.hasOwnProperty("@name"))this.cname.text=data.@name;
+				if(data.hasOwnProperty("@title"))this.title.text=data.@title;
 				if(data.elements().length()!=0)
 				{
 					hideItem();
@@ -93,26 +118,34 @@
 							case "flv"   : this.type.selectedIndex=4;break;
 						}	
 					}			
-					if(data.hasOwnProperty("@path"))this.path.text=data.@path;
-					if(data.hasOwnProperty("@title"))this.title.text=data.@title;
+					if(data.hasOwnProperty("@path"))this.path.text=data.@path;					
 					if(data.hasOwnProperty("@xml"))this.xml.text=data.@xml;
 				}				
 			}
 			public function getter():XML
 			{
 				var xml:XML=<chapter/>;
-				if(flag=="edit"){
+				if(state=="edit"){
 					xml.@id=this.cid;
-				}else if(flag=="add"){
+				}else if(state=="add"){
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=cname.text;
+				xml.@title=title.text;
 				if(chapterType.selection==noChild){
 					xml.@type=type.selectedItem.data;
-					xml.@path=path.text;
-					xml.@title=title.text;
+					xml.@path=path.text;					
 					xml.@xml=this.xml.text;
-				}								
+				}else{
+					var currInfo:CurrentInfo=CurrentInfo.getInstance();
+					if(currInfo.getChapter().section==undefined){
+						var newNode:XML=<section/>;
+						newNode.@id=formatter.format(new Date());
+						xml.setChildren(newNode);
+					}else{
+						xml.setChildren(currInfo.getChapter().section);
+					}
+				}					
 				return xml;
 			}
 			public function onChapterTypeChange(evt:Event):void
@@ -128,17 +161,17 @@
 			}
 			public function displayItem():void
 			{
-				if(!contains(hRule))addChild(hRule);
-				if(!contains(itemType))addChild(itemType);
-				if(!contains(itemPath))addChild(itemPath);
-				if(!contains(itemXML))addChild(itemXML);
+				if(!editPanel.contains(hRule))editPanel.addChild(hRule);
+				if(!editPanel.contains(itemType))editPanel.addChild(itemType);
+				if(!editPanel.contains(itemPath))editPanel.addChild(itemPath);
+				if(!editPanel.contains(itemXML))editPanel.addChild(itemXML);
 			}
 			public function hideItem():void
 			{
-				if(contains(hRule))removeChild(hRule);
-				if(contains(itemType))removeChild(itemType);
-				if(contains(itemPath))removeChild(itemPath);
-				if(contains(itemXML))removeChild(itemXML);
+				if(editPanel.contains(hRule))editPanel.removeChild(hRule);
+				if(editPanel.contains(itemType))editPanel.removeChild(itemType);
+				if(editPanel.contains(itemPath))editPanel.removeChild(itemPath);
+				if(editPanel.contains(itemXML))editPanel.removeChild(itemXML);
 			}
 			public function validate():Boolean
 			{
@@ -149,6 +182,19 @@
 				}else{
 					return false;
 				}
+			}
+			public function changePosition():void
+			{
+				if(this.state=="edit")
+				{
+					this.addPanel.visible=false;
+					this.editPanel.y=this.addPanel.y+10;
+				}
+				else
+				{
+					this.addPanel.visible=true;
+					this.editPanel.y=this.addPanel.y+this.addPanel.height;
+				}	
 			}
 		]]>
 	</mx:Script>	

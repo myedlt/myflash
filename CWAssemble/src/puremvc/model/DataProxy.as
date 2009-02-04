@@ -42,7 +42,7 @@ package puremvc.model
 		
 		public function getCourseList():XMLList
         {
-        	return data.course==undefined?data.Course:data.course;;
+        	return data.course;
         }  
 	}
 }

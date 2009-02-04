@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="310" creationComplete="init()" borderStyle="solid">
 	<mx:FormHeading label="课程信息" x="159.5" y="10"/>
-	<mx:FormItem label="课程名称" x="55.5" y="38" required="true">
-		<mx:TextInput id="cname"/>
-	</mx:FormItem>
-	<mx:FormItem label="课程标题" x="55.5" y="70">
-		<mx:TextInput id="title"/>
-	</mx:FormItem>
-	<mx:FormItem label="开始动画" direction="horizontal" x="55.5" y="102">
-		<mx:TextInput id="startSWF" width="160"/>
-		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='startSWF'"/>
-	</mx:FormItem>
-	<mx:FormItem label="结束动画" direction="horizontal" x="55.5" y="134">
-		<mx:TextInput id="endSWF" width="160"/>
-		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='endSWF'"/>
-	</mx:FormItem>	
+	<mx:Canvas id="addPanel" width="390" height="60" y="26" x="4">
+		<mx:FormItem label="所在位置" x="58.5" y="14" direction="horizontal" horizontalGap="1">
+			<mx:ComboBox id="inPosition" dataProvider="{courses}" labelField="@name"/>
+			<mx:Label text="之后"/>
+		</mx:FormItem>
+		<mx:HRule id="hRule" width="300" height="1" x="55.5" y="49"/>
+		<mx:CheckBox id="firstPosition" x="306.5" y="17" label="居首" change="onChange()"/>
+	</mx:Canvas>
+	<mx:Canvas id="editPanel" height="222" width="390" y="85" x="4">
+		<mx:FormItem label="课程名称" x="61.5" y="10" required="true">
+			<mx:TextInput id="cname"/>
+		</mx:FormItem>
+		<mx:FormItem label="课程标题" x="61.5" y="42">
+			<mx:TextInput id="title"/>
+		</mx:FormItem>
+		<mx:FormItem label="开始动画" direction="horizontal" x="61.5" y="74">
+			<mx:TextInput id="startSWF" width="160"/>
+			<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='startSWF'"/>
+		</mx:FormItem>
+		<mx:FormItem label="结束动画" direction="horizontal" x="61.5" y="106">
+			<mx:TextInput id="endSWF" width="160"/>
+			<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='endSWF'"/>
+		</mx:FormItem>
+	</mx:Canvas>	
 	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
 	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
-		<![CDATA[	
+		<![CDATA[
+			import puremvc.model.utils.CurrentInfo;	
 			import mx.events.ValidationResultEvent;				
 			private var file:File=File.applicationDirectory;
 			private var temp:String;
 			private var cid:String;
-			public var flag:String;
+			public var state:String;
+			[Bindable]
+			public var courses:XMLList;
 			
 			public function init():void
 			{
@@ -31,7 +44,6 @@
 			}
 			public function onSelect(evt:Event):void
 			{
-				//trace("选择了:"+evt.target.nativePath);
 				if(temp=="startSWF")
 				{
 					startSWF.text=evt.target.nativePath;
@@ -39,6 +51,14 @@
 				if(temp=="endSWF")
 				{
 					endSWF.text=evt.target.nativePath;
+				}
+			}
+			public function onChange():void
+			{
+				if(this.firstPosition.selected){
+					this.inPosition.enabled=false;
+				}else{
+					this.inPosition.enabled=true;
 				}
 			}
 			public function reset():void
@@ -59,15 +79,17 @@
 			public function getter():XML
 			{
 				var xml:XML=<course/>;
-				if(flag=="edit"){
+				if(state=="edit"){
 					xml.@id=this.cid;
-				}else if(flag=="add"){
+				}else if(state=="add"){
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=cname.text;
 				xml.@title=title.text;
 				xml.@startSWF=startSWF.text;
 				xml.@endSWF=endSWF.text;
+				var currInfo:CurrentInfo=CurrentInfo.getInstance();
+				xml.setChildren(currInfo.getCourse().chapter);
 				return xml;
 			}
 			public function validate():Boolean
@@ -79,6 +101,19 @@
 				}else{
 					return false;
 				}
+			}
+			public function changePosition():void
+			{
+				if(this.state=="edit")
+				{
+					this.addPanel.visible=false;
+					this.editPanel.y=this.addPanel.y+10;
+				}
+				else
+				{
+					this.addPanel.visible=true;
+					this.editPanel.y=this.addPanel.y+this.addPanel.height;
+				}	
 			}
 		]]>
 	</mx:Script>

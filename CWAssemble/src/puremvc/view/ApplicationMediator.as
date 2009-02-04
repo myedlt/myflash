@@ -37,32 +37,34 @@ package puremvc.view
 			var courseList:XMLList=DataProxy(facade.retrieveProxy(DataProxy.NAME)).getCourseList();
 			app.treeDataProvider.source=courseList;
 			app.treeContents.callLater(expandAllNode);//初始展开所有节点			
-			displayCurrInfo("course");//初始显示课程信息				
-		}
-		
-		public function courseInfo(event:MouseEvent):void{
-			displayCurrInfo("course");
+			displayCurrInfo("course");//初始显示课程信息		
+			app.sectionForm.courses=app.treeDataProvider.source;
+			app.chapterForm.courses=app.treeDataProvider.source;
+			app.courseForm.courses=app.treeDataProvider.source;			
 		}
 		
 		public function addCourse(evt:MouseEvent):void
 		{
 			app.myViewStack.selectedChild=app.courseCanvas;
 			app.courseForm.reset();
-			app.courseForm.flag="add";
+			app.courseForm.state="add";
+			app.courseForm.changePosition();
 		}
 		
 		public function addChapter(evt:MouseEvent):void
 		{			
 			app.myViewStack.selectedChild=app.chapterCanvas;
 			app.chapterForm.reset();
-			app.chapterForm.flag="add";
+			app.chapterForm.state="add";
+			app.chapterForm.changePosition();
 		}
 		
 		public function addSection(evt:MouseEvent):void
 		{			
 			app.myViewStack.selectedChild=app.sectionCanvas;
 			app.sectionForm.reset();
-			app.sectionForm.flag="add";
+			app.sectionForm.state="add";
+			app.sectionForm.changePosition();
 		}		
 		
 		public function deleteHandler(evt:MouseEvent):void
@@ -78,34 +80,79 @@ package puremvc.view
 		public function saveHandler(evt:MouseEvent):void
 		{
 			var selectedItem:Object=app.myViewStack.selectedChild.getChildAt(0);
-			var index:int;
-			if(selectedItem.validate()){
+			var ret:XML=selectedItem.getter();
+			if(selectedItem.validate())
+			{
+				var xml:XML=<root/>;
+				xml.setChildren(app.treeDataProvider.source);
 				switch(selectedItem.id)
 				{
-					case "courseForm":break;
-					case "chapterForm":break;
+					case "courseForm":						
+						if(selectedItem.state=="edit")
+						{
+							xml.replace(getIndex(ret),ret);
+						}
+						else
+						{
+							
+						}						
+						break;
+					case "chapterForm":
+						if(selectedItem.state=="edit")
+						{
+							xml.children().(@id==currInfo.getCourse().@id).replace(getIndex(ret),ret);
+						}
+						else
+						{
+							
+						}	
+						break;
 					case "sectionForm":
-						var temp:XML=selectedItem.getter();
-						app.treeDataProvider.source.(@id==currInfo.getChapter().@id).replace(index,temp);
+						if(selectedItem.state=="edit")
+						{
+							xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id).replace(getIndex(ret),ret);
+						}
+						else
+						{
+							
+						}	
 						break;
 				}
+				app.treeDataProvider.source=xml.children();
+				expandAllNode();
 			}
 		}
-		public function getIndex(item:XML):int{
-			if(item.name().toString().toLowerCase()=="section")
+		
+		public function getIndex(item:XML):int
+		{
+			var ret:int;
+			if(item.name().toString()=="section")
 			{
-						
+				var sections:XMLList=currInfo.getChapter().section;
+				for(var i:int;i<sections.length();i++)
+				{
+					if(sections[i].@id==item.@id)ret = i;
+				}		
 			}
-			else if(item.name().toString().toLowerCase()=="chapter")
+			else if(item.name().toString()=="chapter")
 			{
-				
+				var chapters:XMLList=currInfo.getCourse().chapter;
+				for(var j:int;j<chapters.length();j++)
+				{
+					if(chapters[j].@id==item.@id)ret = j;
+				}
 			}
 			else
 			{
-				
-			}	
-			return null;
-		}
+				var courses:XMLList=app.treeDataProvider.source;
+				for(var k:int;k<courses.length();k++)
+				{
+					if(courses[k].@id==item.@id)ret = k;
+				}
+			}
+			return ret;
+		}	
+					
 		public function expandAllNode():void
 		{
 			for each(var item:Object in app.treeDataProvider)
@@ -139,7 +186,8 @@ package puremvc.view
 					Object(app.myViewStack.selectedChild.getChildAt(0)).setter(currInfo.getSection());
 					break;
 			}
-			Object(app.myViewStack.selectedChild.getChildAt(0)).flag="edit";
+			Object(app.myViewStack.selectedChild.getChildAt(0)).state="edit";
+			Object(app.myViewStack.selectedChild.getChildAt(0)).changePosition();
 		}
 		
 		override public function listNotificationInterests():Array

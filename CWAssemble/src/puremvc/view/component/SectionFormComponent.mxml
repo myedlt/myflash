@@ -1,40 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()" borderStyle="solid">
-	<mx:FormHeading label="课程节信息" x="141" y="10"/>
-	<mx:FormItem label="节名称" x="53" y="38" required="true">
-		<mx:TextInput id="sname"/>
-	</mx:FormItem>
-	<mx:FormItem label="节标题" x="53" y="68">
-		<mx:TextInput id="title"/>
-	</mx:FormItem>
-	<mx:FormItem label="文件类型" x="43" y="98">
-		<mx:ComboBox id="type">
-			<mx:dataProvider>
-				<mx:Object label="Flash" data="flash"/>
-				<mx:Object label="Flex" data="flex"/>
-				<mx:Object label="Image" data="image"/>
-				<mx:Object label="Album" data="album"/>
-				<mx:Object label="Flv" data="flv"/>
-			</mx:dataProvider>
-		</mx:ComboBox>
-	</mx:FormItem>
-	<mx:FormItem label="文件路径" direction="horizontal" x="43" y="128" required="true">
-		<mx:TextInput id="path" width="185"/>
-		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
-	</mx:FormItem>	
-	<mx:FormItem label="配置文件" direction="horizontal" y="158" x="43">
-		<mx:TextInput id="xml" width="185"/>
-		<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
-	</mx:FormItem>	
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="310" creationComplete="init()" borderStyle="solid">
+	<mx:FormHeading label="节信息" x="163" y="10"/>
+	<mx:Canvas id="addPanel" width="390" height="112" y="26" x="4">
+		<mx:FormItem label="所在课程" x="45" y="10">
+			<mx:ComboBox id="inCourse" dataProvider="{courses}" labelField="@name"/>
+		</mx:FormItem>
+		<mx:FormItem label="所在章" x="56" y="42">
+			<mx:ComboBox id="inChapter" dataProvider="{inCourse.selectedItem.chapter}" labelField="@name"/>
+		</mx:FormItem>
+		<mx:FormItem label="位置" x="67" y="74" direction="horizontal" horizontalGap="1">
+			<mx:ComboBox id="inPosition" dataProvider="{inChapter.selectedItem.section}" labelField="@name"/>
+			<mx:Label text="之后"/>
+		</mx:FormItem>
+		<mx:HRule id="hRule" width="315" height="1" x="43" y="107"/>
+		<mx:CheckBox id="firstPosition" x="309" y="74" label="居首" change="onChange()"/>
+	</mx:Canvas>
+	<mx:Canvas id="editPanel" height="170" width="390" y="137" x="4">
+		<mx:FormItem label="节名称" x="58.5" y="6" required="true">
+			<mx:TextInput id="sname"/>
+		</mx:FormItem>
+		<mx:FormItem label="节标题" x="58.5" y="36">
+			<mx:TextInput id="title"/>
+		</mx:FormItem>
+		<mx:FormItem label="文件类型" x="48.25" y="66">
+			<mx:ComboBox id="type">
+				<mx:dataProvider>
+					<mx:Object label="Flash" data="flash"/>
+					<mx:Object label="Flex" data="flex"/>
+					<mx:Object label="Image" data="image"/>
+					<mx:Object label="Album" data="album"/>
+					<mx:Object label="Flv" data="flv"/>
+				</mx:dataProvider>
+			</mx:ComboBox>
+		</mx:FormItem>
+		<mx:FormItem label="文件路径" direction="horizontal" x="49.75" y="96" required="true">
+			<mx:TextInput id="path" width="185"/>
+			<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='path'"/>
+		</mx:FormItem>	
+		<mx:FormItem label="配置文件" direction="horizontal" y="126" x="49">
+			<mx:TextInput id="xml" width="185"/>
+			<mx:Button label="浏览" click="file.browseForOpen('选择文件');temp='xml'"/>
+		</mx:FormItem>	
+	</mx:Canvas>
 	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
 	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[
+			import puremvc.model.utils.CurrentInfo;
+			import org.puremvc.as3.patterns.facade.Facade;
 			import mx.events.ValidationResultEvent;	
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
 			private var sid:String;
-			public var flag:String;
+			public var state:String;
+			[Bindable]
+			public var courses:XMLList;			
 			
 			public function init():void
 			{
@@ -42,7 +62,6 @@
 			}
 			public function onSelect(evt:Event):void
 			{
-				//trace("选择了:"+evt.target.nativePath);
 				if(temp=="path")
 				{
 					path.text=evt.target.nativePath;
@@ -50,6 +69,14 @@
 				if(temp=="xml")
 				{
 					xml.text=evt.target.nativePath;
+				}
+			}
+			public function onChange():void
+			{
+				if(this.firstPosition.selected){
+					this.inPosition.enabled=false;
+				}else{
+					this.inPosition.enabled=true;
 				}
 			}
 			public function reset():void
@@ -81,24 +108,16 @@
 			public function getter():XML
 			{
 				var xml:XML=<section/>;
-				if(flag=="edit"){
+				if(state=="edit"){
 					xml.@id=this.sid;
-				}else if(flag=="add"){
+				}else if(state=="add"){
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=sname.text;
 				xml.@type=type.selectedItem.data;
 				xml.@path=path.text;
 				xml.@title=title.text;
-				xml.@xml=this.xml.text;
-				
-//				var xmlStr:String="<section id=\""+sid.text
-//				+"\" name=\""+sname.text
-//				+"\" type=\""+type.selectedItem.data
-//				+"\" path=\""+path.text
-//				+"\" title=\""+title.text
-//				+"\" xml=\""+xml.text
-//				+"\"/>";				
+				xml.@xml=this.xml.text;			
 				return xml;
 			}
 			public function validate():Boolean
@@ -112,6 +131,27 @@
 				}else{
 					return false;
 				}
+			}
+			public function changePosition():void
+			{
+				if(this.state=="edit")
+				{
+					this.addPanel.visible=false;
+					this.editPanel.y=this.addPanel.y+10;
+				}
+				else
+				{
+					this.addPanel.visible=true;
+					this.editPanel.y=this.addPanel.y+this.addPanel.height;
+				}
+				setCurrentInfo();					
+			}
+			public function setCurrentInfo():void
+			{
+				var currInfo:CurrentInfo=CurrentInfo.getInstance();
+				this.inCourse.selectedItem=currInfo.getCourse();
+				this.inChapter.selectedItem=currInfo.getChapter();
+				this.inPosition.selectedItem=currInfo.getSection();
 			}
 		]]>
 	</mx:Script>
