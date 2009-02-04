@@ -15,15 +15,17 @@ package puremvc.controller
 			var selectedItem:XML=note.getBody() as XML;
 			var currInfo:CurrentInfo=CurrentInfo.getInstance();	
 			var type:String;
-			if(selectedItem.name().toString().toLowerCase()=="section")
+			if(selectedItem.name().toString()=="section")
 			{
 				type="section";
 				currInfo.setSection(selectedItem);
-				if(currInfo.getChapter()==null||currInfo.getChapter().@id!=selectedItem.parent().@id)currInfo.setChapter(selectedItem.parent());		
+				if(currInfo.getChapter()==null||currInfo.getChapter().@id!=selectedItem.parent().@id)currInfo.setChapter(selectedItem.parent());
+				if(currInfo.getCourse().@id!=selectedItem.parent().parent().@id)currInfo.setCourse(selectedItem.parent().parent());		
 			}
-			else if(selectedItem.name().toString().toLowerCase()=="chapter")
+			else if(selectedItem.name().toString()=="chapter")
 			{
 				type="chapter";
+				//if(selectedItem.elements().length()>0)currInfo.setSection(selectedItem.section[0]);
 				currInfo.setChapter(selectedItem);
 				if(currInfo.getCourse().@id!=selectedItem.parent().@id)currInfo.setCourse(selectedItem.parent());
 			}

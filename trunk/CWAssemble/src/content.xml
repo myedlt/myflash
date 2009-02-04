@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Content>
+<content>
 	<!--课程列表			
 		Course标签下有0或1个Lecture(讲师)和多个Chapter（章,Course下最少有一个章节点）；Course标签的属性有：name、title、startSWF（开篇动画即片头）、endSWF。
 		Chapter标签下有0个或多个Section（节）,当Chapter无子节点时为单章动画；Chapter标签的属性有：name（必填）、title、path(单章动画路径)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(对应的xml配置文件)。
 		Section标签的属性有:name（必填）、title、path(必填)、type（"flash"/"flex"/"image"/"flv"默认为"flash"）、xml(对应的xml配置文件)。
 		Lecture标签没有属性,只有子节点:name、sex、age、position、introduction。其值以标签对形式出现，如：<name>讲师名</name>
 	-->
-	<Course id="cou01" name="课程01">					
-		<Chapter id="cha01" name="第一章 测试" title="Chapter 1">
+	<course id="cou01" name="课程01">					
+		<chapter id="cha01" name="第一章 测试" title="Chapter 1">
 			<section id="sec01" name="Flash" type="flash" path="assets/courses/course01/chapter01/unit01.swf"/>
 			<section id="sec02" name="Flash" type="flash" path="assets/courses/course01/chapter01/unit02.swf"/>	
 			<section id="sec03" name="Image" type="image" path="assets/courses/course01/chapter01/unit03.jpg"/>	
 			<section id="sec04" name="Album" type="album" path="assets/courses/course01/chapter01/unit04.xml"/>														
-		</Chapter>
-		<Chapter id="cha02" name="第二章 视频">
+		</chapter>
+		<chapter id="cha02" name="第二章 视频">
 			<section id="sec05" name="第一节" type="flv" path="assets/courses/course01/chapter02/001.flv"/>				
 			<section id="sec06" name="第二节" type="flv" path="assets/courses/course01/chapter02/002.flv"/>															
-		</Chapter>	
-		<Chapter id="cha03" name="试题[flex]" type="flex" path="assets/courses/course01/exercise.swf"/>		
-	</Course>
-	<!--<Course id="cou02" name="课程02">					
-		<Chapter id="cha01" name="第一章 测试" title="Chapter 1">
+		</chapter>	
+		<chapter id="cha03" name="试题[flex]" type="flex" path="assets/courses/course01/exercise.swf"/>		
+	</course>
+	<!--<course id="cou02" name="课程02">					
+		<chapter id="cha01" name="第一章 测试" title="Chapter 1">
 			<section id="sec01" name="Flash" type="flash" path="assets/courses/course02/chapter01/unit01.swf"/>
 			<section id="sec02" name="Flash" type="flash" path="assets/courses/course02/chapter01/unit02.swf"/>	
 			<section id="sec03" name="Image" type="image" path="assets/courses/course02/chapter01/unit03.jpg"/>	
 			<section id="sec04" name="Album" type="album" path="assets/courses/course02/chapter01/unit04.xml"/>													
-		</Chapter>
-		<Chapter id="cha02" name="第二章 视频">
+		</chapter>
+		<chapter id="cha02" name="第二章 视频">
 			<section id="sec05" name="第一节" type="flv" path="assets/courses/course02/chapter02/001.flv"/>				
 			<section id="sec06" name="第二节" type="flv" path="assets/courses/course02/chapter02/002.flv"/>															
-		</Chapter>	
-		<Chapter id="cha03" name="试题[flex]" type="flex" path="assets/courses/course02/exercise.swf"/>		
-	</Course>-->	
-</Content>
+		</chapter>	
+		<chapter id="cha03" name="试题[flex]" type="flex" path="assets/courses/course02/exercise.swf"/>		
+	</course>-->	
+</content>
