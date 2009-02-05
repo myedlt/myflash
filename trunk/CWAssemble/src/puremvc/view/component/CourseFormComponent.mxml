@@ -3,11 +3,11 @@
 	<mx:FormHeading label="课程信息" x="159.5" y="10"/>
 	<mx:Canvas id="addPanel" width="390" height="60" y="26" x="4">
 		<mx:FormItem label="所在位置" x="58.5" y="14" direction="horizontal" horizontalGap="1">
-			<mx:ComboBox id="afterCourse" labelField="@name" prompt="首位"/>
+			<mx:ComboBox id="afterCourse" labelField="@name" prompt="首位" width="145"/>
 			<mx:Label text="之后"/>
 		</mx:FormItem>
 		<mx:HRule id="hRule" width="300" height="1" x="55.5" y="49"/>
-		<mx:CheckBox id="firstPosition" x="306.5" y="17" label="居首" change="onChange()"/>
+		<mx:CheckBox id="firstPosition" x="306.5" y="13" label="居首" change="onChange()"/>
 	</mx:Canvas>
 	<mx:Canvas id="editPanel" height="222" width="390" y="85" x="4">
 		<mx:FormItem label="课程名称" x="61.5" y="10" required="true">
@@ -124,7 +124,7 @@
 					this.addPanel.visible=true;
 					this.editPanel.y=this.addPanel.y+this.addPanel.height;
 				}	
-				callLater(setCurrentInfo);					
+				setCurrentInfo();					
 			}
 			public function setCurrentInfo():void
 			{

@@ -218,7 +218,7 @@
 					this.addPanel.visible=true;
 					this.editPanel.y=this.addPanel.y+this.addPanel.height;
 				}	
-				callLater(setCurrentInfo);					
+				setCurrentInfo();					
 			}
 			public function setCurrentInfo():void
 			{
