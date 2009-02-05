@@ -2,6 +2,7 @@ package puremvc.view
 {
 	import flash.events.MouseEvent;
 	
+	import mx.binding.utils.BindingUtils;
 	import mx.controls.Alert;
 	import mx.events.ListEvent;
 	
@@ -35,12 +36,12 @@ package puremvc.view
 		{
 			app.treeContents.labelField="@name";
 			var courseList:XMLList=DataProxy(facade.retrieveProxy(DataProxy.NAME)).getCourseList();
-			app.treeDataProvider.source=courseList;
+			dp=courseList;
 			app.treeContents.callLater(expandAllNode);//初始展开所有节点			
 			displayCurrInfo("course");//初始显示课程信息		
-			app.sectionForm.courses=app.treeDataProvider.source;
-			app.chapterForm.courses=app.treeDataProvider.source;
-			app.courseForm.courses=app.treeDataProvider.source;			
+			BindingUtils.bindProperty(app.sectionForm.inCourse,"dataProvider",app.treeDataProvider,"source");
+			BindingUtils.bindProperty(app.chapterForm.inCourse,"dataProvider",app.treeDataProvider,"source");
+			BindingUtils.bindProperty(app.courseForm.afterCourse,"dataProvider",app.treeDataProvider,"source");
 		}
 		
 		public function addCourse(evt:MouseEvent):void
@@ -80,11 +81,12 @@ package puremvc.view
 		public function saveHandler(evt:MouseEvent):void
 		{
 			var selectedItem:Object=app.myViewStack.selectedChild.getChildAt(0);
+			var position:Object=selectedItem.getPosition();
 			var ret:XML=selectedItem.getter();
 			if(selectedItem.validate())
 			{
 				var xml:XML=<root/>;
-				xml.setChildren(app.treeDataProvider.source);
+				xml.setChildren(dp);
 				switch(selectedItem.id)
 				{
 					case "courseForm":						
@@ -94,8 +96,16 @@ package puremvc.view
 						}
 						else
 						{
-							
+							var afterCourse:XML;
+							if(position.afterCourse!=null)
+							{
+								afterCourse=xml.children()[getIndex(position.afterCourse)];	
+							}			
+							xml.insertChildAfter(afterCourse,ret);							
+							currInfo.setSection(null);
+							currInfo.setChapter(null);
 						}						
+						currInfo.setCourse(ret);
 						break;
 					case "chapterForm":
 						if(selectedItem.state=="edit")
@@ -104,8 +114,16 @@ package puremvc.view
 						}
 						else
 						{
-							
-						}	
+							var afterChapter:XML;
+							if(position.afterChapter!=null)
+							{
+								afterChapter=xml.children().(@id==position.inCourse.@id).chapter[getIndex(position.afterChapter)];	
+							}			
+							xml.children().(@id==position.inCourse.@id).insertChildAfter(afterChapter,ret);
+							currInfo.setSection(null);
+							currInfo.setCourse(xml.children().(@id==position.inCourse.@id)[0]);
+						}						
+						currInfo.setChapter(ret);	
 						break;
 					case "sectionForm":
 						if(selectedItem.state=="edit")
@@ -113,15 +131,37 @@ package puremvc.view
 							xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id).replace(getIndex(ret),ret);
 						}
 						else
-						{
-							
-						}	
+						{//如果position.afterSection为null,则插入首位	
+							var afterSection:XML;
+							if(position.afterSection!=null)
+							{
+								afterSection=xml.children().(@id==position.inCourse.@id).chapter.(@id==position.inChapter.@id).section[getIndex(position.afterSection)];	
+							}			
+							xml.children().(@id==position.inCourse.@id).chapter.(@id==position.inChapter.@id).insertChildAfter(afterSection,ret);
+							currInfo.setChapter(xml.children().(@id==position.inCourse.@id).chapter.(@id==position.inChapter.@id)[0]);
+							currInfo.setCourse(xml.children().(@id==position.inCourse.@id)[0]);
+						}
+						currInfo.setSection(ret);	
 						break;
 				}
-				app.treeDataProvider.source=xml.children();
+				dp=xml.children();
 				expandAllNode();
+				//updateCurrentInfo();
 			}
 		}
+		
+		/* public function updateCurrentInfo():void
+		{			
+			if(currInfo.getSection()!=null)
+			{
+				currInfo.setSection(dp.(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id).section.(@id==currInfo.getSection().@id)[0]);
+			}
+			if(currInfo.getChapter()!=null)
+			{
+				currInfo.setChapter(dp.(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id)[0]);
+			}
+			currInfo.setCourse(dp.(@id==currInfo.getCourse().@id)[0]);						
+		} */
 		
 		public function getIndex(item:XML):int
 		{
@@ -144,7 +184,7 @@ package puremvc.view
 			}
 			else
 			{
-				var courses:XMLList=app.treeDataProvider.source;
+				var courses:XMLList=dp;
 				for(var k:int;k<courses.length();k++)
 				{
 					if(courses[k].@id==item.@id)ret = k;
@@ -212,6 +252,16 @@ package puremvc.view
 		public function get app():CWAssemble
 		{
             return viewComponent as CWAssemble;
+        }
+        
+        public function get dp():XMLList
+		{
+            return app.treeDataProvider.source;
+        }
+        
+        public function set dp(data:XMLList):void
+		{
+            app.treeDataProvider.source=data;
         }
 	}
 }

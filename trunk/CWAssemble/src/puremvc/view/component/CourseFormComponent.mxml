@@ -3,7 +3,7 @@
 	<mx:FormHeading label="课程信息" x="159.5" y="10"/>
 	<mx:Canvas id="addPanel" width="390" height="60" y="26" x="4">
 		<mx:FormItem label="所在位置" x="58.5" y="14" direction="horizontal" horizontalGap="1">
-			<mx:ComboBox id="inPosition" dataProvider="{courses}" labelField="@name"/>
+			<mx:ComboBox id="afterCourse" labelField="@name" prompt="首位"/>
 			<mx:Label text="之后"/>
 		</mx:FormItem>
 		<mx:HRule id="hRule" width="300" height="1" x="55.5" y="49"/>
@@ -29,14 +29,13 @@
 	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
 			import puremvc.model.utils.CurrentInfo;	
 			import mx.events.ValidationResultEvent;				
 			private var file:File=File.applicationDirectory;
 			private var temp:String;
 			private var cid:String;
-			public var state:String;
-			[Bindable]
-			public var courses:XMLList;
+			public var state:String;			
 			
 			public function init():void
 			{
@@ -56,9 +55,9 @@
 			public function onChange():void
 			{
 				if(this.firstPosition.selected){
-					this.inPosition.enabled=false;
+					this.afterCourse.enabled=false;
 				}else{
-					this.inPosition.enabled=true;
+					this.afterCourse.enabled=true;
 				}
 			}
 			public function reset():void
@@ -67,6 +66,8 @@
 				this.title.text=null;
 				this.startSWF.text=null;
 				this.endSWF.text=null;
+				this.firstPosition.selected=false;
+				this.firstPosition.dispatchEvent(new ListEvent(ListEvent.CHANGE));
 			}
 			public function setter(data:XML):void
 			{
@@ -78,19 +79,28 @@
 			}
 			public function getter():XML
 			{
+				var currInfo:CurrentInfo=CurrentInfo.getInstance();
 				var xml:XML=<course/>;
 				if(state=="edit"){
 					xml.@id=this.cid;
+					xml.setChildren(currInfo.getCourse().chapter);
 				}else if(state=="add"){
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=cname.text;
 				xml.@title=title.text;
 				xml.@startSWF=startSWF.text;
-				xml.@endSWF=endSWF.text;
-				var currInfo:CurrentInfo=CurrentInfo.getInstance();
-				xml.setChildren(currInfo.getCourse().chapter);
+				xml.@endSWF=endSWF.text;				
 				return xml;
+			}
+			public function getPosition():Object
+			{
+				var obj:Object=new Object();						
+				if(this.firstPosition.selected==false)
+				{
+					obj.afterCourse=this.afterCourse.selectedItem;
+				}				
+				return obj;
 			}
 			public function validate():Boolean
 			{
@@ -114,6 +124,12 @@
 					this.addPanel.visible=true;
 					this.editPanel.y=this.addPanel.y+this.addPanel.height;
 				}	
+				callLater(setCurrentInfo);					
+			}
+			public function setCurrentInfo():void
+			{
+				var currInfo:CurrentInfo=CurrentInfo.getInstance();
+				this.afterCourse.selectedItem=currInfo.getCourse();				
 			}
 		]]>
 	</mx:Script>
