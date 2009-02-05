@@ -26,12 +26,15 @@ package puremvc.controller
 			{
 				type="chapter";
 				//if(selectedItem.elements().length()>0)currInfo.setSection(selectedItem.section[0]);
+				currInfo.setSection(null);
 				currInfo.setChapter(selectedItem);
 				if(currInfo.getCourse().@id!=selectedItem.parent().@id)currInfo.setCourse(selectedItem.parent());
 			}
 			else
 			{
 				type="course";
+				currInfo.setSection(null);
+				currInfo.setChapter(null);
 				currInfo.setCourse(selectedItem);
 			}			
 			sendNotification(ApplicationFacade.DISPLAY,type);			

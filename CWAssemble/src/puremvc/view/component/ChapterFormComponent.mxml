@@ -3,10 +3,10 @@
 	<mx:FormHeading label="章信息" x="163" y="10"/>
 	<mx:Canvas id="addPanel" width="390" height="82" y="26" x="4">
 		<mx:FormItem label="所在课程" x="62.5" y="10">
-			<mx:ComboBox id="inCourse" dataProvider="{courses}" labelField="@name"/>
+			<mx:ComboBox id="inCourse" labelField="@name"/>
 		</mx:FormItem>
 		<mx:FormItem label="位置" x="85.5" y="42" direction="horizontal" horizontalGap="1">
-			<mx:ComboBox id="inPosition" dataProvider="{inCourse.selectedItem.chapter}" labelField="@name"/>
+			<mx:ComboBox id="afterChapter" dataProvider="{inCourse.selectedItem.chapter}" labelField="@name" prompt="首位"/>
 			<mx:Label text="之后"/>
 		</mx:FormItem>
 		<mx:CheckBox id="firstPosition" x="308.5" y="42" label="居首" change="onChange()"/>
@@ -51,14 +51,13 @@
 	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
 			import puremvc.model.utils.CurrentInfo;
 			import mx.events.ValidationResultEvent;		
 			private var file:File=File.applicationDirectory;		
 			private var temp:String;
 			private var cid:String;
-			public var state:String;
-			[Bindable]
-			public var courses:XMLList;
+			public var state:String;			
 			
 			public function init():void
 			{
@@ -79,9 +78,9 @@
 			public function onChange():void
 			{
 				if(this.firstPosition.selected){
-					this.inPosition.enabled=false;
+					this.afterChapter.enabled=false;
 				}else{
-					this.inPosition.enabled=true;
+					this.afterChapter.enabled=true;
 				}
 			}
 			public function reset():void
@@ -93,6 +92,8 @@
 				this.path.text=null;
 				this.title.text=null;
 				this.xml.text=null;
+				this.firstPosition.selected=false;
+				this.firstPosition.dispatchEvent(new ListEvent(ListEvent.CHANGE));
 			}
 			public function setter(data:XML):void
 			{
@@ -124,29 +125,51 @@
 			}
 			public function getter():XML
 			{
+				var currInfo:CurrentInfo=CurrentInfo.getInstance();
 				var xml:XML=<chapter/>;
-				if(state=="edit"){
+				if(state=="edit")
+				{
 					xml.@id=this.cid;
-				}else if(state=="add"){
+				}
+				else if(state=="add")
+				{
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=cname.text;
 				xml.@title=title.text;
-				if(chapterType.selection==noChild){
+				if(chapterType.selection==noChild)
+				{
 					xml.@type=type.selectedItem.data;
 					xml.@path=path.text;					
 					xml.@xml=this.xml.text;
-				}else{
-					var currInfo:CurrentInfo=CurrentInfo.getInstance();
-					if(currInfo.getChapter().section==undefined){
-						var newNode:XML=<section/>;
-						newNode.@id=formatter.format(new Date());
-						xml.setChildren(newNode);
-					}else{
-						xml.setChildren(currInfo.getChapter().section);
-					}
+				}
+				else
+				{
+					if(state=="edit")
+					{
+						if(currInfo.getChapter().section==undefined)
+						{
+							var newNode:XML=<section/>;
+							newNode.@id=formatter.format(new Date());
+							xml.setChildren(newNode);
+						}
+						else
+						{
+							xml.setChildren(currInfo.getChapter().section);
+						}
+					}					
 				}					
 				return xml;
+			}
+			public function getPosition():Object
+			{
+				var obj:Object=new Object();
+				obj.inCourse=this.inCourse.selectedItem;			
+				if(this.firstPosition.selected==false)
+				{
+					obj.afterChapter=this.afterChapter.selectedItem;
+				}				
+				return obj;
 			}
 			public function onChapterTypeChange(evt:Event):void
 			{
@@ -195,6 +218,20 @@
 					this.addPanel.visible=true;
 					this.editPanel.y=this.addPanel.y+this.addPanel.height;
 				}	
+				callLater(setCurrentInfo);					
+			}
+			public function setCurrentInfo():void
+			{
+				var currInfo:CurrentInfo=CurrentInfo.getInstance();
+				this.inCourse.selectedItem=currInfo.getCourse();
+				if(currInfo.getChapter()!=null&&XMLList(afterChapter.dataProvider).contains(currInfo.getChapter()))
+				{
+					this.afterChapter.selectedItem=currInfo.getChapter();
+				}
+				else
+				{
+					this.afterChapter.selectedIndex=XMLList(afterChapter.dataProvider).length()-1;
+				}				
 			}
 		]]>
 	</mx:Script>	

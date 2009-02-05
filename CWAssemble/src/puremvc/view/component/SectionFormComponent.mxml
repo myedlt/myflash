@@ -3,17 +3,17 @@
 	<mx:FormHeading label="节信息" x="163" y="10"/>
 	<mx:Canvas id="addPanel" width="390" height="112" y="26" x="4">
 		<mx:FormItem label="所在课程" x="45" y="10">
-			<mx:ComboBox id="inCourse" dataProvider="{courses}" labelField="@name"/>
+			<mx:ComboBox id="inCourse" labelField="@name"/>
 		</mx:FormItem>
 		<mx:FormItem label="所在章" x="56" y="42">
 			<mx:ComboBox id="inChapter" dataProvider="{inCourse.selectedItem.chapter}" labelField="@name"/>
 		</mx:FormItem>
 		<mx:FormItem label="位置" x="67" y="74" direction="horizontal" horizontalGap="1">
-			<mx:ComboBox id="inPosition" dataProvider="{inChapter.selectedItem.section}" labelField="@name"/>
+			<mx:ComboBox id="afterSection" dataProvider="{inChapter.selectedItem.section}" labelField="@name" prompt="首位"/>
 			<mx:Label text="之后"/>
 		</mx:FormItem>
 		<mx:HRule id="hRule" width="315" height="1" x="43" y="107"/>
-		<mx:CheckBox id="firstPosition" x="309" y="74" label="居首" change="onChange()"/>
+		<mx:CheckBox id="firstPosition" x="309" y="74" label="居首" change="onCheckBoxChange()"/>
 	</mx:Canvas>
 	<mx:Canvas id="editPanel" height="170" width="390" y="137" x="4">
 		<mx:FormItem label="节名称" x="58.5" y="6" required="true">
@@ -43,18 +43,21 @@
 		</mx:FormItem>	
 	</mx:Canvas>
 	<mx:StringValidator id="stringValidator" requiredFieldError="值不能为空!"/>
+	<mx:NumberValidator id="chapterValidator" lowerThanMinError="章不能为空!" minValue="0" />
+
 	<mx:DateFormatter id="formatter" formatString="DDHNNSS"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
 			import puremvc.model.utils.CurrentInfo;
 			import org.puremvc.as3.patterns.facade.Facade;
 			import mx.events.ValidationResultEvent;	
-			private var file:File=File.applicationDirectory;		
+				
 			private var temp:String;
 			private var sid:String;
-			public var state:String;
-			[Bindable]
-			public var courses:XMLList;			
+			public var state:String;			
+			private var file:File=File.applicationDirectory;	
+			private var currInfo:CurrentInfo=CurrentInfo.getInstance();
 			
 			public function init():void
 			{
@@ -71,14 +74,21 @@
 					xml.text=evt.target.nativePath;
 				}
 			}
-			public function onChange():void
+			public function onCheckBoxChange():void
 			{
 				if(this.firstPosition.selected){
-					this.inPosition.enabled=false;
+					this.afterSection.enabled=false;
 				}else{
-					this.inPosition.enabled=true;
+					this.afterSection.enabled=true;
 				}
 			}
+			/* public function positionChange():void
+			{
+				if(afterSection.selectedIndex==-1)
+				{
+					firstPosition.selected=true;
+				}				
+			} */
 			public function reset():void
 			{				
 				this.sname.text=null;
@@ -86,6 +96,8 @@
 				this.path.text=null;
 				this.title.text=null;
 				this.xml.text=null;
+				this.firstPosition.selected=false;
+				this.firstPosition.dispatchEvent(new ListEvent(ListEvent.CHANGE));
 			}
 			public function setter(data:XML):void
 			{
@@ -120,13 +132,26 @@
 				xml.@xml=this.xml.text;			
 				return xml;
 			}
+			public function getPosition():Object
+			{
+				var obj:Object=new Object();
+				obj.inCourse=this.inCourse.selectedItem;
+				obj.inChapter=this.inChapter.selectedItem;
+				if(this.firstPosition.selected==false)
+				{
+					obj.afterSection=this.afterSection.selectedItem;
+				}				
+				return obj;
+			}
 			public function validate():Boolean
 			{
-				stringValidator.listener=sname;				
+				stringValidator.listener=sname;								
 				var nameVR:ValidationResultEvent=stringValidator.validate(sname.text);
-				stringValidator.listener=path;
+				stringValidator.listener=path;				
 				var pathVR:ValidationResultEvent=stringValidator.validate(path.text);
-				if(nameVR.type==ValidationResultEvent.VALID && pathVR.type==ValidationResultEvent.VALID){
+				chapterValidator.listener=inChapter;
+				var chapterVR:ValidationResultEvent=chapterValidator.validate(inChapter.selectedIndex);
+				if(nameVR.type==ValidationResultEvent.VALID && pathVR.type==ValidationResultEvent.VALID && chapterVR.type==ValidationResultEvent.VALID){
 					return true;
 				}else{
 					return false;
@@ -144,14 +169,31 @@
 					this.addPanel.visible=true;
 					this.editPanel.y=this.addPanel.y+this.addPanel.height;
 				}
-				setCurrentInfo();					
+				callLater(setCurrentInfo);					
 			}
 			public function setCurrentInfo():void
 			{
-				var currInfo:CurrentInfo=CurrentInfo.getInstance();
 				this.inCourse.selectedItem=currInfo.getCourse();
-				this.inChapter.selectedItem=currInfo.getChapter();
-				this.inPosition.selectedItem=currInfo.getSection();
+				if(currInfo.getChapter()!=null&&XMLList(inChapter.dataProvider).contains(currInfo.getChapter()))
+				{
+					this.inChapter.selectedItem=currInfo.getChapter();
+				}
+				else
+				{
+					this.inChapter.selectedIndex=XMLList(inChapter.dataProvider).length()-1;
+				}
+				callLater(laterHandle);
+			}
+			private function laterHandle():void
+			{				
+				if(currInfo.getSection()!=null&&XMLList(afterSection.dataProvider).contains(currInfo.getSection()))
+				{
+					this.afterSection.selectedItem=currInfo.getSection();
+				}
+				else
+				{
+					afterSection.selectedIndex=XMLList(afterSection.dataProvider).length()-1;
+				}
 			}
 		]]>
 	</mx:Script>
