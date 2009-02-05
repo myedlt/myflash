@@ -4,6 +4,7 @@ package puremvc.view
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.controls.Alert;
+	import mx.events.CloseEvent;
 	import mx.events.ListEvent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -24,7 +25,7 @@ package puremvc.view
 			super( NAME, viewComponent );
 					
 			app.treeContents.addEventListener(ListEvent.ITEM_CLICK,itemClick);			
-			app.btnDelete.addEventListener(MouseEvent.CLICK,deleteHandler);
+			app.btnDelete.addEventListener(MouseEvent.CLICK,function():void{Alert.show("你确实要删除该节点？","警告",Alert.YES|Alert.NO,null,deleteHandler);});
 			app.btnReset.addEventListener(MouseEvent.CLICK,resetHandler);
 			app.btnSave.addEventListener(MouseEvent.CLICK,saveHandler);			
 			app.btnAddCourse.addEventListener(MouseEvent.CLICK,addCourse);
@@ -68,9 +69,51 @@ package puremvc.view
 			app.sectionForm.changePosition();
 		}		
 		
-		public function deleteHandler(evt:MouseEvent):void
+		public function deleteHandler(evt:CloseEvent):void
 		{
-			
+			if(evt.detail==Alert.YES)
+			{
+				var xml:XML=<root/>;
+				xml.setChildren(dp);
+				var selectedItem:Object=app.myViewStack.selectedChild.getChildAt(0);			
+				switch(selectedItem.id)
+				{
+					case "courseForm":						
+						if(selectedItem.state=="edit")
+						{
+							delete xml.children().(@id==currInfo.getCourse().@id)[0];
+						}	
+						//if(currInfo.getSection()!=null && currInfo.getSection().parent().parent().@id==currInfo.getCourse().@id)currInfo.setSection(null);	
+						if(currInfo.getChapter()!=null && currInfo.getChapter().parent().@id==currInfo.getCourse().@id)
+						{
+							currInfo.setChapter(null);	
+							currInfo.setSection(null);
+						}					
+						currInfo.setCourse(xml.children()[0]);
+						break;
+					case "chapterForm":
+						if(selectedItem.state=="edit")
+						{
+							delete xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id)[0];
+						}					
+						if(currInfo.getSection()!=null && currInfo.getSection().parent().@id==currInfo.getChapter().@id)currInfo.setSection(null);	
+						currInfo.setChapter(null);
+						currInfo.setCourse(xml.children().(@id==currInfo.getCourse().@id)[0]);
+						break;
+					case "sectionForm":
+						if(selectedItem.state=="edit")
+						{
+							delete xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id).section.(@id==currInfo.getSection().@id)[0];
+						}					
+						currInfo.setSection(null);	
+						currInfo.setChapter(xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id)[0]);
+						currInfo.setCourse(xml.children().(@id==currInfo.getCourse().@id)[0]);
+						break;
+				}	
+				dp=xml.children();
+				expandAllNode();				
+				Object(app.myViewStack.selectedChild.getChildAt(0)).reset();				
+			}			
 		}
 		
 		public function resetHandler(evt:MouseEvent):void
@@ -111,6 +154,7 @@ package puremvc.view
 						if(selectedItem.state=="edit")
 						{
 							xml.children().(@id==currInfo.getCourse().@id).replace(getIndex(ret),ret);
+							currInfo.setCourse(xml.children().(@id==currInfo.getCourse().@id)[0]);
 						}
 						else
 						{
@@ -129,6 +173,8 @@ package puremvc.view
 						if(selectedItem.state=="edit")
 						{
 							xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id).replace(getIndex(ret),ret);
+							currInfo.setChapter(xml.children().(@id==currInfo.getCourse().@id).chapter.(@id==currInfo.getChapter().@id)[0]);
+							currInfo.setCourse(xml.children().(@id==currInfo.getCourse().@id)[0]);
 						}
 						else
 						{//如果position.afterSection为null,则插入首位	
@@ -145,8 +191,7 @@ package puremvc.view
 						break;
 				}
 				dp=xml.children();
-				expandAllNode();
-				//updateCurrentInfo();
+				expandAllNode();				
 			}
 		}
 		
