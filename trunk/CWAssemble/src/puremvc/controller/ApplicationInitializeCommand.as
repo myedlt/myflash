@@ -10,8 +10,8 @@ package puremvc.controller
 	{
 		override public function execute( note:INotification ) :void    
 		{
-			facade.registerMediator( new ApplicationMediator(note.getBody()) );
-			facade.registerProxy(new DataProxy("content.xml"));			
+			facade.registerMediator( new ApplicationMediator(note.getBody().app) );
+			facade.registerProxy(new DataProxy(note.getBody().file));			
 		}
 	}
 }

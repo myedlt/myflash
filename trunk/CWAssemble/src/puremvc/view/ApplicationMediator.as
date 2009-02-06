@@ -1,5 +1,6 @@
 package puremvc.view
 {
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import mx.binding.utils.BindingUtils;
@@ -25,12 +26,17 @@ package puremvc.view
 			super( NAME, viewComponent );
 					
 			app.treeContents.addEventListener(ListEvent.ITEM_CLICK,itemClick);			
-			app.btnDelete.addEventListener(MouseEvent.CLICK,function():void{Alert.show("你确实要删除该节点？","警告",Alert.YES|Alert.NO,null,deleteHandler);});
 			app.btnReset.addEventListener(MouseEvent.CLICK,resetHandler);
 			app.btnSave.addEventListener(MouseEvent.CLICK,saveHandler);			
 			app.btnAddCourse.addEventListener(MouseEvent.CLICK,addCourse);
 			app.btnAddChapter.addEventListener(MouseEvent.CLICK,addChapter);
-			app.btnAddSection.addEventListener(MouseEvent.CLICK,addSection);			
+			app.btnAddSection.addEventListener(MouseEvent.CLICK,addSection);	
+			app.btnDelete.addEventListener(MouseEvent.CLICK,
+				function():void{
+					if(Object(app.myViewStack.selectedChild.getChildAt(0)).state=="edit")
+					Alert.show("你确实要删除该节点？","提示",Alert.YES|Alert.NO,null,deleteHandler);
+				});	
+			app.addEventListener(Event.CLOSING,onWindowClosing);		
 		}
 		
 		private function initialize():void
@@ -43,6 +49,20 @@ package puremvc.view
 			BindingUtils.bindProperty(app.sectionForm.inCourse,"dataProvider",app.treeDataProvider,"source");
 			BindingUtils.bindProperty(app.chapterForm.inCourse,"dataProvider",app.treeDataProvider,"source");
 			BindingUtils.bindProperty(app.courseForm.afterCourse,"dataProvider",app.treeDataProvider,"source");
+		}
+		
+		public function onWindowClosing(event:Event):void
+		{
+			event.preventDefault();
+			Alert.show("是否将更改保存到文件？","提示",Alert.YES|Alert.NO,null,
+				function(evt:CloseEvent):void{
+					if(evt.detail==Alert.YES)
+					{
+						DataProxy(facade.retrieveProxy(DataProxy.NAME)).updateContent("course",dp);
+					}
+					app.exit();
+				});
+			
 		}
 		
 		public function addCourse(evt:MouseEvent):void
