@@ -319,6 +319,9 @@
   				{
   					mc=MovieClip(evt.target.content);
   					mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
+  					mc.addEventListener("jgr",onClickJGR);
+  					mc.addEventListener("lxl",onClickLXL);
+  					mc.addEventListener("hjm",onClickHJM);
   					stoped=false;
   					totalTime=formatProgressToolTip(mc.totalFrames);  	
   					progressBar.maximum=mc.totalFrames;				
@@ -332,6 +335,18 @@
   					switchToSchema();
   				}
   			}
+  			private function onClickJGR(event:MouseEvent):void
+			{
+				Button(courseNavBox.getChildAt(1)).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			}
+			private function onClickLXL(event:MouseEvent):void
+			{
+				Button(courseNavBox.getChildAt(2)).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			}
+			private function onClickHJM(event:MouseEvent):void
+			{
+				Button(courseNavBox.getChildAt(3)).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			}
   			//停止上一个swf 解决音频继续播放问题
   			private function swfUnload():void
 			{
@@ -373,9 +388,8 @@
 		<mx:LinkBar id="linkBar" color="#ffffff" rollOverColor="#B5D2FA" top="0" right="3" itemClick="headNav(event)"/>		
 		<mx:Button x="0" y="357" id="btnShowVideo" visible="false" hideEffect="{dissolveOut}" showEffect="{dissolveIn}" styleName="showVideoButton" click="showVideo()"/>
 		<mx:Canvas id="video" x="0" y="318" width="290" height="171" backgroundImage="@Embed(source='image/video.png')">
-			<mx:LinkButton x="58" y="128" label="视频" alpha="0.0" click="switchToVideo()"/>
-			<mx:LinkButton x="124" y="128" label="纲要" alpha="0.0" click="switchToSchema()"/>
-			<mx:LinkButton x="191" y="128" label="隐藏" alpha="0.0" click="hideVideo()"/>
+			<mx:LinkButton x="78" y="128" label="视频" alpha="0.0" click="switchToVideo()" useHandCursor="false"/>
+			<mx:LinkButton x="171" y="128" label="隐藏" alpha="0.0" click="hideVideo()"/>
 			<mx:SWFLoader width="184" height="111" y="15" x="53" id="videoLoader" horizontalAlign="center" verticalAlign="middle" scaleContent="true" autoLoad="true"/>
 		</mx:Canvas>
 		<mx:HBox x="345" y="51" width="455" height="40" horizontalAlign="left" verticalAlign="middle" horizontalGap="0" id="courseNavBox" verticalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
