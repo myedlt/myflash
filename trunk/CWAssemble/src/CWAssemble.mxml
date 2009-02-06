@@ -44,7 +44,7 @@
 		</mx:State>
 		<mx:State name="index">
 			<mx:AddChild position="lastChild">
-				<mx:Label x="110" y="76" text="该版本只对xml文件进行操纵: 添加、修改、删除节点;并对xml元素命名有一定要求,例如课程标签:" height="23" width="577" fontSize="13"/>
+				<mx:Label x="116" y="76" text="该版本只对xml文件进行操纵: 添加、修改、删除节点;并对xml元素命名有一定要求,例如课程标签:" height="23" width="577" fontSize="13"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="329" y="44" text="课件组装工具 V1.0" fontWeight="bold" fontSize="15"/>
@@ -59,11 +59,11 @@
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Canvas x="132.25" y="103" width="532.5" height="81" borderStyle="solid" borderColor="#F5F9F9" cornerRadius="4">
-					<mx:Text text="&lt;course  id=&quot;cou01&quot;  name=&quot;课程01&quot;  title=&quot;&quot;  startSWF=&quot;&quot;  endSWF=&quot;&quot;&gt;&#xa;&#x9;&#x9;&lt;chapter  id=&quot;cha01&quot; name=&quot;第一章&quot;  title=&quot;Chapter 1&quot;&gt;&#xa;      &#x9;&#x9;  &lt;section id=&quot;sec01&quot;  name=&quot;第一节&quot;  type=&quot;flash&quot;  path=&quot;assets/unit01.swf&quot;/&gt;&#xa;&#x9;&#x9;&lt;chapter  id=&quot;cha03&quot;  name=&quot;第二章&quot;  type=&quot;flex&quot;  path=&quot;assets/exercise.swf&quot;/&gt;&#xa;&lt;/course&gt;" fontSize="11" horizontalCenter="0" verticalCenter="0" width="100%" height="100%"/>
+					<mx:Text text="&lt;course  id=&quot;cou01&quot;  name=&quot;课程01&quot;  title=&quot;&quot;  startSWF=&quot;&quot;  endSWF=&quot;&quot;&gt;&#xa;&#x9;&#x9;&lt;chapter  id=&quot;cha01&quot; name=&quot;第一章&quot;  title=&quot;Chapter 1&quot;&gt;&#xa;      &#x9;&#x9;  &lt;section id=&quot;sec01&quot;  name=&quot;第一节&quot;  type=&quot;flash&quot;  path=&quot;assets/unit01.swf&quot;/&gt;&#xa;&#x9;&#x9;&lt;chapter  id=&quot;cha03&quot;  name=&quot;第二章&quot;  type=&quot;flex&quot;  path=&quot;assets/exercise.swf&quot;/&gt;&#xa;&lt;/course&gt;" fontSize="11" horizontalCenter="0" verticalCenter="0" width="98%" height="98%"/>
 				</mx:Canvas>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Image x="644" y="529">
+				<mx:Image x="644" y="488">
 					<mx:source>assets/skin/logo.png</mx:source>
 				</mx:Image>
 			</mx:AddChild>
