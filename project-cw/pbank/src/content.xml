@@ -4,10 +4,10 @@
 	<Index header="course/header.swf" video="video/lecturer00.swf"/>
 	<!-- 页面头部导航区 -->	
 	<Navigator>
-		<button label="创作团队" url="navigator/"/>
-		<button label="背景" url="navigator/"/>
-		<button label="文档" url="navigator/document/"/>
-		<button label="帮助" url="navigator/help/"/>	
+		<button label="创作团队" url="navigator/Creative team.html"/>
+		<button label="讲师介绍" url="navigator/teacher.html"/>
+		<button label="文档" url="navigator/document.ppt"/>
+		<button label="帮助" url="navigator/help.html"/>	
 		<button label="退出" url="javascript:window.close();"/>		
 	</Navigator>
 	<!-- 课程系列(最多不超过五门课程) -->
