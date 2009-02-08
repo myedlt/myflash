@@ -136,12 +136,12 @@
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=cname.text;
-				xml.@title=title.text;
+				if(title.text!=null && title.text!="")xml.@title=title.text;
 				if(chapterType.selection==noChild)
 				{
 					xml.@type=type.selectedItem.data;
 					xml.@path=path.text;					
-					xml.@xml=this.xml.text;
+					if(xml.text!=null && xml.text!="")xml.@xml=this.xml.text;
 				}
 				else
 				{

@@ -128,8 +128,8 @@
 				xml.@name=sname.text;
 				xml.@type=type.selectedItem.data;
 				xml.@path=path.text;
-				xml.@title=title.text;
-				xml.@xml=this.xml.text;			
+				if(title.text!=null && title.text!="")xml.@title=title.text;
+				if(xml.text!=null && xml.text!="")xml.@xml=this.xml.text;			
 				return xml;
 			}
 			public function getPosition():Object

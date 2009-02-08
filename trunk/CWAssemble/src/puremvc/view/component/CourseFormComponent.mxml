@@ -88,9 +88,9 @@
 					xml.@id=formatter.format(new Date());
 				}				
 				xml.@name=cname.text;
-				xml.@title=title.text;
-				xml.@startSWF=startSWF.text;
-				xml.@endSWF=endSWF.text;				
+				if(title.text!=null && title.text!="")xml.@title=title.text;
+				if(startSWF.text!=null && startSWF.text!="")xml.@startSWF=startSWF.text;
+				if(endSWF.text!=null && endSWF.text!="")xml.@endSWF=endSWF.text;				
 				return xml;
 			}
 			public function getPosition():Object
