@@ -17,6 +17,7 @@
 				            <mx:Button id="btnAddCourse" label="添加课程"/>
 				            <mx:Button id="btnAddChapter" label="添加章"/>
 				            <mx:Button id="btnAddSection" label="添加节"/>				            
+				            <mx:Button id="btnBack" label="返回加载页面"/>
 				        </mx:HBox>				       
 				        <mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="100%">
 				            <mx:Canvas id="courseCanvas" width="100%" height="100%">
@@ -90,7 +91,7 @@
 				this.currentState="editor";
 				this.status="编辑页面";
 				facade.startup({app:this,file:filepath.text});
-			}			
+			}				
 		]]>
 	</mx:Script>	
 </mx:WindowedApplication>

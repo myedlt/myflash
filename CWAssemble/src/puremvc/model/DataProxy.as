@@ -2,7 +2,6 @@ package puremvc.model
 {	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.filesystem.File;
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
@@ -14,13 +13,13 @@ package puremvc.model
 	public class DataProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = "DataProxy";		
-		private var filename:String;
+		private var filepath:String;
 		
-		public function DataProxy(file:String) 
+		public function DataProxy(filepath:String) 
 		{
 			super( NAME );	
-			this.filename = file;		
-			var delegate : LoadXMLDelegate = new LoadXMLDelegate(file);
+			this.filepath = filepath;		
+			var delegate : LoadXMLDelegate = new LoadXMLDelegate(filepath);
 			delegate.loader.addEventListener(Event.COMPLETE,result);
 			delegate.loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
 			delegate.load();
@@ -52,9 +51,9 @@ package puremvc.model
         public function updateContent(elementName:String,data:*):void
         {
         	var content:String=XML(this.data).replace(elementName,data).toXMLString();
-        	if(this.filename!=null&&this.filename!="")
+        	if(this.filepath!=null&&this.filepath!="")
         	{
-        		WriteFile.write(content,new File(this.filename));
+        		WriteFile.write(content,filepath);
         	}
         }
 	}
