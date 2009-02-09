@@ -7,11 +7,11 @@ package puremvc.model.utils
 	
 	public class WriteFile
 	{
-		public static function write(content:String,file:File):void
+		public static function write(content:String,filepath:String):void
 		{
 			var fs:FileStream=new FileStream();
 			fs.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
-			fs.openAsync(file,FileMode.WRITE);
+			fs.openAsync(new File(filepath),FileMode.WRITE);
 			fs.writeUTFBytes(content);
 			fs.close();
 		}

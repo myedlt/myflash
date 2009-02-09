@@ -20,6 +20,7 @@ package puremvc.view
 	{
 		public static const NAME:String = "ApplicationMediator";
 		private var currInfo:CurrentInfo = CurrentInfo.getInstance();
+		private var hasError:Boolean;
 		
 		public function ApplicationMediator(viewComponent:Object)
 		{
@@ -36,6 +37,7 @@ package puremvc.view
 					if(Object(app.myViewStack.selectedChild.getChildAt(0)).state=="edit")
 					Alert.show("你确实要删除该节点？","提示",Alert.YES|Alert.NO,null,deleteHandler);
 				});	
+			app.btnBack.addEventListener(MouseEvent.CLICK,onBack);
 			app.addEventListener(Event.CLOSING,onWindowClosing);		
 		}
 		
@@ -54,7 +56,9 @@ package puremvc.view
 		public function onWindowClosing(event:Event):void
 		{
 			event.preventDefault();
-			Alert.show("是否将更改保存到文件？","提示",Alert.YES|Alert.NO,null,
+			if(app.currentState=="editor")
+			{
+				Alert.show("是否将更改保存到文件？","提示",Alert.YES|Alert.NO,null,
 				function(evt:CloseEvent):void{
 					if(evt.detail==Alert.YES)
 					{
@@ -62,7 +66,32 @@ package puremvc.view
 					}
 					app.exit();
 				});
-			
+			}
+			else
+			{
+				app.exit();
+			}
+		}
+		
+		public function onBack(event:MouseEvent):void
+		{
+			if(!hasError)
+			{
+				Alert.show("是否将更改保存到文件？","提示",Alert.YES|Alert.NO,null,
+				function(evt:CloseEvent):void{
+					if(evt.detail==Alert.YES)
+					{
+						DataProxy(facade.retrieveProxy(DataProxy.NAME)).updateContent("course",dp);						
+					}
+					app.currentState="index";
+					app.status="加载页面";
+				});		
+			}
+			else
+			{
+				app.currentState="index";
+				app.status="加载页面";
+			}	
 		}
 		
 		public function addCourse(evt:MouseEvent):void
@@ -308,7 +337,11 @@ package puremvc.view
         {
             switch ( note.getName() ) 
 			{
-				case ApplicationFacade.ERROR : Alert.show(note.getBody().toString(),"Error"); break;	
+				case ApplicationFacade.ERROR : 
+					hasError=true;
+					app.treeContents.dataProvider=null;
+					Alert.show(note.getBody().toString(),"错误"); 
+					break;	
 				case ApplicationFacade.START_COMPLETE : initialize(); break;	
 				case ApplicationFacade.DISPLAY : displayCurrInfo(note.getBody().toString()); break;			
             }
