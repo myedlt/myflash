@@ -5,7 +5,7 @@
 
    <general>
       <title>
-         <langstring>销售团队管理</langstring>
+         <langstring>全球金融风暴汇报</langstring>
       </title>
       <catalogentry>
          <catalog>ADL Course Catalogue ID</catalog>
@@ -15,16 +15,16 @@
       </catalogentry>
       <language>zh-CN</language>
       <description>
-         <langstring>人保财险销售团队管理课程</langstring>
+         <langstring>中国人民银行金融系列讲座</langstring>
       </description>
       <keyword>
-         <langstring>销售</langstring>
+         <langstring>全球</langstring>
       </keyword>
       <keyword>
-         <langstring>团队</langstring>
+         <langstring>金融风暴</langstring>
       </keyword>
       <keyword>
-         <langstring>管理</langstring>
+         <langstring>汇报</langstring>
       </keyword>      
    </general>
 
@@ -53,7 +53,7 @@
             <vcard>BEGIN:vCard ORG:ADL Co-Lab END:vCard</vcard>
          </centity>
          <date>
-            <datetime>2008-12-08</datetime>
+            <datetime>2009-02-09</datetime>
          </date>
       </contribute>
    </lifecycle>
@@ -98,7 +98,7 @@
          </value>
       </learningresourcetype>
       <typicallearningtime>
-         <datetime>00:10:00</datetime>
+         <datetime>00:30:00</datetime>
       </typicallearningtime>
    </educational>
 
@@ -120,7 +120,7 @@
          </value>
       </copyrightandotherrestrictions>
       <description>
-         <langstring>中国人保财险培训课程系列</langstring>
+         <langstring>中国人民银行培训课程系列</langstring>
       </description>
    </rights>
 
