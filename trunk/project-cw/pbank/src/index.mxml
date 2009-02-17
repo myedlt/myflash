@@ -446,10 +446,10 @@
 		<mx:HSlider id="progressBar" x="40" y="480" width="720" height="11" liveDragging="true" minimum="1" snapInterval="1" dataTipFormatFunction="formatProgressToolTip"
 			change="progressChange(event)" thumbPress="mc.stop();pressing=true;" thumbRelease="if(!stoped)mc.play();pressing=false;" buttonMode="true" useHandCursor="true" styleName="progressBar" 
 			showTrackHighlight="true" trackHighlightSkin="{component.SliderHighlightSkin}" slideDuration="10"/>
-		<mx:Button x="176" y="506" width="34" height="19" styleName="playButton" click="play()"/>
-		<mx:Button x="224" y="506" width="34" height="19" styleName="pauseButton" click="pause()"/>
-		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton" id="btnPrev"/>
-		<mx:Button x="484" y="506" width="47" height="19" styleName="nextButton" id="btnNext"/>
+		<mx:Button x="176" y="506" width="34" height="19" styleName="playButton" click="play()" buttonMode="true"/>
+		<mx:Button x="224" y="506" width="34" height="19" styleName="pauseButton" click="pause()" buttonMode="true"/>
+		<mx:Button x="322" y="506" width="47" height="19" styleName="previousButton" id="btnPrev" buttonMode="true"/>
+		<mx:Button x="484" y="506" width="47" height="19" styleName="nextButton" id="btnNext" buttonMode="true"/>
 		<mx:Button id="btnSound" x="613" y="507" buttonMode="true" toolTip="关闭" downSkin="{snd_btn_onSkin}" overSkin="{snd_btn_onSkin}" upSkin="{snd_btn_onSkin}" click="columeControlHandler()" width="24" height="24"/>
 		<mx:Label x="60" y="507" text="{currentTime}"/>
 		<mx:Label x="119" y="507" text="{totalTime}"/>
