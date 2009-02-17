@@ -43,9 +43,26 @@
 *******************************************************************************/
 var startDate;
 var exitPageStatus;
-
+var startTime=0;
+var brIniAPI=true;
 function loadPage()
 {
+//	try
+//	{
+		if(parent.menuClick)brIniAPI=setAPI();//傲姿学习平台使用课程目录方法
+		//brIniAPI=true
+//	}
+//	catch(e)
+//	{
+		//MediaPlayer.Controls.pause();
+		//alert("请点击学习平台的课程目录！");
+		//alert("brIniAPI="+brIniAPI)
+		if(!brIniAPI)parent.LeftdownFrame.Playpage=function(){};
+		//brIniAPI=false;
+	//	return false;
+//	}
+	parent.menuClick=false;
+
    var result = doLMSInitialize();
 
    var status = doLMSGetValue( "cmi.core.lesson_status" );
@@ -58,6 +75,8 @@ function loadPage()
 
    exitPageStatus = false;
    startTimer();
+   if (status == "completed"){startTime=0;return;}
+	return true;
 }
 
 
@@ -78,7 +97,6 @@ function computeTime()
    {
       formattedTime = "00:00:00.0";
    }
-
    doLMSSetValue( "cmi.core.session_time", formattedTime );
 }
 
@@ -128,6 +146,7 @@ function doContinue( status )
 
 function doQuit( status )
 {
+//   doLMSSetValue( "cmi.core.exit", "logout" );
    computeTime();
    exitPageStatus = true;
    
@@ -135,13 +154,26 @@ function doQuit( status )
 
    result = doLMSCommit();
 
-   result = doLMSSetValue("cmi.core.lesson_status", status);
+   var lesson_status = doLMSGetValue( "cmi.core.lesson_status" );
+   if(lesson_status!="completed")result = doLMSSetValue("cmi.core.lesson_status", status);
    
 	// NOTE: LMSFinish will unload the current SCO.  All processing
 	//       relative to the current page must be performed prior
 	//		 to calling LMSFinish.   
 
    result = doLMSFinish();
+
+}
+
+function doSetLaunch( WebLaunch )
+{
+   result = doLMSSetValue("cmi.core.lesson_location", WebLaunch);
+}
+
+function doGetLaunch()
+{
+   result = doLMSGetValue("cmi.core.lesson_location");
+   return result
 }
 
 /*******************************************************************************
@@ -158,6 +190,15 @@ function doQuit( status )
 *******************************************************************************/
 function unloadPage( status )
 {
+//	var strSCO="";
+//for(iiii=0;i<SCOs.length;iiii++)
+//	{
+//	if(SCOs[noSCO]!=null)
+//strSCO+=iiii+","+SCOs[noSCO].ScoId+","+SCOs[noSCO].startTime+"\n";
+//	}
+//	alert("当前SID="+noSCO+"\n\nSCOs数组为："+strSCO)
+	//strLaunch="content.htm?"+parent.strTime+"="+SCOs[noSCO].startTime
+	//doSetLaunch (strLaunch);
 
 	if (exitPageStatus != true)
 	{
