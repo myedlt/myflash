@@ -40,6 +40,7 @@
 			private var totalPage:int;
 			[Bindable]
 			private var mc:MovieClip;
+			private var videoMc:MovieClip;
 			[Bindable]
 			private var xml:XMLList;
 			[Bindable]
@@ -58,6 +59,10 @@
 			private var stoped:Boolean;	
 			private var pressing:Boolean;
 			private var headPlaying:Boolean;
+			private var selectedCourseIndex:int;
+			private var c01:Boolean;
+			private var c02:Boolean;
+			private var c03:Boolean;
 			
 			private function init():void
 			{
@@ -106,14 +111,20 @@
 						btn.styleName="switchButton";
 						btn.addEventListener(MouseEvent.CLICK,changeCourse);
 						courseNavBox.addChild(btn);						
-					}
-					mainLoader.source=xml.Index.@header;//初始播放片头
-					headPlaying=true;
-					videoLoader.source=xml.Index.@video;	
-					timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏	
-					
+					}					
 					btnNext.addEventListener(MouseEvent.CLICK,nextPage);
-					btnPrev.addEventListener(MouseEvent.CLICK,prePage);					
+					btnPrev.addEventListener(MouseEvent.CLICK,prePage);	
+					gotoIndex();				
+			}
+			public function gotoIndex():void
+			{
+				mainLoader.source=xml.Index.@header;//初始播放片头
+				headPlaying=true;
+				currState.visible=false;
+				btnPrev.visible=false;
+				btnNext.visible=false;
+				videoLoader.source=xml.Index.@video;	
+				timeoutHandle=setTimeout(hideVideo,30000);//30秒后视频窗口自动隐藏
 			}
 			private function faultHandler(evt:FaultEvent):void
 			{
@@ -122,12 +133,28 @@
 			private function enterFrameHandler(evt:Event):void
 			{
 				progressBar.value=evt.target.currentFrame;
-				currentTime=formatProgressToolTip(evt.target.currentFrame);trace(mc.currentFrame+" "+progressBar.maximum);
+				currentTime=formatProgressToolTip(evt.target.currentFrame);
 				//一节课程播放完毕后自动播放下一节
 				if(progressBar.value==progressBar.maximum)
 				{
 					evt.target.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
-					if(!headPlaying)btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));					
+					if(!headPlaying)
+					{
+						if(currentPage!=totalPage)
+						{
+							btnNext.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						}
+						else 
+						{							
+							stoped=true;
+							videoMc.stop();
+						}
+					}
+					else
+					{
+						stoped=true;
+						videoMc.stop();
+					}										
 				} 				
 			}	
 			private function setLinkBarData():void
@@ -162,9 +189,16 @@
 			}
 			private function headNav(evt:ItemClickEvent):void
 			{
-				var url:String=navUrlArr[evt.index];
-				var target:String=navLabelArr[evt.index]=="退出"||evt.index==navUrlArr.length-1?"_self":"_blank";
-				navigateToURL(new URLRequest(url),target);
+				var url:String=navUrlArr[evt.index];				
+				if(navLabelArr[evt.index]=="首页")
+				{
+					gotoIndex();
+				}
+				else
+				{
+					var target:String=navLabelArr[evt.index]=="退出"||evt.index==navUrlArr.length-1?"_self":"_blank";
+					navigateToURL(new URLRequest(url),target);
+				}
 			}
 			private function switchToVideo():void
 			{
@@ -191,8 +225,10 @@
 				if(mc!=null && stoped)
 				{
 					mc.play();
+					if(!mc.hasEventListener(Event.ENTER_FRAME))mc.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
 					stoped=false;
 				}
+				videoMc.play();
 			}
 			
 			private function pause():void
@@ -201,7 +237,8 @@
 				{
 					mc.stop();
 					stoped=true;
-				}				
+				}
+				videoMc.stop();				
 			}
 			private function sliderComplete(evt:Event):void
 			{
@@ -269,7 +306,11 @@
   			}
   			private function changeCourse(evt:MouseEvent):void
   			{
+  				btnNext.visible=true;
+  				btnPrev.visible=true;
+  				currState.visible=true;
   				if(headPlaying)headPlaying=false;
+  				selectedCourseIndex=Number(evt.target.label);
   				currCourseXml=evt.target.data.courseXml;
   				currCourseArr=evt.target.data.courseArray;
   				currentPage=1;
@@ -307,7 +348,14 @@
   					currIndex=currIndex+1;
   					currentPage=currIndex+1;
   					mainLoader.source=currCourseArr[currIndex].@path;
-  				}  
+  					if(currIndex==currCourseArr.length-1)
+  					{
+  						if(!c03 && selectedCourseIndex==courseNavBox.getChildren().length-1)c03=true;
+	  					if(!c02 && selectedCourseIndex==courseNavBox.getChildren().length-2)c02=true;
+	  					if(!c01 && selectedCourseIndex==courseNavBox.getChildren().length-3)c01=true;
+	  					if(c01 && c02 && c03)lastComplete();
+  					}  					
+  				}
   				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
 				btnNext.removeEventListener(MouseEvent.CLICK,nextPage);
 				setTimeout(function():void{btnNext.addEventListener(MouseEvent.CLICK,nextPage);},200);					
@@ -335,6 +383,17 @@
   					switchToSchema();
   				}
   			}
+  			private function videoLoadComplete(event:Event):void
+  			{
+  				try
+  				{
+  					this.videoMc=MovieClip(event.target.content); 					
+  				}
+  				catch(e:Error)
+  				{
+  					Alert.show("SWF文件转换成MovieClip对象时出现问题,\n可能与flash发布版本有关.","提示");
+  				}
+  			}
   			private function onClickJGR(event:MouseEvent):void
 			{
 				Button(courseNavBox.getChildAt(1)).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
@@ -360,6 +419,25 @@
 					mc=null;
 				}
 			}
+			private function lastComplete():void
+			{
+				if(ExternalInterface.available)
+				{
+                	try
+					{	
+						ExternalInterface.call("setLocation");					
+						ExternalInterface.call("scoFinished");
+					}
+					catch(error:SecurityError)
+					{
+						Alert.show("访问外部javascript时出错,存在安全沙箱问题!","错误提示");
+					}
+           	 	}
+           	 	else
+           	 	{
+           	 		Alert.show("访问外部javascript的ExternalInterface(外部接口)不可用,该容器不支持!");
+           	 	}
+			}
 		]]>
 	</mx:Script>
 	<mx:HTTPService id="content" url="content.xml" result="resultHandler(event)" fault="faultHandler(event)" resultFormat="xml"/>
@@ -377,11 +455,13 @@
 		<mx:Label x="119" y="507" text="{totalTime}"/>
 		<mx:Label x="106" y="507" text="/" width="13"/>
 		<mx:HSlider id="columnSlider" x="647" y="505" width="112" height="16" styleName="columnBar" creationComplete="sliderComplete(event)" minimum="0" maximum="1" value="0.6" liveDragging="true" change="columeChange(event)" dataTipFormatFunction="formatColumeToolTip" allowTrackClick="false"/>
-		<mx:Label x="375" y="507" text="第" width="18"/>
-		<mx:Label x="467" y="507" text="页" width="19"/>
-		<mx:Label x="445" y="507" text="{totalPage}" width="22"/>
-		<mx:Label x="411" y="507" text="页/共"/>
-		<mx:Label x="392.5" y="507" text="{currentPage}" width="21"/>
+		<mx:Canvas id="currState">
+			<mx:Label x="375" y="507" text="第" width="18"/>
+			<mx:Label x="467" y="507" text="页" width="19"/>
+			<mx:Label x="445" y="507" text="{totalPage}" width="22"/>
+			<mx:Label x="411" y="507" text="页/共"/>
+			<mx:Label x="392.5" y="507" text="{currentPage}" width="21"/>
+		</mx:Canvas>		
 		<mx:Label x="37" y="530" text="{ownerStr}" fontSize="11"/>
 		<mx:Label x="340" y="530" text="{noticeStr}" fontSize="11"/>
 		<mx:Label x="570" y="530" text="{techSurportStr}" fontSize="11"/>
@@ -389,8 +469,8 @@
 		<mx:Button x="0" y="357" id="btnShowVideo" visible="false" hideEffect="{dissolveOut}" showEffect="{dissolveIn}" styleName="showVideoButton" click="showVideo()"/>
 		<mx:Canvas id="video" x="0" y="318" width="290" height="171" backgroundImage="@Embed(source='image/video.png')">
 			<mx:LinkButton x="78" y="128" label="视频" alpha="0.0" click="switchToVideo()" useHandCursor="false"/>
-			<mx:LinkButton x="171" y="128" label="隐藏" alpha="0.0" click="hideVideo()"/>
-			<mx:SWFLoader width="184" height="111" y="15" x="53" id="videoLoader" horizontalAlign="center" verticalAlign="middle" scaleContent="true" autoLoad="true"/>
+			<mx:LinkButton x="169" y="128" label="隐藏" alpha="0.0" click="hideVideo()"/>
+			<mx:SWFLoader width="184" height="111" y="15" x="53" id="videoLoader" horizontalAlign="center" verticalAlign="middle" scaleContent="true" autoLoad="true" complete="videoLoadComplete(event)"/>
 		</mx:Canvas>
 		<mx:HBox x="345" y="51" width="455" height="40" horizontalAlign="left" verticalAlign="middle" horizontalGap="0" id="courseNavBox" verticalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
 			<mx:Spacer width="100%"/>
