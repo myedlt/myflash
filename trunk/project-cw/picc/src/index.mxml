@@ -588,12 +588,8 @@
 					{
 						if(this.currSectionNum+1==this.totalSectionNum && this.currChapterName==menuItemArray1[menuItemArray1.length-1].button.data.fullName)
 						{
-							ExternalInterface.call("doQuit","completed");
-						}
-						/* else
-						{
-							ExternalInterface.call("doContinue","incomplete");
-						} */
+							ExternalInterface.call("unloadPage","completed");
+						}						
 					}
 					catch(error:SecurityError)
 					{
