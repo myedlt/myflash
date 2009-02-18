@@ -1,0 +1,9 @@
+<project name="global">
+	<dirname property="courseware.dir" file="${ant.file.global}" />
+	
+	<property file="${courseware.dir}/local.properties" />
+	<property name="FLEX_HOME_REL" value="../flex.sdk" />
+	<property name="FLEX_HOME" value="${courseware.dir}/${FLEX_HOME_REL}" />
+	
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+</project>
