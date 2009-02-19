@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"	xmlns:view="puremvc.view.component.*" creationComplete="facade.startup(this);">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"	xmlns:view="puremvc.view.component.*" creationComplete="init()">
 	<mx:Style source="assets/skin/default.css"/>
 	<mx:Script>
 		<![CDATA[
 			import puremvc.ApplicationFacade;					
-			private var facade:ApplicationFacade=ApplicationFacade.getInstance();			
+			private var facade:ApplicationFacade=ApplicationFacade.getInstance();
+			
+			private init():void
+			{
+				facade.startup(this);
+			}			
 		]]>
 	</mx:Script>
 	
