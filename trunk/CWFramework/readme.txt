@@ -1,9 +1,9 @@
-/********************************************
+ï»¿/********************************************
  *	$Id: readme.txt 258 2009-01-08 06:37:37Z huhongjun@gmail.com $
  ********************************************/
-ÏîÄ¿Ãû³Æ£ºCourseWare Framework
+é¡¹ç›®åç§°ï¼šCourseWare Framework
 
-SVNÉèÖÃ£º
-	CWFrameworkÏîÄ¿Ìí¼ÓTortoiseÊôĞÔlogminsize=12£¬ÏŞ¶¨ÔÚTortoiseSVNÖĞÌá½»Ê±±ØĞëÌîĞ´×¢ÊÍ
+SVNè®¾ç½®ï¼š
+	CWFrameworké¡¹ç›®æ·»åŠ Tortoiseå±æ€§logminsize=12ï¼Œé™å®šåœ¨TortoiseSVNä¸­æäº¤æ—¶å¿…é¡»å¡«å†™æ³¨é‡Š
 	
-bin-debugºÍhtml-templateÄ¿Â¼É¾³ı£¬²»ÄÉÈë°æ±¾¹ÜÀí£¬ÔÚFlexBuilderÖĞµ¼ÈëÏîÄ¿ºó£¬ĞèÔÚÏîÄ¿ÉÏ°´ÓÒ¼üÖØĞÂÉú³Éhtml-template
+bin-debugå’Œhtml-templateç›®å½•åˆ é™¤ï¼Œä¸çº³å…¥ç‰ˆæœ¬ç®¡ç†ï¼Œåœ¨FlexBuilderä¸­å¯¼å…¥é¡¹ç›®åï¼Œéœ€åœ¨é¡¹ç›®ä¸ŠæŒ‰å³é”®é‡æ–°ç”Ÿæˆhtml-template
