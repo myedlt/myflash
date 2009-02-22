@@ -91,7 +91,8 @@
 			public var stoped:Boolean;	
 			private var pressing:Boolean;	
 			private var gotoLast:Boolean;
-			private var readedCourseInfo:Array=new Array();	
+			private var readedCourseInfo:Array=new Array();				
+			private var total:int;
 			
 			private function appInit():void
 			{
@@ -250,6 +251,7 @@
 				
 				btnNext.addEventListener(MouseEvent.CLICK,nextPage);
 				btnPreviouse.addEventListener(MouseEvent.CLICK,prePage);
+				this.total=content.Counter.@data;
 			}
 			
 			private function enterFrameHandler(evt:Event):void
@@ -461,7 +463,8 @@
 						readedCourseInfo.push({currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
 						so.flush();
 					}		
-				}					
+				}
+				if(readedCourseInfo.length>=total)tracingComplete();					
 			}
 			
 			public function innerArrayComplete():void
@@ -561,18 +564,13 @@
 								break;
 							}
 						}
-					}
-					else if(result!="last")
-					{						
-						tracingNext();//加入scorm 跟踪课程
-					}					
+					}										
 				}
 				else
 				{
 					if(this.currSectionNum<menuItemArray1.length)
 					{
 						Button(menuItemArray1[currSectionNum].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-						tracingNext();//加入scorm 跟踪课程
 					}
 				}								
 				//防止用户点击频率过快造成声音混乱 点击间隔为200毫秒
@@ -580,27 +578,24 @@
 				setTimeout(function():void{btnNext.addEventListener(MouseEvent.CLICK,nextPage);},200);					
 			}
 			
-			private function tracingNext():void
+			private function tracingComplete():void
 			{
 				if(ExternalInterface.available)
 				{
                 	try
-					{
-						if(this.currSectionNum+1==this.totalSectionNum && this.currChapterName==menuItemArray1[menuItemArray1.length-1].button.data.fullName)
-						{
-							ExternalInterface.call("unloadPage","completed");
-						}						
+					{	
+						ExternalInterface.call("unloadPage","completed");
 					}
 					catch(error:SecurityError)
 					{
-						Alert.show("访问外部javascript时出错,存在安全沙箱问题!\n"+error.message,"错误提示");
+						Alert.show("访问外部javascript时出错,存在安全沙箱问题!","错误提示");
 					}
            	 	}
            	 	else
            	 	{
            	 		Alert.show("访问外部javascript的ExternalInterface(外部接口)不可用,该容器不支持!");
            	 	}
-			}
+			}			
 			
 			private function gotoPage(evt:ListEvent):void
 			{

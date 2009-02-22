@@ -9,6 +9,7 @@
 	<Header label="片头" data="flashes/header.swf"/>
 	<Begin label="滴水的故事" data="flashes/begin.swf"/>
 	<Help label="帮助" data="web/help/help.html"/>
+	<Counter label="课程总章节数" data="59"/>
 	<!-- 请按顺序一次排列,共8行3列(每项的row和col属性不能超出范围) -->
 	<MenuItems label="课程菜单"><!-- label为缩写内容,在左侧菜单按钮上显示;fullName为课程全称,在面包屑导航区显示 --> 
 		<menuItem label="目标" fullName="共同的目标" row="1" col="2" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
