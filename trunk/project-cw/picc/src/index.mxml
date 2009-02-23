@@ -588,12 +588,12 @@
 					}
 					catch(error:SecurityError)
 					{
-						Alert.show("访问外部javascript时出错,存在安全沙箱问题!","错误提示");
+						//Alert.show("访问外部javascript时出错,存在安全沙箱问题!","错误提示");
 					}
            	 	}
            	 	else
            	 	{
-           	 		Alert.show("访问外部javascript的ExternalInterface(外部接口)不可用,该容器不支持!");
+           	 		//Alert.show("访问外部javascript的ExternalInterface(外部接口)不可用,该容器不支持!");
            	 	}
 			}			
 			
