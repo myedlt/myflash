@@ -4,11 +4,11 @@
 	<view:ProgressBoardComponent id="progressBoard" x="0" horizontalAlign="center" verticalAlign="middle" width="100%" height="10%" bottom="0"/>	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.events.SliderEvent;
 			private var mc:MovieClip;
 			private var stoped:Boolean=true;	//记录当前播放状态是否停止
 			private var pressing:Boolean;//进度条拖拽按钮是否按下
-			public var type:String;
 			
 			public function init():void
 			{
@@ -23,15 +23,14 @@
 				progressBoard.sldCtrlProgress.addEventListener(SliderEvent.THUMB_RELEASE,thumbRelease);							
 			}
 			
-			public function load(url:String,type:String=null):void
+			public function load(url:String,hasContrlBar:String):void
 			{
-				this.type=type;
-				if(type=="flex")
+				if(hasContrlBar=="false")
 				{
 					if (contains(progressBoard))                
 			 		removeChild(progressBoard); 
 				}
-				else
+				else if(hasContrlBar=="true")
 				{
 					if (!contains(progressBoard))                
 			 		addChild(progressBoard); 
@@ -124,7 +123,7 @@
 				catch(e:Error)
 				{		
 					mc=null;									
-					trace("SWF文件转换成MovieClip对象时出错,可能与flash发布版本有关.");				
+					//trace("SWF文件转换成MovieClip对象时出错,可能与flash发布版本有关.");				
 				}				
 			}		
 			

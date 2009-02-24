@@ -39,7 +39,7 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(currChapter.sections[index-1]);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[index-1].path);
-						var noteData1:Object=ModuleLocator.locate(currChapter.sections[index-1].type,currChapter.sections[index-1].path);  
+						var noteData1:Object=ModuleLocator.locate(currChapter.sections[index-1]);  
         				sendNotification(noteData1.noteType,noteData1.noteBody); 
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[index-1].name);
 					}
@@ -50,7 +50,7 @@ package puremvc.controller
 				}
 				else
 				{
-					trace("找不到当前节对象!");
+					//trace("找不到当前节对象!");
 				}				
 			}
 			else
@@ -81,7 +81,7 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(currChapter.sections[currChapter.sections.length-1]);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.sections[currChapter.sections.length-1].path);
-						var noteData2:Object=ModuleLocator.locate(currChapter.sections[currChapter.sections.length-1].type,currChapter.sections[currChapter.sections.length-1].path);  
+						var noteData2:Object=ModuleLocator.locate(currChapter.sections[currChapter.sections.length-1]);  
         				sendNotification(noteData2.noteType,noteData2.noteBody);
 						sendNotification(ApplicationFacade.CHAPTER_CHANGE,currChapter.name);
 						sendNotification(ApplicationFacade.SECTION_CHANGE,currChapter.sections[currChapter.sections.length-1].name);
@@ -90,7 +90,7 @@ package puremvc.controller
 					{
 						currInfo.setCurrentSection(null);
 						//sendNotification(ApplicationFacade.SWF_LOAD,currChapter.path);
-						var noteData3:Object=ModuleLocator.locate(currChapter.type,currChapter.path);  
+						var noteData3:Object=ModuleLocator.locate(currChapter);  
         				sendNotification(noteData3.noteType,noteData3.noteBody);
 						sendNotification(ApplicationFacade.SINGLE_CHAPTER,currChapter.name);
 					}							
@@ -98,7 +98,7 @@ package puremvc.controller
 			}
 			else
 			{
-				trace("找不到当前章对象!");
+				//trace("找不到当前章对象!");
 			}	 
 		}			
 	}

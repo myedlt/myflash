@@ -1,8 +1,9 @@
 package puremvc.model.utils
 {
+	import mx.controls.Alert;
+	
 	import puremvc.model.vo.ChapterVO;
 	import puremvc.model.vo.CourseVO;
-	import puremvc.model.vo.LectureVO;
 	import puremvc.model.vo.SectionVO;
 	//xml->object 一门课程包括讲师和章,章中包括节
 	public class XmlResource
@@ -21,11 +22,15 @@ package puremvc.model.utils
 			if(section.hasOwnProperty("@path"))
 			{
 				sec.path=section.@path;
-			}			
+			}					
+			if(section.hasOwnProperty("@hasContrlBar"))
+			{
+				sec.hasContrlBar=section.@hasContrlBar;
+			}
 			if(section.hasOwnProperty("@type"))
 			{
 				sec.type=section.@type;
-			}
+			}	
 			else
 			{
 				sec.type="flash";//默认课件类型为flash
@@ -82,6 +87,10 @@ package puremvc.model.utils
 				if(chapter.hasOwnProperty("@path"))
 				{
 					cha.path=chapter.@path;
+				}
+				if(chapter.hasOwnProperty("@hasContrlBar"))
+				{
+					cha.hasContrlBar=chapter.@hasContrlBar;
 				}	
 			}	
 			return cha;			
@@ -91,7 +100,7 @@ package puremvc.model.utils
 		{//课程:
 			var cou:CourseVO=new CourseVO();			
 			var chapters:Array=new Array();
-			for each(var chapter:XML in course.Chapter)
+			for each(var chapter:XML in course.chapter)
 			{								
 				chapters.push(parseChapter(chapter));
 			}
@@ -116,14 +125,14 @@ package puremvc.model.utils
 			{
 				cou.endSWF=course.@endSWF;
 			}				
-			if(course.Lecture!=undefined)
+			/* if(course.lecture!=undefined)
 			{	
-				cou.lecture=parseLecture(course.Lecture);
-			}
+				cou.lecture=parseLecture(course.lecture);
+			} */
 			return cou;
 		}
 		
-		static public function parseLecture(lecture:XMLList):LectureVO
+		/* static public function parseLecture(lecture:XMLList):LectureVO
 		{//讲师:
 			var lec:LectureVO=new LectureVO();
 			if(lecture.id!=undefined)
@@ -155,6 +164,6 @@ package puremvc.model.utils
 				lec.introduction=lecture.introduction;
 			}	
 			return lec;
-		}
+		} */
 	}
 }

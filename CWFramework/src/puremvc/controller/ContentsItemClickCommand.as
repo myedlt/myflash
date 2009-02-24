@@ -1,7 +1,7 @@
 package puremvc.controller
 {
+	import mx.controls.Alert;
 	import mx.controls.Tree;
-	//import mx.utils.ObjectUtil;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
@@ -9,7 +9,6 @@ package puremvc.controller
 	import puremvc.ApplicationFacade;
 	import puremvc.model.utils.CurrentInfo;
 	import puremvc.model.utils.ModuleLocator;
-	import puremvc.model.utils.XmlResource;
 	import puremvc.model.vo.SectionVO;
 	import puremvc.view.ContentsMediator;
 
@@ -18,20 +17,20 @@ package puremvc.controller
 		override public function execute(note:INotification):void
 		{
 			var selectedItem:Object=note.getBody();
-			var path:String;
+			var des:Object;
 			var currInfo:CurrentInfo=CurrentInfo.getInstance();	
 			var treeContents:Tree=ContentsMediator(facade.retrieveMediator(ContentsMediator.NAME)).treeContents;					
 			
 			if(treeContents.getParentItem(selectedItem)==null)
 			{//单章
-				path=selectedItem.vo.path;
+				des=selectedItem.vo;
 				sendNotification(ApplicationFacade.SINGLE_CHAPTER,selectedItem.name);
 				currInfo.setCurrentChapter(selectedItem.vo);
 				currInfo.setCurrentSection(null);				
 			}
 			else
 			{//节	
-				path=selectedItem.path;
+				des=selectedItem;
 				//if(ObjectUtil.compare(treeContents.getParentItem(selectedItem).vo,currInfo.getCurrentChapter(),0)!=0)
 				if(treeContents.getParentItem(selectedItem).vo.id!=currInfo.getCurrentChapter().id)
 				{
@@ -46,7 +45,7 @@ package puremvc.controller
 				} 				
 			}
 			//sendNotification(ApplicationFacade.SWF_LOAD,selectedItem.@path);	
-			var noteData:Object=ModuleLocator.locate(selectedItem.hasOwnProperty("type")?selectedItem.type:"flash",path);  
+			var noteData:Object=ModuleLocator.locate(des);  
         	sendNotification(noteData.noteType,noteData.noteBody); 
 		}
 	}

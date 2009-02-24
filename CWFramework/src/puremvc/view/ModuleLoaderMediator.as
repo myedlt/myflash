@@ -4,7 +4,6 @@ package puremvc.view
 	import module.ImagePlayerModule;
 	import module.SwfPlayerModule;
 	
-	import mx.events.FlexEvent;
 	import mx.events.ModuleEvent;
 	import mx.modules.ModuleLoader;
 	import mx.modules.ModuleManager;
@@ -21,6 +20,7 @@ package puremvc.view
 		public static const NAME:String = "ModuleLoaderMediator";		
 		private var contentUrl:String;
 		private var contentType:String;
+		private var hasContrlBar:Boolean;
 		
 		public function ModuleLoaderMediator(viewComponent:Object)
 		{
@@ -35,6 +35,7 @@ package puremvc.view
 			//moduleLoader.unloadModule();
 			contentUrl=data.contentUrl;
 			contentType=data.contentType;
+			if(data.hasContrlBar!=null)hasContrlBar=data.hasContrlBar;
 			moduleLoader.url=data.moduleUrl;
 			//moduleLoader.loadModule();
 		}
@@ -54,9 +55,8 @@ package puremvc.view
 		public function ready(evt:ModuleEvent):void
 		{			
 			switch(contentType)
-        	{
-        		case "flex":
-        		case "flash":loadSwf({path:contentUrl,type:contentType});break;        		
+        	{        		
+        		case "flash":loadSwf({path:contentUrl,hasContrlBar:this.hasContrlBar});break;        		
         		case "image":loadImage(contentUrl);break;
         		case "flv":loadFlv(contentUrl);break;
         	}      
@@ -69,7 +69,7 @@ package puremvc.view
 		
 		public function loadSwf(obj:Object):void
 		{
-			SwfPlayerModule(moduleLoader.child).callLater(SwfPlayerModule(moduleLoader.child).load,[obj.path,obj.type]);
+			SwfPlayerModule(moduleLoader.child).callLater(SwfPlayerModule(moduleLoader.child).load,[obj.path,obj.hasContrlBar]);
 		}
 		
 		public function loadFlv(url:String):void

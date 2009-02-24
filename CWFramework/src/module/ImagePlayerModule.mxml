@@ -25,7 +25,7 @@
 			{
 				try 
 				{
-	            	images = XML(evt.target.data).Image;	            	
+	            	images = XML(evt.target.data).image;	            	
 	            	if(images.length()==1)
 	            	{
 	            		if(boxImgCtrl.visible==true)boxImgCtrl.visible=false;
