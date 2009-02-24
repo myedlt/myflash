@@ -20,7 +20,7 @@ package puremvc.model
         {
         	if(this.data==null)
         	{
-        		this.data=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData()).Course;
+        		this.data=XML(DataProxy(facade.retrieveProxy(DataProxy.NAME)).getData()).course;
         	}
         	for each(var course:XML in this.data)
 			{								

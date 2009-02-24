@@ -17,24 +17,21 @@ package puremvc.controller
         	var currInfo:CurrentInfo=CurrentInfo.getInstance();         	
         	currInfo.setCurrentCourse(courses[courseIndex]);        	
         	currInfo.setCurrentChapter(courses[courseIndex].chapters[0]);
-        	var type:String;
-        	var path:String;
+        	var des:Object;
         	if(courses[courseIndex].chapters[0].sections==null)
         	{
-        		type=courses[courseIndex].chapters[0].type;
-        		path=courses[courseIndex].chapters[0].path;
+        		des=courses[courseIndex].chapters[0];
         		currInfo.setCurrentSection(null);        		
         	}
         	else
         	{
-        		type=courses[courseIndex].chapters[0].sections[0].type;
-        		path=courses[courseIndex].chapters[0].sections[0].path;
+        		des=courses[courseIndex].chapters[0].sections[0];
         		currInfo.setCurrentSection(courses[courseIndex].chapters[0].sections[0]);   
         		sendNotification(ApplicationFacade.SECTION_CHANGE,currInfo.getCurrentSection().name);     		
         	}        	
         	sendNotification(ApplicationFacade.CHAPTER_CHANGE,currInfo.getCurrentChapter().name); 
         	sendNotification(ApplicationFacade.TREE_INIT);
-        	var noteData:Object=ModuleLocator.locate(type,path);  
+        	var noteData:Object=ModuleLocator.locate(des);  
         	sendNotification(noteData.noteType,noteData.noteBody);       	
         }
     }

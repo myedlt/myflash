@@ -3,7 +3,7 @@
 	<mx:Spacer width="10"/>
 	<mx:HSlider id="sldCtrlProgress" width="80%" horizontalCenter="0" y="500" liveDragging="true" showTrackHighlight="true" slideDuration="10"/>
 	<mx:Button id="btnPlayOrPause" click="playOrPause()"/>
-	<mx:Button id="btnStop" toolTip="停止"/>
+	<mx:Button id="btnStop" label="停止" toolTip="停止"/>
 	<mx:Script>
 		<![CDATA[
 			public function init():void
@@ -29,11 +29,13 @@
 			public function playState():void
 			{
 				btnPlayOrPause.toolTip="暂停";
+				btnPlayOrPause.label="暂停";
 			}
 			
 			public function pauseState():void
 			{
 				btnPlayOrPause.toolTip="播放";
+				btnPlayOrPause.label="播放";
 			}			
 		]]>
 	</mx:Script>
