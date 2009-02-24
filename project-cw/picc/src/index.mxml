@@ -584,7 +584,7 @@
 				{
                 	try
 					{	
-						ExternalInterface.call("unloadPage","completed");
+						ExternalInterface.call("doQuit","completed");
 					}
 					catch(error:SecurityError)
 					{
