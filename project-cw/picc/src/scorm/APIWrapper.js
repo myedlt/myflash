@@ -56,7 +56,7 @@
 *******************************************************************************/
 
 var _Debug = false;  // set this to false to turn debugging off
-                     // and get rid of those annoying //alert boxes.
+                     // and get rid of those annoying alert boxes.
 
 // Define exception/error codes
 var _NoError = 0;
@@ -77,7 +77,7 @@ var _IncorrectDataType = 405;
 var apiHandle = null;
 var API = null;
 var findAPITries = 0;
-var bAPI=false;
+
 
 /*******************************************************************************
 **
@@ -93,18 +93,18 @@ var bAPI=false;
 *******************************************************************************/
 function doLMSInitialize()
 {
-	   api = getAPIHandle();
-	   if (api == null)
-	   {
-	      //alert("Unable to locate the LMS's API Implementation.\nLMSInitialize was not successful.");
-	      return "false";
-	   }
-//   if(parent.LMSInitialize)return "LMS initialize complete!"
-   var result = api.LMSInitialize("");
-	if(result.toString() == "true"){parent.LMSInitialize=true;}
-   else
+   var api = getAPIHandle();
+   if (api == null)
    {
-	  var err = ErrorHandler();
+      //alert("Unable to locate the LMS's API Implementation.\nLMSInitialize was not successful.");
+      return "false";
+   }
+
+   var result = api.LMSInitialize("");
+
+   if (result.toString() != "true")
+   {
+      var err = ErrorHandler();
    }
 
    return result.toString();
@@ -174,7 +174,7 @@ function doLMSGetValue(name)
       {
          // an error was encountered so display the error description
          var errDescription = api.LMSGetErrorString(errCode);
-         //alert("LMSGetValue("+name+") failed. \n"+ errDescription);
+         alert("LMSGetValue("+name+") failed. \n"+ errDescription);
          return "";
       }
       else
@@ -285,7 +285,7 @@ function doLMSGetErrorString(errorCode)
    var api = getAPIHandle();
    if (api == null)
    {
-      //alert("Unable to locate the LMS's API Implementation.\nLMSGetErrorString was not successful.");
+      alert("Unable to locate the LMS's API Implementation.\nLMSGetErrorString was not successful.");
    }
 
    return api.LMSGetErrorString(errorCode).toString();
@@ -307,7 +307,7 @@ function doLMSGetDiagnostic(errorCode)
    var api = getAPIHandle();
    if (api == null)
    {
-      //alert("Unable to locate the LMS's API Implementation.\nLMSGetDiagnostic was not successful.");
+      alert("Unable to locate the LMS's API Implementation.\nLMSGetDiagnostic was not successful.");
    }
 
    return api.LMSGetDiagnostic(errorCode).toString();
@@ -386,7 +386,7 @@ function ErrorHandler()
          // on the previous error.
       }
 
-      //alert(errDescription);
+      alert(errDescription);
    }
 
    return errCode;
@@ -405,11 +405,11 @@ function ErrorHandler()
 *******************************************************************************/
 function getAPIHandle()
 {
-	if(API!=null)return API;
    if (apiHandle == null)
    {
       apiHandle = getAPI();
    }
+
    return apiHandle;
 }
 
@@ -426,13 +426,13 @@ function getAPIHandle()
 *******************************************************************************/
 function findAPI(win)
 {
-  while ((win.API == null) && (win.parent != null) && (win.parent != win))
+   while ((win.API == null) && (win.parent != null) && (win.parent != win))
    {
       findAPITries++;
       // Note: 7 is an arbitrary number, but should be more than sufficient
       if (findAPITries > 7) 
       {
-         //alert("Error finding API -- too deeply nested.");
+         alert("Error finding API -- too deeply nested.");
          return null;
       }
       
@@ -459,91 +459,15 @@ function findAPI(win)
 function getAPI()
 {
    var theAPI = findAPI(window);
-   if ((theAPI == null) && (window.top.opener != null) && (typeof(window.top.opener) != "undefined"))
+   if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined"))
    {
-      theAPI = findAPI(window.top.opener);
+      theAPI = findAPI(window.opener);
    }
    if (theAPI == null)
    {
-      alert("Unable to find an API adapter");
+      //alert("Unable to find an API adapter");
    }
    return theAPI
-}
-
-/*******************************************************************************
-**
-** Function setAPI()
-** Inputs:  none
-** Return:  If an API object is found, it's returned, otherwise null is returned
-**
-** Description:
-** This function looks for an object named API, first in the current window's 
-** frame hierarchy and then, if necessary, in the current window's opener window
-** hierarchy (if there is an opener window).
-**
-*******************************************************************************/
-function setAPI()
-{
-	var iniAPI=false;
-	var api = getAPIHandle();
-	if (api == null)
-	{
-	   //alert("Unable to locate the LMS's API Implementation.\nCannot determine LMS error code.");
-	   return iniAPI;
-	}
-	try
-	{
-		api.setSCOID(SCOs[noSCO].ScoId);//傲姿学习平台使用课程目录方法
-		iniAPI=true;
-	}
-	catch(e){}
-	try
-	{
-		api.setSessionId(getSID(window)[noSCO]);//东软学习平台使用课程目录方法
-		iniAPI=true;
-	}
-	catch(e){}
-	return iniAPI;
-}
-
-function getSID(win)
-{ 
-  while ((win.parent != null) && (win.parent != win))
-  {
-      if(win.frames!=null){
-          if(win.frames.sco!=null){
-              var sid=new Array();
-              var scoName=win.frames.sco.name;
-              sid=scoName.substring(0,scoName.length).split(",");
-              sid=parseSID(sid);
-              return sid;
-              break;
-          }
-      }
-       win = win.parent;
-   }
-}
-function parseSID(str){
-        var ret=new Array();
-        var count=parseInt(str[1])-parseInt(str[0]);
-        initValue=parseInt(str[0]);
-        ret[0]=formatSTR(str[0]);
-        
-        for(i=1;i<count+1;i++){
-        initValue=initValue+1;
-        ret[i]=formatSTR(new String(initValue));
-    
-   }
-   return ret;
-}
-function formatSTR(str){
-        var initLen=12;
-        var initToken="000000000";
-    var ret;
-    var size=initLen-str.length-3;
-    ret="EKP"+initToken.substring(0,size)+str;
-    return ret;
-
 }
 
 
