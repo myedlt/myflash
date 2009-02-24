@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"	xmlns:view="puremvc.view.component.*" creationComplete="facade.startup(this);">
+	<mx:Style source="assets/skin/default.css"/>
+	<mx:Script>
+		<![CDATA[
+			import puremvc.ApplicationFacade;					
+			private var facade:ApplicationFacade=ApplicationFacade.getInstance();			
+		]]>
+	</mx:Script>
 	
+	<mx:Canvas  width="779" height="600" horizontalCenter="0" verticalCenter="0">
+		<view:NavigatorComponent id="navigator" top="2" right="5"/>
+		<view:ContentsComponent id="contents" x="6" y="90" width="203" height="440"/>
+		<view:CurrentPositionComponent id="currentPosition" x="213" y="53" height="34" width="560" horizontalGap="4"/>
+		<view:ModuleLoaderComponent id="moduleLoader" x="213" y="89" width="560" height="442"/>
+		<view:ControlBoardComponent id="controlBoard" x="213" y="534" height="60" width="560"/>
+	</mx:Canvas>	
 </mx:Application>
