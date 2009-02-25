@@ -13,7 +13,6 @@ package puremvc.controller
         override public function execute( note:INotification ) :void    
 		{
 			facade.registerProxy(new CourseProxy());
-        	facade.registerProxy(new NavigatorProxy()); 
         	 
 			sendNotification(ApplicationFacade.INITUI); 
         }

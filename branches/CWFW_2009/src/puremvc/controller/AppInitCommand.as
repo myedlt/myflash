@@ -5,6 +5,7 @@ package puremvc.controller
 	
 	import puremvc.model.*;
 	import puremvc.view.*;
+	import puremvc.ApplicationFacade;
 	
 	public class AppInitCommand extends SimpleCommand
 	{

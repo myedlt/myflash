@@ -47,10 +47,6 @@ package puremvc
 			// 对象数据初始化		
 			registerCommand(STARTUP,AppStartupCommand);
 			
-			// UI交互命令
-			registerCommand(PREVIOUS_SECTION,PreviousSectionCommand);
-			registerCommand(NEXT_SECTION,NextSectionCommand);
-			registerCommand(CONTENTS_ITEM_CLICK,ContentsItemClickCommand);
 		}
 		
 		//启动 PureMVC，在应用程序中调用此方法，并传递应用程序本身的引用 

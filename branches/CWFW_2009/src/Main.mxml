@@ -2,7 +2,7 @@
 <mx:Application 
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:view="puremvc.view.component.*" layout="absolute" creationComplete="initApp()">
-	<mx:LinkBar id="linkBar" x="512" y="10" width="278" height="26"/>
+	<mx:LinkBar id="linkBar" x="512" y="10" width="278" height="26" />
 	<mx:HBox width="583" height="30" verticalAlign="middle" horizontalGap="3" x="207" y="60">
 		<mx:Spacer width="6"/>
 		<mx:Label text="当前章" id="txtChapter"/>
@@ -92,16 +92,84 @@
 				]]>
 			</mx:Script>
 	</mx:HBox>
-	<mx:Script>
+	<mx:Script >
 		<![CDATA[
+			import puremvc.model.vo.SectionVO;
+			/*
+			 * 	外部接口相关代码，initApp由应用初始调用：creationComplete="initApp()"
+			 */
+			import mx.events.*;
+			
 			import puremvc.model.vo.CourseVO;
+			import api.event.AppEvent;
+			
 			private function initApp():void
 			{
-				
+				//linkBar.addEventListener(ItemClickEvent.ITEM_CLICK, handleEvent);
+				treeContents.addEventListener(ListEvent.ITEM_CLICK,				onSectionChanged);
+				btnPrevSection.addEventListener(MouseEvent.CLICK,	onPrevSection);
+				btnNextSection.addEventListener(MouseEvent.CLICK,	onNextSection);					
+
 			}
 			
-			private function initContent(course:CourseVO):void
+
+	        public function initContent(content:XMLList):void{
+				//treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
+				//treeContents.callLater(expandAllNode);//初始展开所有节点	
+				
+				// 1. 目录树
+	        	treeContents.labelField="name";
+
+				var itemchapter:XML;
+	        	for each(itemchapter in content) {
+	        		var children:ArrayCollection = new ArrayCollection();
+					var itemsection:XML;
+					var sectionlist:XMLList = itemchapter.sections;
+						children.addItem({"name":"测试","type":"ceshi"});
+						children.addItem({"name":"测试","type":"ceshi"});
+					for each(itemsection in sectionlist) {
+						//children.addItem({"name":itemsection.@name.toString(),"type":itemsection.@type.toString()});
+						children.addItem({"name":"测试","type":"ceshi"});
+					}
+	        		
+					treeContents.dataProvider.addItem(
+						{	"name":itemchapter.@name.toString(),"children":children });
+					
+	        	}
+	        	
+	        	// 2. 功能按钮条
+	        	
+	        	// 3. 导航条与前进后退控制按钮条、学习历史进度
+	        			
+	        }
+	        
+	        private function refreshUI():void
+	        {
+	        	//txtChapter,arrowFlag,txtSection
+	        	
+	        }
+			private function onSectionChanged(evt:Event):void
 			{
+ 				if(!treeContents.dataDescriptor.isBranch(evt.target.selectedItem))
+				{							
+					dispatchEvent(new AppEvent(AppEvent.CE_SECTIONCHANGED, evt.target.selectedItem) );				
+					//trace("itemClick:"+evt.target.selectedItem.toXMLString());
+				}
+			}
+
+			private function onPrevSection(evt:Event):void
+			{
+				dispatchEvent(new AppEvent(AppEvent.CE_PREVSECTION, "") );
+			}
+						
+			private function onNextSection(evt:Event):void
+			{
+				dispatchEvent(new AppEvent(AppEvent.CE_NEXTSECTION, "") );
+			}
+			
+			private function playSection(section:SectionVO):void
+			{
+				// 根据节的类型选择模块；根据节的url播放内容
 				
 			}
 		]]>
