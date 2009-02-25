@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 内容说明 
+	所有课程相关内容定义在一个根节点下(根节点可以自由命名);标签名都用小写英文字母表示.
+	*界面参数
+		main 表示加载的主界面
+		player 表示界面中的播放器位置
+	*页面导航 
+		"label"属性是按钮在页面的显示名称,"url"是点击按钮后跳转的页面路径;
+		"退出"按钮的显示名如果不叫"退出",那么其位置一定要位于最后即Navigator标签的最后一个元素;
+	*课程列表	
+		1.课程标签为course,其属性有	name(课程名称)、title(课程标题或简称)、startSWF（开篇动画即片头）、endSWF(结束动画)。		
+		2.章标签为chapter,其属性有name（名称,必填）、title(标题)、path(单章即没有子节点时的文件路径)、type（文件类型:"flash"/"flex"/"image"/"flv"--决定选用的播放器类型,默认为"flash"）、xml(对应的xml配置文件路径)。
+		3.节标签为section,其属性有name（名称,必填）、title(标题)、path(文件路径,必填)、type（"flash"/"flex"/"image"/"flv"）、xml(对应的xml配置文件)。
+		4.course节点下可以有1个或多个chapter节点;chapter节点下可以有多个section节点,也可以没有节点即该章只对应一个文件;一个xml文件至少有一个course节点.
+-->
+<content>
+	<!-- 界面参数 -->		
+	<layout>
+		<main width="799" height="550" path="main.swf"/>
+		<player x="132" y="100" width="653" height="386"/>
+	</layout>
+	<!-- 页面导航 -->	
+	<navigator>		
+		<button id="nav01" label="帮助" url="http://www.baidu.com/index.html"/>	
+		<button id="nav02" label="退出" url="javascript:window.top.close();"/>		
+	</navigator>
+	<!-- 课程列表 -->	
+	<course id="cou01" name="课程名称">					
+		<chapter id="cha01" name="第一章 学习内容" title="第一章">
+			<section id="sec01" name="第一节 动画" type="flash" hasContrlBar="true" path="assets/course/chapter01/unit01.swf"/>			
+			<section id="sec02" name="第二节 图片" type="image" path="assets/course/chapter01/unit02.jpg"/>
+			<section id="sec03" name="第三节 相册" type="image" path="assets/course/chapter01/unit03.xml"/>	
+			<section id="sec04" name="第四节 视频" type="flv" path="assets/course/chapter01/unit04.flv"/>										
+		</chapter>	
+		<chapter id="cha02" name="第二章 测试题" type="flash" hasContrlBar="false" path="assets/course/chapter02.swf"/>		
+	</course>	
+	<!-- 版权信息 -->
+	<copyright>		
+		<![CDATA[
+			技术支持:北京东方创远教育科技有限公司
+		]]>
+	</copyright>
+</content>

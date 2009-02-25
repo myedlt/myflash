@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="main" creationComplete="init()" verticalAlign="middle" xmlns:custom="puremvc.view.component.*">
+	<mx:states>
+		<mx:State name="beginning"/>
+		<mx:State name="main">
+			<mx:AddChild position="lastChild">
+				<mx:SWFLoader id="mainLoader" width="100%" height="100%" scaleContent="true" horizontalAlign="center" verticalAlign="middle" horizontalCenter="0" verticalCenter="0"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<custom:ModuleLoaderComponent id="mainPlayer" x="138" y="86" width="652" height="389"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="fullscreen" basedOn="main"/>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+			import puremvc.ApplicationFacade;					
+			private var facade:ApplicationFacade=ApplicationFacade.getInstance();
+			
+			private function init():void
+			{
+				facade.startup(this);
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
