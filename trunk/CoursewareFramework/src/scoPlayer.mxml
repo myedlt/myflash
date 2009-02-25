@@ -20,13 +20,13 @@
 				switch(type)
 	        	{
 	        		case "flash": 
-	        			moduleLoader.url="../../module/SwfPlayerModule.swf";
+	        			moduleLoader.url="../module/SwfPlayerModule.swf";
 	        			break;
 	        		case "image":
-	        			moduleLoader.url="../../module/ImagePlayerModule.swf";
+	        			moduleLoader.url="../module/ImagePlayerModule.swf";
 	        			break;
 	        		case "flv":
-	        			moduleLoader.url="../../module/FlvPlayerModule.swf";
+	        			moduleLoader.url="../module/FlvPlayerModule.swf";
 	        			break;
 	        	}
 			}

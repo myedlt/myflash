@@ -52,7 +52,7 @@
 			
 			public function fault(evt:IOErrorEvent):void
 			{		
-				Alert.show("加载文件失败!\n"+evt.text);			
+				Alert.show("加载文件xml失败!");			
 			}
 			
 			public function next():void
