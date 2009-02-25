@@ -20,7 +20,7 @@ package puremvc.view
 		public static const NAME:String = "ModuleLoaderMediator";		
 		private var contentUrl:String;
 		private var contentType:String;
-		private var hasContrlBar:Boolean;
+		private var hasContrlBar:String;
 		
 		public function ModuleLoaderMediator(viewComponent:Object)
 		{
@@ -56,7 +56,7 @@ package puremvc.view
 		{			
 			switch(contentType)
         	{        		
-        		case "flash":loadSwf({path:contentUrl,hasContrlBar:this.hasContrlBar});break;        		
+        		case "flash":loadSwf({path:contentUrl,hasContrlBar:hasContrlBar});break;        		
         		case "image":loadImage(contentUrl);break;
         		case "flv":loadFlv(contentUrl);break;
         	}      
