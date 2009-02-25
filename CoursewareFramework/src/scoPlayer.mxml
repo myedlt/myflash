@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" verticalAlign="middle" backgroundColor="#FFFFFF" 
+	xmlns:custom="puremvc.view.component.*" creationComplete="init()">
+	<custom:ModuleLoaderComponent id="moduleLoader" width="100%" height="100%" horizontalCenter="0" verticalCenter="0"/>
+	<mx:Script>
+		<![CDATA[
+			import module.FlvPlayerModule;
+			import module.ImagePlayerModule;
+			import module.SwfPlayerModule;
+			import mx.events.ModuleEvent;
+			
+			private var path:String;
+			private var type:String;
+			
+			private function init():void
+			{
+				path=Application.application.parameters.path;
+				type=Application.application.parameters.type;
+				moduleLoader.addEventListener(ModuleEvent.READY,ready);				
+				switch(type)
+	        	{
+	        		case "flash": 
+	        			moduleLoader.url="../../module/SwfPlayerModule.swf";
+	        			break;
+	        		case "image":
+	        			moduleLoader.url="../../module/ImagePlayerModule.swf";
+	        			break;
+	        		case "flv":
+	        			moduleLoader.url="../../module/FlvPlayerModule.swf";
+	        			break;
+	        	}
+			}
+			
+			private function ready(evt:ModuleEvent):void
+			{			
+				switch(type)
+	        	{        		
+	        		case "flash":
+	        			SwfPlayerModule(moduleLoader.child).callLater(SwfPlayerModule(moduleLoader.child).load,[path]);
+	        			break;        		
+	        		case "image":
+						ImagePlayerModule(moduleLoader.child).callLater(ImagePlayerModule(moduleLoader.child).load,[path]);
+						break;
+	        		case "flv":
+						FlvPlayerModule(moduleLoader.child).callLater(FlvPlayerModule(moduleLoader.child).load,[path]);
+						break;
+	        	}      
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
