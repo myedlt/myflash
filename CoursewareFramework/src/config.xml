@@ -30,7 +30,7 @@
 			<section id="sec01" name="第一节 动画" type="flash" hasContrlBar="true" path="assets/course/chapter01/unit01.swf"/>			
 			<section id="sec02" name="第二节 图片" type="image" path="assets/course/chapter01/unit02.jpg"/>
 			<section id="sec03" name="第三节 相册" type="image" path="assets/course/chapter01/unit03.xml"/>	
-			<section id="sec04" name="第四节 视频" type="flv" path="assets/course/chapter01/unit04.flv"/>										
+			<section id="sec04" name="第四节 视频" type="flv" path="scorm/unit04.flv"/>										
 		</chapter>	
 		<chapter id="cha02" name="第二章 测试题" type="flash" hasContrlBar="false" path="assets/course/chapter02.swf"/>		
 	</course>	
