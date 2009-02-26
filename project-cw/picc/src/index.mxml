@@ -340,7 +340,10 @@
   					PopUpManager.removePopUp(noteManage);
   					isPopup=false; 
   					if(!stoped)mc.play();
-  				}								
+  				}
+  				//防止用户点击频率过快造成页面死掉
+				evt.target.removeEventListener(MouseEvent.CLICK,onMenuClick);
+				setTimeout(function():void{evt.target.addEventListener(MouseEvent.CLICK,onMenuClick);},500);								
 			}
 			
 			/* private function onBtnFocusIn(evt:FocusEvent):void

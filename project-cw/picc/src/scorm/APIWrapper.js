@@ -467,7 +467,7 @@ function getAPI()
    {
       //alert("Unable to find an API adapter");
    }
-   return theAPI
+   return theAPI;
 }
 
 
