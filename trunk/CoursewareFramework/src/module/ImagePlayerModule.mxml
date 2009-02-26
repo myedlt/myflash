@@ -24,6 +24,7 @@
 				}else{
 					if(boxImgCtrl.visible==true)boxImgCtrl.visible=false;
 					image.source=url;
+					dispatchEvent(new Event("imageComplete",true));
 				}
 			}			
 			
@@ -61,6 +62,10 @@
 				{
 					index++;
 					image.source=images[index].toString();
+					if(index==images.length()-1)
+					{
+						dispatchEvent(new Event("imageComplete",true));
+					}
 				}
 			}
 			

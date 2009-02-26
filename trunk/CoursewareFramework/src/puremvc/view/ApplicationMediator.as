@@ -5,6 +5,7 @@ package puremvc.view
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.utils.setTimeout;
 	
 	import module.FlvPlayerModule;
 	import module.ImagePlayerModule;
@@ -50,6 +51,7 @@ package puremvc.view
 		{
 			try
 			{
+				app.mainLoader.visible=true;
 				mainApp=MovieClip(app.mainLoader.content);
 				mainApp.addEventListener("nextPage",nextPage);
 				mainApp.addEventListener("prevPage",prevPage);
@@ -58,19 +60,25 @@ package puremvc.view
 				//mainApp.addEventListener("pause",pause);
 				//mainApp.addEventListener("stop",stop);
 				//mainApp.addEventListener("volumeOpen",volumeOpen);
-				//mainApp.addEventListener("volumeClose",volumeClose);
+				//mainApp.addEventListener("volumeClose",volumeClose);				
+				setTimeout(adjust,200);//解决播放器页面显示错位问题
 				
-				var point:Point=new Point(config.layout.player.@x,config.layout.player.@y);	
-				player.x=app.mainLoader.localToGlobal(point).x;
-				player.y=app.mainLoader.localToGlobal(point).y;
-				player.width=config.layout.player.@width;
-				player.height=config.layout.player.@height;
 			}
 			catch(e:Error)
 			{													
 				trace("SWF文件转换成MovieClip对象时出错,可能与flash发布版本有关.");				
 			}						
 		} 
+		
+		public function adjust():void
+		{
+			var point:Point=new Point(config.layout.player.@x,config.layout.player.@y);	
+			player.x=app.mainLoader.localToGlobal(point).x;
+			player.y=app.mainLoader.localToGlobal(point).y;
+			player.width=config.layout.player.@width;
+			player.height=config.layout.player.@height;
+			player.visible=true;
+		}
 		
 		public function exit(event:Event):void
 		{

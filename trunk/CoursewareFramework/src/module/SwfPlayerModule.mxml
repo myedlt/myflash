@@ -79,6 +79,7 @@
 					{
 						progressBoard.pauseState();
 						stoped=true;
+						dispatchEvent(new Event("swfComplete",true));//flash播放完毕,通知外部处理(scorm).
 					}				
 				}
 			}		
