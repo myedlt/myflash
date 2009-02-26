@@ -49,7 +49,7 @@
 			
 			private function progressUpdate(evt:VideoEvent):void
 			{
-				progressBoard.sldCtrlProgress.value=evt.playheadTime;			
+				progressBoard.sldCtrlProgress.value=evt.playheadTime;					
 			}		
 			
 			private function progressChange(evt:SliderEvent):void
@@ -92,6 +92,7 @@
 			public function playComplete(evt:VideoEvent):void
 			{
 				progressBoard.pauseState();
+				dispatchEvent(new Event("flvComplete",true));//flv播放完毕,通知外部处理(scorm).
 			}	
 			
 			//进度条 播放时间提示格式化

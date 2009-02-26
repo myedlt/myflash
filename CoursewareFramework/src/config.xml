@@ -16,7 +16,9 @@
 <content>
 	<!-- 界面参数 -->		
 	<layout>
-		<main width="799" height="550" path="main.swf"/>
+		<!-- <main width="800" height="550" path="main1.swf"/> -->
+		<main width="799" height="550" path="main2.swf"/>
+		<!-- <player x="0" y="85" width="800" height="392"/> -->
 		<player x="132" y="100" width="653" height="386"/>
 	</layout>
 	<!-- 页面导航 -->	

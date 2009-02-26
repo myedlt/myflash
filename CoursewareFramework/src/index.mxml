@@ -4,10 +4,10 @@
 		<mx:State name="beginning"/>
 		<mx:State name="main">
 			<mx:AddChild position="lastChild">
-				<mx:SWFLoader id="mainLoader" width="100%" height="100%" scaleContent="true" horizontalAlign="center" verticalAlign="middle" horizontalCenter="0" verticalCenter="0"/>
+				<mx:SWFLoader id="mainLoader" scaleContent="true" horizontalAlign="center" verticalAlign="middle" horizontalCenter="0" verticalCenter="0" visible="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<custom:ModuleLoaderComponent id="mainPlayer" x="138" y="86" width="652" height="389"/>
+				<custom:ModuleLoaderComponent id="mainPlayer" visible="false"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="fullscreen" basedOn="main"/>

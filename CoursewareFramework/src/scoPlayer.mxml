@@ -4,6 +4,7 @@
 	<custom:ModuleLoaderComponent id="moduleLoader" width="100%" height="100%" horizontalCenter="0" verticalCenter="0"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import module.FlvPlayerModule;
 			import module.ImagePlayerModule;
 			import module.SwfPlayerModule;
@@ -37,14 +38,35 @@
 	        	{        		
 	        		case "flash":
 	        			SwfPlayerModule(moduleLoader.child).callLater(SwfPlayerModule(moduleLoader.child).load,[path]);
+	        			moduleLoader.child.addEventListener("swfComplete",playComplete);
 	        			break;        		
 	        		case "image":
 						ImagePlayerModule(moduleLoader.child).callLater(ImagePlayerModule(moduleLoader.child).load,[path]);
+						moduleLoader.child.addEventListener("imageComplete",playComplete);
 						break;
 	        		case "flv":
 						FlvPlayerModule(moduleLoader.child).callLater(FlvPlayerModule(moduleLoader.child).load,[path]);
+						moduleLoader.child.addEventListener("flvComplete",playComplete);
 						break;
 	        	}      
+			}
+			public function playComplete(event:Event):void
+			{
+				if(ExternalInterface.available)
+				{
+                	try
+					{	
+						ExternalInterface.call("unloadPage","completed");
+					}
+					catch(error:SecurityError)
+					{
+						//Alert.show("访问外部javascript时出错,存在安全沙箱问题!","错误提示");
+					}
+           	 	}
+           	 	else
+           	 	{
+           	 		//Alert.show("访问外部javascript的ExternalInterface(外部接口)不可用,该容器不支持!");
+           	 	}
 			}
 		]]>
 	</mx:Script>
