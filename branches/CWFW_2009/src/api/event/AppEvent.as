@@ -1,8 +1,8 @@
-package api.event
+﻿package api.event
 {
-	import mx.events.FlexEvent;
+	import flash.events.Event;
 	
-	public class AppEvent extends FlexEvent
+	public class AppEvent extends Event
 	{
 		/* UI 自定义事件	*/
 		public static const CE_CHAPTERCHANGED:String 	= "onChapterChanged";

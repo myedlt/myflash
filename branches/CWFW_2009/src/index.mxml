@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
 	creationComplete="initApp()">
-	<mx:SWFLoader id="main" x="0" y="0" width="800" height="600" source="MainFlex.swf" autoLoad="true"/>
+	<mx:SWFLoader id="mainSWFLoader" x="0" y="0" width="800" height="600" source="MainFlash.swf" autoLoad="true"/>
 	<mx:Script>
 		<![CDATA[
 			
 			// 监听contin、exit事件，加载mainFlex并激活AppliationFacade
 			// 监听main.swf的exit事件
 			// exit事件后加载播放end.swf
-			import puremvc.ApplicationFacade;					
-			private var facade:ApplicationFacade;		
-		
+			import puremvc.ApplicationFacade;
+							
+			private var facade:ApplicationFacade;	
+			private var mainViewType:String = "Flex";
+			
 			private function initApp():void
 			{
 				// 读配置文件config.xml;获得片头、片尾和主界面swf文件
@@ -24,8 +26,18 @@
 			}
 			
 			private function initPureMVC():void{
+				var app:Object;
+				if(mainSWFLoader.source == "MainFlex.swf")
+				{
+					app = Object(mainSWFLoader.content).application;
+				}
+				else if (mainSWFLoader.source == "MainFlash.swf")
+				{
+					app = MovieClip(mainSWFLoader.content);
+				}
+					
 				facade = ApplicationFacade.getInstance();
-				facade.startup(Object(main.content).application);
+				facade.startup(app);
 			}
 		]]>
 	</mx:Script>
