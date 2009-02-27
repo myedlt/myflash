@@ -1,34 +1,137 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="SingleCourseManifest" version="1.1" xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd                               http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd                               http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
-  <organizations default="PICC">
-    <organization identifier="PICC">
-      <title>人保财险销售团队管理课程</title>
-      <item identifier="XSTDGL" identifierref="RS_SCO" isvisible="true">
+  <organizations default="EDLT">
+    <organization identifier="EDLT">
+      <title>中国人保财险培训课程系列</title>
+      <item identifier="chapter01" isvisible="true">
         <title>销售团队管理</title>
-      </item>          
-      <!--<metadata>
-            <schema>ADL SCORM</schema>
-            <schemaversion>1.2</schemaversion>
-            <adlcp:location>scorm/course.xml</adlcp:location>
-         </metadata>-->
+        <item identifier="section01" identifierref="RS_SCO_01" isvisible="true">
+          <title>第一节</title>
+        </item> 
+        <item identifier="section02" identifierref="RS_SCO_02" isvisible="true">
+          <title>第二节</title>
+        </item> 
+        <item identifier="section03" identifierref="RS_SCO_03" isvisible="true">
+          <title>第三节</title>
+        </item> 
+        <item identifier="section04" identifierref="RS_SCO_04" isvisible="true">
+          <title>第四节</title>
+        </item>
+        <item identifier="section05" identifierref="RS_SCO_05" isvisible="true">
+          <title>第五节</title>
+        </item> 
+        <item identifier="section06" identifierref="RS_SCO_06" isvisible="true">
+          <title>第六节</title>
+        </item> 
+        <item identifier="section07" identifierref="RS_SCO_07" isvisible="true">
+          <title>第七节</title>
+        </item> 
+        <item identifier="section08" identifierref="RS_SCO_08" isvisible="true">
+          <title>第八节</title>
+        </item>  
+      </item>      
     </organization>
   </organizations>
   <resources>
-    <resource identifier="RS_SCO" type="webcontent" adlcp:scormtype="sco" href="index.html">
+    <resource identifier="RS_SCO_01" type="webcontent" adlcp:scormtype="sco" href="sco01.html">
       <metadata>
         <schema>ADL SCORM</schema>
         <schemaversion>1.2</schemaversion>
-        <adlcp:location>scorm/index.xml</adlcp:location>
+        <adlcp:location>sco01.xml</adlcp:location>
       </metadata>
-      <file href="index.html" />
+      <file href="sco01.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_02" type="webcontent" adlcp:scormtype="sco" href="sco02.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco02.xml</adlcp:location>
+      </metadata>
+      <file href="sco02.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_03" type="webcontent" adlcp:scormtype="sco" href="sco03.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco03.xml</adlcp:location>
+      </metadata>
+      <file href="sco03.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_04" type="webcontent" adlcp:scormtype="sco" href="sco04.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco04.xml</adlcp:location>
+      </metadata>
+      <file href="sco04.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_05" type="webcontent" adlcp:scormtype="sco" href="sco05.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco05.xml</adlcp:location>
+      </metadata>
+      <file href="sco05.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_06" type="webcontent" adlcp:scormtype="sco" href="sco06.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco06.xml</adlcp:location>
+      </metadata>
+      <file href="sco06.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_07" type="webcontent" adlcp:scormtype="sco" href="sco07.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco07.xml</adlcp:location>
+      </metadata>
+      <file href="sco07.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />
+      <dependency identifierref="RS_WEB_NOTE" />
+    </resource>
+    <resource identifier="RS_SCO_08" type="webcontent" adlcp:scormtype="sco" href="sco08.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>sco08.xml</adlcp:location>
+      </metadata>
+      <file href="sco08.html" />
       <dependency identifierref="RS_THIS" />
       <dependency identifierref="RS_HISTORY" />
       <dependency identifierref="RS_SCRIPT" />
       <dependency identifierref="RS_WEB_NOTE" />
     </resource>
     <resource identifier="RS_THIS" adlcp:scormtype="asset" type="webcontent" xml:base="">
-      <file href="AC_OETags.js" />      
-      <file href="index.swf" />
+      <file href="AC_OETags.js" /> 
+      <file href="scoPlayer.swf" />      
       <file href="playerProductInstall.swf" />
     </resource>
     <resource identifier="RS_HISTORY" adlcp:scormtype="asset" type="webcontent" xml:base="history">
@@ -36,13 +139,13 @@
       <file href="history.js" />
       <file href="historyFrame.html" />
     </resource>
-    <resource identifier="RS_SCRIPT" adlcp:scormtype="asset" type="webcontent" xml:base="scorm">
+    <resource identifier="RS_SCRIPT" adlcp:scormtype="asset" type="webcontent" xml:base="scoAPI">
       <file href="SCOFunctions.js" />
       <file href="APIWrapper.js" />
-    </resource>
+    </resource> 
     <resource identifier="RS_WEB_NOTE" type="webcontent" adlcp:scormtype="asset" xml:base="web/note">
       <file href="saveNote.js" />
-    </resource>
+    </resource>  
   </resources>
 </manifest>
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="654" height="466">
+	<mx:SWFLoader id="mapLoader" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" source="flashes/knowledgeMap4.swf" scaleContent="true" autoLoad="true" complete="loadComplete()"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			private var app:Object=null;		
+			
+			public function setApp(app:Object):void
+			{
+				this.app=app;
+			}
+			private function loadComplete():void
+			{				
+				mapLoader.content.addEventListener("mapClose",onClose);
+			}
+			private function onClose(evt:Event):void
+			{
+				PopUpManager.removePopUp(this);	
+				if(app!=null)
+				{
+					app.isPopup1=false;	
+					if(!parentApplication.stoped)parentApplication.mc.play();
+				}
+			}
+		]]>
+	</mx:Script>
+</mx:Canvas>
