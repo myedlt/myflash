@@ -3,7 +3,7 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:view="puremvc.view.component.*" layout="absolute" creationComplete="initApp()">
 	<mx:LinkBar id="linkBar" x="512" y="10" width="278" height="26" />
-	<mx:HBox width="583" height="30" verticalAlign="middle" horizontalGap="3" x="207" y="60">
+	<mx:HBox width="583" height="30" verticalAlign="middle" horizontalGap="3" x="207" y="60" borderStyle="solid">
 		<mx:Spacer width="6"/>
 		<mx:Label text="当前章" id="txtChapter"/>
 		<mx:Label text="&gt;" width="18" fontWeight="bold" textAlign="center" id="arrowFlag"/>
@@ -18,9 +18,9 @@
 	</mx:Tree>
 	<mx:ArrayCollection id="dpcourse">	</mx:ArrayCollection>
 
-	<view:ModuleLoaderComponent id="moduleLoader" x="207" y="98" width="583" height="419" borderStyle="solid"/>
+	<mx:SWFLoader x="207" y="98" width="583.9394" height="419.39392" id="contentSWFLoader"/>
 
-	<mx:HBox width="583" height="49" creationComplete="initCtrlPanel()" horizontalAlign="center" verticalAlign="middle" horizontalGap="10" y="525" x="207">
+	<mx:HBox width="583" height="49" creationComplete="initCtrlPanel()" horizontalAlign="center" verticalAlign="middle" horizontalGap="10" y="525" x="207" borderStyle="solid">
 		<mx:Spacer width="10"/>
 		<mx:Button id="btnPrevSection"/>
 		<mx:Button x="93" y="41" id="btnNextSection"/>
@@ -33,6 +33,7 @@
 					import flash.media.SoundMixer;
 					import flash.media.SoundTransform;
 					import mx.events.SliderEvent;
+					
 					private var soundTrans:SoundTransform=SoundMixer.soundTransform;
 					
 					private function initCtrlPanel():void
@@ -94,46 +95,49 @@
 	</mx:HBox>
 	<mx:Script >
 		<![CDATA[
+			import puremvc.model.vo.ChapterVO;
 			import puremvc.model.vo.SectionVO;
 			/*
 			 * 	外部接口相关代码，initApp由应用初始调用：creationComplete="initApp()"
 			 */
 			import mx.events.*;
+			import mx.managers.SystemManager;
 			
 			import puremvc.model.vo.CourseVO;
 			import api.event.AppEvent;
 			
+			private var playerType:String;
+			private var playerUrl:String;
+			
 			private function initApp():void
 			{
 				//linkBar.addEventListener(ItemClickEvent.ITEM_CLICK, handleEvent);
-				treeContents.addEventListener(ListEvent.ITEM_CLICK,				onSectionChanged);
+				treeContents.addEventListener(ListEvent.ITEM_CLICK,	onSectionChanged);
 				btnPrevSection.addEventListener(MouseEvent.CLICK,	onPrevSection);
 				btnNextSection.addEventListener(MouseEvent.CLICK,	onNextSection);					
 
 			}
 			
 
-	        public function initContent(content:XMLList):void{
+	        public function initContent(content:CourseVO):void{
 				//treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
 				//treeContents.callLater(expandAllNode);//初始展开所有节点	
 				
 				// 1. 目录树
+				var chapters:Array = content.getChapterAll();
 	        	treeContents.labelField="name";
 
-				var itemchapter:XML;
-	        	for each(itemchapter in content) {
-	        		var children:ArrayCollection = new ArrayCollection();
-					var itemsection:XML;
-					var sectionlist:XMLList = itemchapter.sections;
-						children.addItem({"name":"测试","type":"ceshi"});
-						children.addItem({"name":"测试","type":"ceshi"});
-					for each(itemsection in sectionlist) {
-						//children.addItem({"name":itemsection.@name.toString(),"type":itemsection.@type.toString()});
-						children.addItem({"name":"测试","type":"ceshi"});
+	        	for each(var chapter:ChapterVO in chapters) {
+	        		// DataProvider 添加章时需要的子项目数组集合
+	        		var childrenSections:ArrayCollection = new ArrayCollection();
+	        		
+	        		// 提取当前操作章的节列表，填入children备用
+					for each(var section:SectionVO in chapter.sections) {
+						childrenSections.addItem({"name":section.name,"type":section.type,"url":section.path});
 					}
 	        		
 					treeContents.dataProvider.addItem(
-						{	"name":itemchapter.@name.toString(),"children":children });
+						{	"name":chapter.name,"children":childrenSections });
 					
 	        	}
 	        	
@@ -143,7 +147,7 @@
 	        			
 	        }
 	        
-	        private function refreshUI():void
+	        public function refreshUI():void
 	        {
 	        	//txtChapter,arrowFlag,txtSection
 	        	
@@ -167,10 +171,45 @@
 				dispatchEvent(new AppEvent(AppEvent.CE_NEXTSECTION, "") );
 			}
 			
-			private function playSection(section:SectionVO):void
+			public function playSection(section:Object):void
 			{
 				// 根据节的类型选择模块；根据节的url播放内容
+				playerType = section.type;
+				playerUrl = section.url; 
 				
+				// 解决切换播放内容后，遗留的背景声音
+				flash.media.SoundMixer.stopAll();
+				
+				switch(playerType)
+	        	{        		
+	        		case "flash":
+	        			contentSWFLoader.addEventListener(Event.COMPLETE ,onPlayerLoaded);
+	        			contentSWFLoader.load("SWFPlayer.swf");
+	        			break;        		
+	        		case "image":
+	        			contentSWFLoader.addEventListener(Event.COMPLETE ,onPlayerLoaded);
+	        			contentSWFLoader.load("ImagePlayer.swf");
+	        			break;
+	        		case "flv":
+	        			contentSWFLoader.addEventListener(Event.COMPLETE ,onPlayerLoaded);
+	        			contentSWFLoader.load("FLVPlayer.swf");
+	        			break;
+	        	}      
+			}
+			
+			private function onPlayerLoaded(evt:Event):void
+			{
+				contentSWFLoader.removeEventListener(Event.COMPLETE, onPlayerLoaded);
+				var sysMgr:SystemManager = contentSWFLoader.content as SystemManager;
+				sysMgr.addEventListener(FlexEvent.APPLICATION_COMPLETE, onPlayerAppComplete);
+				
+			}
+			
+			private function onPlayerAppComplete(evt:FlexEvent):void
+			{
+				var sysMgr:SystemManager = contentSWFLoader.content as SystemManager;
+
+				Object(sysMgr.application).loadXML(playerUrl);
 			}
 		]]>
 	</mx:Script>

@@ -4,11 +4,65 @@ package puremvc.business
 	import puremvc.model.vo.CourseVO;
 	import puremvc.model.vo.LectureVO;
 	import puremvc.model.vo.SectionVO;
-	//xml->object 一门课程包括讲师和章,章中包括节
-	public class XmlResource
+	
+	/**
+	 * 
+	 * @author huhj
+	 * 	1、xml转换为值对象，用于前端界面使用；
+	 * 	2、值对象转换为xml，用于保存xml文件；
+	 * 
+	 *  注：数据库取值也许可以先转换为xml文件。
+	 * 
+	 */
+	public class DataUtil
 	{
+		// 通过传入的XML(即content.xml)获得CourseVO
+		static public function parseCourse(coXml:XML):CourseVO
+		{
+
+			var co:CourseVO = new CourseVO();						
+
+			// 1、课程概要信息
+			var course:XML = XML(coXml.CourseList.Course);
+			co.name 	= (course.hasOwnProperty("@name"))?course.@name:"";
+			co.title 	= (course.hasOwnProperty("@title"))?course.@title:"";
+			co.startSWF = (course.hasOwnProperty("@startSWF"))?course.@startSWF:"";
+			co.endSWF 	= (course.hasOwnProperty("@endSWF"))?course.@endSWF:"";
+			
+			// 2、讲师
+			var lecture:XML = XML(coXml.CourseList.Course.Lecture);			
+			if(lecture)
+			{	
+				co.lecture=parseLecture(lecture);
+			}
+			
+			// 3、功能链接
+			
+			// 4、章
+			var chapters:Array = new Array();
+			var chapterList:XMLList = XMLList(coXml..Chapter);
+			for each(var chapterXml:XML in chapterList)
+			{								
+				chapters.push(parseChapter(chapterXml));
+			}
+			co.chapters=chapters;
+						
+			// 5、节	
+			var sections:Array = new Array();			
+			var sectionList:XMLList = XMLList(coXml..section);
+			for each(var sectionXml:XML in sectionList)
+			{								
+				sections.push(parseSection(sectionXml));
+			}
+			co.sections = sections;
+			
+			
+			return co;
+		}
+				
 		static public function parseSection(section:XML):SectionVO
-		{//节:
+		{
+			//节:
 			var sec:SectionVO=new SectionVO();
 			if(section.hasOwnProperty("@name"))
 			{
@@ -37,8 +91,14 @@ package puremvc.business
 			return sec;
 		}
 		
+		/**
+		 * 	章:
+		 * @param chapter
+		 * @return 
+		 * 
+		 */
 		static public function parseChapter(chapter:XML):ChapterVO
-		{//章:
+		{
 			var cha:ChapterVO=new ChapterVO();					
 			if(chapter.hasOwnProperty("@name"))
 			{
@@ -79,40 +139,11 @@ package puremvc.business
 			return cha;			
 		}
 		
-		static public function parseCourse(course:XML):CourseVO
-		{//课程:
-			var cou:CourseVO=new CourseVO();			
-			var chapters:Array=new Array();
-			for each(var chapter:XML in course.Chapter)
-			{								
-				chapters.push(parseChapter(chapter));
-			}
-			cou.chapters=chapters;
-			if(course.hasOwnProperty("@name"))
-			{
-				cou.name=course.@name;
-			}
-			if(course.hasOwnProperty("@title"))
-			{
-				cou.title=course.@title;
-			}	
-			if(course.hasOwnProperty("@startSWF"))
-			{
-				cou.startSWF=course.@startSWF;
-			}	
-			if(course.hasOwnProperty("@endSWF"))
-			{
-				cou.endSWF=course.@endSWF;
-			}				
-			if(course.Lecture!=undefined)
-			{	
-				cou.lecture=parseLecture(course.Lecture);
-			}
-			return cou;
-		}
+
 		
-		static public function parseLecture(lecture:XMLList):LectureVO
-		{//讲师:
+		static public function parseLecture(lecture:XML):LectureVO
+		{
+			//讲师:
 			var lec:LectureVO=new LectureVO();
 			if(lecture.name!=undefined)
 			{

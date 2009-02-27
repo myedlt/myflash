@@ -65,7 +65,7 @@ package puremvc.view
             }
         }
         
-        private function handleEvent(evt:Event):void
+        private function handleEvent(evt:AppEvent):void
         {
             switch ( evt.type ) 
 			{
@@ -73,7 +73,7 @@ package puremvc.view
 
 					break;
 				case AppEvent.CE_SECTIONCHANGED :
-					
+					viewComponent.playSection(evt.body);
 					break;
 				case AppEvent.CE_NEXTSECTION :
 					
@@ -89,8 +89,9 @@ package puremvc.view
         
         private function initUI():void{
         	// 树型目录
-        	var chapterlist:XMLList = facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;
-        	viewComponent.initContent(chapterlist);
+        	//var chapterlist:XMLList = facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;
+        	var content:Object = facade.retrieveProxy(ContentProxy.NAME).getData();
+        	viewComponent.initContent(CourseVO(content));
         	
         	// 当前位置: Navigator
         	// 学习进度：History
