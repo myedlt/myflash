@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lom xmlns="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd">
+
+   <general>
+      <title>
+         <langstring>全球金融风暴汇报</langstring>
+      </title>
+      <catalogentry>
+         <catalog>ADL Course Catalogue ID</catalog>
+         <entry>
+            <langstring>1000-01-01</langstring>
+         </entry>
+      </catalogentry>
+      <language>zh-CN</language>
+      <description>
+         <langstring>中国人民银行金融系列讲座</langstring>
+      </description>
+      <keyword>
+         <langstring>全球</langstring>
+      </keyword>
+      <keyword>
+         <langstring>金融风暴</langstring>
+      </keyword>
+      <keyword>
+         <langstring>汇报</langstring>
+      </keyword>      
+   </general>
+
+   <lifecycle>
+      <version>
+         <langstring>1.1</langstring>
+      </version>
+      <status>
+         <source>
+            <langstring xml:lang="x-none">LOMv1.0</langstring>
+         </source>
+         <value>
+            <langstring xml:lang="x-none">Final</langstring>
+         </value>
+      </status>
+      <contribute>
+         <role>
+            <source>
+               <langstring xml:lang="x-none">LOMv1.0</langstring>
+            </source>
+            <value>
+               <langstring xml:lang="x-none">Author</langstring>
+            </value>
+         </role>
+         <centity>
+            <vcard>BEGIN:vCard ORG:ADL Co-Lab END:vCard</vcard>
+         </centity>
+         <date>
+            <datetime>2009-02-09</datetime>
+         </date>
+      </contribute>
+   </lifecycle>
+
+   <metametadata>
+      <metadatascheme>ADL SCORM 1.2</metadatascheme>
+      <language>zh-CN</language>
+   </metametadata>
+
+   <technical>
+      <format>text/html</format>
+      <size>31616</size>
+      <location type="URI">../index.html</location>
+      <requirement>
+         <type>
+            <source>
+               <langstring xml:lang="x-none">LOMv1.0</langstring>
+            </source>
+            <value>
+               <langstring xml:lang="x-none">Browser</langstring>
+            </value>
+         </type>
+         <name>
+            <source>
+               <langstring xml:lang="x-none">LOMv1.0</langstring>
+            </source>
+            <value>
+               <langstring xml:lang="x-none">Microsoft Internet Explorer</langstring>
+            </value>
+         </name>
+         <minimumversion>5.0</minimumversion>
+      </requirement>
+   </technical>
+
+   <educational>
+      <learningresourcetype>
+         <source>
+            <langstring xml:lang="x-none">LOMv1.0</langstring>
+         </source>
+         <value>
+            <langstring xml:lang="x-none">Narrative Text</langstring>
+         </value>
+      </learningresourcetype>
+      <typicallearningtime>
+         <datetime>00:30:00</datetime>
+      </typicallearningtime>
+   </educational>
+
+   <rights>
+      <cost>
+         <source>
+            <langstring xml:lang="x-none">LOMv1.0</langstring>
+         </source>
+         <value>
+            <langstring xml:lang="x-none">no</langstring>
+         </value>
+      </cost>
+      <copyrightandotherrestrictions>
+         <source>
+            <langstring xml:lang="x-none">LOMv1.0</langstring>
+         </source>
+         <value>
+            <langstring xml:lang="x-none">yes</langstring>
+         </value>
+      </copyrightandotherrestrictions>
+      <description>
+         <langstring>中国人民银行培训课程系列</langstring>
+      </description>
+   </rights>
+
+   <classification>
+      <purpose>
+         <source>
+            <langstring xml:lang="x-none">LOMv1.0</langstring>
+         </source>
+         <value>
+            <langstring xml:lang="x-none">Educational Objective</langstring>
+         </value>
+      </purpose>     
+   </classification>
+
+</lom>
