@@ -174,7 +174,7 @@ function doLMSGetValue(name)
       {
          // an error was encountered so display the error description
          var errDescription = api.LMSGetErrorString(errCode);
-         alert("LMSGetValue("+name+") failed. \n"+ errDescription);
+         //alert("LMSGetValue("+name+") failed. \n"+ errDescription);
          return "";
       }
       else
@@ -285,7 +285,7 @@ function doLMSGetErrorString(errorCode)
    var api = getAPIHandle();
    if (api == null)
    {
-      alert("Unable to locate the LMS's API Implementation.\nLMSGetErrorString was not successful.");
+      //alert("Unable to locate the LMS's API Implementation.\nLMSGetErrorString was not successful.");
    }
 
    return api.LMSGetErrorString(errorCode).toString();
@@ -307,7 +307,7 @@ function doLMSGetDiagnostic(errorCode)
    var api = getAPIHandle();
    if (api == null)
    {
-      alert("Unable to locate the LMS's API Implementation.\nLMSGetDiagnostic was not successful.");
+      //alert("Unable to locate the LMS's API Implementation.\nLMSGetDiagnostic was not successful.");
    }
 
    return api.LMSGetDiagnostic(errorCode).toString();
@@ -432,7 +432,7 @@ function findAPI(win)
       // Note: 7 is an arbitrary number, but should be more than sufficient
       if (findAPITries > 7) 
       {
-         alert("Error finding API -- too deeply nested.");
+         //alert("Error finding API -- too deeply nested.");
          return null;
       }
       
@@ -467,7 +467,7 @@ function getAPI()
    {
       //alert("Unable to find an API adapter");
    }
-   return theAPI;
+   return theAPI
 }
 
 
