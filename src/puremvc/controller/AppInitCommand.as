@@ -16,7 +16,7 @@ package puremvc.controller
 			 *		CourseProxy和NavigatorProxy都从DataProxy获得数据
 			 * 
 			 */
-			facade.registerProxy(new DataProxy("content.xml"));
+			facade.registerProxy(new DataXMLProxy("content.xml"));
 			facade.registerMediator( new AppMediator(ApplicationFacade.getInstance().app) );
         }
 	}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="CWFW.mxml" version="3">
+<actionScriptProperties mainApplicationPath="index.mxml" version="3">
 <compiler additionalCompilerArguments="-locale en_US -use-network=false" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="src_puremvc"/>
@@ -11,13 +11,14 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="Main.mxml"/>
+<application path="SWFPlayer.mxml"/>
+<application path="FLVPlayer.mxml"/>
+<application path="MainFlex.mxml"/>
+<application path="ImagePlayer.mxml"/>
+<application path="Test.mxml"/>
 <application path="index.mxml"/>
+<application path="QTIPlayer.mxml"/>
 </applications>
-<modules>
-<module application="src/Main.mxml" destPath="module/SwfPlayerModule.swf" optimize="false" sourcePath="src/module/SwfPlayerModule.mxml"/>
-<module application="src/Main.mxml" destPath="module/FlvPlayerModule.swf" optimize="false" sourcePath="src/module/FlvPlayerModule.mxml"/>
-<module application="src/Main.mxml" destPath="module/ImagePlayerModule.swf" optimize="false" sourcePath="src/module/ImagePlayerModule.mxml"/>
-</modules>
+<modules/>
 <buildCSSFiles/>
 </actionScriptProperties>

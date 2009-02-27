@@ -2,24 +2,28 @@ package puremvc.model
 {	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;		
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
 	import puremvc.ApplicationFacade;
-	import puremvc.business.LoadXMLDelegate;
+
 	//数据初始化(加载xml数据文件),数据加载完毕发送INITIALIZE通知
-	public class DataProxy extends Proxy implements IProxy
+	public class DataXMLProxy extends Proxy implements IProxy
 	{
-		public static const NAME:String = "DataProxy";		
+		public static const NAME:String = "DataXMLProxy";		
 		
-		public function DataProxy(data:String = "content.xml") 
+		public function DataXMLProxy(url:String = "content.xml") 
 		{
-			super( NAME );			
-			var delegate : LoadXMLDelegate = new LoadXMLDelegate(data);
-			delegate.loader.addEventListener(Event.COMPLETE,result);
-			delegate.loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
-			delegate.load();
+			super( NAME );
+			
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE,result);
+			loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
+
+			loader.load(new URLRequest(url));	
 		}			
 		
 		public function result(evt:Event):void

@@ -7,26 +7,15 @@ package puremvc
 	public class ApplicationFacade extends Facade
 	{
 		public var app:Object;
+		
 		// Notification name constants
+		//AppMediator
+		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
+		public static const INITUI:String="initui";
 						
 		//command - 系统启动消息组
-		public static const INIT:String = "initialize";	
+		public static const INIT:String = "initialize";
 		public static const STARTUP:String="startup";
-
-		//command - 用户交互消息组
-		public static const CHAPTER_CHANGE:String = "chapterChange";
-		public static const SECTION_CHANGE:String = "sectionChange";			
-		public static const SINGLE_CHAPTER:String="singleChapter";
-		
-		//mediator
-		public static const INITUI:String="initui";
-		public static const PREVIOUS_SECTION:String="previousSection";
-		public static const NEXT_SECTION:String="nextSection";
-		public static const CONTENTS_ITEM_CLICK:String="contentsItemClick";				
-		
-		// proxy
-		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
-		public static const DATA_PREPARE:String = "dataPrepare";	
 		
 		//common messages
 		public static const ERROR_LOAD_FILE:String	= "加载文件失败!";
