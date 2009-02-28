@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Sections><!-- 路径必须以"../"开头 -->
+	<section label="学习目标" data="../../courses/unit08/unit08_01.swf"/>
+	<section label="“施乐”的改变" data="../../courses/unit08/unit08_02.swf"/>
+	<section label="团队管理系统" data="../../courses/unit08/unit08_03.swf"/>
+	<section label="知识小结" data="../../courses/unit08/unit08_04.swf"/>
+	<section label="结束页" data="../../courses/unit08/unit08_05.swf"/>
+</Sections>

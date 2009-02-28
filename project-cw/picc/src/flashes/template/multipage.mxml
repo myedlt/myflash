@@ -103,12 +103,14 @@
 			public function zhongCengLingDao(evt:Event):void
 			{
 				xmlUrl="courses/unit05/unit05_03.xml";
+				app.toWhere="zhongcenglingdao";
 				init();
 			}	
 			
 			public function gaoCengLingDao(evt:Event):void
 			{
 				xmlUrl="courses/unit05/unit05_04.xml";
+				app.toWhere="gaocenglingdao";
 				init();
 			}
 			//可供外部程序调用

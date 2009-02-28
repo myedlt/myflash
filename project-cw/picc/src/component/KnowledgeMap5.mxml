@@ -3,6 +3,8 @@
 	<mx:SWFLoader id="mapLoader" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" source="flashes/knowledgeMap5.swf" scaleContent="true" autoLoad="true" complete="loadComplete()"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
+			import mx.controls.ComboBox;
 			import mx.managers.PopUpManager;
 			import mx.controls.Alert;
 			private var app:Object=null;		
@@ -14,8 +16,40 @@
 			private function loadComplete():void
 			{				
 				mapLoader.content.addEventListener("mapClose",onClose);
+				mapLoader.content.addEventListener("1",gotoPage);
+				mapLoader.content.addEventListener("2",gotoPage);
+				mapLoader.content.addEventListener("3",gotoPage);
+				mapLoader.content.addEventListener("4",gotoPage);
 			}
-			private function onClose(evt:Event):void
+			private function gotoPage(evt:Event):void
+			{
+				onClose();
+				switch(evt.type)
+				{
+					case "1": 
+						app.currButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						break;
+					case "2": 
+						if(ComboBox(app.gotoComb).dataProvider.length<=3)
+						{
+							ComboBox(app.gotoComb).selectedIndex=1;
+							ComboBox(app.gotoComb).dispatchEvent(new ListEvent(ListEvent.CHANGE));
+						}
+						else
+						{
+							app.jump=true;
+							app.currButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK));							
+						}
+						break;
+					case "3": 
+						app.app.mc.dispatchEvent(new Event("zhongcenglingdao"));
+						break;
+					case "4": 
+						app.app.mc.dispatchEvent(new Event("gaocenglingdao"));
+						break;
+				}
+			}
+			private function onClose(evt:Event=null):void
 			{
 				PopUpManager.removePopUp(this);	
 				if(app!=null)

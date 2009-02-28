@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Sections><!-- 路径必须以"../"开头 -->
+	<section label="学习目标" data="../../courses/unit07/unit07_01.swf"/>
+	<section label="惠普公司的内部环境" data="../../courses/unit07/unit07_02.swf"/>
+	<section label="办公环境" data="../../courses/unit07/unit07_03.swf"/>
+	<section label="人文环境" data="../../courses/unit07/unit07_04.swf"/>
+	<section label="知识小结" data="../../courses/unit07/unit07_05.swf"/>
+	<section label="参考资料" data="../../courses/unit07/unit07_06.swf"/>
+	<section label="结束页" data="../../courses/unit07/unit07_07.swf"/>
+</Sections>
