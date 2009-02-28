@@ -5,34 +5,64 @@
       <title>中国人保财险培训课程系列</title>
       <item identifier="chapter01" isvisible="true">
         <title>销售团队管理</title>
+        <item identifier="header" identifierref="RS_SCO_header" isvisible="true">
+          <title>片头简介</title>
+        </item>
+        <item identifier="movie" identifierref="RS_SCO_movie" isvisible="true">
+          <title>开篇动画</title>
+        </item>
         <item identifier="section01" identifierref="RS_SCO_01" isvisible="true">
-          <title>第一节</title>
+          <title>共同的目标</title>
         </item> 
         <item identifier="section02" identifierref="RS_SCO_02" isvisible="true">
-          <title>第二节</title>
+          <title>科学的架构</title>
         </item> 
         <item identifier="section03" identifierref="RS_SCO_03" isvisible="true">
-          <title>第三节</title>
+          <title>独特的文化</title>
         </item> 
         <item identifier="section04" identifierref="RS_SCO_04" isvisible="true">
-          <title>第四节</title>
+          <title>完善的制度</title>
         </item>
         <item identifier="section05" identifierref="RS_SCO_05" isvisible="true">
-          <title>第五节</title>
+          <title>恰当的领导</title>
         </item> 
         <item identifier="section06" identifierref="RS_SCO_06" isvisible="true">
-          <title>第六节</title>
+          <title>外部的支持</title>
         </item> 
         <item identifier="section07" identifierref="RS_SCO_07" isvisible="true">
-          <title>第七节</title>
+          <title>良好的内部环境</title>
         </item> 
         <item identifier="section08" identifierref="RS_SCO_08" isvisible="true">
-          <title>第八节</title>
+          <title>科学的管理系统</title>
         </item>  
       </item>      
     </organization>
   </organizations>
   <resources>
+    <resource identifier="RS_SCO_header" type="webcontent" adlcp:scormtype="sco" href="header.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>header.xml</adlcp:location>
+      </metadata>
+      <file href="header.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_FLASH" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />      
+    </resource>
+    <resource identifier="RS_SCO_movie" type="webcontent" adlcp:scormtype="sco" href="movie.html">
+      <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <adlcp:location>movie.xml</adlcp:location>
+      </metadata>
+      <file href="movie.html" />
+      <dependency identifierref="RS_THIS" />
+      <dependency identifierref="RS_FLASH" />
+      <dependency identifierref="RS_HISTORY" />
+      <dependency identifierref="RS_SCRIPT" />      
+    </resource>
     <resource identifier="RS_SCO_01" type="webcontent" adlcp:scormtype="sco" href="sco01.html">
       <metadata>
         <schema>ADL SCORM</schema>
@@ -130,9 +160,13 @@
       <dependency identifierref="RS_WEB_NOTE" />
     </resource>
     <resource identifier="RS_THIS" adlcp:scormtype="asset" type="webcontent" xml:base="">
-      <file href="AC_OETags.js" /> 
+      <file href="AC_OETags.js" />      
       <file href="scoPlayer.swf" />      
       <file href="playerProductInstall.swf" />
+    </resource>
+    <resource identifier="RS_FLASH" adlcp:scormtype="asset" type="webcontent" xml:base="flashes">         
+      <file href="header.swf" /> 
+      <file href="begin.swf" />      
     </resource>
     <resource identifier="RS_HISTORY" adlcp:scormtype="asset" type="webcontent" xml:base="history">
       <file href="history.css" />
