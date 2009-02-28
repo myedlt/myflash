@@ -3,6 +3,8 @@
 	<mx:SWFLoader id="mapLoader" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" source="flashes/knowledgeMap3.swf" scaleContent="true" autoLoad="true" complete="loadComplete()"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
+			import mx.controls.ComboBox;
 			import mx.managers.PopUpManager;
 			import mx.controls.Alert;
 			private var app:Object=null;		
@@ -14,8 +16,33 @@
 			private function loadComplete():void
 			{				
 				mapLoader.content.addEventListener("mapClose",onClose);
+				mapLoader.content.addEventListener("1",gotoPage);
+				mapLoader.content.addEventListener("2",gotoPage);
+				mapLoader.content.addEventListener("3",gotoPage);
+				mapLoader.content.addEventListener("4",gotoPage);
+				mapLoader.content.addEventListener("5",gotoPage);
+				mapLoader.content.addEventListener("6",gotoPage);
 			}
-			private function onClose(evt:Event):void
+			private function gotoPage(evt:Event):void
+			{
+				onClose();
+				if(evt.type=="5")
+				{
+					ComboBox(app.gotoComb).selectedIndex=7;
+					ComboBox(app.gotoComb).dispatchEvent(new ListEvent(ListEvent.CHANGE));
+				}
+				else if(evt.type=="6")
+				{
+					ComboBox(app.gotoComb).selectedIndex=8;
+					ComboBox(app.gotoComb).dispatchEvent(new ListEvent(ListEvent.CHANGE));
+				}
+				else
+				{
+					ComboBox(app.gotoComb).selectedIndex=Number(evt.type)-1;
+					ComboBox(app.gotoComb).dispatchEvent(new ListEvent(ListEvent.CHANGE));
+				}				
+			}
+			private function onClose(evt:Event=null):void
 			{
 				PopUpManager.removePopUp(this);	
 				if(app!=null)

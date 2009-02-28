@@ -60,6 +60,8 @@
 			
 			[Embed(source="skin/btnFocus.swf",symbol="Button_focusSkin")]
 			private var focusSkin:Class;
+			[Embed(source="skin/skin.swf",symbol="Button_downSkin")]
+			private var overSkin:Class;
 			/* [Embed(source="skin/btnFocus.swf",symbol="Button_upSkin")]
 			private var upSkin:Class;
 			[Embed(source="skin/skin.swf",symbol="Button_ksh_disabledSkin")]
@@ -86,7 +88,7 @@
 			private var menuItemArray2:ArrayCollection;//多页 
 			private var soundTrans:SoundTransform=SoundMixer.soundTransform;			
 			private var xml:String;
-			private var app:Object;
+			public var app:Object;
 			private var lso:SharedObject,so:SharedObject;
 			private var isContinue:Boolean;
 			private var lastCourseInfo:Object=new Object();			
@@ -100,6 +102,9 @@
 			private var pressing:Boolean;	
 			private var gotoLast:Boolean;
 			private var readedCourseInfo:Array=new Array();				
+			public var currButton:Button;
+			public var jump:Boolean;
+			public var toWhere:String;
 			
 			private function appInit():void
 			{
@@ -139,7 +144,7 @@
 					var btn:Button=new Button();
 					btn.width=41;
 					btn.height=41;	
-					btn.styleName="menuButton";							
+					btn.styleName="scoMenuButton";							
 					btn.label=item.@label;	
 					var fullName:String;
 					if(item.@fullName==null||item.@fullName.length==0)
@@ -168,6 +173,7 @@
 					GridItem(GridRow(gridMenu.getChildAt(row-1)).getChildAt(col-1)).addChild(btn);
 					menuItemArray1.addItem({count:++count,button:btn});
 				}
+				currButton=menuItemArray1[currChapterNum-1].button;
 				for each(var btnItem:XML in content.EffectButton.button)
 				{
 					var img:Image=new Image();
@@ -185,7 +191,7 @@
 				if(lso==null)
 				{
 					//Alert.show("无法创建或获取本地共享对象!","Error");
-					Button(menuItemArray1[currChapterNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));					
+					currButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK));					
 				}
 				else
 				{
@@ -221,7 +227,7 @@
 						{
 							isContinue=false;							
 						}										
-						Button(menuItemArray1[currChapterNum-1].button).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						currButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 					}
 					lso.data.info=lastCourseInfo;					
 				}
@@ -274,11 +280,22 @@
 						//记录课程状态					
 						for(var i:int=0;i<readedCourseInfo.length;i++)
 						{
-							if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
-							{						
-								readedCourseInfo[i].currStat=3;
-								break;											
+							if(toWhere!=null)
+							{
+								if(toWhere==readedCourseInfo[i].toWhere && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
+								{						
+									readedCourseInfo[i].currStat=3;	
+									break;																		
+								}
 							}
+							else
+							{
+								if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
+								{						
+									readedCourseInfo[i].currStat=3;	
+									break;																			
+								}
+							}														
 						}	
 					}																								
 				}
@@ -295,6 +312,7 @@
 						break;						
 					}
 				}  */
+				toWhere=null;
 				currChapterName=evt.target.data.fullName;		
 				if(evt.target.data.xml!=null)
 				{
@@ -319,6 +337,8 @@
 					lastBtn.setStyle("upSkin",upSkin);
 				}*/
 				Button(evt.target).setStyle("upSkin",focusSkin);
+				Button(evt.target).setStyle("overSkin",overSkin);
+				Button(evt.target).buttonMode=true;
 				//lastBtn=evt.target as Button;	
 				
 				/* if(isPopup1)
@@ -336,8 +356,11 @@
   				//防止用户点击频率过快造成页面死掉
 				for each(var chap:Object in menuItemArray1)
 				{
-					chap.button.buttonMode=false;
-					chap.button.removeEventListener(MouseEvent.CLICK,onMenuClick);						
+					if(chap.button!=evt.target)
+					{					
+						chap.button.buttonMode=false;
+						chap.button.removeEventListener(MouseEvent.CLICK,onMenuClick);							
+					}										
 				}				
 //				setTimeout(function():void{evt.target.addEventListener(MouseEvent.CLICK,onMenuClick);},500);								
 			}
@@ -423,7 +446,12 @@
 					app.currSectionNum=lsoInfo.currSectionNum-1;
 					app.currFrame=lsoInfo.currFrame;					
 					this.isContinue=false;					
-				}				
+				}
+				if(jump)
+				{
+					app.currSectionNum=1;
+					jump=false;
+				}								
 				app.init();				
 				this.xml=null;
 				SystemManager(evt.target).removeEventListener(FlexEvent.APPLICATION_COMPLETE,appCompleteHandler);
@@ -448,20 +476,39 @@
 				//记录课程状态
 				if(stage.displayState==StageDisplayState.NORMAL)
 				{
-					var flag:int=0;
-					for(var i:int=0;i<readedCourseInfo.length;i++)
-					{
-						if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum)
-						{						
-							flag=1;
-							break;											
+					var flag:int=0;					
+					if(toWhere!=null)
+					{												
+						for(var j:int=0;j<readedCourseInfo.length;j++)
+						{
+							if(toWhere==readedCourseInfo[j].toWhere && currSectionNum==readedCourseInfo[j].currSectionNum)
+							{						
+								flag=1;
+								break;											
+							}
 						}
+						if(flag==0)
+						{	
+							readedCourseInfo.push({toWhere:toWhere,currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
+							so.flush();
+						}						
 					}
-					if(flag==0)
-					{	
-						readedCourseInfo.push({currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
-						so.flush();
-					}		
+					else
+					{
+						for(var i:int=0;i<readedCourseInfo.length;i++)
+						{
+							if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum)
+							{						
+								flag=1;
+								break;											
+							}
+						}
+						if(flag==0)
+						{	
+							readedCourseInfo.push({currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
+							so.flush();
+						}		
+					}					
 				}
 			}
 			

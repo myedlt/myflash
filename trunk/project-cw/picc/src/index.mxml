@@ -93,6 +93,7 @@
 			private var gotoLast:Boolean;
 			private var readedCourseInfo:Array=new Array();				
 			private var total:int;
+			public var toWhere:String;
 			
 			private function appInit():void
 			{
@@ -282,11 +283,22 @@
 						//记录课程状态					
 						for(var i:int=0;i<readedCourseInfo.length;i++)
 						{
-							if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
-							{						
-								readedCourseInfo[i].currStat=3;
-								break;											
+							if(toWhere!=null)
+							{
+								if(toWhere==readedCourseInfo[i].toWhere && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
+								{						
+									readedCourseInfo[i].currStat=3;	
+									break;																		
+								}
 							}
+							else
+							{
+								if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum && readedCourseInfo[i].currStat==2)
+								{						
+									readedCourseInfo[i].currStat=3;	
+									break;																			
+								}
+							}	
 						}	
 					}																								
 				}
@@ -294,7 +306,8 @@
 			}
 			
 			private function onMenuClick(evt:MouseEvent):void
-			{	
+			{
+				toWhere=null;	
 				for each(var chap:Object in menuItemArray1)
 				{
 					if(chap.button==evt.target)
@@ -453,18 +466,37 @@
 				if(stage.displayState==StageDisplayState.NORMAL)
 				{
 					var flag:int=0;
-					for(var i:int=0;i<readedCourseInfo.length;i++)
-					{
-						if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum)
-						{						
-							flag=1;
-							break;											
+					if(toWhere!=null)
+					{												
+						for(var j:int=0;j<readedCourseInfo.length;j++)
+						{
+							if(toWhere==readedCourseInfo[j].toWhere && currSectionNum==readedCourseInfo[j].currSectionNum)
+							{						
+								flag=1;
+								break;											
+							}
 						}
+						if(flag==0)
+						{	
+							readedCourseInfo.push({toWhere:toWhere,currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
+							so.flush();
+						}						
 					}
-					if(flag==0)
-					{	
-						readedCourseInfo.push({currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
-						so.flush();
+					else
+					{
+						for(var i:int=0;i<readedCourseInfo.length;i++)
+						{
+							if(currChapterNum==readedCourseInfo[i].currChapterNum && currSectionNum==readedCourseInfo[i].currSectionNum)
+							{						
+								flag=1;
+								break;											
+							}
+						}
+						if(flag==0)
+						{	
+							readedCourseInfo.push({currChapterNum:currChapterNum,currSectionNum:currSectionNum,currStat:2});
+							so.flush();
+						}		
 					}		
 				}
 				if(readedCourseInfo.length>=total)tracingComplete();					

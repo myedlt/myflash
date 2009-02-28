@@ -49,6 +49,15 @@ Button
 	font-size:14;
 } 
 
+.scoMenuButton
+{
+	up-skin:Embed(source="skin.swf", symbol="Button_disabledSkin");
+	down-skin:Embed(source="skin.swf",symbol="Button_disabledSkin");
+	over-skin:Embed(source="skin.swf",symbol="Button_disabledSkin"); 
+	disabled-skin:Embed(source="skin.swf",symbol="Button_disabledSkin");
+	font-size:14;
+} 
+
 .button
 {	
 	up-skin:Embed(source="skin.swf",symbol="disabledSkin");
