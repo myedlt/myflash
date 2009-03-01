@@ -3,6 +3,7 @@
 <compiler additionalCompilerArguments="" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="src_papervision3d"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="src_tweener"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path="">
@@ -24,7 +25,16 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
+<application path="Example005.as"/>
+<application path="Example009a.as"/>
+<application path="Example007.as"/>
 <application path="Papervision3DExam.as"/>
+<application path="Example008.as"/>
+<application path="Example009b.as"/>
+<application path="Example006.as"/>
+<application path="Example002.as"/>
+<application path="Example004.as"/>
+<application path="Example003.as"/>
 </applications>
 <modules/>
 <buildCSSFiles/>
