@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Sections><!-- 路径必须以"../"开头 -->
-	<section label="引言" data="../../courses/unit05/unit05_01.swf"/>
-	<section label="内容概述" data="../../courses/unit05/unit05_02.swf"/>	
-    <section label="结束页" data="../../courses/unit05/unit05_03.swf"/>	
-</Sections>

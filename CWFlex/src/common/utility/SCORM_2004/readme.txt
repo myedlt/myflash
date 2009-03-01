@@ -1,1 +1,0 @@
-SCORM version 2004-3rd

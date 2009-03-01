@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="startPlayer()">
+	<mx:Image id="image" width="651" height="478" verticalAlign="middle" horizontalAlign="center" scaleContent="true" autoLoad="true" left="12" top="11"/>
+	
+	<mx:HBox id="boxImgCtrl" width="89" horizontalAlign="center" verticalAlign="middle" right="137" height="30" top="10">
+		<mx:Button label="&lt;" id="btnPre" click="previous()"/>
+		<mx:Button label="&gt;" id="btnNext" click="next()"/>
+	</mx:HBox>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import flash.net.URLLoader;
+			import flash.net.URLRequest;
+				
+			private var images:XMLList;
+			private var index:int;
+			
+			private function startPlayer():void
+			{
+				//测试：assets/courses/course01/chapter01/unit04.xml
+				var para:Object = this.parameters;
+				if(para.url != undefined ) 
+				{	
+					loadXML(para.url);
+				}
+				
+			}
+			
+			public function loadXML(url:String):void
+			{
+				var loader:URLLoader = new URLLoader();
+				loader.addEventListener(Event.COMPLETE,result);
+				loader.addEventListener(IOErrorEvent.IO_ERROR,fault);
+	
+				loader.load(new URLRequest(url));	
+			
+				boxImgCtrl.visible=true;
+
+			}			
+			
+			public function result(evt:Event):void
+			{
+				try 
+				{
+	            	images = XML(evt.target.data).Image;	            	
+	            	if(images.length()==1)
+	            	{
+	            		boxImgCtrl.visible=false;
+	            		image.source=images.toString();
+	            	}
+	            	else
+	            	{
+	            		index=0;
+	            		image.source=images[index].toString();
+	            	}
+	            }
+	            catch (e:TypeError) 
+	            {
+	            	trace("Could not parse the XML file.");
+	            }				         				
+			}
+			
+			public function fault(evt:IOErrorEvent):void
+			{		
+				//msg.text="加载文件失败!\n"+evt.text;			
+			}
+			
+			public function next():void
+			{				
+				if(index<images.length()-1)
+				{
+					index++;
+					image.source=images[index].toString();
+				}
+			}
+			
+			public function previous():void
+			{
+				if(index>0)
+				{
+					index--;
+					image.source=images[index].toString();
+				}
+			}
+		]]>
+	</mx:Script>	
+</mx:Application>
