@@ -1,0 +1,7 @@
+﻿<flash_project name="rmframework" version="1">
+    <project_file path="./main2.fla" filetype="fla" profile="" />
+    <project_file path="./main1.fla" filetype="fla" profile="" />
+    <project_file path="./src/Main.as" filetype="as" />
+    <project_file path="../src/api/event/AppEvent.as" filetype="as" />
+    <project_file path="../src/puremvc/view/IMainView.as" filetype="as" />
+</flash_project>

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
 	creationComplete="initApp()">
-	<mx:SWFLoader id="mainSWFLoader" x="0" y="0" width="800" height="600" source="MainFlash.swf" autoLoad="true"/>
+
+	<mx:SWFLoader id="mainSWFLoader" source="MainFlash.swf" x="0" y="0" width="800" height="600" autoLoad="true"/>
+	<mx:SWFLoader id="contentSWFLoader" x="186.15" y="97.85" width="582.8788" height="434.24243"/>
+
 	<mx:Script>
 		<![CDATA[
-			
+			/*
+			 *	contentSWFLoader	-	用于播放内容
+			 * 	mainSWFLoader 		-	用于人机交互界面
+			 *
+			 */
+			 
 			// 监听contin、exit事件，加载mainFlex并激活AppliationFacade
 			// 监听main.swf的exit事件
 			// exit事件后加载播放end.swf
@@ -12,6 +20,7 @@
 							
 			private var facade:ApplicationFacade;	
 			private var mainViewType:String = "Flex";
+			private var mainViewer:Object;
 			
 			private function initApp():void
 			{
@@ -26,19 +35,84 @@
 			}
 			
 			private function initPureMVC():void{
-				var app:Object;
+							
 				if(mainSWFLoader.source == "MainFlex.swf")
 				{
-					app = Object(mainSWFLoader.content).application;
+					mainViewer = Object(mainSWFLoader.content).application;
 				}
 				else if (mainSWFLoader.source == "MainFlash.swf")
 				{
-					app = MovieClip(mainSWFLoader.content);
+					mainViewer = MovieClip(mainSWFLoader.content);
 				}
 					
 				facade = ApplicationFacade.getInstance();
-				facade.startup(app);
+				facade.startup(this);
 			}
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+		
+			/*
+			 * 	标准接口定义
+			 */
+			import puremvc.model.vo.*;
+			import mx.events.*;
+			import mx.managers.SystemManager;
+						
+			private var playerType:String;
+			private var playerUrl:String;
+					 
+			public function initContent(content:CourseVO):void
+			 {
+			 	mainViewer.initContent(content);
+			 }
+			public function refreshUI():void
+			 {
+			 	mainViewer.refreshUI();
+			 }
+
+			// 
+			public function playSection(section:Object):void
+			{
+				// 根据节的类型选择模块；根据节的url播放内容
+				playerType = section.type;
+				playerUrl = section.url; 
+				
+				// 解决切换播放内容后，遗留的背景声音
+				flash.media.SoundMixer.stopAll();
+				
+				switch(playerType)
+	        	{        		
+	        		case "flash":
+	        			contentSWFLoader.addEventListener(Event.COMPLETE ,onPlayerLoaded);
+	        			contentSWFLoader.load("SWFPlayer.swf");
+	        			break;        		
+	        		case "image":
+	        			contentSWFLoader.addEventListener(Event.COMPLETE ,onPlayerLoaded);
+	        			contentSWFLoader.load("ImagePlayer.swf");
+	        			break;
+	        		case "flv":
+	        			contentSWFLoader.addEventListener(Event.COMPLETE ,onPlayerLoaded);
+	        			contentSWFLoader.load("FLVPlayer.swf");
+	        			break;
+	        	}      
+			}
+			
+			private function onPlayerLoaded(evt:Event):void
+			{
+				contentSWFLoader.removeEventListener(Event.COMPLETE, onPlayerLoaded);
+				var sysMgr:SystemManager = contentSWFLoader.content as SystemManager;
+				sysMgr.addEventListener(FlexEvent.APPLICATION_COMPLETE, onPlayerAppComplete);
+				
+			}
+			
+			private function onPlayerAppComplete(evt:FlexEvent):void
+			{
+				var sysMgr:SystemManager = contentSWFLoader.content as SystemManager;
+
+				Object(sysMgr.application).loadXML(playerUrl);
+			}			 
 		]]>
 	</mx:Script>
 	
