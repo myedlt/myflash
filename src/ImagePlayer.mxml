@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="startPlayer()">
-	<mx:Image id="image" width="651" height="478" verticalAlign="middle" horizontalAlign="center" scaleContent="true" autoLoad="true" left="12" top="11"/>
+	<mx:Image id="image" width="584" height="372" verticalAlign="middle" horizontalAlign="center" scaleContent="true" autoLoad="true" left="0" top="48"/>
 	
-	<mx:HBox id="boxImgCtrl" width="89" horizontalAlign="center" verticalAlign="middle" right="137" height="30" top="10">
+	<mx:HBox id="boxImgCtrl" width="89" horizontalAlign="center" verticalAlign="middle" right="22" height="30" top="10">
 		<mx:Button label="&lt;" id="btnPre" click="previous()"/>
 		<mx:Button label="&gt;" id="btnNext" click="next()"/>
 	</mx:HBox>
