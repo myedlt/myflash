@@ -5,8 +5,8 @@
 	import flash.events.*;
 	import flash.net.*;
 	
-	import puremvc.model.vo.*;
-	import puremvc.view.IMainView;
+	import info.osmatrix.rmframework.app.model.vo.*;
+	import info.osmatrix.rmframework.app.view.IMainView;
 
 	public class Main extends MovieClip implements IMainView {
 

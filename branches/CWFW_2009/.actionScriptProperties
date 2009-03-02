@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="index.mxml" version="3">
-<compiler additionalCompilerArguments="-locale en_US -use-network=false" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compiler additionalCompilerArguments="-locale en_US -use-network=false" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src_flex" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="src_puremvc"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="src_resource"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="src_player"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="src_test"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="src_as3"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path="">
@@ -22,9 +20,9 @@
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
-<applications>
-<application path="index.mxml"/>
-</applications>
+<applications/>
 <modules/>
-<buildCSSFiles/>
+<buildCSSFiles>
+<buildCSSFileEntry destPath="bin-debug" sourcePath="src/css/OSX/OSX.css"/>
+</buildCSSFiles>
 </actionScriptProperties>
