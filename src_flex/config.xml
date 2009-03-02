@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<mainviews default="osmatrix">
+		<view id="osmatrix" type="flex" url="MainFlex.swf" skin="css/OSX/OSX.swf" />
+		<view id="edlt" type="flash" url="MainFlash.swf" skin="" />
+	
+	</mainview>
+	<players>
+		<player name="SWFPlayer" 	url="player/SWFPlayer.swf" />
+		<player name="ImagePlayer" 	url="player/ImagePlayer.swf" />
+		<player name="FLVPlayer" 	url="player/FLVPlayer.swf" />
+		<player name="QTIPlayer" 	url="player/QTIPlayer.swf" />
+	</players>
+	
+</config>
