@@ -3,8 +3,8 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:view="puremvc.view.component.*" layout="absolute" creationComplete="initApp()" width="806.74243" height="589.24243" horizontalAlign="left">
 	<mx:Style source="css/OSX/OSX.css" />
-	<mx:LinkBar id="linkBar" x="512" y="10" width="278" height="26" />
-	<mx:HBox width="583" height="30" verticalAlign="middle" horizontalGap="3" x="207" y="60" borderStyle="solid">
+	<mx:LinkBar id="linkBar" x="512" y="10" width="212" height="26" />
+	<mx:HBox width="583" height="46" verticalAlign="middle" horizontalGap="3" x="207" y="44" borderStyle="solid">
 		<mx:Spacer width="6"/>
 		<mx:Label text="当前章" id="txtChapter"/>
 		<mx:Label text="&gt;" width="18" fontWeight="bold" textAlign="center" id="arrowFlag"/>
@@ -12,21 +12,21 @@
 		
 	</mx:HBox>
 
-	<mx:Tree width="189" height="508" horizontalCenter="-296" verticalCenter="14" 
+	<mx:Tree width="189" height="530" horizontalCenter="-296" verticalCenter="14" 
 			 id="treeContents" alternatingItemColors="[#DFDFDF,#EEEEEE]" 
 			 dataProvider="{dpcourse}">
 			 		
 	</mx:Tree>
 	<mx:ArrayCollection id="dpcourse">	</mx:ArrayCollection>
 
-	<mx:SWFLoader x="207" y="98" width="583.9394" height="419.39392" id="contentSWFLoader"/>
+	<mx:SWFLoader x="207" y="98" width="584" height="420" id="contentSWFLoader"/>
 
-	<mx:HBox width="583" height="49" creationComplete="initCtrlPanel()" horizontalAlign="center" verticalAlign="middle" horizontalGap="10" y="525" x="207" borderStyle="solid">
+	<mx:HBox width="584" height="49" creationComplete="initCtrlPanel()" horizontalAlign="center" verticalAlign="middle" horizontalGap="10" y="525" x="207" borderStyle="solid">
 		<mx:Spacer width="10"/>
-		<mx:Button id="btnPrevSection"/>
-		<mx:Button x="93" y="41" id="btnNextSection"/>
+		<mx:Button id="btnPrevSection" label="上一节"/>
+		<mx:Button x="93" y="41" id="btnNextSection" label="下一节"/>
 		<mx:Spacer width="70%"/>
-		<mx:Button id="btnVolumeOpenOrClose" click="openOrClose()"/>
+		<mx:Button id="btnVolumeOpenOrClose" click="openOrClose()" width="22"/>
 		<mx:HSlider id="sldCtrlVolume" width="70" maximum="1" minimum="0" value="0.6" liveDragging="true"
 			dataTipFormatFunction="formatVolumeToolTip" change="volumeChange(event)"/>
 			<mx:Script>
@@ -96,83 +96,20 @@
 	</mx:HBox>
 	<mx:Script >
 		<![CDATA[
-			import info.osmatrix.rmframework.app.model.vo.ChapterVO;
-			import info.osmatrix.rmframework.app.model.vo.SectionVO;
+			import info.osmatrix.rmframework.app.view.FlexViewHelper;
+			
+			public var viewHelper:FlexViewHelper;
+
 			/*
 			 * 	initApp由应用初始调用：creationComplete="initApp()"
-			 */
-			import mx.events.*;
-			import mx.managers.SystemManager;
-			
-			import info.osmatrix.rmframework.app.model.vo.CourseVO;
-			import info.osmatrix.rmframework.app.view.event.MainViewEvent;
-			
-			private var playerType:String;
-			private var playerUrl:String;
-			
+			 */						
 			private function initApp():void
 			{
-				//linkBar.addEventListener(ItemClickEvent.ITEM_CLICK, handleEvent);
-				treeContents.addEventListener(ListEvent.ITEM_CLICK,	onSectionChanged);
-				btnPrevSection.addEventListener(MouseEvent.CLICK,	onPrevSection);
-				btnNextSection.addEventListener(MouseEvent.CLICK,	onNextSection);					
-
+				viewHelper = new FlexViewHelper(this);
 			}
 			
-			private function onSectionChanged(evt:Event):void
-			{
- 				if(!treeContents.dataDescriptor.isBranch(evt.target.selectedItem))
-				{							
-					dispatchEvent(new MainViewEvent(MainViewEvent.CE_SECTIONCHANGED, evt.target.selectedItem) );				
-					//trace("itemClick:"+evt.target.selectedItem.toXMLString());
-				}
-			}
-
-			private function onPrevSection(evt:Event):void
-			{
-				dispatchEvent(new MainViewEvent(MainViewEvent.CE_PREVSECTION, "") );
-			}
-						
-			private function onNextSection(evt:Event):void
-			{
-				dispatchEvent(new MainViewEvent(MainViewEvent.CE_NEXTSECTION, "") );
-			}
-
-			// ----------供外部加载程序调用的公开函数-------------------------------------
-	        public function initContent(content:CourseVO):void{
-				//treeContents.dataProvider=facade.retrieveProxy(CourseProxy.NAME).getData().Chapter as XMLList;									
-				//treeContents.callLater(expandAllNode);//初始展开所有节点	
-				
-				// 1. 目录树
-				var chapters:Array = content.getChapterAll();
-	        	treeContents.labelField="name";
-
-	        	for each(var chapter:ChapterVO in chapters) {
-	        		// DataProvider 添加章时需要的子项目数组集合
-	        		var childrenSections:ArrayCollection = new ArrayCollection();
-	        		
-	        		// 提取当前操作章的节列表，填入children备用
-					for each(var section:SectionVO in chapter.sections) {
-						childrenSections.addItem({"name":section.name,"type":section.type,"url":section.path});
-					}
-	        		
-					treeContents.dataProvider.addItem(
-						{	"name":chapter.name,"children":childrenSections });
-					
-	        	}
-	        	
-	        	// 2. 功能按钮条
-	        	
-	        	// 3. 导航条与前进后退控制按钮条、学习历史进度
-	        			
-	        }
-	        
-	        public function refreshUI():void
-	        {
-	        	//txtChapter,arrowFlag,txtSection
-	        	
-	        }						
 		]]>
 	</mx:Script>
+	<mx:Button x="742" y="10" label="退出" height="26" id="btnExit"/>
 
 </mx:Application>

@@ -6,6 +6,7 @@
 	-->
 	<Navigator>
 		<button label="帮助" url="navigator/help/index.html" />
+		<button label="认知地图" url="navigator/help/index.html" />		
 		<button label="退出" url="javascript:window.close();" />
 	</Navigator>
 	<!--

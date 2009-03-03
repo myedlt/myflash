@@ -2,6 +2,11 @@
 {
 	import flash.events.Event;
 	
+	/**
+	 *	附加信息为节的ID 
+	 * @author huhj
+	 * 
+	 */
 	public class MainViewEvent extends Event
 	{
 		/* UI 自定义事件	*/

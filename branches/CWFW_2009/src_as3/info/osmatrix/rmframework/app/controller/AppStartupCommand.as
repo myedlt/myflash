@@ -11,12 +11,12 @@ package info.osmatrix.rmframework.app.controller
     {
         override public function execute( note:INotification ) :void    
 		{
-			// content.xml 读取成功后异步初始化 CourseProxy
+			// content.xml 读取成功后异步初始化 ContentProxy
 			var data:Object = DataXMLProxy(facade.retrieveProxy(DataXMLProxy.NAME)).getData();
 
 			facade.registerProxy(new ContentProxy(data));
         	 
-			sendNotification(ApplicationFacade.INITUI); 
+			sendNotification(ApplicationFacade.DATAPREPARED); 
         }
     }
 }

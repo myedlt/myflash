@@ -1,7 +1,7 @@
 package info.osmatrix.rmframework.app.model.vo.util
 {
 	import info.osmatrix.rmframework.app.model.vo.ChapterVO;
-	import info.osmatrix.rmframework.app.model.vo.CourseVO;
+	import info.osmatrix.rmframework.app.model.vo.ContentVO;
 	import info.osmatrix.rmframework.app.model.vo.LectureVO;
 	import info.osmatrix.rmframework.app.model.vo.SectionVO;
 	
@@ -17,17 +17,19 @@ package info.osmatrix.rmframework.app.model.vo.util
 	public class DataUtil
 	{
 		// 通过传入的XML(即content.xml)获得CourseVO
-		static public function parseCourse(coXml:XML):CourseVO
+		static public function parseCourse(coXml:XML):ContentVO
 		{
 
-			var co:CourseVO = new CourseVO();						
+			var co:ContentVO = new ContentVO();						
 
 			// 1、课程概要信息
 			var course:XML = XML(coXml.CourseList.Course);
-			co.name 	= (course.hasOwnProperty("@name"))?course.@name:"";
-			co.title 	= (course.hasOwnProperty("@title"))?course.@title:"";
-			co.startSWF = (course.hasOwnProperty("@startSWF"))?course.@startSWF:"";
-			co.endSWF 	= (course.hasOwnProperty("@endSWF"))?course.@endSWF:"";
+			co.data		= course;
+
+			co.name 	= course.hasOwnProperty("@name")?course.@name:"";
+			co.title 	= course.hasOwnProperty("@title")?course.@title:"";
+			co.startSWF = course.hasOwnProperty("@startSWF")?course.@startSWF:"";
+			co.endSWF 	= course.hasOwnProperty("@endSWF")?course.@endSWF:"";
 			
 			// 2、讲师
 			var lecture:XML = XML(coXml.CourseList.Course.Lecture);			
@@ -47,7 +49,7 @@ package info.osmatrix.rmframework.app.model.vo.util
 			}
 			co.chapters=chapters;
 						
-			// 5、节	
+			// 5、节	(章数组中已有节的数据，此处单独保存所有的节，方便节的查询)
 			var sections:Array = new Array();			
 			var sectionList:XMLList = XMLList(coXml..section);
 			for each(var sectionXml:XML in sectionList)
@@ -59,35 +61,20 @@ package info.osmatrix.rmframework.app.model.vo.util
 			
 			return co;
 		}
-				
+		
+		// 节	
 		static public function parseSection(section:XML):SectionVO
 		{
-			//节:
+			
 			var sec:SectionVO=new SectionVO();
-			if(section.hasOwnProperty("@name"))
-			{
-				sec.name=section.@name;
-			}
-			if(section.hasOwnProperty("@path"))
-			{
-				sec.path=section.@path;
-			}			
-			if(section.hasOwnProperty("@type"))
-			{
-				sec.type=section.@type;
-			}
-			else
-			{
-				sec.type="flash";//默认课件类型为flash
-			}
-			if(section.hasOwnProperty("@title"))
-			{
-				sec.title=section.@title;
-			}
-			if(section.hasOwnProperty("@xml"))
-			{
-				sec.xml=section.@xml;
-			}
+			
+			sec.id 		= section.hasOwnProperty("@id")?section.@id:"";
+			sec.name 	= section.hasOwnProperty("@name")?section.@name:"";
+			sec.path 	= section.hasOwnProperty("@path")?section.@path:"";
+			sec.type 	= section.hasOwnProperty("@type")?section.@type:"flash"; // 默认类型 Flash
+			sec.title 	= section.hasOwnProperty("@title")?section.@title:"";
+			sec.xml 	= section.hasOwnProperty("@xml")?section.@title:"";
+			
 			return sec;
 		}
 		
@@ -99,15 +86,12 @@ package info.osmatrix.rmframework.app.model.vo.util
 		 */
 		static public function parseChapter(chapter:XML):ChapterVO
 		{
-			var cha:ChapterVO=new ChapterVO();					
-			if(chapter.hasOwnProperty("@name"))
-			{
-				cha.name=chapter.@name;	
-			}
-			if(chapter.hasOwnProperty("@title"))
-			{
-				cha.title=chapter.@title;
-			}				
+			var cha:ChapterVO=new ChapterVO();	
+			
+			cha.id 		= chapter.hasOwnProperty("@id")?chapter.@id:"";
+			cha.name 	= chapter.hasOwnProperty("@name")?chapter.@name:"";
+			cha.title 	= chapter.hasOwnProperty("@title")?chapter.@title:"";
+				
 			if(chapter.section!=undefined)
 			{
 				var sections:Array=new Array();
@@ -119,22 +103,9 @@ package info.osmatrix.rmframework.app.model.vo.util
 			}
 			else
 			{
-				if(chapter.hasOwnProperty("@type"))
-				{
-					cha.type=chapter.@type;
-				}
-				else
-				{
-					cha.type="flash";//默认课件类型为flash
-				}
-				if(chapter.hasOwnProperty("@xml"))
-				{
-					cha.xml=chapter.@xml;
-				}
-				if(chapter.hasOwnProperty("@path"))
-				{
-					cha.path=chapter.@path;
-				}	
+				cha.type 	= chapter.hasOwnProperty("@type")?chapter.@type:"flash";
+				cha.xml 	= chapter.hasOwnProperty("@xml")?chapter.@xml:"";
+				cha.path 	= chapter.hasOwnProperty("@path")?chapter.@type:"";
 			}	
 			return cha;			
 		}

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-	<mainviews default="osmatrix">
-		<view id="osmatrix" type="flex" url="MainFlex.swf" skin="css/OSX/OSX.swf" />
-		<view id="edlt" type="flash" url="MainFlash.swf" skin="" />
-	
-	</mainview>
+	<mainviews default="flex">
+		<view id="flex"  type="flex" url="MainFlex.swf" skin="css/OSX/OSX.swf" />
+		<view id="flash" type="flash" url="MainFlash.swf" skin="" />
+		<view id="pbank" type="flash" url="PBank.swf" skin="" />	
+	</mainviews>
 	<players>
 		<player name="SWFPlayer" 	url="player/SWFPlayer.swf" />
 		<player name="ImagePlayer" 	url="player/ImagePlayer.swf" />
