@@ -1,7 +1,14 @@
 ﻿<flash_project name="rmframework" version="1">
-    <project_file path="./main2.fla" filetype="fla" profile="" />
-    <project_file path="./main1.fla" filetype="fla" profile="" />
-    <project_file path="./src/Main.as" filetype="as" />
-    <project_file path="../src/api/event/AppEvent.as" filetype="as" />
-    <project_file path="../src/puremvc/view/IMainView.as" filetype="as" />
+    <project_folder name="MainView" expanded="true">
+        <project_file path="./MainView/Main.fla" filetype="fla" profile="" />
+        <project_file path="./MainView/PBank.fla" filetype="fla" profile="" />
+    </project_folder>
+    <project_folder name="PagePlayer" expanded="true">
+    </project_folder>
+    <project_folder name="src" expanded="true">
+        <project_file path="./src/Main.as" filetype="as" />
+        <project_file path="../src_as3/info/osmatrix/rmframework/app/view/FlashViewHelper.as" filetype="as" />
+        <project_file path="../src_as3/info/osmatrix/rmframework/app/view/PBankFlashViewHelper.as" filetype="as" />
+        <project_file path="./src/PBank.as" filetype="as" />
+    </project_folder>
 </flash_project>

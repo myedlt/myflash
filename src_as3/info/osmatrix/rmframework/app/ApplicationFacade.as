@@ -9,9 +9,9 @@ package info.osmatrix.rmframework.app
 		public var app:Object;
 		
 		// Notification name constants
-		//AppMediator
+		//AppMediator，数据准备好后发INITUI给AppMediator
 		public static const LOAD_FILE_FAILED:String = "loadFileFailed";				
-		public static const INITUI:String="initui";
+		public static const DATAPREPARED:String="dataPrepared";
 						
 		//command - 系统启动消息组
 		public static const INIT:String = "initialize";

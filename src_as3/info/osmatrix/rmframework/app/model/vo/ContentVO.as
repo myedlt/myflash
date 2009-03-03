@@ -2,7 +2,7 @@ package info.osmatrix.rmframework.app.model.vo
 {
 	import info.osmatrix.rmframework.app.model.vo.LectureVO;
 	
-	public class CourseVO
+	public class ContentVO
 	{	
 		// 基本信息
 		public var id:String;	// 唯一标志		
@@ -10,6 +10,7 @@ package info.osmatrix.rmframework.app.model.vo
 		public var title:String;
 		public var startSWF:String;
 		public var endSWF:String;
+		public var data:XML;
 		
 		// 包含数据对象
 		public var lecture:LectureVO;
@@ -19,11 +20,11 @@ package info.osmatrix.rmframework.app.model.vo
 		public var sections:Array;
 		
 		// 实时数据
-		private var curSection:SectionVO;
+		public var curSection:SectionVO;
 		private var curTime:int;	// 本次学习时长,单位秒
 		private var totalTime:int;	// 累计学习时长，单位秒
 		
-		public function CourseVO():void
+		public function ContentVO():void
 		{
 			// 填充所有数据
 		}
@@ -40,14 +41,31 @@ package info.osmatrix.rmframework.app.model.vo
 		}
 		public function getChapterBySectionId(id:String):ChapterVO
 		{
-			var chapter:ChapterVO = new ChapterVO();
+			var chapter:ChapterVO = null;
+			
 			// 轮询
+			for each(var ch:ChapterVO in chapters)
+			{
+				for each(var sec:SectionVO in ch.sections)
+				{
+					if(sec.id == id)
+					{
+						return ch;
+					}
+				}
+			}
+			
 			return chapter;
 		}
+		public function getChapterFirst():ChapterVO
+		{
+			return chapters[0];
+		}		
 		public function getChapterNext(id:String):ChapterVO
 		{
 			var chapter:ChapterVO = new ChapterVO();
 			// 轮询
+			
 			return chapter;
 		}		
 		public function getSectionAll():Array
@@ -57,14 +75,63 @@ package info.osmatrix.rmframework.app.model.vo
 		
 		public function getSectionById(id:String):SectionVO
 		{
-			var section:SectionVO = new SectionVO();
+			var sec:Object; 
 			// 轮询
-			return section;			
+			for each(sec in this.sections)
+			{
+				if(id.localeCompare(sec.id) == 0){ break;}
+			}
+			return sec as SectionVO;			
 		}
+		public function getSectionFirst():SectionVO
+		{
+			return sections[0];
+		}		
 		public function getSectionNext(id:String):SectionVO
 		{
-			var section:SectionVO = new SectionVO();
+			var section:SectionVO = null;
 			// 轮询
+			var index:int = 0;
+			for each(var sec:SectionVO in sections)
+			{
+				if( sec.id == id)
+				{
+					if( index == sections.length - 1 )
+					{
+						return null;
+					}
+					else
+					{
+						return sections[index + 1];						
+					}
+				}	
+				index = index + 1;
+			}
+			
+			return section;			
+		}
+		public function getSectionPrev(id:String):SectionVO
+		{
+			var section:SectionVO = null;
+			// 轮询
+			var index:int = 0;
+			for each(var sec:SectionVO in sections)
+			{
+				if( sec.id == id)
+				{
+					if( index == 0 )
+					{
+						return null;
+					}
+					else
+					{
+						return sections[index -1];						
+					}
+				}
+				
+				index = index + 1;
+			}
+			
 			return section;			
 		}
 		

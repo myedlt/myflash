@@ -1,8 +1,9 @@
 package info.osmatrix.rmframework.app.view
 {
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	
-	import info.osmatrix.rmframework.app.model.vo.CourseVO;
+	import info.osmatrix.rmframework.app.model.vo.*;
 	
 	public interface IMainView
 	{
@@ -12,13 +13,13 @@ package info.osmatrix.rmframework.app.view
 
 		function onPrevSection(evt:Event):void;
 		function onNextSection(evt:Event):void;
+
+		function onExitApp(evt:Event):void;
 		
-		function initApp():void;
-		
-		function initContent(content:CourseVO):void;
-		function playSection(section:Object):void;
+		function initContent(content:ContentVO):void;
 		function refreshUI():void;
-		function updateLocator():void;
+		function updateLocator(chapter:ChapterVO, section:SectionVO):void;
+		function getPlayerRect():DisplayObject;
 		
 	}
 }

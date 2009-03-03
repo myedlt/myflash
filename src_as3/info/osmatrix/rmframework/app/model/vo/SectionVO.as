@@ -7,6 +7,6 @@ package info.osmatrix.rmframework.app.model.vo
 		public var title:String;
 		public var path:String;
 		public var type:String;		
-		public var xml:String;		
+		public var xml:String;	
 	}
 }
