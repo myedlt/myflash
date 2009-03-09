@@ -16,8 +16,8 @@
 	说明：以CWFW_2009为基线
 
 	puremvc
-		=> xml增加id字段；没有数据初始化时通过id匹配
-		=》appmediator 调用playSection前先通过id获得section vo对象
+		【ok】=> xml增加id字段；没有数据初始化时通过id匹配
+		【ok】=》appmediator 调用playSection前先通过id获得section vo对象
 		=》CookieProxy
 
 	课件封装的scorm支持：单sco、多sco
@@ -34,6 +34,7 @@
 		4、ImagePlayer编辑功能
 		5、ChartPlayer
 		6、QTIPlayer	=》开始测试、结束测试=》成绩和测试时间存入学习记录
+				=>参考之前基于Flash做的测验题
 		=》测试程序加强：测试自定义事件
 
 	两套主界面
@@ -41,10 +42,12 @@
 		Flash 2套	=》（一套有数据初始化，一套没有）
 		=》都使用IMainView子类=>对象viewHelper，index使用IMainView(object.viewHelper)
 		=》单独建一项目，可容纳多个view，测试类：显示事件通讯流水、显示接口函数调用
+		=》快捷键换肤
+
 	开发编译与发布打包自动化
 		=》整合cwframework已实验内容
 	笔记和学习记录(认知地图......)功能整合
-	播放器（contentSWFLoader）大小由主界面中的占位符大小决定，即需要增加接口函数获得大小参数；
+	【ok】播放器（contentSWFLoader）大小由主界面中的占位符大小决定，即需要增加接口函数获得大小参数；
 	index.mxml
 		=>系统环境界面，可通过快捷键进入
 		=》如何设置初始的Flash player窗口大小
