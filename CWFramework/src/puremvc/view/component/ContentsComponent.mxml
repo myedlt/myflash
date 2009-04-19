@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="203" height="405">
-	<mx:Tree id="treeContents" width="100%" height="100%" horizontalCenter="0" verticalCenter="0" 
-		alternatingItemColors="[#DFDFDF,#EEEEEE]" dataProvider="{treeDataProvider}"/>
-	<mx:ArrayCollection id="treeDataProvider"/>
-</mx:Canvas>

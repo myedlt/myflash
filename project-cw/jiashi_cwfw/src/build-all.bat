@@ -1,1 +1,0 @@
-for /R . %%f in (*.mxml) do  "D:\ARun\EclipseWorkshop\plugin\plugin-flexbuilder\sdks\3.0.0\bin\mxmlc.exe" -use-network=false "%%f"
