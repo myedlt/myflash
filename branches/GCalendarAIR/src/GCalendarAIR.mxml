@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	 creationComplete="initApp()" >
+	<mx:Canvas x="47" y="10" width="288" height="101">
+		<mx:Label text="帐号：" x="10" y="22"/>
+		<mx:Label text="密码：" x="10" y="63"/>
+		<mx:TextInput id="userNameTextInput" text="huhongjun@gmail.com" x="53" y="20"/>
+		<mx:TextInput id="passwordTextInput" text="osmatrix0904" x="53" y="61" displayAsPassword="true"/>
+		<mx:Button id="loginButton" label="登录" x="221" y="61"/>
+	</mx:Canvas>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.googlecalendar.events.*;
+			import com.adobe.googlecalendar.valueobjects.*;
+			import com.adobe.googlecalendar.services.*;
+		
+		private var userName:String;
+		private var password:String;
+		private var gCalService:GoogleCalendarService;
+		private var authUser:GoogleCalendarUserVO;
+		
+		private function initApp():void
+		{
+			loginButton.addEventListener(MouseEvent.CLICK,onLogin);
+			gCalService = new GoogleCalendarService();
+			
+		}
+		
+		private function log(msg:String):void
+		{
+			msgLabel.text = msg;
+		}
+		
+		private function onLogin(evt:MouseEvent):void
+		{
+			userName = userNameTextInput.text;
+			password = passwordTextInput.text;
+			
+			var auth:GoogleCalendarAuthenticator = new GoogleCalendarAuthenticator();
+			auth.addEventListener(GoogleCalendarAuthenticatorEvent.AUTHENTICATION_RESPONSE, onAuthResponse);
+			//auth.addEventListener(GoogleCalendarAuthenticatorEvent.AUTHENTICATION_FAULT, onAuthResponseFault);
+			auth.authenticateUser(userName, password );
+			
+		}
+		
+		private function onAuthResponse(evt:GoogleCalendarAuthenticatorEvent):void
+		{
+			authUser = evt.authenticatedUser;
+		}
+		
+		private function onAuthFault(evt:GoogleCalendarAuthenticatorEvent):void
+		{
+			log(evt.errorMessage);
+		}
+		
+		private function getAllCalendars(evt:Event):void
+		{
+			gCalService.getAllCalendars(authUser);
+			gCalService.addEventListener(GoogleCalendarServiceEvent.GET_ALL_CALENDARS_RESPONSE,
+				onGetAllCalendarResponse);
+			gCalService.addEventListener(GoogleCalendarServiceEvent.GET_ALL_CALENDARS_FAULT,
+				onGetAllCalendarFault);
+		}
+		
+		private function onGetAllCalendarResponse(evt:GoogleCalendarServiceEvent):void
+		{
+			calDataGrid.dataProvider = evt.allCalendars;
+		}
+		
+		private function onGetAllCalendarFault(evt:GoogleCalendarServiceEvent):void
+		{
+			log(evt.errorMessage);
+		}
+		]]>
+	</mx:Script>
+	<mx:Button id="getAllButton" x="631" y="113" label="GetAllCalendars" click="getAllCalendars(event)"/>
+	<mx:ApplicationControlBar x="0" y="521" width="774">
+		<mx:Label text="信息：" id="msgLabel"/>
+	</mx:ApplicationControlBar>
+	<mx:DataGrid id="calDataGrid" x="47" y="143" width="701" height="370">
+		<mx:columns>
+			<mx:DataGridColumn headerText="id" dataField="id"/>
+			<mx:DataGridColumn headerText="id" dataField="published"/>
+			<mx:DataGridColumn headerText="id" dataField="updated"/>
+			<mx:DataGridColumn headerText="id" dataField="title"/>
+			<mx:DataGridColumn headerText="summary" dataField="summary"/>
+			<mx:DataGridColumn headerText="links" dataField="links"/>
+			<mx:DataGridColumn headerText="author" dataField="author"/>
+			<mx:DataGridColumn headerText="timeZone" dataField="timeZone"/>
+			<mx:DataGridColumn headerText="hidden" dataField="hidden"/>
+			<mx:DataGridColumn headerText="color" dataField="color"/>
+			<mx:DataGridColumn headerText="selected" dataField="selected"/>
+			<mx:DataGridColumn headerText="accessLevel" dataField="accessLevel"/>
+			<mx:DataGridColumn headerText="where" dataField="where"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:WindowedApplication>
