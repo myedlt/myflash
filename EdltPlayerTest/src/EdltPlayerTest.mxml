@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	applicationComplete="appCompHandler()"
+	>
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			private var menuXML:XML = null;
+			private function appCompHandler():void {
+				httpSvr.send();
+			}
+			private function httpResultHandler(event:ResultEvent):void {
+//				trace(typeof(event.result));		// object
+//				trace(event.result.toString());		// xml字符串
+				menuXML = new XML(event.result);
+//				trace(menuXML);
+				xmlDataCollection.source = menuXML.module.lesson.part;
+//				xmlDataCollection.source = menuXML.module.lesson;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="httpSvr" url="data/menu2.xml"
+		resultFormat="xml"
+		result="httpResultHandler(event)"
+		/>
+	<!-- 集合 -->
+	<mx:List x="10" y="10" width="100%" height="100%"
+		itemRenderer="EdltMenuRenderer"
+		>
+		<mx:XMLListCollection id="xmlDataCollection"/>
+	</mx:List>
+</mx:Application>
