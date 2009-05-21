@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Metadata>
+		[Event(name="introSkip", type="flash.events.Event")]
+		[Event(name="introComplete", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			public static const INTRO_SKIP:String = "introSkip";
+			public static const INTRO_COMPLETE:String = "introComplete";
+
+			private var mc:MovieClip = null;
+			
+			private function clickHandler():void
+			{
+				mc.stop();
+				mc = null;
+				headLoader.unloadAndStop();					// 停止
+				dispatchEvent(new Event(Intro.INTRO_SKIP));	// 派发新事件：路过片头
+			}
+			
+			// swfLoader中的内容可以被控制时
+			private function initHandler():void
+			{
+				mc = MovieClip(headLoader.content);
+				skipBtn.visible = true;
+			}
+			
+			private function introCompleteHandler():void {
+				dispatchEvent(new Event(Intro.INTRO_COMPLETE));	// 派发新事件：片头介绍完毕
+			}
+			private var _source:String = "";
+			// 自定义属性
+			[Bindable]
+			[Inspectable(category="General")]
+			public function get source():String
+			{
+				return _source;
+			}
+			public function set source(str:String):void
+			{
+				_source = str;	
+			}
+
+
+		]]>
+	</mx:Script>
+	<mx:SWFLoader id="headLoader" source="{source}"
+		width="100%" height="100%"
+		scaleContent="true"
+		verticalAlign="middle"
+		init="initHandler()"
+		/>
+	<mx:Button id="skipBtn" label="跳过" click="clickHandler();"
+		top="5" right="5"
+		initialize="skipBtn.visible = false;"
+		/>
+</mx:Canvas>

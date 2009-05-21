@@ -2,9 +2,14 @@
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
 		 width="100%"
 		 fontSize="12"
+		 click="clickHandler()"
 		 >
+	<mx:Metadata>
+		[Event(name="selectPath", type="events.PathEvent")]
+	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import events.PathEvent;
 			import mx.events.FlexEvent;
 			[Embed(source="assets/Assets.swf", symbol="com.edlt.skins.EdltState1")]
 			public var EdltState1:Class;
@@ -19,8 +24,8 @@
 		        return _data;
 		    }
 		    override public function set data(value:Object):void {
-		        _data = value;
 		        if(value == null) return;
+		        _data = value;
 //		        trace(value);
 		        lb_1.text = value.@sub.toString();
 		        lb_2.text = value.sco[0].@iInfo.toString();
@@ -32,6 +37,13 @@
 		        	default: img.source = EdltState1;
 		        }
 		        dispatchEvent(new FlexEvent(FlexEvent.DATA_CHANGE));
+		    }
+		    private function clickHandler():void {
+		    	var str:String = data.sco[0].@sub.toString();
+		    	var i:int = str.indexOf(')')+1;
+		    	var path:String = str.substring(i);
+		    	trace(path);
+		    	dispatchEvent(new PathEvent(path));
 		    }
 		]]>
 	</mx:Script>
