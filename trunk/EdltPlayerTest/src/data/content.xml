@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Content>	
+	<Header label="片头" data="flashes/header.swf"/>
+	<Begin label="滴水的故事" data="flashes/begin.swf"/>
+	<Help label="帮助" data="web/help/help.html"/>	
+	<Counter label="课程总章节数" data="38"/>
+	<MenuItems label="如何增员" data="flashes/leftMenu.swf">
+	<!-- label为缩写内容,在左侧菜单按钮上显示;fullName为课程全称,在面包屑导航区显示 --> 
+		<menuItem label="计划" fullName="计划" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
+		<menuItem label="准备" fullName="准备" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
+		<menuItem label="开拓" fullName="开拓" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
+		<menuItem label="面谈" fullName="面谈" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
+		<menuItem label="甄选" fullName="甄选" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>
+		<menuItem label="培训" fullName="培训" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/unit01/unit01.xml"/>		
+	</MenuItems>
+	<MenuItem label="基础导学" isMultipage="true" data="flashes/template/multipage.swf" xml="courses/jcdx.xml"/>		
+</Content>
