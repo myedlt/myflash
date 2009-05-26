@@ -1,1 +1,0 @@
-for /R . %%f in (*.mxml) do  "C:\Program Files\Adobe\Flex Builder 3\sdks\3.0.0\bin\mxmlc.exe" -use-network=false "%%f"
