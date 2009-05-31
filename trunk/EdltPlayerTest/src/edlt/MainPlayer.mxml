@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" height="550" width="800"
+	backgroundImage="@Embed(source='images/bg.jpg')"
+	>
+	<mx:Metadata>
+		[Event(name="returnMenu", type="flash.events.Event")]
+		[Event(name="prevSco", type="flash.events.Event")]
+		[Event(name="nextSco", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import flash.display.MovieClip;
+			public static const RETURN_MENU:String = "returnMenu";
+			public static const PREV_SCO:String = "prevSco";
+			public static const NEXT_SCO:String = "nextSco";
+			
+			// 
+//			private var mc:MovieClip = null;
+			private var mc:* = null;
+			private var flag:Boolean = false;			// 影片剪辑的可操作性
+			private var tCurr:int = 0;					// 临时保存影片停止时所处的帧数
+			
+			// swfLoader中的内容可以被控制时
+			private function initHandler():void
+			{
+				if(swfLoader.content is MovieClip) {
+					mc = MovieClip(swfLoader.content);
+					flag = true;
+				} else {
+					mc = AVM1Movie(swfLoader.content);
+					trace("AVM1Movie");
+					flag = false;
+				}
+//				AVM1Movie
+			}
+			private var _source:String = "";
+			// 自定义属性
+			[Bindable]
+			[Inspectable(category="General")]
+			public function set source(value:String):void
+			{
+				_source = value;	
+			}
+			public function get source():String {
+				return _source;
+			}
+			private function onPrevBtnClick():void {
+				if(flag) {
+					mc.stop();
+					mc = null;
+				}
+				swfLoader.unloadAndStop();					// 停止
+				dispatchEvent(new Event(PREV_SCO));
+			}
+			private function onNextBtnClick():void {
+				if(flag) {
+					mc.stop();
+					mc = null;
+				}
+				swfLoader.unloadAndStop();					// 停止
+				dispatchEvent(new Event(NEXT_SCO));
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox>
+	</mx:HBox>
+	<mx:SWFLoader id="swfLoader" source="{source}"
+				  x="132"
+				  y="99"
+				  height="388"
+				  width="656"
+				  scaleContent="true"
+				  verticalAlign="middle"
+				  init="initHandler()"
+/>
+	<mx:HBox x="283" y="507" width="350">
+		<mx:Button id="playBtn" label="开始" click="if(flag) mc.play();"/>
+		<mx:Button id="pauseBtn" label="暂停" click="if(flag) mc.stop();"/>
+		<mx:Button id="stopBtn" label="停止" click="if(flag) mc.gotoAndStop(1);"/>
+		<mx:LinkButton id="prevBtn" label="前一页" click="onPrevBtnClick();"/>
+		<mx:Label text="11 / 66"/>
+		<mx:LinkButton id="nextBtn" label="后一页" click="onNextBtnClick()"/>
+	</mx:HBox>
+	<mx:Button label="菜单" x="690" y="10">
+		<mx:click>
+			<![CDATA[
+				if(flag) mc.stop();
+				dispatchEvent(new Event(RETURN_MENU));	// 派发新事件
+			]]>
+		</mx:click>
+	</mx:Button>
+</mx:Canvas>
