@@ -26,10 +26,22 @@
 			// 程序的初始工作
 			private function appCompHandler():void
 			{
+				ExternalInterface.addCallback("goHome",goHomeCallback);
 				httpSvr.send();
 			}
+			// 定义将来由js调用的
+			// 对状态进行保存的
+			// 函数
+			private function goHomeCallback():void {
+//				if (wasSuccessful) {	// 感觉这是一句废话，这个函数的执行不就说明调用成功了吗？
+//					runSend();
+//				} else {
+//					getURL("javascript:alert('最后一次的状态没有上传！')");	// 调用js输出一个文本提示框
+//				}
+			}
 
-			// HTTPService结果处理——数据的处理
+			// HTTPService结果处理
+			// 对原始的数据进行若干处理
 			private function httpResultHandler(event:ResultEvent):void
 			{
 				menuXML=new XML(event.result);
@@ -68,16 +80,13 @@
 		    	var i:int = str.indexOf(')')+1;
 		    	var path:String = str.substring(i);
 		    	path = "unit\\" + path + ".swf";
-		    	trace(this.path);
+//		    	trace(this.path);
+		    	// 状态保存
 		    	var lsoComm:LSOCommunication = new LSOCommunication();
 		    	lsoComm.saveStatus(currentPlayId,"2");
 		    	lsoComm.checkStatus(xmlList);
 		    	this.path = path;
 		    	this.currentPlayId = tXml.@id.toString();
-		    	// 状态保存
-		    	
-		    	
-		    	
 			}
 		]]>
 	</mx:Script>
