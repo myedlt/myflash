@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <course iID="EDLT2008004" iTitle="销售团队管理" iStan="AICC" iType="3" iSwf="1"
 	iIP="61.135.238.12" iHtm="http://wall.edlt.com/elms/picc/xstd/index.htm"
-	iCre="EDLT" iDes="销售团队管理的文字描述。" Lesson_Status="1" Lesson_Location="1" Score="0"
+	iCre="EDLT" iDes="销售团队管理的文字描述。"
+	Lesson_Status="1" Lesson_Location="1" Score="0"
 	Time="3.0" Objectives_Status="1">
 	<module sub="销售团队管理">
 		<lesson sub="一、共同的目标">

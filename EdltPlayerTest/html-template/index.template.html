@@ -31,21 +31,39 @@ Learn more about Flex at http://flex.org
 body { margin: 0px; overflow:hidden }
 </style>
 <script language="JavaScript" type="text/javascript">
-<!--
-// -----------------------------------------------------------------------------
-// Globals
-// Major version of Flash required
-var requiredMajorVersion = ${version_major};
-// Minor version of Flash required
-var requiredMinorVersion = ${version_minor};
-// Minor version of Flash required
-var requiredRevision = ${version_revision};
-// -----------------------------------------------------------------------------
-// -->
+	<!--
+	// -----------------------------------------------------------------------------
+	// Globals
+	// Major version of Flash required
+	var requiredMajorVersion = ${version_major};
+	// Minor version of Flash required
+	var requiredMinorVersion = ${version_minor};
+	// Minor version of Flash required
+	var requiredRevision = ${version_revision};
+	// -----------------------------------------------------------------------------
+	// 调用swf中的goHome()函数
+	function callExternalInterface() {
+		//alert(thisMovie("main"));
+		thisMovie("${application}").goHome();
+	}
+	// 用来区分浏览器
+	function thisMovie(movieName) {
+		if (navigator.appName.indexOf("Microsoft") != -1) {
+			return window[movieName]
+		}
+		else {
+			return document[movieName]
+		}
+	}
+	// -->
 </script>
 </head>
 
-<body scroll="no">
+<body style='overflow:scroll; overflow-x:hidden; overflow-y:hidden'
+	leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
+    onLoad="doTrunon()" onUnload="doTurnoff()"
+    onBeforeUnload="callExternalInterface()"
+	scroll="no">
 
 <script language="JavaScript" type="text/javascript">
 <!--
