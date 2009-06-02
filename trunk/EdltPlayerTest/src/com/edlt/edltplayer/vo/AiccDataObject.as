@@ -31,5 +31,25 @@ package com.edlt.edltplayer.vo
 		{
 			
 		}
+		// 输出aicc_data中的数据
+		public function toString():String {
+			var result:String = "";
+			result += "[Core]\r\n";
+			result += "Lesson_Location="+this.lessonLocation;
+			result += "Lesson_Status="+this.lessonStatus+"\n";
+			result += "score="+this.score+"\n";
+			result += "Time="+""+"\n";
+			//[Core_Lesson]                                                                                                                                                                                                                                
+			result += "[Core_Lesson]\r\n";
+			//[Comments]
+			result += "[Comments]\r\n";
+			//[Objectives_Status]
+			result += "[Objectives_Status]\r\n";
+			for(var s:String in jId) {
+				result += "J_ID."+ s + "=" + jId[s];
+				result += "J_status."+ s + "=" + jStatus[s];
+				result += "J_score."+ s + "=" + jScore[s];
+			}
+		}
 	}
 }

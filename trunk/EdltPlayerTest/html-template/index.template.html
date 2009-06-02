@@ -25,6 +25,8 @@ Learn more about Flex at http://flex.org
 <script src="history/history.js" language="javascript"></script>
 <!--  END Browser History required section -->
 
+<script src="javascript/linkAICC.js" language="JavaScript"></script>
+
 <style>
 body { margin: 0px; overflow:hidden }
 </style>
@@ -44,6 +46,7 @@ var requiredRevision = ${version_revision};
 </head>
 
 <body scroll="no">
+
 <script language="JavaScript" type="text/javascript">
 <!--
 // Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
@@ -98,6 +101,8 @@ if ( hasProductInstall && !hasRequestedVersion ) {
    	+ '<a href=http://www.adobe.com/go/getflash/>Get Flash</a>';
     document.write(alternateContent);  // insert non-flash content
   }
+	window.document.writeln("<iframe src=\"cont.html\" name=\"aicc_comm\" id=\"aicc_comm\" width=\"0\" height=\"0\" frameborder=\"no\" scrolling=\"no\" noresize=\"noresize\" allowtransparency=\"true\"></iframe>");
+
 // -->
 </script>
 <noscript>
@@ -121,5 +126,6 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			</embed>
 	</object>
 </noscript>
+
 </body>
 </html>
