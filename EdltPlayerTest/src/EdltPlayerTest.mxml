@@ -26,6 +26,7 @@
 			// 程序的初始工作
 			private function appCompHandler():void
 			{
+				// 开放外部调用
 				ExternalInterface.addCallback("goHome",goHomeCallback);
 				httpSvr.send();
 			}
@@ -83,7 +84,7 @@
 //		    	trace(this.path);
 		    	// 状态保存
 		    	var lsoComm:LSOCommunication = new LSOCommunication();
-		    	lsoComm.saveStatus(currentPlayId,"2");
+		    	lsoComm.saveStatus(currentPlayId,"1");
 		    	lsoComm.checkStatus(xmlList);
 		    	this.path = path;
 		    	this.currentPlayId = tXml.@id.toString();
