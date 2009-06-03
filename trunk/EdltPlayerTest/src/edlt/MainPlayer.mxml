@@ -9,6 +9,8 @@
 	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.sliderClasses.SliderThumb;
+			import mx.events.SliderEvent;
 			import flash.display.MovieClip;
 			public static const RETURN_MENU:String = "returnMenu";
 			public static const PREV_SCO:String = "prevSco";
@@ -16,6 +18,7 @@
 			
 			// 
 //			private var mc:MovieClip = null;
+			[Bindable]
 			private var mc:* = null;
 			private var flag:Boolean = false;			// 影片剪辑的可操作性
 			private var tCurr:int = 0;					// 临时保存影片停止时所处的帧数
@@ -60,6 +63,21 @@
 				swfLoader.unloadAndStop();					// 停止
 				dispatchEvent(new Event(NEXT_SCO));
 			}
+			// 初始滑动条
+			private function sliderComplete(evt:Event):void
+			{
+				var slider:HSlider=evt.target as HSlider;
+				var thumb:SliderThumb = slider.getThumbAt(0);
+				thumb.width=36.3;
+				thumb.height=9;
+				//thumb.xPosition=18;
+				slider.invalidateDisplayList();
+			}
+			private function progressChange(event:SliderEvent):void {
+				if(mc!=null) {
+					mc.gotoAndPlay(event.value);
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:HBox>
@@ -72,7 +90,25 @@
 				  scaleContent="true"
 				  verticalAlign="middle"
 				  init="initHandler()"
-/>
+	/>
+	<mx:HSlider x="148"
+			y="488"
+			width="620"
+			height="7"
+			id="progressSlider"
+			creationComplete="sliderComplete(event)"
+			change="progressChange(event)"
+			liveDragging="true"
+			minimum="1"
+			snapInterval="1"
+			buttonMode="true"
+			useHandCursor="true"
+			styleName="progressSlider"
+			showTrackHighlight="true"
+			slideDuration="10"
+			maximum="{mc.totalFrames}"
+			value="{mc.currentFrame}"/>
+	
 	<mx:HBox x="283" y="507" width="350">
 		<mx:Button id="playBtn" label="开始" click="if(flag) mc.play();"/>
 		<mx:Button id="pauseBtn" label="暂停" click="if(flag) mc.stop();"/>
@@ -81,7 +117,7 @@
 		<mx:Label text="11 / 66"/>
 		<mx:LinkButton id="nextBtn" label="后一页" click="onNextBtnClick()"/>
 	</mx:HBox>
-	<mx:Button label="菜单" x="690" y="10">
+	<mx:Button label="知识地图" x="698" y="26">
 		<mx:click>
 			<![CDATA[
 				if(flag) mc.stop();

@@ -27,6 +27,7 @@
 			{
 				mc = MovieClip(swfLoader.content);
 				skipBtn.visible = true;
+//				mc.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			}
 			
 			// todo
@@ -40,8 +41,7 @@
 			{
 				swfLoader.source = value;
 			}
-
-
+			
 		]]>
 	</mx:Script>
 	<mx:SWFLoader id="swfLoader"
