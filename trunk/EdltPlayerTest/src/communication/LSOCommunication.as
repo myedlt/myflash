@@ -34,10 +34,7 @@ package communication
 		}
 		// 保存状态
 		public function saveStatus(id:String,status:String):void {
-//			var obj:Object = new Object();
-//			obj.id = 1;
-//			obj.status = 'i';
-//			statusArray.push(obj);
+//			id = "j_id." + id; 
 			trace("保存id: " + id + " status: " + status);
 			lso = SharedObject.getLocal("Aicc","/");
 			var statusObj:Object

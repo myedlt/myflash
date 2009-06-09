@@ -3,6 +3,7 @@ package com.edlt.edltplayer.vo
 	// Aicc数据封装对象
 	public class AiccDataObject
 	{
+		
 		public static const PASS:String = "P";
 		public static const COMPLETED:String = "C";
 		public static const FAIL:String = "F";
@@ -27,10 +28,12 @@ package com.edlt.edltplayer.vo
 		// J_status
 		public var jStatus:Object;
 		
-		public function AiccDataObject()
+		public function AiccDataObject(obj:Object=null)
 		{
-			
+			if(obj != null) {
+			}
 		}
+		
 		// 输出aicc_data中的数据
 		public function toString():String {
 			var result:String = "";
@@ -50,6 +53,7 @@ package com.edlt.edltplayer.vo
 				result += "J_status."+ s + "=" + jStatus[s];
 				result += "J_score."+ s + "=" + jScore[s];
 			}
+			return result;
 		}
 	}
 }
