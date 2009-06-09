@@ -9,6 +9,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="ProTest.mxml"/>
     <application path="EdltPlayerTest.mxml"/>
   </applications>
   <modules/>
