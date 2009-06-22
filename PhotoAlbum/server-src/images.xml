@@ -1,0 +1,9 @@
+<images>
+	<!-- raw 原图路径信息 -->
+	<!-- thumbnail 缩略图路径信息 -->
+	<image raw="raw/001.jpg" thumbnail="thumbnail/001.jpg"/>
+	<image raw="raw/002.jpg" thumbnail="thumbnail/002.jpg"/>
+	<image raw="raw/003.jpg" thumbnail="thumbnail/003.jpg"/>
+	<image raw="raw/004.jpg" thumbnail="thumbnail/004.jpg"/>
+	<image raw="raw/005.jpg" thumbnail="thumbnail/005.jpg"/>
+</images>
