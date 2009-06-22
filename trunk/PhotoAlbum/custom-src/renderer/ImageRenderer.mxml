@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	paddingLeft="0" paddingRight="0"
+	>
+	<mx:Canvas width="100%" height="100%">
+		<mx:Image horizontalCenter="0" verticalCenter="0"
+			source="{data.@thumbnail}"
+			/>
+	</mx:Canvas>
+	<mx:Text text="图片说明"/>
+</mx:VBox>
