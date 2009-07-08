@@ -1,0 +1,11 @@
+<globals>
+
+<global name="flickrAPIKey"
+
+          value="16cb19fb5646d924e6607354d8a41932" />
+
+<global name="sendPostCardServiceUrl"
+
+          value="http://localhost/postacard/postacard.php" />
+
+</globals>
