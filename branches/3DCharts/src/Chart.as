@@ -1,6 +1,7 @@
 ﻿package
 {
 	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -14,11 +15,13 @@
 	import flash.text.TextFormat;
 	
 	import org.papervision3d.cameras.Camera3D;
+	import org.papervision3d.cameras.DebugCamera3D;
 	import org.papervision3d.core.geom.Lines3D;
 	import org.papervision3d.core.geom.renderables.Line3D;
 	import org.papervision3d.core.geom.renderables.Vertex3D;
 	import org.papervision3d.core.math.Number3D;
 	import org.papervision3d.core.proto.DisplayObjectContainer3D;
+	import org.papervision3d.events.InteractiveScene3DEvent;
 	import org.papervision3d.materials.ColorMaterial;
 	import org.papervision3d.materials.MovieMaterial;
 	import org.papervision3d.materials.special.Letter3DMaterial;
@@ -35,15 +38,24 @@
 	import org.papervision3d.view.Viewport3D;
 
 	[SWF(width='800', height='600', backgroundColor='0x868686', frameRate='12')]
-	public class Main extends Sprite
+	public class Chart extends Sprite
 	{
 
-		public function Main()
+		public function Chart()
 		{
+			// 用于显示状态或调试
+			msgP = new TextField();
+			msgP.x = 20;
+			msgP.y = 20;
+			msgP.multiline = true;
+			msgP.width = 500;
+			msgP.addEventListener(MouseEvent.CLICK, setCamera);
+			this.addChild(msgP);
+			
 			// 1.set up the stage
 
-			stage.align = StageAlign.TOP_LEFT; // 当影片输出的时候，整个影片相对浏览器的左上方对齐
-			stage.scaleMode = StageScaleMode.NO_SCALE; // 影片不会跟随浏览的尺寸大小而发生缩放。
+			stage.align = StageAlign.TOP_LEFT; 			// 当影片输出的时候，整个影片相对浏览器的左上方对齐
+			stage.scaleMode = StageScaleMode.NO_SCALE; 	// 影片不会跟随浏览的尺寸大小而发生缩放。
 			//stage.quality = High;
 
 			// 2.Initialise Papervision3D
@@ -62,10 +74,13 @@
 
 		}
 
-		private var d3oCord:DisplayObject3D = new DisplayObject3D();
-		private var d3oCube:DisplayObject3D = new DisplayObject3D();
+		private var xmlUrl:String = "assets/data.xml";
+		private var d3oCord:DisplayObject3D = new DisplayObject3D();	// 环境对象容器
+		private var d3oCube:DisplayObject3D = new DisplayObject3D();	// 立方体容器
 		
 		private var axes:Lines3D; // 全局坐标系统标注
+		private var msgP:TextField;
+		private var axesMark:Lines3D = new Lines3D(new LineMaterial(0xFFFFFF));
 
 		// 摄像机鼠标操控的全局变量
 		private var cameraPitch:Number = 60;
@@ -111,7 +126,7 @@
 
 			txt.antiAliasType = alias;
 
-			mc.graphics.beginFill(0x538C59);
+			mc.graphics.beginFill(0x868686);
 			mc.graphics.drawRect(0, 0, width, height);
 			mc.graphics.endFill();
 
@@ -122,7 +137,7 @@
 			mat.smooth = smooth;
 			mat.tiled = true;
 
-			var p:Plane = new Plane(mat, 80, 80);
+			var p:Plane = new Plane(mat, width, height);
 			d3oCord.addChild(p);
 
 			return p;
@@ -158,42 +173,56 @@
 			axes.addLine(xAxis);
 			axes.addLine(yAxis);
 			axes.addLine(zAxis);
-			d3oCord.addChild(axes);
-
-			// 添加z轴的箭头
-			var _coneX:Cone = new Cone(new ColorMaterial(0x0000FF, 0.5), 800, 3200, 3, 1);
-			_coneX.z = 50000 + 1600;
-			_coneX.pitch(90);
-			d3oCord.addChild(_coneX);
+			//d3oCord.addChild(axes);
+			d3oCord.addChild(axesMark);
 			
-			// 添加X轴名称标注
-			var txtXAxis:Plane = createPlane(80, 80, "X", new TextFormat(null, 58), AntiAliasType.NORMAL, false, false);
-			txtXAxis.rotationY -= 180;
-			txtXAxis.x = 50000 + 2500;
-			txtXAxis.scale = 30;
+			// 坐标尺：3D文字标注
 			
-			// 添加3D文字标注
-			this.createText("0", 		50000+1000, 	-500, 	0+1000, 	90);
+			// Z轴
+			this.createText("0", 		50000+1000, 	-500, 	0+1000, 		90);
 			this.createText("20", 		50000+1000, 	-500, 	20*500+1000, 	90);
 			this.createText("40", 		50000+1000, 	-500, 	40*500+1000,	90);
 			this.createText("60", 		50000+1000, 	-500, 	60*500+1000, 	90);	
 			this.createText("80", 		50000+1000, 	-500, 	80*500+1000, 	90);	
-			this.createText("100", 	50000+1000, 	-500, 	100*500, 	90);	
+			this.createText("100", 	50000+1000, 	-500, 	100*500, 		90);
+			//this.createText("Duration", 	50000+5000, 	-3500, 	50000/2, 	90);
 			
-			this.createText("0", 		0, 			-500, 	50000+3000, 	180);
-			this.createText("10", 		10*1000, 	-500, 	50000+3000, 	180);
-			this.createText("20", 		20*1000, 	-500, 	50000+3000,		180);
-			this.createText("30", 		30*1000, 	-500, 	50000+3000, 	180);	
-			this.createText("40", 		40*1000, 	-500, 	50000+3000, 	180);	
-			this.createText("50", 		50*1000, 	-500, 	50000+3000, 	180);	
+			var pZ:Plane = this.createPlane(200,200,"周期",new TextFormat(null,"58"));
+			pZ.x = 50000+5000+2000;
+			pZ.y = -3500;
+			pZ.z = 50000/2;
+			pZ.scale = 50;
+			pZ.rotationY +=270;
+			
+			// X轴
+			this.createText("0", 		0, 			-500, 	50000+3000, 	90);
+			this.createText("10", 		10*1000, 	-500, 	50000+3000, 	90);
+			this.createText("20", 		20*1000, 	-500, 	50000+3000,		90);
+			this.createText("30", 		30*1000, 	-500, 	50000+3000, 	90);	
+			this.createText("40", 		40*1000, 	-500, 	50000+3000, 	90);	
+			this.createText("50", 		50*1000, 	-500, 	50000+3000, 	90);	
+			//this.createText("Phase", 	50000/2, 	-3500, 	50000+3000+5000, 	90);
+			var pX:Plane = this.createPlane(200,200,"相位",new TextFormat(null,"58"));
+			pX.x = 50000/2;
+			pX.y = -3500;
+			pX.z = 50000+5000+4000;
+			pX.scale = 50;
+			pX.rotationY +=270;
+			
 
-//			this.createText("0", 		50000, 	-1500, 	0+1000, 	90);
-//			this.createText("20", 		50000, 	-1500, 	20*500+1000, 	90);
-//			this.createText("40", 		50000, 	-1500, 	40*500+1000,	90);
-//			this.createText("60", 		50000, 	-1500, 	60*500+1000, 	90);	
-//			this.createText("80", 		50000, 	-1500, 	80*500+1000, 	90);	
-//			this.createText("100", 	50000, 	-1500, 	100*500+1000, 	90);	
-
+			//Y轴
+			this.createText("0", 		50000, 	0+1000, 		-500, 	90);
+			this.createText("10000", 	50000, 	20*500+1000, 	-500, 	90);
+			this.createText("20000", 	50000, 	40*500+1000, 	-500,	90);
+			
+			//this.createText("Value(mV)", 50000+5000, 	20000/2 + 1000, 	-3500,	90);
+			var pY:Plane = this.createPlane(200,200,"放电幅值(mV)",new TextFormat(null,"58"));
+			pY.x =50000+5000+4000;
+			pY.y = 15000;
+			pY.z = -5500;
+			pY.scale = 50;
+			pY.rotationY +=270;
+			
 			// 创建2个平面材质，绘制网格时交替使用
 			var materialA:ColorMaterial = new ColorMaterial(0x56526A);
 			var materialB:ColorMaterial = new ColorMaterial(0x6A6A86);
@@ -264,6 +293,7 @@
 
 			// create viewport
 			viewport = new Viewport3D(800, 600, true, false);
+			viewport.interactive = true;
 			//viewport.graphics.lineStyle(2, 0xffffff);
 			//viewport.graphics.drawRect(0, 0, viewport.viewportWidth, viewport.viewportHeight);
 			//viewport.x=stage.stageWidth/2-viewport.viewportWidth/2;
@@ -273,7 +303,10 @@
 
 			// Create new camera with fov of 60 degrees (= default value)
 			camera = new Camera3D();
-
+			//camera = new DebugCamera3D(viewport);
+			//camera.target = null;	//
+			camera.target = DisplayObject3D.ZERO;	//Camera 类型：target/free
+			
 			// initialise the camera position (default = [0, 0, -1000])
 			//camera.ortho = true;
 			//camera.x = -100;
@@ -282,11 +315,11 @@
 			camera.orbit(60, -60);
 			//camera.zoom = 0.8;
 			camera.focus = 50;	// iso
-
-			// target camera on origin
-			//camera.target = DisplayObject3D.ZERO;	//Camera 类型：target/free
-			camera.target = null;	//
-
+			msgP.text = "Point:("+Math.round(camera.x)+","+Math.round(camera.y)+","+Math.round(camera.z)+")\n"
+				+"RotationX: "+Math.round(camera.rotationX)+"\n"+"RotationY: "+Math.round(camera.rotationY)+"\n"+"RotationZ: "+Math.round(camera.rotationZ)+"\n"
+				+"Fov: "+camera.focus+"\n"
+				+"Near: "+camera.near+"\n"
+				+"Far: "+camera.far+"\n";
 			// Create a new scene where our 3D objects will be displayed
 			scene = new Scene3D();
 
@@ -331,7 +364,7 @@
 		{
 			//System.useCodePage = useCodePage;
 			
-			var urlReq:URLRequest = new URLRequest("assets/data.xml");
+			var urlReq:URLRequest = new URLRequest(xmlUrl);
 			var urlLoader:URLLoader = new URLLoader();
 			
 			urlLoader.addEventListener(Event.COMPLETE, createCubeFromXML);
@@ -348,12 +381,12 @@
 			var materialList:MaterialsList = new MaterialsList();
 			
 			//materialList.addMaterial(new ColorMaterial(0xFF0000), "all");
-			materialList.addMaterial(new ColorMaterial(0x4795C4), "top");
-			materialList.addMaterial(new ColorMaterial(0xFF000), "bottom");
-			materialList.addMaterial(new ColorMaterial(0x448EBA), "front");
-			materialList.addMaterial(new ColorMaterial(0xFF000), "back");
-			materialList.addMaterial(new ColorMaterial(0xFFAE00), "left");
-			materialList.addMaterial(new ColorMaterial(0x316788), "right");
+			materialList.addMaterial(new ColorMaterial(0x4795C4,1,true), "top");
+			materialList.addMaterial(new ColorMaterial(0xFF000,1,true), "bottom");
+			materialList.addMaterial(new ColorMaterial(0x448EBA,1,true), "front");
+			materialList.addMaterial(new ColorMaterial(0xFF000,	1,true), "back");
+			materialList.addMaterial(new ColorMaterial(0xFFAE00,1,true), "left");
+			materialList.addMaterial(new ColorMaterial(0x316788,1,true), "right");
 			
 			for each( var xmlRow:XML in xmlList)
 			{
@@ -363,13 +396,14 @@
 				p.z = xmlRow.@y * 500;
 				
 				// 参数：宽，深，高，（x,*,z）
-				var cw:int = 300;	// 宽
-				var cd:int = 300;	// 深
+				var cw:int = 600;	// 宽
+				var cd:int = 400;	// 深
 				var ch:int;			// 高	
 				
 				ch = p.y;
 				
 				var cube1:Cube = new Cube(materialList, cw, cd, ch, 1, 1, 1);
+				cube1.addEventListener(InteractiveScene3DEvent.OBJECT_OVER, handleMouseOverCube);
 				//cube1.z = cw/2 + (i-1)*(cw + 30);
 				cube1.z = p.z;
 				cube1.y = ch / 2;
@@ -386,6 +420,18 @@
 			d3oAll.rotationY +=90;
 			//d3oAll.moveBackward(50000);
 			renderer.renderScene(scene, camera, viewport);			
+		}
+		
+		private function handleMouseOverCube(evt:InteractiveScene3DEvent):void
+		{
+			var cube:Cube = Cube(evt.displayObject3D); 
+			
+			cube.replaceMaterialByName(new ColorMaterial(0x0000FF,1,true), "top");
+			//cube.replaceMaterialByName(new ColorMaterial(0x0000FF,1,true), "front");
+			//cube.replaceMaterialByName(new ColorMaterial(0x0000FF,1,true), "right");
+			//axesMark.removeAllLines();
+			//var zMark:Line3D = new Line3D(axes, new LineMaterial(0xFF00FF), 1, new Vertex3D(0,cube.y,10), new Vertex3D(50000, cube.y, 10));
+			//axesMark.addLine(zMark);
 		}
 
 		private function createText(msg:String, x:Number = 0, y:Number = 0, z:Number = 0, rotationY:int=0):void
@@ -462,10 +508,29 @@
 
 				// reposition the camera
 				camera.orbit(cameraPitch, cameraYaw);
+				msgP.text = "Point:("+Math.round(camera.x)+","+Math.round(camera.y)+","+Math.round(camera.z)+")\n"
+					+"RotationX: "+Math.round(camera.rotationX)+"\n"+"RotationY: "+Math.round(camera.rotationY)+"\n"+"RotationZ: "+Math.round(camera.rotationZ)+"\n"
+					+"Fov: "+camera.focus+"\n"
+					+"Near: "+camera.near+"\n"
+					+"Far: "+camera.far+"\n";
 			}
 			// Render the 3D scene
 			renderer.renderScene(scene, camera, viewport);
 
+		}
+		
+		public function setCamera(evt:MouseEvent):void
+		{
+			//rotX:Number = 30,rotY:Number =-30,rotZ:Number=0
+			camera.x = 129904;
+			camera.y = 150000;
+			camera.z = -225000;
+			
+			camera.rotationX = 30;
+			camera.rotationY = -30;
+			camera.rotationZ = 0;
+			renderer.renderScene(scene, camera, viewport);
+			
 		}
 	}
 }
