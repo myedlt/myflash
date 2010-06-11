@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initApp(event)">
+	<mx:Script>
+		<![CDATA[
+			import info.osmatrix.rmengine.components.Chart3D;
+			
+			import mx.events.NumericStepperEvent;
+			
+			public var configXMLUrl:String;
+			public var dataXMLUrl:String;
+			public var isDebug:Boolean = false;
+			public var bgColor:Number = 0xFFFFFF;			
+			private var configXML:XML;
+			private var dataXML:XML;
+			private var cameraXML:XML;
+			
+			private var chart3D:Chart3D;
+			
+			private function initApp(e:Event):void
+			{
+				if(isDebug)
+				{
+					this.currentState = "debug";					
+				}
+				
+				//
+				chart3D = new Chart3D();
+				this.rawChildren.addChildAt(chart3D,0);
+				
+				chart3D.setup3D(this.width,this.height,bgColor,isDebug);
+				
+			}
+			
+			public function loadData():void
+			{
+				loadConfigXML();
+				loadDataXML();
+			}
+
+			private function loadConfigXML():void
+			{
+				var urlReq:URLRequest = new URLRequest(configXMLUrl);
+				var urlLoader:URLLoader = new URLLoader();
+				
+				urlLoader.addEventListener(Event.COMPLETE, configXMLComplete);
+				urlLoader.load(urlReq);			
+				
+			}
+			
+			private function loadDataXML():void
+			{
+				var urlReq:URLRequest = new URLRequest(dataXMLUrl);
+				var urlLoader:URLLoader = new URLLoader();
+				
+				urlLoader.addEventListener(Event.COMPLETE, dataXMLComplete);
+				urlLoader.load(urlReq);			
+				
+			}
+			
+			private function configXMLComplete(evt:Event):void
+			{
+				configXML = XML(evt.target.data);
+				
+				//
+				if(this.isDebug)
+				{
+					cameraXML =  configXML.camera[0].copy();
+					
+					xCamera.value = cameraXML.view[0].point[0].@x;
+					yCamera.value = cameraXML.view[0].point[0].@y;
+					zCamera.value = cameraXML.view[0].point[0].@z;
+					
+					xD3oAll.value = configXML.position[0].point[0].@x ;
+					yD3oAll.value = configXML.position[0].point[0].@y ;
+					zD3oAll.value = configXML.position[0].point[0].@z ;
+				}
+				
+				//
+				chart3D.createAxisFromXML(configXML.axis[0]);
+				chart3D.setCameraFromXML(configXML.camera[0]);
+				chart3D.setPositionFromXML(configXML.position[0]);
+				
+				chart3D.renderClick();
+			}
+			
+			private function dataXMLComplete(evt:Event):void
+			{
+				dataXML = XML(evt.target.data);
+				
+				chart3D.createCubeFromXML(dataXML);	
+				
+				chart3D.renderClick();
+			}
+			
+
+			protected function cameraChangeHandler(event:NumericStepperEvent):void
+			{
+				// TODO Auto-generated method stub
+				cameraXML.view[0].point[0].@x = xCamera.value;
+				cameraXML.view[0].point[0].@y = yCamera.value;
+				cameraXML.view[0].point[0].@z = zCamera.value;
+
+				chart3D.setCameraFromXML(cameraXML);
+				
+				chart3D.renderClick();
+			}
+
+			private function d3oAllChangeHandler(event:NumericStepperEvent):void
+			{
+				configXML.position[0].point[0].@x = xD3oAll.value;
+				configXML.position[0].point[0].@y = yD3oAll.value;
+				configXML.position[0].point[0].@z = zD3oAll.value;
+					
+				chart3D.setPositionFromXML(configXML.position[0]);
+				chart3D.renderClick();
+			}
+			
+			private function resetD3oAll(event:MouseEvent):void
+			{
+				configXML.position[0].point[0].@x =0;
+				xD3oAll.value=0;
+				configXML.position[0].point[0].@y =0;
+				yD3oAll.value=0;
+				configXML.position[0].point[0].@z =0;
+				zD3oAll.value=0;
+				
+			}
+			
+			protected function resetCamera(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				cameraXML =  configXML.camera[0];
+				
+				xCamera.value = cameraXML.view[0].point[0].@x;
+				yCamera.value = cameraXML.view[0].point[0].@y;
+				zCamera.value = cameraXML.view[0].point[0].@z;
+				
+				chart3D.setCameraFromXML(cameraXML);
+				
+				chart3D.renderClick();
+			}
+
+		]]>
+	</mx:Script>
+	<mx:states>
+		<mx:State name="debug">
+			<mx:AddChild position="lastChild">
+				<mx:TabNavigator width="137" height="143" creationPolicy="all" right="10" top="10">
+					<mx:VBox label="Camera" top="8" right="8" horizontalAlign="center" verticalGap="2">
+						<mx:HBox>
+							<mx:Label text="X:"/>
+							<mx:NumericStepper id="xCamera" change="cameraChangeHandler(event)" value="30000" width="76" maximum="400000" stepSize="1" enabled="true" minimum="-400000"/>
+						</mx:HBox>
+						<mx:HBox>
+							<mx:Label text="Y:"/>
+							<mx:NumericStepper id="yCamera" change="cameraChangeHandler(event)" value="30000" width="76" maximum="400000" stepSize="1" enabled="true" minimum="-400000"/>
+							
+						</mx:HBox>
+						<mx:HBox>
+							<mx:Label text="Z:"/>
+							<mx:NumericStepper id="zCamera" change="cameraChangeHandler(event)" value="30000" width="77" maximum="400000" stepSize="1" enabled="true" minimum="-400000"/>
+							
+						</mx:HBox>
+						<mx:Button label="复位" click="resetCamera(event)" width="100%"/>
+					</mx:VBox>
+					<mx:VBox label="d3oAll" horizontalAlign="center" verticalGap="2">
+						<mx:HBox>
+							<mx:Label text="X:"/>
+							<mx:NumericStepper id="xD3oAll" change="d3oAllChangeHandler(event)" value="30000" width="76" maximum="300000" stepSize="1" enabled="true" minimum="-300000"/>
+						</mx:HBox>
+						<mx:HBox>
+							<mx:Label text="Y:"/>
+							<mx:NumericStepper id="yD3oAll" change="d3oAllChangeHandler(event)" value="30000" width="76" maximum="300000" stepSize="1" enabled="true" minimum="-300000"/>
+							
+						</mx:HBox>
+						<mx:HBox>
+							<mx:Label text="Z:"/>
+							<mx:NumericStepper id="zD3oAll" change="d3oAllChangeHandler(event)" value="30000" width="77" maximum="300000" stepSize="1" enabled="true" minimum="-300000"/>
+							
+						</mx:HBox>
+						<mx:Button label="复位" click="resetD3oAll(event)" width="100%"/>
+						
+					</mx:VBox>
+				</mx:TabNavigator>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

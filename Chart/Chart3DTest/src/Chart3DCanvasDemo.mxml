@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" minWidth="955" minHeight="600" 
+				xmlns:chart3d="info.osmatrix.rmengine.components.*" applicationComplete="application1_applicationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+
+			protected function application1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				chart_11.loadData();
+			}
+
+		]]>
+	</mx:Script>
+	<chart3d:Chart3DCanvas id="chart_11" x="9.95" y="10" 
+						   configXMLUrl="assets/chart01/config.xml" 
+						   dataXMLUrl="assets/chart01/data.xml" isDebug="true" borderStyle="solid" width="962" height="540"/>
+</mx:Application>
