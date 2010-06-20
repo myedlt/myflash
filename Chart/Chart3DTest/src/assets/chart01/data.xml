@@ -1,13 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?><ds>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ds>
+	<profile zmax="600" ztitle="mv" />
 	<cube xzoom="1000" yzoom="500" zzoom="20" width="600" depth="400">
-		<material value="0" all="0x448EBA" front="0x448EBA" back="0xFF000" top="0x4795C4" bottom="0xFF000" left="0xFFAE00" right="0x316788"/>
-		<material value="50" all="0x4795C4" front="0xFF0000" back="0xFF000" top="0xFF0000" bottom="0xFF000" left="0xFFAE00" right="0xFF0000"/>
-		<material value="100" all="0xFF000" front="0xE48701" back="0xFF000" top="0xE48701" bottom="0xFF000" left="0xFFAE00" right="0xE48701"/>
-		<material value="400" all="0x316788" front="0x0000FF" back="0xFF000" top="0x0000FF" bottom="0xFF000" left="0xFFAE00" right="0x0000FF"/>
-		<material value="500" all="0x868DCF" front="0x868DCF" back="0x868DCF" top="0x4795C4" bottom="0x868DCF" left="0x868DCF" right="0x868DCF"/>
+		<material value="0" 	all="0x448EBA" 	front="0x448EBA" back="0xFF000" 	top="0x4795C4" bottom="0xFF000" left="0xFFAE00" right="0x316788"/>
+		<material value="200" 	all="0x4795C4" 	front="0x448EBA" back="0xFF000" 	top="0x4795C4" bottom="0xFF000" left="0xFFAE00" right="0x316788"/>
+		<material value="301" 	all="0xFF000" 	front="0xE48701" back="0xFF000" 	top="0xE48701" bottom="0xFF000" left="0xFFAE00" right="0xE48701"/>
+		<material value="500" 	all="0x316788" 	front="0x0000FF" back="0xFF000" 	top="0x0000FF" bottom="0xFF000" left="0xFFAE00" right="0x0000FF"/>
+		<material value="600" 	all="0x868DCF" 	front="0x868DCF" back="0x868DCF" 	top="0x4795C4" bottom="0x868DCF" left="0x868DCF" right="0x868DCF"/>
 	</cube>
 
- <r x="0" y="25" z="79" /> 
+  <r x="0" y="25" z="79" /> 
   <r x="0" y="26" z="453" /> 
   <r x="0" y="27" z="179" /> 
   <r x="0" y="28" z="73" /> 

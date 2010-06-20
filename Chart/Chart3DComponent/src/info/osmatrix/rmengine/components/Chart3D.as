@@ -148,7 +148,7 @@
 		}
 		
 		/**
-		 *	创建3D物件
+		 *	创建3D物件,有问题，需修改
 		 *
 		 */
 		public function updateScene(conf:XML,data:XML):void
@@ -221,7 +221,7 @@
 			var pZ:Plane = this.createPlane(fillcolor,200,200,zTitle,new TextFormat(null,"58"));
 			pZ.x = xMax +zDx+zDTitle;
 			pZ.y = -3500;
-			pZ.z = zMax/2;
+			pZ.z = zMax/4*3;
 			pZ.scale = 50;
 			pZ.rotationY +=270;
 			
@@ -239,7 +239,7 @@
 			}
 			
 			var pX:Plane = this.createPlane(fillcolor,200,200,xTitle,new TextFormat(null,"58"));
-			pX.x = xMax/2;
+			pX.x = xMax/4*3;
 			pX.y = 0;
 			pX.z = zMax + xDz + xDTitle;
 			pX.scale = 50;
@@ -408,15 +408,14 @@
 		
 		public function setCameraFromXML(xml:XML):void
 		{
-			var index:int = xml.@default;
 			
 			setCamera(
-				xml.view[index].point.@x,
-				xml.view[index].point.@y,
-				xml.view[index].point.@z,
-				xml.view[index].rotation.@x,
-				xml.view[index].rotation.@y,
-				xml.view[index].rotation.@z
+				xml.point.@x,
+				xml.point.@y,
+				xml.point.@z,
+				xml.rotation.@x,
+				xml.rotation.@y,
+				xml.rotation.@z
 			);
 		}
 		
@@ -476,11 +475,11 @@
 
 		public function setPositionFromXML(xml:XML):void
 		{
-			d3oAll.rotationY += xml.point[0].@rotationY;
+			d3oAll.rotationY += xml.@rotationY;
 			
-			d3oAll.x = xml.point[0].@x;
-			d3oAll.y = xml.point[0].@y;
-			d3oAll.z = xml.point[0].@z;
+			d3oAll.x = xml.@x;
+			d3oAll.y = xml.@y;
+			d3oAll.z = xml.@z;
 		}
 
 		// 功能函数

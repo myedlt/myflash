@@ -13,9 +13,10 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="Chart3DCanvasDemo.mxml"/>
-    <application path="ChartPDM.mxml"/>
     <application path="Chart2DDemo.mxml"/>
+    <application path="ChartPDMDialog.mxml"/>
+    <application path="ChartPDM.mxml"/>
+    <application path="Chart3DCanvasDemo.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

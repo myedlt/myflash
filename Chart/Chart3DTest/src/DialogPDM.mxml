@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
-				minWidth="800" minHeight="600" applicationComplete="initApp()"
-				xmlns:chart3d="info.osmatrix.rmengine.components.*" width="851.36365" height="645.3788" backgroundGradientAlphas="[1.0, 1.0]" backgroundGradientColors="[#FEFEFE, #FEFEFE]">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+				minWidth="800" minHeight="600" creationComplete="initComponent()" close="closeWindow()"
+				xmlns:chart3d="info.osmatrix.rmengine.components.*" width="873" height="679" title="变电告警局部谱图" showCloseButton="true" >
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.managers.SystemManager;
 			
-			private function initApp():void
+			private function initComponent():void
 			{
-				stage.align = StageAlign.TOP_LEFT; 			// 当影片输出的时候，整个影片相对浏览器的左上方对齐
-				stage.scaleMode = StageScaleMode.NO_SCALE; 	// 影片不会跟随浏览的尺寸大小而发生缩放。
+				//stage.align = StageAlign.TOP_LEFT; 			// 当影片输出的时候，整个影片相对浏览器的左上方对齐
+				//stage.scaleMode = StageScaleMode.NO_SCALE; 	// 影片不会跟随浏览的尺寸大小而发生缩放。
 
 				chart_11.loadData();
 				chart_12.loadData();
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
 			}
 			
 			private function customizeLabel(cat:Object,pcat:Object,ax:LinearAxis):String
@@ -37,6 +45,7 @@
 				
 				return lbl;
 			}
+
 		]]>
 	</mx:Script>
 	<mx:XML id="data2DJQ" source="assets/chart03/dataC.xml" />
@@ -49,11 +58,11 @@
 	</mx:Array>
 	<chart3d:Chart3DCanvas id="chart_11" x="428.6" y="18.5" 
 						   configXMLUrl="assets/chart01/config.xml" 
-						   dataXMLUrl="assets/chart01/data.xml" isDebug="false" borderStyle="solid" iViewIndex="0"/>
+						   dataXMLUrl="assets/chart01/data.xml" isDebug="false" borderStyle="solid"/>
 	
 	<chart3d:Chart3DCanvas id="chart_12" x="428.6" y="326.05" 
 						   configXMLUrl="assets/chart02/config.xml" 
-						   dataXMLUrl="assets/chart02/data.xml" isDebug="false" borderStyle="solid" iViewIndex="0"/>
+						   dataXMLUrl="assets/chart02/data.xml" isDebug="false" borderStyle="solid"/>
 	
 	<mx:Canvas x="21" y="18" width="400" height="300" borderStyle="solid">
 		<mx:ColumnChart id="chartAvg" width="100%" height="100%" dataProvider="{data2DJQ.r}" showDataTips="true" backgroundElements="{chartAvgGridLines}">
@@ -85,4 +94,4 @@
 		</mx:ColumnChart>
 		
 	</mx:Canvas>
-</mx:Application>
+</mx:TitleWindow>

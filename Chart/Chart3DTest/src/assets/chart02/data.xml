@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ds>
+	<profile zmax="300" ztitle="" />
 	<cube xzoom="125" yzoom="500" zzoom="60" width="600" depth="400">
 		<material value="0" all="0x448EBA" front="0x448EBA" back="0xFF000" top="0x4795C4" bottom="0xFF000" left="0xFFAE00" right="0x316788"/>
-		<material value="10" all="0x4795C4" front="0xFF0000" back="0xFF000" top="0xFF0000" bottom="0xFF000" left="0xFFAE00" right="0xFF0000"/>
+		<material value="310" all="0x868DCF" front="0x4D74C3" back="0x868DCF" top="0x3C5A97" bottom="0x868DCF" left="0x868DCF" right="0x5885E0"/>
+		<material value="10" all="0x4795C4" front="0xFF4401" back="0xFF000" top="0xF6F6F6" bottom="0xFF000" left="0xFFAE00" right="0x016D2F"/>
 		<material value="80" all="0xFF000" front="0xE48701" back="0xFF000" top="0xE48701" bottom="0xFF000" left="0xFFAE00" right="0xE48701"/>
 		<material value="120" all="0x316788" front="0x0000FF" back="0xFF000" top="0x0000FF" bottom="0xFF000" left="0xFFAE00" right="0x0000FF"/>
-		<material value="200" all="0x868DCF" front="0x868DCF" back="0x868DCF" top="0x4795C4" bottom="0x868DCF" left="0x868DCF" right="0x868DCF"/>
 	</cube>
 
   <r x="20" y="69" z="7" /> 
