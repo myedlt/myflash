@@ -13,7 +13,8 @@
 
 		]]>
 	</mx:Script>
-	<chart3d:Chart3DCanvas id="chart_11" x="9.95" y="10" 
+	<chart3d:Chart3DCanvas id="chart_11" x="9.95" y="10" borderStyle="solid" width="962" height="540"
 						   configXMLUrl="assets/chart01/config.xml" 
-						   dataXMLUrl="assets/chart01/data.xml" isDebug="true" borderStyle="solid" width="962" height="540"/>
+						   dataXMLUrl="assets/chart01/data.xml" 
+						   isDebug="true" iViewIndex="2"/>
 </mx:Application>

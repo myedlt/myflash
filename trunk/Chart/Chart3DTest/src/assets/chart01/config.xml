@@ -42,9 +42,4 @@
 			<mark text="900"/>
 		</y>
 	</axis>
-	<position>
-		<point x="-8000" y="0" z="0" rotationY="90"/>
-		<point x="0" y="30000" z="-30000" rotationY="90"/>
-		<point x="-8000" y="6000" z="" rotationY="90"/>
-	</position>
 </config>
