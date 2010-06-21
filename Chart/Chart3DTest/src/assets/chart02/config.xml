@@ -20,13 +20,13 @@
 	</camera>
 	<axis xmax="50000" ymax="18000" zmax="50000" backgroundcolor="0xFFFFFF">
 		<z count="4" rotation="90" title="φ(°)" dx="3000" dtitle="8000">
-			<mark text="360"/>
+			<mark text="  0"/>
 			<mark text=""/>
 			<mark text="180"/>
 			<mark text=""/>
-			<mark text="  0"/>
+			<mark text="360"/>
 		</z>
-		<x count="4" rotation="90" title="q(pC)" dz="5000" dtitle="8000">
+		<x count="4" rotation="90" title="q(pC)" dz="5000" dtitle="10000">
 			<mark text="  0"/>
 			<mark text="100"/>
 			<mark text="200"/>
