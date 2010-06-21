@@ -27,13 +27,12 @@
 			<mark text="40"/>
 			<mark text="50"/>
 		</z>
-		<x count="5" rotation="90" title="相位" dz="5000" dtitle="8000">
+		<x count="4" rotation="90" title="相位" dz="5000" dtitle="10000">
 			<mark text="  0"/>
-			<mark text=" 20"/>
-			<mark text=" 40"/>
-			<mark text=" 60"/>
-			<mark text=" 80"/>
-			<mark text="100"/>
+			<mark text=""/>
+			<mark text="180"/>
+			<mark text=""/>
+			<mark text="360"/>
 		</x>
 		<y count="3" rotation="90" title="放电幅值(mV)" dx="5000" dtitle="8000">
 			<mark text=""/>

@@ -74,3 +74,6 @@
 			front：448EBA
 			right：316788
 			top：4795C4
+			
+	遗留问题的解决办法：同样在xml文件中指定单位，然后chartAvgVerticalAxis.title = "huhj";其中chartAvgVerticalAxis是左上柱状图纵轴的id。
+	将Cube移入Config.xml，到加载后插入data.xml
