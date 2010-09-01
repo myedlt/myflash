@@ -2,12 +2,8 @@
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -18,7 +14,6 @@
 	import org.papervision3d.core.geom.renderables.Line3D;
 	import org.papervision3d.core.geom.renderables.Vertex3D;
 	import org.papervision3d.core.math.Number3D;
-	import org.papervision3d.events.InteractiveScene3DEvent;
 	import org.papervision3d.materials.ColorMaterial;
 	import org.papervision3d.materials.MovieMaterial;
 	import org.papervision3d.materials.special.Letter3DMaterial;
@@ -28,41 +23,42 @@
 	import org.papervision3d.objects.primitives.Cube;
 	import org.papervision3d.objects.primitives.Plane;
 	import org.papervision3d.render.BasicRenderEngine;
+	import org.papervision3d.render.QuadrantRenderEngine;
 	import org.papervision3d.scenes.Scene3D;
 	import org.papervision3d.typography.Text3D;
 	import org.papervision3d.typography.fonts.HelveticaBold;
 	import org.papervision3d.view.Viewport3D;
 
-	[SWF(width='800', height='600', backgroundColor='0x868686', frameRate='12')]
+	[Event(name="RotationEvent", type="flash.events.Event")]
 	public class Chart3D extends Sprite
 	{
-		private var confXML:XML;	// 坐标与摄像头配置
+
+		/* 3D容器 */
+		private var d3oAll:DisplayObject3D;	// 顶级3D容器，作为Scene的子显示对象，包含下面的所有3D容器
 		
-		private var d3oCord:DisplayObject3D = new DisplayObject3D();	// 环境对象容器
-		private var d3oCube:DisplayObject3D = new DisplayObject3D();	// 立方体容器
-		private var d3oAll:DisplayObject3D;	// 立方体容器
+		public var d3oAxis:DisplayObject3D = new DisplayObject3D();		// 3D容器：坐标轴
+		public var d3oAxisMark:DisplayObject3D = new DisplayObject3D();	// 3D容器：坐标平面和标注
+		public var d3oCube:DisplayObject3D = new DisplayObject3D();		// 3D容器：立方体
+		// 根据需要可再添加其他3D容器
 		
-		private var debug:Boolean = false;
-		private var msgP:TextField;
+		/* 2D 对象 */
+		private var msgP:TextField;			// 没有3D特性，作为Sprite的子显示对象
 		
 		// PV3D engine 运行时必须实例化的对象
-		private var renderer:BasicRenderEngine;
-		private var scene:Scene3D;
-		private var viewport:Viewport3D;
-		public var camera:Camera3D;
+		private 	var renderer:BasicRenderEngine;
+		private 	var scene:Scene3D;
+		private 	var viewport:Viewport3D;
+		public 		var camera:Camera3D;
 
 		public function Chart3D()
 		{
-			// 2D
-			createMsgPanel();
-			
 			// 2.Initialise Papervision3D
 			init3D();
 
 			// 3.Create the 3D objects
 			createScene();
 
-			// Listen to mouse up and down events on the stage
+			// 用于实现旋转
 			this.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			this.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 
@@ -72,7 +68,7 @@
 		{
 
 			// create viewport
-			viewport = new Viewport3D(800, 600, true, false);
+			viewport = new Viewport3D(400, 300, true, false);
 			//viewport.interactive = true;
 			//viewport.x=stage.stageWidth/2-viewport.viewportWidth/2;
 			//viewport.y=stage.stageHeight/2-viewport.viewportHeight/2;
@@ -88,7 +84,7 @@
 			//camera.target = null;	//
 			camera.target = DisplayObject3D.ZERO;	//Camera 类型：target/free
 			
-			// initialise the camera position (default = [0, 0, -1000])
+			// initialise the camera position,针对X×Y=50000×50000
 			//camera.ortho = true;
 			//camera.x = -100;
 			//camera.y = -5000;
@@ -102,13 +98,16 @@
 
 			// Create new renderer
 			renderer = new BasicRenderEngine;
+			//renderer = new QuadrantRenderEngine(QuadrantRenderEngine.CORRECT_Z_FILTER);
 
 		}
 		
 		private function createScene():void
 		{
 			d3oAll = new DisplayObject3D();
-			d3oAll.addChild(d3oCord);
+
+			d3oAll.addChild(d3oAxis);
+			d3oAll.addChild(d3oAxisMark);
 			d3oAll.addChild(d3oCube);
 			scene.addChild(d3oAll);
 			
@@ -116,8 +115,6 @@
 		
 		public function setup3D(w:Number,h:Number,bgcolor:uint,isDebug:Boolean):void
 		{
-			debug = isDebug;
-					
 			//
 			var sp:Sprite = new Sprite();
 			
@@ -130,18 +127,11 @@
 			viewport.viewportWidth = w;
 			viewport.viewportHeight = h;
 			
-			msgP.visible = false;
-			if(debug)
-			{
-				// msgP 默认不可见
-				msgP.visible = debug;
-				
-				viewport.graphics.lineStyle(2, 0x0000ff);
-				viewport.graphics.drawRect(0, 0, viewport.viewportWidth, viewport.viewportHeight);
+			viewport.graphics.lineStyle(2, 0x0000ff);
+			viewport.graphics.drawRect(0, 0, viewport.viewportWidth, viewport.viewportHeight);
 
-				// 为场景注册一个事件监听器，每当场景ENTER_FRAME的时候，ENTER_FRAME的频率就是输出影片时设置的每秒帧数。
-				this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			}
+			// 为场景注册一个事件监听器，每当场景ENTER_FRAME的时候，ENTER_FRAME的频率就是输出影片时设置的每秒帧数。
+			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
 			
 			
@@ -172,53 +162,68 @@
 		
 		public function createAxisFromXML(axis:XML):void
 		{
-			var xMax:Number = axis.@xmax;
-			var yMax:Number = axis.@ymax;
-			var zMax:Number = axis.@zmax;
+			var xMax:Number = axis.@xcordmax;
+			var yMax:Number = axis.@ycordmax;
+			var zMax:Number = axis.@zcordmax;
+			
+			// Create a default line material and a Lines3D object (container for Line3D objects)
+			var defaultMaterial:LineMaterial = new LineMaterial(0xFFFFFF); // black
+			var axes:Lines3D = new Lines3D(defaultMaterial);
+			
+			// Create a different colour line material for each axis
+			var xAxisMaterial:LineMaterial = new LineMaterial(0xFF0000); // FF0000,red
+			var yAxisMaterial:LineMaterial = new LineMaterial(0xFFFF00); // FFFF00,yello
+			var zAxisMaterial:LineMaterial = new LineMaterial(0x0000FF); // 0000FF,blue
+			
+			// 创建原点对象
+			var origin:Vertex3D = new Vertex3D(0, 0, 0);
+			
+			// Create a new line for each axis using the different materials and a width of 1.
+			var xAxis:Line3D = new Line3D(axes, xAxisMaterial, 1, origin, new Vertex3D(xMax, 0, 0));
+			var yAxis:Line3D = new Line3D(axes, yAxisMaterial, 1, origin, new Vertex3D(0, yMax, 0));
+			var zAxis:Line3D = new Line3D(axes, zAxisMaterial, 1, origin, new Vertex3D(0, 0, zMax));
+			
+			// Add lines to the Lines3D container
+			axes.addLine(xAxis);
+			axes.addLine(yAxis);
+			axes.addLine(zAxis);
+			
+			// 缩小并以到接近摄像头的顶点
+			axes.scale = 0.2;
+			axes.x = axes.x + xMax;
+			//axes.y = axes.y + yMax;
+			axes.z = axes.z + zMax;
+			
+			d3oAxis.addChild(axes);
+		}
+
+		public function createAxisMarkFromXML(axis:XML):void
+		{
+			var xMax:Number = axis.@xcordmax;
+			var yMax:Number = axis.@ycordmax;
+			var zMax:Number = axis.@zcordmax;
 			
 			var fillcolor:Number = axis.@backgroundcolor;
 
-			if(debug)
-			{
-				// Create a default line material and a Lines3D object (container for Line3D objects)
-				var defaultMaterial:LineMaterial = new LineMaterial(0xFFFFFF); // black
-				var axes:Lines3D = new Lines3D(defaultMaterial);
-				
-				// Create a different colour line material for each axis
-				var xAxisMaterial:LineMaterial = new LineMaterial(0xFF0000); // FF0000,red
-				var yAxisMaterial:LineMaterial = new LineMaterial(0xFFFF00); // FFFF00,yello
-				var zAxisMaterial:LineMaterial = new LineMaterial(0x0000FF); // 0000FF,blue
-				
-				// 创建原点对象
-				var origin:Vertex3D = new Vertex3D(0, 0, 0);
-				
-				// Create a new line for each axis using the different materials and a width of 1.
-				var xAxis:Line3D = new Line3D(axes, xAxisMaterial, 1, origin, new Vertex3D(xMax, 0, 0));
-				var yAxis:Line3D = new Line3D(axes, yAxisMaterial, 1, origin, new Vertex3D(0, yMax, 0));
-				var zAxis:Line3D = new Line3D(axes, zAxisMaterial, 1, origin, new Vertex3D(0, 0, zMax));
-				
-				// Add lines to the Lines3D container
-				axes.addLine(xAxis);
-				axes.addLine(yAxis);
-				axes.addLine(zAxis);
-	
-				d3oCord.addChild(axes);
-			}
-			
 			// Z轴
 			var zXML:XML = axis..z[0];
 			var zCount:int = zXML.@count;
 			var zRotation:int = zXML.@rotation;
 			var zTitle:String = zXML.@title;
+			var zWTitle:int 	  = zXML.@wtitle;
+			var zHTitle:int 	  = zXML.@htitle;
+			
 			var zDx:Number 		= zXML.@dx;
 			var zDTitle:Number = zXML.@dtitle;
 			
+			// 尺寸标注，根据标注数目分隔长度
 			for(var iZ:int=0;iZ<=zCount;iZ++)
 			{
 				this.createText(zXML.mark[iZ].@text, xMax + zDx, 0, iZ*(zMax/zCount),zRotation);
 			}
 			
-			var pZ:Plane = this.createPlane(fillcolor,200,200,zTitle,new TextFormat(null,"58"));
+			// 坐标轴的标题
+			var pZ:Plane = this.createPlane(fillcolor,zWTitle,zHTitle,zTitle,new TextFormat(null,"58"));
 			pZ.x = xMax +zDx+zDTitle;
 			pZ.y = -3500;
 			pZ.z = zMax/4*3;
@@ -230,6 +235,8 @@
 			var xCount:int = xXML.@count;
 			var xRotation:int = xXML.@rotation;
 			var xTitle:String = xXML.@title;
+			var xWTitle:int   = xXML.@wtitle;
+			var xHTitle:int   = xXML.@htitle;			
 			var xDz:Number = xXML.@dz;
 			var xDTitle:Number = xXML.@dtitle;
 			
@@ -238,7 +245,7 @@
 				this.createText(xXML.mark[iX].@text, iX*(xMax/xCount), 0, zMax + xDz, xRotation);
 			}
 			
-			var pX:Plane = this.createPlane(fillcolor,200,200,xTitle,new TextFormat(null,"58"));
+			var pX:Plane = this.createPlane(fillcolor,xWTitle,xHTitle,xTitle,new TextFormat(null,"58"));
 			pX.x = xMax/4*3;
 			pX.y = 0;
 			pX.z = zMax + xDz + xDTitle;
@@ -251,6 +258,8 @@
 			var yCount:int = yXML.@count;
 			var yRotation:int = yXML.@rotation;
 			var yTitle:String = yXML.@title;
+			var yWTitle:int   = yXML.@wtitle;
+			var yHTitle:int   = yXML.@htitle;			
 			var yDx:Number 		= yXML.@dx;
 			var yDTitle:Number = yXML.@dtitle;
 			
@@ -259,10 +268,9 @@
 				this.createText(yXML.mark[iY].@text, xMax + yDx, iY*(yMax/yCount), 0, yRotation);
 			}
 			
-			var pY:Plane = this.createPlane(fillcolor,200,150,yTitle,new TextFormat(null,"58"));
-			//pY.x =xMax+yDx+yDTitle;
+			var pY:Plane = this.createPlane(fillcolor,xWTitle,xHTitle,yTitle,new TextFormat(null,"58"));
 			pY.x =xMax;
-			pY.y = yMax + 50*150;
+			pY.y = yMax+yDx+yDTitle;
 			pY.z = 0;
 			pY.scale = 50;
 			pY.rotationY +=270;
@@ -278,20 +286,27 @@
 			var materialCol:ColorMaterial = materialA;
 			
 			
-			var widthGrid:Number = xMax/xCount;
-			var heightGrid:Number = yMax/yCount;
-			var depthGrid:Number = zMax/zCount;
+			var widthGrid:Number = xMax/(xCount+1);
+			var heightGrid:Number = yMax/(yCount+1);
+			var depthGrid:Number = zMax/(zCount+1);
 			
+			/////////////////////////////////////////////////
+			// Create a default line material and a Lines3D object (container for Line3D objects)
+			var defaultMaterial:LineMaterial = new LineMaterial(0xFFFFFF); // black
+			var axes:Lines3D = new Lines3D(defaultMaterial);
+			var xAxisMaterial:LineMaterial = new LineMaterial(0xFF0000); // FF0000,red
+			var yAxisMaterial:LineMaterial = new LineMaterial(0xFFFF00); // FFFF00,yello
+			var zAxisMaterial:LineMaterial = new LineMaterial(0x0000FF); // 0000FF,blue
 			
 			// 参数：x轴格数，z轴格数，宽，高，材质
 			var material:ColorMaterial;
 			
-			for (var ixXZ:int = 0; ixXZ < xCount; ixXZ++)		// x轴方向5格
+			for (var ixXZ:int = 0; ixXZ <= xCount ; ixXZ++)		// x轴方向5格
 			{
 				materialRow = (materialRow == materialA) ? materialB : materialA;
 				materialCol = materialRow;
 				
-				for (var izXZ:int = 0; izXZ < zCount; izXZ++)		// z轴方向4格
+				for (var izXZ:int = 0; izXZ <= zCount ; izXZ++)		// z轴方向4格
 				{
 					materialCol = (materialCol == materialA) ? materialB : materialA;
 					material = materialCol;
@@ -301,9 +316,15 @@
 					plane.x = widthGrid / 2 + ixXZ * widthGrid;
 					plane.z = depthGrid / 2 + izXZ * depthGrid;
 					plane.rotationZ -= 180;
-					d3oCord.addChild(plane);
+					d3oAxisMark.addChild(plane);
+					//var zAxis:Line3D = new Line3D(axes, zAxisMaterial, 1, new Vertex3D(izXZ * depthGrid, 0, 0), new Vertex3D(izXZ * depthGrid, 0, zMax));
+					//axes.addLine(zAxis);
+					
 				}
+				//var xAxis:Line3D = new Line3D(axes, xAxisMaterial, 1, new Vertex3D(0, 0, ixXZ * widthGrid), new Vertex3D(xMax, 0, ixXZ * widthGrid));
+				//axes.addLine(xAxis);
 			}
+			
 			
 			// 在X-Y正象限创建5X2网格（10000x9000）
 			materialA = new ColorMaterial(0x0000FF);
@@ -314,39 +335,57 @@
 			materialRow = materialA;
 			materialCol = materialA;
 			
-			for (var ixXY:int = 1; ixXY <= xCount; ixXY++)
+			for (var ixXY:int = 0; ixXY <= xCount+1; ixXY++)
 			{
 				materialRow = (materialRow == materialA) ? materialB : materialA;
 				materialCol = materialRow;
 				
-				for (var iyXY:int = 1; iyXY <= yCount; iyXY++)
+				for (var iyXY:int = 0; iyXY <= yCount+1; iyXY++)
 				{
 					materialCol = (materialCol == materialA) ? materialB : materialA;
 					material = materialCol;
 					
-					var pXY:Plane = new Plane(material, widthGrid, heightGrid, 10, 10);
-					pXY.rotationY -= 180;
-					pXY.x = widthGrid / 2 + (ixXY - 1) * widthGrid;
-					pXY.y = heightGrid / 2 + (iyXY - 1) * heightGrid;
-					pXY.rotationZ -= 180;
-					d3oCord.addChild(pXY);
+//					var pXY:Plane = new Plane(material, widthGrid, heightGrid, 10, 10);
+//					pXY.rotationY -= 180;
+//					pXY.x = widthGrid / 2 + ixXY * widthGrid;
+//					pXY.y = heightGrid / 2 + iyXY * heightGrid;
+//					pXY.rotationZ -= 180;
+//					d3oAxisMark.addChild(pXY);
+					var yAxis:Line3D = new Line3D(axes, yAxisMaterial, 1, new Vertex3D(iyXY * widthGrid, 0, 0), new Vertex3D(iyXY * widthGrid, yMax, 0));
+					axes.addLine(yAxis);
 				}
-			}			
+				var zAxis:Line3D = new Line3D(axes, xAxisMaterial, 1, new Vertex3D(0, ixXY * heightGrid , 0), new Vertex3D(xMax, ixXY * heightGrid, 0));
+				axes.addLine(zAxis);
+			}	
+
+			// 在Z-Y正象限创建5X2网格（10000x9000）
+			for (var izZY:int = 0; izZY <= zCount+1; izZY++)
+			{
+				
+				for (var iyZY:int = 0; iyZY <= yCount+1; iyZY++)
+				{
+					var yAxis:Line3D = new Line3D(axes, yAxisMaterial, 1, new Vertex3D(0, 0, iyZY * widthGrid), new Vertex3D(0, yMax, iyZY * widthGrid));
+					axes.addLine(yAxis);
+				}
+				var zAxis:Line3D = new Line3D(axes, zAxisMaterial, 1, new Vertex3D(0, izZY * heightGrid , 0), new Vertex3D(0, izZY * heightGrid, zMax));
+				axes.addLine(zAxis);
+			}	
+			d3oAxisMark.addChild(axes);
 		}
 		
 		public function createCubeFromXML(xml:XML):void
 		{
 			
 			// 参数：宽，深，高，（x,*,z）
-			var xZoom:int = xml.cube.@xzoom;
-			var yZoom:int = xml.cube.@yzoom;
-			var zZoom:int = xml.cube.@zzoom;
+			var xZoom:int = xml.config.cube.@xzoom;
+			var yZoom:int = xml.config.cube.@yzoom;
+			var zZoom:int = xml.config.cube.@zzoom;
 
-			var cw:int = xml.cube.@width;	// 宽
-			var cd:int = xml.cube.@depth;	// 深
+			var cw:int = xml.config.cube.@width;	// 宽
+			var cd:int = xml.config.cube.@depth;	// 深
 			
 			var xmlList:XMLList = xml.r;
-			var materialXMLList:XMLList = xml.cube.material;
+			var materialXMLList:XMLList = xml.config.cube.material;
 
 			// 正相位立方体材质
 			var materialList:MaterialsList = new MaterialsList();
@@ -395,12 +434,12 @@
 				
 				ch = p.y;
 				
-				var cube1:Cube = new Cube(materialList, cw, cd, ch, 1, 1, 1);
+				var cube1:Cube = new Cube(materialList, cw, cd, ch, 6, 6, 6);
 				//cube1.addEventListener(InteractiveScene3DEvent.OBJECT_OVER, handleMouseOverCube);
 				//cube1.z = cw/2 + (i-1)*(cw + 30);
-				cube1.z = p.x;
+				cube1.x = p.x + cw/2;
+				cube1.z = p.z + cd/2;
 				cube1.y = ch / 2;
-				cube1.x = p.z;
 				//cube1.moveForward(28*i + 50);
 				d3oCube.addChild(cube1);				
 			}
@@ -448,7 +487,7 @@
 			text3D.material.lineAlpha = 1;
 			text3D.material.lineColor = 0xCCCCCC;
 			
-			d3oCord.addChild(text3D);			
+			d3oAxisMark.addChild(text3D);			
 		}
 		
 		// 外部接口函数
@@ -463,16 +502,10 @@
 			camera.rotationY = rotY;
 			camera.rotationZ = rotZ;
 			
-			showMsg();
+			disppatchRotationEvent();
 			
 		}
 		
-		public function setXML(xml:XML):void
-		{
-			createCubeFromXML(xml);
-			
-		}
-
 		public function setPositionFromXML(xml:XML):void
 		{
 			d3oAll.rotationY += xml.@rotationY;
@@ -482,19 +515,6 @@
 			d3oAll.z = xml.@z;
 		}
 
-		// 功能函数
-		private function createMsgPanel():void
-		{
-			
-			// 用于显示状态或调试
-			msgP = new TextField();
-			msgP.x = 20;
-			msgP.y = 20;
-			msgP.multiline = true;
-			msgP.width = 500;
-			
-			this.addChild(msgP);
-		}
 		/**
 		 * 实用功能方法：创建文本(Plane+movieMaterial+TextField)
 		 *
@@ -537,7 +557,7 @@
 			mat.tiled = true;
 			
 			var p:Plane = new Plane(mat, width, height);
-			d3oCord.addChild(p);
+			d3oAxisMark.addChild(p);
 			
 			return p;
 		}
@@ -594,20 +614,17 @@
 				// reposition the camera
 				camera.orbit(cameraPitch, cameraYaw);
 				
-				showMsg();
+				disppatchRotationEvent();
 			}
 			// Render the 3D scene
 			renderer.renderScene(scene, camera, viewport);
 			
-		}
-		
-		private function showMsg():void
+		}		
+
+		private function disppatchRotationEvent():void
 		{
-			msgP.text = "Point:("+Math.round(camera.x)+","+Math.round(camera.y)+","+Math.round(camera.z)+")\n"
-				+"RotationX: "+Math.round(camera.rotationX)+"\n"+"RotationY: "+Math.round(camera.rotationY)+"\n"+"RotationZ: "+Math.round(camera.rotationZ)+"\n"
-				+"Fov: "+camera.focus+"\n"
-				+"Near: "+camera.near+"\n"
-				+"Far: "+camera.far+"\n";			
+			this.dispatchEvent(new Event("RotationEvent"));
+
 		}
 	}
 }
