@@ -26,10 +26,9 @@
 		</mx:OLAPCube>
 	
 		<mx:XMLListCollection id="cubedp"/>
-		<mx:XML id="data2D01" source="assets/chart03/dataC.xml" />
+		<mx:XML id="data2D01" source="assets/dataC.xml" />
 	<mx:Script>
 		<![CDATA[
-			import info.osmatrix.rmengine.components.Chart3D;
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.CubeEvent;
@@ -48,7 +47,6 @@
 			private var xmlUrl:String = "assets/data/chart.xml";
 			private var dp:XMLList;
 			
-			private var chart3D:Chart3D;
 			private var configXML:XML;
 			private var dataXML:XML= 	<ds>
 											<cube xzoom="400" yzoom="400" zzoom="400" width="600" depth="400">
@@ -63,12 +61,6 @@
 				
 				urlLoader.addEventListener(Event.COMPLETE, xmlComplete);
 				urlLoader.load(urlReq);	
-				
-				//
-				chart3D = new Chart3D();
-				chart3DCanvas.rawChildren.addChild(chart3D);
-				
-				chart3D.setup3D(chart3DCanvas.width,chart3DCanvas.height,0x868686,false);
 				
 				//
 				var urlReq999:URLRequest = new URLRequest("assets/config.xml");
@@ -106,13 +98,6 @@
 			{
 				configXML = XML(evt.target.data);
 				
-					chart3D.createAxisFromXML(configXML.axis[0]);
-					
-					chart3D.setCameraFromXML(configXML.camera[0]);
-				
-					chart3D.setPositionFromXML(configXML.position[0]);
-					
-					chart3D.renderClick();
 			}
 			
 			// Create the OLAP query. 
@@ -265,18 +250,6 @@
 				//}
 			}
 			
-			private function to3D():void
-			{
-				var xml:XML = <ds>	<cube xzoom="400" yzoom="400" zzoom="60" width="600" depth="400">
-										<material front="0x448EBA" back="0xFF000" top="0x4795C4" bottom="0xFF000" left="0xFFAE00" right="0x316788"/>
-									</cube>
-									<r x="13" y="21" z="400" /> 
-								  	<r x="13" y="38" z="400" /> 
-								</ds>;		
-				chart3D.createCubeFromXML(dataXML);
-				xmlTA.text = dataXML.toString();
-				chart3D.renderClick();
-			}
 		]]>
 	</mx:Script>
 	<mx:DataGrid x="1031" y="10" height="580" id="datagrid1" width="268">
@@ -321,7 +294,7 @@
 							<mx:DataGridColumn headerText="计数" dataField="value"/>
 						</mx:columns>
 					</mx:DataGrid>
-					<mx:Button x="914" y="434" label="To3D" click="to3D()"/>
+					<mx:Button x="914" y="434" label="To3D" click=""/>
 					<mx:TextArea id="xmlTA" x="826" y="0" width="143" height="143"/>
 				</mx:Canvas>
 			</mx:ViewStack>
