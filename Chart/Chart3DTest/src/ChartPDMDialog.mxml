@@ -3,6 +3,7 @@
 				applicationComplete="initApp(event)">
 	<mx:Script>
 		<![CDATA[
+			import dialog.DialogPDM;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 

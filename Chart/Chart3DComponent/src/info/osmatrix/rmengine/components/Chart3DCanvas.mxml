@@ -13,6 +13,7 @@
 			private var dataXML:XML;
 			private var cameraXML:XML;
 
+			[Bindable]
 			public var isDebug:Boolean = false;	// 调试开关
 			public var bgColor:Number = 0xFFFFFF;	// 填充背景色
 			public var iViewIndex:int = 0;
@@ -21,17 +22,23 @@
 			
 			private function initApp(e:Event):void
 			{
-				if(isDebug)
+				create3D();
+			}
+			
+			public function create3D():void
+			{
+				//
+				if(chart3D)
 				{
-					this.currentState = "debug";					
+					chart3D.removeEventListener("RotationEvent",showMsg);
+					this.rawChildren.removeChild(chart3D);
 				}
 				
-				//
 				chart3D = new Chart3D();
 				this.rawChildren.addChildAt(chart3D,0);
 				
 				chart3D.setup3D(this.width,this.height,bgColor,isDebug);
-				
+				chart3D.addEventListener("RotationEvent",showMsg);
 			}
 			
 			public function loadData():void
@@ -61,21 +68,10 @@
 			
 			private function configXMLComplete(evt:Event):void
 			{
-				configXML = XML(evt.target.data);
+				var xml:XML = XML(evt.target.data);
 				
 				//
-				if(this.isDebug)
-				{
-					cameraXML =  configXML.camera[0].copy();
-					
-					xCamera.value = cameraXML.view[iViewIndex].point[0].@x;
-					yCamera.value = cameraXML.view[iViewIndex].point[0].@y;
-					zCamera.value = cameraXML.view[iViewIndex].point[0].@z;
-					
-					xD3oAll.value = configXML.camera[0].view[iViewIndex].position[0].@x ;
-					yD3oAll.value = configXML.camera[0].view[iViewIndex].position[0].@y ;
-					zD3oAll.value = configXML.camera[0].view[iViewIndex].position[0].@z ;
-				}
+				updateConfig(xml);
 				
 				// 配置文件加载成功后再加载数据文件
 				loadDataXML();
@@ -84,124 +80,47 @@
 			
 			private function dataXMLComplete(evt:Event):void
 			{
-				dataXML = XML(evt.target.data);
+				var xml:XML = XML(evt.target.data);
 				
-				// 预处理任务：修正z轴单位；调整z轴倍率；
-				var zTitle:String = dataXML.profile.@ztitle;
-				var zMax:Number = dataXML.profile.@zmax;
-				var zMaxAxis:Number = configXML.axis.@ymax;
-				
-				dataXML.cube.@zzoom = Math.ceil(zMaxAxis/zMax);
-				if(zTitle != "")
-				{
-					configXML.axis.y.@title = "放电幅值("+ zTitle +")";
-				}
+				updateData(xml);
+			}
 
-				configXML.axis.y.mark[1].@text = Math.ceil(zMax/3*1);
-				configXML.axis.y.mark[2].@text = Math.ceil(zMax/3*2);
-				configXML.axis.y.mark[3].@text = Math.ceil(zMax/3*3);
+			// 
+			public function updateConfig(confXML:XML):void
+			{
+				configXML = confXML;
 				
+			}
+			
+			public function updateData(dtXML:XML):void
+			{
+				dataXML = dtXML;
 				
 				// 绘制图形
 				chart3D.createAxisFromXML(configXML.axis[0]);
+				chart3D.createAxisMarkFromXML(configXML.axis[0]);
 				chart3D.setCameraFromXML(configXML.camera[0].view[iViewIndex]);
 				chart3D.setPositionFromXML(configXML.camera[0].view[iViewIndex].position[0]);
 				
 				chart3D.createCubeFromXML(dataXML);	
 				
 				chart3D.renderClick();
+				
 			}
 			
-
-			protected function cameraChangeHandler(event:NumericStepperEvent):void
+			private function showMsg(evt:Event):void
 			{
-				// TODO Auto-generated method stub
-				cameraXML.view[iViewIndex].point[0].@x = xCamera.value;
-				cameraXML.view[iViewIndex].point[0].@y = yCamera.value;
-				cameraXML.view[iViewIndex].point[0].@z = zCamera.value;
-
-				chart3D.setCameraFromXML(cameraXML.view[iViewIndex]);
+				msgP.text = "位置:("+Math.round(chart3D.camera.x)+","+Math.round(chart3D.camera.y)+","+Math.round(chart3D.camera.z)+")\n"
+					+"旋转:（"+Math.round(chart3D.camera.rotationX)+"，"+Math.round(chart3D.camera.rotationY)+"，"+Math.round(chart3D.camera.rotationZ)+"）\n"
+					+"焦距: "+chart3D.camera.focus+"\n";						
 				
-				chart3D.renderClick();
-			}
-
-			private function d3oAllChangeHandler(event:NumericStepperEvent):void
-			{
-				configXML.camera[0].view[iViewIndex].position[0].@x = xD3oAll.value;
-				configXML.camera[0].view[iViewIndex].position[0].@y = yD3oAll.value;
-				configXML.camera[0].view[iViewIndex].position[0].@z = zD3oAll.value;
-					
-				chart3D.setPositionFromXML(configXML.camera[0].view[iViewIndex].position[0]);
-				chart3D.renderClick();
-			}
-			
-			private function resetD3oAll(event:MouseEvent):void
-			{
-				configXML.camera[0].view[iViewIndex].position[0].@x =0;
-				xD3oAll.value=0;
-				configXML.camera[0].view[iViewIndex].position[0].@y =0;
-				yD3oAll.value=0;
-				configXML.camera[0].view[iViewIndex].position[0].@z =0;
-				zD3oAll.value=0;
-			}
-			
-			protected function resetCamera(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-				cameraXML =  configXML.camera[0];
-				
-				xCamera.value = cameraXML.view[iViewIndex].point[0].@x;
-				yCamera.value = cameraXML.view[iViewIndex].point[0].@y;
-				zCamera.value = cameraXML.view[iViewIndex].point[0].@z;
-				
-				chart3D.setCameraFromXML(cameraXML.view[iViewIndex]);
-				
-				chart3D.renderClick();
 			}
 
 		]]>
 	</mx:Script>
-	<mx:states>
-		<mx:State name="debug">
-			<mx:AddChild position="lastChild">
-				<mx:TabNavigator width="137" height="143" creationPolicy="all" right="10" top="10">
-					<mx:VBox label="Camera" top="8" right="8" horizontalAlign="center" verticalGap="2">
-						<mx:HBox>
-							<mx:Label text="X:"/>
-							<mx:NumericStepper id="xCamera" change="cameraChangeHandler(event)" value="30000" width="76" maximum="400000" stepSize="1" enabled="true" minimum="-400000"/>
-						</mx:HBox>
-						<mx:HBox>
-							<mx:Label text="Y:"/>
-							<mx:NumericStepper id="yCamera" change="cameraChangeHandler(event)" value="30000" width="76" maximum="400000" stepSize="1" enabled="true" minimum="-400000"/>
-							
-						</mx:HBox>
-						<mx:HBox>
-							<mx:Label text="Z:"/>
-							<mx:NumericStepper id="zCamera" change="cameraChangeHandler(event)" value="30000" width="77" maximum="400000" stepSize="1" enabled="true" minimum="-400000"/>
-							
-						</mx:HBox>
-						<mx:Button label="复位" click="resetCamera(event)" width="100%"/>
-					</mx:VBox>
-					<mx:VBox label="d3oAll" horizontalAlign="center" verticalGap="2">
-						<mx:HBox>
-							<mx:Label text="X:"/>
-							<mx:NumericStepper id="xD3oAll" change="d3oAllChangeHandler(event)" value="30000" width="76" maximum="300000" stepSize="1" enabled="true" minimum="-300000"/>
-						</mx:HBox>
-						<mx:HBox>
-							<mx:Label text="Y:"/>
-							<mx:NumericStepper id="yD3oAll" change="d3oAllChangeHandler(event)" value="30000" width="76" maximum="300000" stepSize="1" enabled="true" minimum="-300000"/>
-							
-						</mx:HBox>
-						<mx:HBox>
-							<mx:Label text="Z:"/>
-							<mx:NumericStepper id="zD3oAll" change="d3oAllChangeHandler(event)" value="30000" width="77" maximum="300000" stepSize="1" enabled="true" minimum="-300000"/>
-							
-						</mx:HBox>
-						<mx:Button label="复位" click="resetD3oAll(event)" width="100%"/>
-						
-					</mx:VBox>
-				</mx:TabNavigator>
-			</mx:AddChild>
-		</mx:State>
-	</mx:states>
+	<mx:CheckBox x="10" label="坐标" click="chart3D.d3oAxis.visible = !chart3D.d3oAxis.visible;" selected="true" bottom="41"/>
+	<mx:CheckBox x="10" label="平面" click="chart3D.d3oAxisMark.visible = !chart3D.d3oAxisMark.visible;" selected="true" bottom="22"/>
+	<mx:CheckBox x="10" label="立方" click="chart3D.d3oCube.visible = !chart3D.d3oCube.visible;" selected="true" bottom="5"/>
+	<mx:Text text="位置:(109906,100000,-255000)&#xa;旋转:（30，-30，0）&#xa;焦距: 50&#xa;" width="152" height="50" id="msgP" right="0" top="0" fontFamily="Arial"/>
+
 </mx:Canvas>
